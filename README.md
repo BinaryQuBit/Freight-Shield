@@ -3,7 +3,8 @@
 ## Run app on you local host: 
 
 ### Backend 
-- Make sure you are in code/backend
+- ``` Make sure you are in code/backend ```
+    - Run 
 - Run "npm start"
 
 ### Frontend
