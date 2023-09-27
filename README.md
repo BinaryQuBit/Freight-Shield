@@ -53,29 +53,13 @@
 
 </u></div>
 
-<div><a href = "https://github.com/BinaryQuBit">
+- <a href = "https://github.com/BinaryQuBit">Amandip Padda</a>
 
-### Amandip Padda
+- <a href = "https://github.com/rsa149">Ramanpreet Singh</a>
 
-</a></div>
+- <a href = "">Alok Paranjape</a>
 
-<div><a href = "https://github.com/rsa149">
-
-### Ramanpreet Singh
-
-</a></div>
-
-<div><a href = "">
-
-### Alok Paranjape
-
-</a></div>
-
-<div><a href = "">
-
-### Mohammed Alharbi
-
-</a></div>
+- <a href = "">Mohammed Alharbi</a>
 
 <br>
 
