@@ -16,6 +16,8 @@
 
 </div>
 
+<br>
+
 <div><u>
 
 ## Objectives
@@ -42,6 +44,8 @@
 - It optimizes routes and schedules, which can lead to fuel savings and reduced operational costs. 
 
 </div>
+
+<br>
 
 <div><u>
 
@@ -73,6 +77,8 @@
 
 </a></div>
 
+<br>
+
 <div><u>
 
 ## Getting Started
@@ -103,7 +109,7 @@
 ### Run app on your localhost (Back End):
 ```Change to required directory```
 
-        code/backendend
+        code/backend
 
 ```Install required React scriptS```
 
