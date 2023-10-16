@@ -208,3 +208,25 @@ footer {
     margin-top: 20px;
     text-align: center;  /* This line centers the text */
 }
+
+.team-members {
+    display: flex;
+    gap: 20px; /* Space between team member boxes */
+}
+
+.team-member {
+    flex: 1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+}
+
+.team-member img {
+    max-width: 100%;
+    border-radius: 50%;
+}
+
+.container {
+    width: 70%;
+    margin: auto;
+}

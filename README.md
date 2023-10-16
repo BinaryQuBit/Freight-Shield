@@ -2,6 +2,8 @@
 
 # Freight-Shield
 
+## Check out the whole process <a href = "https://binaryqubit.github.io/Freight-Shield/">:point_right:here:point_left:</a>
+
 </div>
 
 <div><u>
