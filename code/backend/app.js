@@ -1,19 +1,33 @@
-const express = require('express'),
-http = require('http');
+const express = require('express');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
-const hostname = 'localhost';
-const port = 8080;
+
 const app = express();
 
-app.use((req, res) => {
-console.log(req.headers);
-res.statusCode = 200;
-res.setHeader('Content-Type', 'text/html');
-res.end('<html><body><h1>This is a test server</h1></body></html>');
-
+// Connect to MongoDB
+const uri = process.env.MONGO_URI;
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 });
-const sample_server = http.createServer(app);
 
-sample_server.listen(port, hostname, () => {
-console.log(`Server running at http://${hostname}:${port}/`);
+const connection = mongoose.connection;
+connection.once('open',() => {
+    console.log('Database connected successfully.');
+})
+
+// Add middleware
+app.use(express.json());
+
+// Set up routes
+app.get('/', (req, res) => {
+  res.send('Hello, world!');
+});
+
+// Start the server
+const port = process.env.PORT;
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+
 });
