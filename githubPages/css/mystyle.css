@@ -168,7 +168,7 @@ nav {
 
 .benefits-container {
     display: flex;
-    align-items: start;
+    align-items: center;
     justify-content: space-between;
     margin: 20px 0;
 }
