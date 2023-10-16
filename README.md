@@ -103,4 +103,4 @@
 
 ```Run on your localhost```
 
-        npm start
+        npm run dev
