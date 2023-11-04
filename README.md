@@ -61,7 +61,7 @@
 
 - <a href = "https://github.com/paranjaa">Alok Paranjape</a>
 
-- <a href = "">Mohammed Alharbi</a>
+- <a href = "https://github.com/M-Alharbi">Mohammed Alharbi</a>
 
 <br>
 
