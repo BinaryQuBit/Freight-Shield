@@ -59,7 +59,7 @@
 
 - <a href = "https://github.com/rsa149">Ramanpreet Singh</a>
 
-- <a href = "">Alok Paranjape</a>
+- <a href = "https://github.com/paranjaa">Alok Paranjape</a>
 
 - <a href = "">Mohammed Alharbi</a>
 
