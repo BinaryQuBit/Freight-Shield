@@ -10,7 +10,7 @@ const Login = () => {
       justify="center"
       borderRadius="md"
       maxW="1000px"
-      margin="0 auto"
+
     >
       <Flex>
         <Box>
