@@ -1,7 +1,6 @@
 import './Sidebar.css';
 import React, { useEffect } from 'react';
-import homeImage from './assets/home.png';
-import logo from './assets/logo.jpeg';
+import logo from '../assets/logo.svg';
 
 function Sidebar() {
     useEffect(() => {
@@ -108,6 +107,13 @@ function Sidebar() {
             </a>
           </li>
 
+          <li class="nav-link">
+            <a href="#">
+              <i class='bx bx-wallet icon'></i>
+              <span class="text nav-text"> Sign Up</span>
+            </a>
+          </li>
+
         </ul>
       </div>
 
@@ -138,6 +144,7 @@ function Sidebar() {
 
   <section class="home">
     <div class="text">Welcome to Shield</div>
+    <logIn></logIn>
   </section>
   <li class="search-box">
           <i class='bx bx-search icon'></i>
