@@ -102,12 +102,17 @@ nav {
     top: 0;
 }
 
+.info-section:hover {
+    box-shadow: 0 0 11px rgba(33,33,33,.2); 
+  }
+
 .info-section {
     padding: 20px;
     background-color: #e9e9ff;
     margin: 20px auto;
     max-width: 1200px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius:10px;
 }
 
 .info-section h1, .info-section h2 {
@@ -145,6 +150,11 @@ nav {
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+.benefits-content a:hover{
+    font-size: large;
+    color: red;
 }
 
 .features-text h2 {
