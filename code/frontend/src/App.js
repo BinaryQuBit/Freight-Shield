@@ -1,10 +1,10 @@
+import Login from './components/Login/Login';
 import Sidebar from './components/Sidebar/Sidebar';
 
 function App() {
   return (
-    <div className="App">
-      <Sidebar></Sidebar>
-    </div>
+    // <Sidebar></Sidebar>
+    <Login></Login>
   );
 }
 
