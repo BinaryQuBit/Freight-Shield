@@ -36,15 +36,24 @@ nav {
 
 .navbar li a {
     display: block;
-    color: #333;
+    
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
 }
-
+a{
+    color: black;
+}
 .navbar li a:hover,
 .navbar li a:focus {
-    background-color: #008ECE;
+    background-color: #0866ff;
+    color: white;
+    border-radius: 15px;
+}
+
+.active{
+    background-color: #0866ff;
+    border-radius: 15px;
     color: white;
 }
 
@@ -74,8 +83,9 @@ nav {
 .sub-nav li a:focus,
 .sub-sub-nav li a:hover,
 .sub-sub-nav li a:focus {
-    background-color: #008ECE;
+    background-color: #0866ff;
     color: white;
+    border-radius: 15px;
 }
 
 @media (max-width: 768px) {
