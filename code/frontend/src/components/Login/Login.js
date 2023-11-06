@@ -26,8 +26,8 @@ const Login = () => {
             Forget Password ?
           </Link>
           <Center>
-            <GreenButton>
-              Create new account
+            <GreenButton mt={20} width={200}>
+              Create new account  
             </GreenButton>
           </Center>
         </Stack>
