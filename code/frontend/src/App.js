@@ -7,14 +7,14 @@ import ShipperCompanyDetail from './components/shipper-company-details';
 
 function App() {
   return (
+     <Login></Login>
+    // <Register></Register>
+    // <ResetPassword></ResetPassword>
+    // <ShipperCompanyDetail></ShipperCompanyDetail>
+    // <ShipperBusinessDetail></ShipperBusinessDetail>
     // <div className="App">
     // <Sidebar></Sidebar>
     // </div>
-    // <Login></Login>
-      // <Register></Register>
-      // <ResetPassword></ResetPassword>
-      // <ShipperBusinessDetail></ShipperBusinessDetail>
-      <ShipperCompanyDetail></ShipperCompanyDetail>
   );
 }
 
