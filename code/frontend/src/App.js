@@ -5,8 +5,8 @@ import Register from './components/Register/register';
 function App() {
   return (
     // <Sidebar></Sidebar>
-    // <Login></Login>
-      <Register></Register>
+    <Login></Login>
+      // <Register></Register>
   );
 }
 

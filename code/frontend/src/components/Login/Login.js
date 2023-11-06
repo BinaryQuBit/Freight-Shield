@@ -7,6 +7,8 @@ import {
   Flex,
   Link,
   Center,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
 import logo from "../assets/logo.svg";
 import GreenButton from "../buttons/greenButton";
@@ -16,8 +18,10 @@ const Login = () => {
     <Flex alignItems={"center"} justifyContent={"center"} h="100vh">
       <Box>
         <img src={logo} alt="logo" height="300" width="300" />
+        <Text fontFamily="Lora" fontWeight={"700"}> Connecting Shippers and Truckers Seamlessly</Text>
       </Box>
-      <Card marginLeft={40} p={10}>
+      <VStack marginLeft={40}>
+      <Card  p={10}>
         <Stack spacing={4}>
           <Input type="email" placeholder="Email or Phone Number" />
           <Input type="password" placeholder="Password" />
@@ -31,7 +35,14 @@ const Login = () => {
             </GreenButton>
           </Center>
         </Stack>
+       
+        
+        
       </Card>
+      <Text fontFamily="Lora" fontWeight={"700"}> Your Ultimate Loadboard Solution!</Text>
+      </VStack>
+     
+      
     </Flex>
   );
 };
