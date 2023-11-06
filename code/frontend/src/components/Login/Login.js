@@ -1,31 +1,38 @@
-import { Box, Card, Button, Input, Stack, Flex } from "@chakra-ui/react";
+import {
+  Box,
+  Card,
+  Button,
+  Input,
+  Stack,
+  Flex,
+  Link,
+  Center,
+} from "@chakra-ui/react";
 import logo from "../assets/logo.svg";
+import GreenButton from "../buttons/greenButton";
 
 const Login = () => {
   return (
-    <Box marginTop={40}>
-    <Card
-      align="center"
-      p={5}
-      justify="center"
-      borderRadius="md"
-      maxW="1000px"
-      margin="0 auto"
-    >
-      <Flex>
-        <Box>
-          <img src={logo} alt="logo" height="300" width="300" />
-        </Box>
-        <Box marginLeft={40}>
-          <Stack spacing={4}>
-            <Input width={80} type="email" placeholder="Email" />
-            <Input type="password" placeholder="Password" />
-            <Button  width={20} colorScheme="blue">Login</Button>
-          </Stack>
-        </Box>
-      </Flex>
-    </Card>
-    </Box>
+    <Flex alignItems={"center"} justifyContent={"center"} h="100vh">
+      <Box>
+        <img src={logo} alt="logo" height="300" width="300" />
+      </Box>
+      <Card marginLeft={40} p={10}>
+        <Stack spacing={4}>
+          <Input type="email" placeholder="Email or Phone Number" />
+          <Input type="password" placeholder="Password" />
+          <Button textColor={"white"} style={{ backgroundColor: "#0866FF" ,fontWeight: "bold"}}>Log In</Button>
+          <Link color="blue.500" style={{ textAlign: "center" }}>
+            Forget Password ?
+          </Link>
+          <Center>
+            <GreenButton>
+              Create new account
+            </GreenButton>
+          </Center>
+        </Stack>
+      </Card>
+    </Flex>
   );
 };
 
