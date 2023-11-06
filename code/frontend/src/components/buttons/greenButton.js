@@ -1,13 +1,16 @@
 import { Button } from "@chakra-ui/react";
 
-function GreenButton({ children }) {
+function GreenButton({ children, mt, width }) {
   return (
     <Button
       text
       textColor={"white"}
-      mt={20}
-      width={"200px"}
+      mt={mt}
+      width={width}
       style={{ backgroundColor: "#42B72A", fontWeight: "bold" }}
+      fontFamily= "Lora"
+      fontWeight= "700"
+      fontSize= "18"
     >
         { children }
     </Button>
