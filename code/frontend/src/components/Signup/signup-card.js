@@ -3,22 +3,24 @@ import BlueButton from "../buttons/blueButton";
 import GreenButton from "../buttons/greenButton";
 
 
-function LoginCard() {
+function SignupCard() {
   return (
     <Card p={10}>
       <Stack spacing={4}>
+      <Input type="text" placeholder="First Name" />
+      <Input type="text" placeholder="Last Name" />
         <Input type="email" placeholder="Email or Phone Number" />
         <Input type="password" placeholder="Password" />
-        <BlueButton>Log In</BlueButton>
+        <BlueButton>Sign In</BlueButton>
         <Link color="blue.500" style={{ textAlign: "center" }}>
-          Forget Password ?
+          Already have an account ?
         </Link>
         <Center>
-          <GreenButton>Create new account</GreenButton>
+          <GreenButton>Log in</GreenButton>
         </Center>
       </Stack>
     </Card>
   );
 }
 
-export default LoginCard;
+export default SignupCard;

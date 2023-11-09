@@ -1,13 +1,17 @@
 import Login from './components/Login/Login';
 import Sidebar from './components/Sidebar/Sidebar';
 import Register from './components/Register/register';
-import ResetPassword from './components/Login/Reset';
+import ResetPassword from './components/ResetPassword/Reset';
 import ShipperBusinessDetail from './components/shipper-business-details';
 import ShipperCompanyDetail from './components/shipper-company-details';
+import SignupCard from './components/Signup/signup-card';
+import Signin from './components/Signup/signup';
+
 
 function App() {
   return (
-     <Login></Login>
+    <Signin></Signin>
+    //  <Login></Login>
     // <Register></Register>
     // <ResetPassword></ResetPassword>
     // <ShipperCompanyDetail></ShipperCompanyDetail>
