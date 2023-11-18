@@ -11,7 +11,7 @@ ReactDOM.render(
   </ChakraProvider>,
   document.getElementById('root')
 );
-
+<script src="https://unpkg.com/@chakra-ui/color-mode/dist/color-mode-script.min.js"></script>
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

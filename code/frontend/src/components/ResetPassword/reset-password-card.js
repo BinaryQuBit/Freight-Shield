@@ -1,9 +1,7 @@
 import { Card, Input, Stack, Link, Center } from "@chakra-ui/react";
 import BlueButton from "../buttons/blueButton";
-import GreenButton from "../buttons/greenButton";
 
-
-function LoginCard() {
+function ResetCard() {
   return (
     <Card p={10}>
       <Stack spacing={4}>
@@ -17,4 +15,4 @@ function LoginCard() {
   );
 }
 
-export default LoginCard;
+export default ResetCard;
