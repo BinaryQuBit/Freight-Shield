@@ -1,5 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
-import ShipperSideBar from "../Sidebar/ShipperSideBar";
+import Sidebar from "../Sidebar/ShipperSideBar";
 import {
   Card,
   Input,
