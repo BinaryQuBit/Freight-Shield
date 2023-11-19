@@ -31,7 +31,7 @@ app.post('/register', (req, res)=>{
       }
       else{
           User.create(req.body)
-          .then(User => res.json(User))
+          .then(user_form => res.json(user_form))
           .catch(err => res.json(err))
       }
   })
