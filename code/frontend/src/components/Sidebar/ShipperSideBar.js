@@ -18,7 +18,7 @@ import {
 import NavItem from './ShipperNavItem';
 import Logo from '../Logo';
 
-export default function ShipperSideBar() {
+export default function ShipperSideBar({activePage}) {
   const [navSize, changeNavSize] = useState("large");
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
@@ -60,10 +60,10 @@ export default function ShipperSideBar() {
             },
           }}
         />
-        <NavItem navSize={navSize} icon={FiTruck} title="Post a Load" active />
-        <NavItem navSize={navSize} icon={FiCompass} title="Track a Load" />
-        <NavItem navSize={navSize} icon={FiBook} title="History" />
-        <NavItem navSize={navSize} icon={FiSettings} title="Settings" />
+        <NavItem navSize={navSize} icon={FiTruck} title="Post a Load" active={activePage === "postLoad"} />
+        <NavItem navSize={navSize} icon={FiCompass} title="Track a Load" active={activePage === "trackLoad"}/>
+        <NavItem navSize={navSize} icon={FiBook} title="History" active={activePage === "history"}/>
+        <NavItem navSize={navSize} icon={FiSettings} title="Settings" active={activePage === "settings"}/>
       </Flex>
       <Flex
         p="5%"
