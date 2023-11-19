@@ -15,7 +15,7 @@ function App() {
   return (
     <BrowserRouter >
         <Routes>
-          <Route path="/" element ={<TrackLoad/>} />
+          <Route path="/" element ={<PostLoad/>} />
           <Route path="/register" element ={<Signin/>} />
           <Route path="/login" element ={<Login/>} />
           <Route path="/resetPassword" element ={<ResetPassword/>} />
