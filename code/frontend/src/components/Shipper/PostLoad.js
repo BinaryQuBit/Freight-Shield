@@ -1,5 +1,15 @@
-import { Flex, Text } from '@chakra-ui/react'
-import Sidebar from '../Sidebar/ShipperSideBar'
+import { Flex, Text } from "@chakra-ui/react";
+import ShipperSideBar from "../Sidebar/ShipperSideBar";
+import {
+  Card,
+  Input,
+  Stack,
+  Center,
+  HStack,
+  Spacer,
+  VStack,
+} from "@chakra-ui/react";
+import GreenButton from "../buttons/greenButton";
 
 export default function PostLoad() {
     return(
