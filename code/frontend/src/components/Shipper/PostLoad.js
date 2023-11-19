@@ -29,7 +29,7 @@ export default function PostLoad() {
   return (
     <>
       <Flex>
-        <ShipperSideBar />
+        <Sidebar activePage="postLoad" />
         <Flex flex={1} justifyContent="center">
           {" "}
           {/* Use flex property to fill available space */}
