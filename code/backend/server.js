@@ -6,7 +6,7 @@ const User = require("./models/Users");
 const Shipper = require("./models/Shippers");
 const session = require('express-session');
 
-
+let newEmail;
 
 const app = express();
 app.use(cors());
@@ -83,6 +83,7 @@ app.post("/shipperBusinessDetail", async (req, res) => {
 
     
     req.session.email = email;
+    newEmail = req.session.email
     // res.redirect('/shipperCompanyDetail');
     console.log('Email stored in session:', req.session.email);
 
@@ -96,8 +97,7 @@ app.post("/shipperBusinessDetail", async (req, res) => {
 /** Shipper company route ************/
 app.post("/shipperCompanyDetail", async (req, res) => {
   try {
-    const email = req.session.email || 'No data found';
-    console.log(email);
+    console.log(newEmail);
     const businessName = req.body.businessName;
     const streetNumber = req.body.streetNumber;
     const apartment = req.body.apartment;
@@ -108,14 +108,16 @@ app.post("/shipperCompanyDetail", async (req, res) => {
     const companyEmail = req.body.companyEmail;
     const website = req.body.website;
 
+    console.log(Shipper.businessName); // Getting Null
     // Find the Shipper by email
-    const shipper = await Shipper.findOne({ email });
+    const shipper = await Shipper.findOne({ email: newEmail });
 
     if (!shipper) {
       return res.status(404).json({ error: "Shipper not found with the provided email." });
     }
 
     // Update the Shipper's company details
+    console.log(shipper.businessName);
     shipper.businessName = businessName;
     shipper.streetNumber = streetNumber;
     shipper.apartment = apartment;
@@ -174,7 +176,7 @@ app.post("/shipperCompanyDetail", async (req, res) => {
 /** LogIn Route */
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
-  User.findOne({ email: email }).then((user) => {
+  Shipper.findOne({ email: email }).then((user) => {
     if (user) {
       if (user.password === password) {
         res.json("Success");
