@@ -2,10 +2,12 @@ import { Box, Center, Divider, Text } from "@chakra-ui/react";
 import logo from "../assets/logo.svg";
 import LogoHeader from "../header/logoHeader";
 import GreenButton from "../buttons/greenButton";
+import { useNavigate } from "react-router-dom";
 
 
 
 const Register = () => {
+  const navigate = useNavigate();
   return (  
 <>
   <LogoHeader></LogoHeader>
@@ -24,7 +26,7 @@ const Register = () => {
         <Box fontFamily= "Lora" fontSize= "18">
           Register with our platform to offer your timely and dependable shipping services to a wide range of clientele.
         </Box>
-        <GreenButton mt = {10}>For Shippers</GreenButton>
+        <GreenButton mt = {10} onClick={() => navigate('/shipperBusinessDetail')}>For Shippers</GreenButton>
       </Box>
     </Box>
   </Center>
