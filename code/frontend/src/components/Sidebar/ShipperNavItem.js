@@ -8,7 +8,7 @@ import {
     MenuButton,
 } from '@chakra-ui/react'
 
-export default function NavItem({ icon, title, active, navSize }) {
+export default function NavItem({ icon, title, active, navSize, onClick }) {
     return (
         <Flex
             mt={30}
@@ -19,6 +19,7 @@ export default function NavItem({ icon, title, active, navSize }) {
             <Menu placement="right">
                 <Link
                     backgroundColor={active && "#0866FF"}
+                    onClick={onClick}
                     color={active && "white"}
                     p={3}
                     borderRadius={8}
