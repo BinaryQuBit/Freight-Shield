@@ -14,6 +14,7 @@ import {
   FiCompass,
   FiBook,
   FiLogOut,
+  FiHome,
 } from 'react-icons/fi';
 import NavItem from './ShipperNavItem';
 import Logo from '../Logo';
@@ -60,6 +61,7 @@ export default function ShipperSideBar({activePage}) {
             },
           }}
         />
+        <NavItem navSize={navSize} icon={FiHome} title="My Loads" active={activePage === "myLoads"} />
         <NavItem navSize={navSize} icon={FiTruck} title="Post a Load" active={activePage === "postLoad"} />
         <NavItem navSize={navSize} icon={FiCompass} title="Track a Load" active={activePage === "trackLoad"}/>
         <NavItem navSize={navSize} icon={FiBook} title="History" active={activePage === "history"}/>
