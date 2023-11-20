@@ -57,7 +57,7 @@ export default function PostLoad() {
             alert("Posted Successfully");
         }
 
-        navigate("/postLoad");
+        navigate("/myLoads");
     } catch (err) {
         console.error(err);
     }

@@ -52,6 +52,17 @@ app.post("/register", (req, res) => {
   });
 });
 
+/** My Loads Route  ************/
+app.get("/myLoads", async (req, res) => {
+  try {
+    const loads = await Load.find();
+    res.json(loads);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 /** Post Load Route*/
 app.post("/postLoad", async(req, res) => {
   try {
