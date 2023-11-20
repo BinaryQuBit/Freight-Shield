@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const User = require("./models/Users");
 const Shipper = require("./models/Shippers");
+const Load =  require("./models/Loads")
 const session = require('express-session');
 
 let newEmail;
@@ -51,7 +52,32 @@ app.post("/register", (req, res) => {
   });
 });
 
-/** Shipper Business*/
+/** Post Load Route*/
+app.post("/postLoad", async(req, res) => {
+  try {
+    const pickUpLocation = req.body.pickUpLocation;
+    const pickUpDate = req.body.pickUpDate;
+    const pickUpTime = req.body.pickUpTime;
+    const dropOffLocation = req.body.dropOffLocation;
+
+    // Create Shipper instance
+    const load = new Load({
+      pickUpLocation,
+      pickUpDate,
+      pickUpTime,
+      dropOffLocation
+    });
+
+    // Save Shipper to the database
+    const savedLoad = await load.save();
+    res.json(savedLoad);
+    
+  } catch (err) {
+    res.json({ error: err.message });
+  }
+});
+
+/** Post Load*/
 // app.post("/shipperBusinessDetail", (req, res) => {
 //   Shipper.create(req.body)
 //     .then((shipper_form) => res.json(shipper_form))

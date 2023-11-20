@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 
 // Define the User schema
 const loadsSchema = new mongoose.Schema({
-
     pickUpLocation: String,
     pickUpDate: String,
     pickUpTime: String,
