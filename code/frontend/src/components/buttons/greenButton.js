@@ -1,8 +1,9 @@
 import { Button } from "@chakra-ui/react";
 
-function GreenButton({ children, mt, width }) {
+function GreenButton({ children, mt, width, onClick }) {
   return (
     <Button
+      onClick={onClick}
       textColor={"white"}
       mt={mt}
       width={width}

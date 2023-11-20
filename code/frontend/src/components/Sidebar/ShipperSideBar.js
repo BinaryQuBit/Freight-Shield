@@ -14,19 +14,22 @@ import {
   FiCompass,
   FiBook,
   FiLogOut,
+  FiHome,
 } from 'react-icons/fi';
 import NavItem from './ShipperNavItem';
 import Logo from '../Logo';
+import { useNavigate } from "react-router-dom";
 
 export default function ShipperSideBar({activePage}) {
   const [navSize, changeNavSize] = useState("large");
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
+  const navigate = useNavigate();
 
   return (
     <Flex
       pos="sticky"
-      h="100vh"
+      h="100%"
       boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
       w={navSize === "small" ? "75px" : "200px"}
       flexDir="column"
@@ -60,10 +63,11 @@ export default function ShipperSideBar({activePage}) {
             },
           }}
         />
-        <NavItem navSize={navSize} icon={FiTruck} title="Post a Load" active={activePage === "postLoad"} />
-        <NavItem navSize={navSize} icon={FiCompass} title="Track a Load" active={activePage === "trackLoad"}/>
-        <NavItem navSize={navSize} icon={FiBook} title="History" active={activePage === "history"}/>
-        <NavItem navSize={navSize} icon={FiSettings} title="Settings" active={activePage === "settings"}/>
+        <NavItem navSize={navSize} icon={FiHome} title="My Loads" active={activePage === "myLoads"} onClick={() => navigate('/myLoads')} />
+        <NavItem navSize={navSize} icon={FiTruck} title="Post a Load" active={activePage === "postLoad"} onClick={() => navigate('/postLoad')}/>
+        <NavItem navSize={navSize} icon={FiCompass} title="Track a Load" active={activePage === "trackLoad"} onClick={() => navigate('/trackLoad')}/>
+        <NavItem navSize={navSize} icon={FiBook} title="History" active={activePage === "history"} onClick={() => navigate('/shipperHistory')}/>
+        <NavItem navSize={navSize} icon={FiSettings} title="Settings" active={activePage === "settings"} onClick={() => navigate('/shipperSettings')}/>
       </Flex>
       <Flex
         p="5%"
@@ -80,7 +84,7 @@ export default function ShipperSideBar({activePage}) {
           )}
         </Flex>
         <Flex p="5%">
-          <NavItem navSize={navSize} icon={FiLogOut} title="Sign Out" />
+          <NavItem navSize={navSize} icon={FiLogOut} title="Sign Out" onClick={() => navigate('/login')}/>
         </Flex>
       </Flex>
     </Flex>
