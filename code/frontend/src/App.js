@@ -8,6 +8,7 @@ import ShipperCompanyDetail from './components/shipper-company-details';
 import PostLoad from './components/Shipper/PostLoad.js'
 import Signin from './components/Signup/signup';
 import TrackLoad from './components/Shipper/TrackLoad.js'
+import MyLoads from './components/Shipper/MyLoad.js'
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 
 
@@ -15,6 +16,7 @@ function App() {
   return (
     <BrowserRouter >
         <Routes>
+          <Route path="/myLoads" element ={<MyLoads/>} /> 
           <Route path="/postLoad" element ={<PostLoad/>} />
           <Route path="/register" element ={<Register/>} />
           <Route path="/login" element ={<Login/>} />
