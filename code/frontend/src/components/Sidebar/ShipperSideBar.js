@@ -26,7 +26,7 @@ export default function ShipperSideBar({activePage}) {
   return (
     <Flex
       pos="sticky"
-      h="100vh"
+      h="100%"
       boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
       w={navSize === "small" ? "75px" : "200px"}
       flexDir="column"
