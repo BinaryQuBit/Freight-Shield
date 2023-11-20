@@ -8,6 +8,7 @@ import {
   Th,
   Td,
   Tbody,
+  VStack
 } from "@chakra-ui/react";
 import GreenButton from "../buttons/greenButton";
 import BlueButton from "../buttons/blueButton";
@@ -35,6 +36,11 @@ export default function MyLoad() {
       <Flex>
         <Sidebar activePage="myLoads" />
         <Flex flex={1} justifyContent="center">
+        <VStack mt={10}>
+        <Text fontFamily="Lora" fontSize={25} fontWeight={"1000"} mt={2}>
+              {" "}
+              My Loads{" "}
+            </Text>
           <Card alignItems={"center"} maxWidth={1500} p={10}>
             <Table variant="simple" spacing={6}>
               <Thead>
@@ -63,6 +69,7 @@ export default function MyLoad() {
               </Tbody>
             </Table>
           </Card>
+          </VStack>
         </Flex>
       </Flex>
     </>
