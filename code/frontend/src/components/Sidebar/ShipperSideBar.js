@@ -84,7 +84,7 @@ export default function ShipperSideBar({activePage}) {
           )}
         </Flex>
         <Flex p="5%">
-          <NavItem navSize={navSize} icon={FiLogOut} title="Sign Out" />
+          <NavItem navSize={navSize} icon={FiLogOut} title="Sign Out" onClick={() => navigate('/login')}/>
         </Flex>
       </Flex>
     </Flex>
