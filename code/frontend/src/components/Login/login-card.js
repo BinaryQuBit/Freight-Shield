@@ -22,7 +22,7 @@ function LoginCard() {
             if(result.data === "Success"){
                 console.log("Login Success");
                 alert('Login successful!')
-                navigate('/');
+                navigate('/postLoad');
             }
             else{
                 alert('Incorrect password! Please try again.');

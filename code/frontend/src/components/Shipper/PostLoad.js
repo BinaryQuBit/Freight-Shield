@@ -18,14 +18,55 @@ import {
   Button,
 } from "@chakra-ui/react";
 import GreenButton from "../buttons/greenButton";
+import BlueButton from "../buttons/blueButton";
 import React from "react";
+import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function PostLoad() {
+
+    const [pickUpLocation, setPickUpLocation] = useState();
+  const [pickUpDate, setPickUpDate] = useState();
+  const [pickUpTime, setPickUpTime] = useState();
+  const [dropOffLocation, setDropOffLocation] = useState();
+  const navigate = useNavigate();
+
+
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
-
     console.log("Selected file:", selectedFile);
   };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // Prevent default form submission behavior
+
+    try {
+        const result = await axios.post("http://localhost:8080/postLoad", {
+            pickUpLocation,
+            pickUpDate,
+            pickUpTime,
+            dropOffLocation,
+        });
+
+        console.log(result);
+
+        if (result.data === "Already registered") {
+            alert("Load is already posted");
+        } else {
+            alert("Posted Successfully");
+        }
+
+        navigate("/myLoads");
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
+
+
+
   return (
     <>
       <Flex>
@@ -46,12 +87,13 @@ export default function PostLoad() {
               justifyContent={"center"}
               p={10}
             >
+                 <form onSubmit={handleSubmit}>
               <Stack spacing={4}>
                 <Stack>
                   <Text fontFamily="Lora" fontWeight={"500"}>
                     Pick Up Location
                   </Text>
-                  <Input type="text" />
+                  <Input type="text" onChange={(event) => setPickUpLocation(event.target.value)}/>
                 </Stack>
 
                 <HStack>
@@ -63,6 +105,7 @@ export default function PostLoad() {
                       placeholder="Select Date and Time"
                       size="md"
                       type="date"
+                      onChange={(event) => setPickUpDate(event.target.value)}
                     />
                   </Stack>
 
@@ -74,6 +117,7 @@ export default function PostLoad() {
                       placeholder="Select Date and Time"
                       size="md"
                       type="time"
+                      onChange={(event) => setPickUpTime(event.target.value)}
                     />
                   </Stack>
                 </HStack>
@@ -82,7 +126,7 @@ export default function PostLoad() {
                   <Text fontFamily="Lora" fontWeight={"500"}>
                     Drop Off Location
                   </Text>
-                  <Input type="text" />
+                  <Input type="text" onChange={(event) => setDropOffLocation(event.target.value)}/>
                 </Stack>
 
                 <Stack>
@@ -165,9 +209,10 @@ export default function PostLoad() {
                 <HStack mt={4}>
                   <GreenButton>Reset</GreenButton>
                   <Spacer />
-                  <GreenButton>Post</GreenButton>
+                  <BlueButton  type="submit">Post</BlueButton>
                 </HStack>
               </Stack>
+              </form>
             </Card>
           </VStack>
         </Flex>
