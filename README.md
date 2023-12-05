@@ -63,6 +63,16 @@
 
 - <a href = "https://github.com/M-Alharbi">Mohammed Alharbi</a>
 
+<div><u>
+
+## V-Logs
+
+</u></div>
+
+- <a href = "https://www.youtube.com/watch?v=rCSL3k4vUi0">Freight Shield Vlog 1</a>
+
+- <a href = "https://www.youtube.com/watch?v=nKSjt_0bmjk">Freight Shield Vlog 2</a>
+
 <br>
 
 <div><u>
