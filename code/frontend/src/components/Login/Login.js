@@ -12,14 +12,12 @@ const Login = () => {
     <Flex alignItems={"center"} justifyContent={"center"} h="100vh">
       <Box>
         <img src={logo} alt="logo" height="300" width="300" />
-        <Text fontFamily="Lora" fontWeight={"700"}> Connecting Shippers and Truckers Seamlessly</Text>
+        <Text> Connecting Shippers and Truckers Seamlessly</Text>
       </Box>
       <VStack marginLeft={40}>
       <LoginCard></LoginCard>
-      <Text fontFamily="Lora" fontWeight={"700"}> Your Ultimate Loadboard Solution!</Text>
+      <Text> Your Ultimate Loadboard Solution!</Text>
       </VStack>
-     
-      
     </Flex>
   );
 };
