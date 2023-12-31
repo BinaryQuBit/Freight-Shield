@@ -5,8 +5,14 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ChakraProvider } from '@chakra-ui/react';
 
+// Imports to handle global theme
+import Theme from './components/Theme'
+import "@fontsource/lora/400.css";
+import "@fontsource/lora/700.css";
+
+
 ReactDOM.render(
-  <ChakraProvider>
+  <ChakraProvider theme ={Theme}>
     <App />
   </ChakraProvider>,
   document.getElementById('root')
