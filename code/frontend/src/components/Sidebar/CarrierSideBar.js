@@ -7,19 +7,17 @@ import {
   Switch,
   FormLabel,
 } from "@chakra-ui/react";
+import { FiMenu, FiLogOut, FiSettings } from "react-icons/fi";
 import {
-  FiMenu,
-  FiSettings,
-  FiTruck,
-  FiCompass,
-  FiBook,
-  FiLogOut,
-  FiHome,
-} from "react-icons/fi";
+  FaPlaceOfWorship,
+  FaTrailer,
+  FaUserPlus,
+  FaTruck,
+} from "react-icons/fa";
 import NavItem from "./NavItem";
 import Logo from "../logo/Logo.js";
 
-export default function ShipperSideBar({ activePage }) {
+export default function CarrierSideBar({ activePage }) {
   const [navSize, changeNavSize] = useState("large");
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
@@ -57,27 +55,27 @@ export default function ShipperSideBar({ activePage }) {
         />
         <NavItem
           navSize={navSize}
-          icon={FiHome}
-          title="Active Loads"
-          active={activePage === "activeLoads"}
+          icon={FaPlaceOfWorship}
+          title="Marketplace"
+          active={activePage === "marketplace"}
         />
         <NavItem
           navSize={navSize}
-          icon={FiTruck}
-          title="Post a Load"
-          active={activePage === "postLoad"}
+          icon={FaTrailer}
+          title="My Loads"
+          active={activePage === "myLoads"}
         />
         <NavItem
           navSize={navSize}
-          icon={FiCompass}
-          title="Track a Load"
-          active={activePage === "trackLoad"}
+          icon={FaUserPlus}
+          title="Driver Profile"
+          active={activePage === "driverProfile"}
         />
         <NavItem
           navSize={navSize}
-          icon={FiBook}
-          title="History"
-          active={activePage === "history"}
+          icon={FaTruck}
+          title="Unit Profile"
+          active={activePage === "unitProfile"}
         />
       </Flex>
       <Flex p="5%" flexDir="column" w="100%">
@@ -108,7 +106,7 @@ export default function ShipperSideBar({ activePage }) {
             navSize={navSize}
             icon={FiSettings}
             title="Settings"
-            active={activePage === "shipperSettings"}
+            active={activePage === "adminSettings"}
           />
           <NavItem navSize={navSize} icon={FiLogOut} title="Sign Out" />
         </Flex>

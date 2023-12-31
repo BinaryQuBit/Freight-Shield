@@ -4,8 +4,8 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const User = require("./models/Users");
 const Shipper = require("./models/Shippers");
-const Load =  require("./models/Loads")
-const session = require('express-session');
+const Load = require("./models/Loads");
+const session = require("express-session");
 
 let newEmail;
 
@@ -13,18 +13,18 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use(session({
-  secret: process.env.KEY,
-  resave: false,
-  saveUninitialized: false
-}));
+app.use(
+  session({
+    secret: process.env.KEY,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 app.use((req, res, next) => {
   console.log(req.session);
   next();
 });
-
-
 
 // Connect to MongoDB
 const uri = process.env.MONGO_URI;
@@ -62,9 +62,8 @@ app.get("/myLoads", async (req, res) => {
   }
 });
 
-
 /** Post Load Route*/
-app.post("/postLoad", async(req, res) => {
+app.post("/postLoad", async (req, res) => {
   try {
     const pickUpLocation = req.body.pickUpLocation;
     const pickUpDate = req.body.pickUpDate;
@@ -76,13 +75,12 @@ app.post("/postLoad", async(req, res) => {
       pickUpLocation,
       pickUpDate,
       pickUpTime,
-      dropOffLocation
+      dropOffLocation,
     });
 
     // Save Shipper to the database
     const savedLoad = await load.save();
     res.json(savedLoad);
-    
   } catch (err) {
     res.json({ error: err.message });
   }
@@ -112,20 +110,18 @@ app.post("/shipperBusinessDetail", async (req, res) => {
       name,
       phoneNumber,
       email,
-      password
+      password,
     });
 
     // Save Shipper to the database
     const savedShipper = await shipper.save();
 
-    
     req.session.email = email;
-    newEmail = req.session.email
+    newEmail = req.session.email;
     // res.redirect('/shipperCompanyDetail');
-    console.log('Email stored in session:', req.session.email);
+    console.log("Email stored in session:", req.session.email);
 
     res.json(savedShipper);
-    
   } catch (err) {
     res.json({ error: err.message });
   }
@@ -150,7 +146,9 @@ app.post("/shipperCompanyDetail", async (req, res) => {
     const shipper = await Shipper.findOne({ email: newEmail });
 
     if (!shipper) {
-      return res.status(404).json({ error: "Shipper not found with the provided email." });
+      return res
+        .status(404)
+        .json({ error: "Shipper not found with the provided email." });
     }
 
     // Update the Shipper's company details
@@ -173,7 +171,6 @@ app.post("/shipperCompanyDetail", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
 
 /** Shipper company route ************/
 // app.post("/shipperCompanyDetail", async (req, res) => {

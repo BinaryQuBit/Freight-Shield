@@ -1,15 +1,16 @@
 import { Button } from "@chakra-ui/react";
 
-function BlueButton({ children }) {
+export default function BlueButton({ mt, w, children }) {
   return (
     <Button
-      textColor={"white"}
+      color="white"
+      _hover={{ bg: "#42B72A" }}
+      bg="#0866FF"
       type="submit"
-      style={{ backgroundColor: "#0866FF", fontWeight: "bold" }}
+      mt={mt}
+      w={w}
     >
       {children}
     </Button>
   );
 }
-
-export default BlueButton;
