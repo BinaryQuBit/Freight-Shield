@@ -11,7 +11,7 @@ import { FiTruck, FiMenu, FiLogOut, FiSettings } from "react-icons/fi";
 import { MdOutlinePendingActions } from "react-icons/md";
 import { GrCertificate } from "react-icons/gr";
 import { FaHardHat, FaUserLock } from "react-icons/fa";
-import NavItem from "./NavItem";
+import NavItem from "./NavItem.js";
 import Logo from "../logo/Logo.js";
 
 export default function AdminSideBar({ activePage }) {
