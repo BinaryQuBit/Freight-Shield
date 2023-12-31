@@ -1,5 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
-import Sidebar from "../Sidebar/ShipperSideBar";
+import Sidebar from "../../components/sidebar/ShipperSideBar";
 import {
   Card,
   Input,
@@ -17,15 +17,13 @@ import {
   NumberDecrementStepper,
   Button,
 } from "@chakra-ui/react";
-import GreenButton from "../buttons/greenButton";
-import BlueButton from "../buttons/blueButton";
+import GreenButton from "../../components/buttons/GreenButton";
+import BlueButton from "../../components/buttons/BlueButton";
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function History() {
-    return(
-        <Sidebar activePage="history" />
-    )
+export default function Settings() {
+  return <Sidebar activePage="shipperSettings" />;
 }

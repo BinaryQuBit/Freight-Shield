@@ -1,20 +1,16 @@
 import { Button } from "@chakra-ui/react";
 
-function GreenButton({ children, mt, width, onClick }) {
+export default function GreenButton({ children, w, mt, onClick }) {
   return (
     <Button
-      onClick={onClick}
-      textColor={"white"}
+      color="white"
+      _hover={{ bg: "#42A72A" }}
+      bg="#42B72A"
+      w={w}
       mt={mt}
-      width={width}
-      style={{ backgroundColor: "#42B72A", fontWeight: "bold" }}
-      fontFamily= "Lora"
-      fontWeight= "700"
-      fontSize= "18"
+      onClick={onClick}
     >
-        { children }
+      {children}
     </Button>
   );
 }
-
-export default GreenButton;
