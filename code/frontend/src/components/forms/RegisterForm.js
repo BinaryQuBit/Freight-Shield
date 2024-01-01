@@ -12,6 +12,7 @@ import {
 import GreenButton from "../buttons/GreenButton";
 import Terms from "../laws/TermsConditions";
 import Privacy from "../laws/PrivacyPolicy";
+import {useNavigate} from "react-router-dom";
 
 export default function RegisterForm() {
   // To handle the registration
@@ -112,7 +113,7 @@ export default function RegisterForm() {
               <Text as="b" mr={"2"} fontSize={"13"}>
                 Already have an Account?
               </Text>
-              <Button variant="link" color="#0866FF" fontSize="14px">
+              <Button variant="link" color="#0866FF" fontSize="14px" onClick={() => navigate('/login')}>
                 Log In
               </Button>
             </Flex>
