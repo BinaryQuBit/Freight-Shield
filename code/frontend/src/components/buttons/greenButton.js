@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
 
-export default function GreenButton({ children, w, mt, onClick }) {
+export default function GreenButton({ children, w, mt, onClick, type }) {
   return (
     <Button
       color="white"
@@ -9,6 +9,7 @@ export default function GreenButton({ children, w, mt, onClick }) {
       w={w}
       mt={mt}
       onClick={onClick}
+      type = {type}
     >
       {children}
     </Button>
