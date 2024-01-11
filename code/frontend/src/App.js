@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+
 import Login from "./pages/Login.js";
 import Register from "./pages/Register.js";
 import ForgotPassword from "./pages/ForgotPassword.js"
@@ -22,6 +23,7 @@ import CarrierSettings from "./pages/carrier/CarrierSettings.js";
 
 export default function App() {
   return (
+
     <BrowserRouter>
       <Routes>
         <Route path="/register" element={<Register />} />
@@ -34,6 +36,7 @@ export default function App() {
         <Route path="/carriers" element={<Carriers />} />
         <Route path="/adminsettings" element={<AdminSettings />} />
         <Route path="/activeloads" element={<ActiveLoads />} />
+
         <Route path="/postLoad" element={<PostLoad />} />
         <Route path="/trackLoad" element={<TrackLoad />} />
         <Route path="/history" element={<History />} />

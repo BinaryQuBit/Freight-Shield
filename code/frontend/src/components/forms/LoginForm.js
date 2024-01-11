@@ -14,25 +14,26 @@ import BlueButton from "../buttons/BlueButton";
 import GreenButton from "../buttons/GreenButton";
 export default function LoginForm() {
   axios.defaults.withCredentials = true;
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8080/login", {
-        username,
+      const response = await axios.post("http://localhost:8080/api/users/login", {
+        email,
         password,
       });
-      if (response.status === 200) {
-        const userRole = response.data.role;
-        if (userRole === "shipper") {
-          navigate("/activeloads");
-        } else if (userRole === "carrier") {
-          navigate("/marketplace");
-        } else {
-          navigate("/pending");
-        }
+      if (response.status === 201) {
+        // const userRole = response.data.role;
+        // if (userRole === "shipper") {
+        //   navigate("/activeloads");
+        // } else if (userRole === "carrier") {
+        //   navigate("/marketplace");
+        // } else {
+        //   navigate("/pending");
+        // }
+        navigate("/activeloads");
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -42,13 +43,13 @@ export default function LoginForm() {
     <Box p="4" w={{ base: "full", md: "50%" }}>
       <Card p="20px" maxWidth={{ base: "auto", md: "400px" }} mx="auto">
         <form onSubmit={handleLogin}>
-          <FormControl mt="6" id="username" isRequired>
+          <FormControl mt="6" id="email" isRequired>
             <Input
-              type="text"
-              name="username"
+              type="email"
+              name="email"
               placeholder="Email"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </FormControl>
           <FormControl mt="6" id="password" isRequired>
