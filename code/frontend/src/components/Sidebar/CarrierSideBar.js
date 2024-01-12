@@ -13,7 +13,7 @@ import {
   Switch,
   FormLabel,
 } from "@chakra-ui/react";
-import { FiMenu, FiLogOut, FiSettings } from "react-icons/fi";
+import { FiMenu, FiLogOut, FiSettings, FiHome } from "react-icons/fi";
 import {
   FaPlaceOfWorship,
   FaTrailer,
@@ -72,6 +72,13 @@ export default function CarrierSideBar({ activePage }) {
             },
           }}
         />
+
+        <NavItem
+          navSize={navSize}
+          icon={FiHome}
+          title="Logged in as Carrier"
+        />  
+
         <NavItem
           navSize={navSize}
           icon={FaPlaceOfWorship}
