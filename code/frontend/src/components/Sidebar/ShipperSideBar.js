@@ -68,6 +68,16 @@ export default function ShipperSideBar({ activePage }) {
             },
           }}
         />
+
+        <NavItem
+          navSize={navSize}
+          icon={FiHome}
+          title="Logged in as Shipper"
+        />
+
+
+
+
         <NavItem
           navSize={navSize}
           icon={FiHome}
