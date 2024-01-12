@@ -28,7 +28,7 @@ export default function ShipperSideBar({ activePage }) {
   const navigate = useNavigate();
 
   const logout = () => {
-    axios.post('http://localhost:8080/api/users/logout', { withCredentials: true })
+    axios.get('http://localhost:8080/api/users/logout', { withCredentials: true })
       .then(() => {
         navigate('/login')
       })
@@ -36,7 +36,6 @@ export default function ShipperSideBar({ activePage }) {
         console.error('Logout failed:', error);
       });
   };
-  
 
   return (
     <Flex
@@ -74,24 +73,28 @@ export default function ShipperSideBar({ activePage }) {
           icon={FiHome}
           title="Active Loads"
           active={activePage === "activeLoads"}
+          onClick={() => navigate("/activeloads")}
         />
         <NavItem
           navSize={navSize}
           icon={FiTruck}
           title="Post a Load"
           active={activePage === "postLoad"}
+          onClick={() => navigate("/postload")}
         />
         <NavItem
           navSize={navSize}
           icon={FiCompass}
           title="Track a Load"
           active={activePage === "trackLoad"}
+          onClick={() => navigate("/trackload")}
         />
         <NavItem
           navSize={navSize}
           icon={FiBook}
           title="History"
           active={activePage === "history"}
+          onClick={() => navigate("/history")}
         />
       </Flex>
       <Flex p="5%" flexDir="column" w="100%">
@@ -123,6 +126,7 @@ export default function ShipperSideBar({ activePage }) {
             icon={FiSettings}
             title="Settings"
             active={activePage === "shipperSettings"}
+            onClick={() => navigate("/shipperSettings")}
           />
           <NavItem navSize={navSize} icon={FiLogOut} title="Sign Out" onClick={logout}/>
         </Flex>

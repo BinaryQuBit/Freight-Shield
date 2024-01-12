@@ -1,29 +1,27 @@
-import { Flex, Text } from "@chakra-ui/react";
 import Sidebar from "../../components/sidebar/ShipperSideBar";
-import {
-  Card,
-  Input,
-  Stack,
-  Center,
-  HStack,
-  Spacer,
-  VStack,
-  Checkbox,
-  SimpleGrid,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  Button,
-} from "@chakra-ui/react";
-import GreenButton from "../../components/buttons/GreenButton";
-import BlueButton from "../../components/buttons/BlueButton";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function Settings() {
+export default function ShipperSettings() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    axios
+      .get("/shippersettings", { withCredentials: true })
+      .then((response) => {
+        console.log("Shipper Settings Fetched Successfully");
+      })
+      .catch((error) => {
+        console.error("Error Fetching Shipper Settings: ", error);
+        if (
+          error.response &&
+          (error.response.status === 401 || error.response.status === 403)
+        ) {
+          navigate("/login");
+        }
+      });
+  }, [navigate]);
+
   return <Sidebar activePage="shipperSettings" />;
 }
