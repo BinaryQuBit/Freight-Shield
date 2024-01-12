@@ -1,5 +1,6 @@
 import Sidebar from "../../components/sidebar/AdminSideBar";
 import React, { useEffect } from "react";
+import { Flex, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 export default function Shippers() {
@@ -22,5 +23,13 @@ export default function Shippers() {
       });
   }, [navigate]);
   
-  return <Sidebar activePage="shippers" />;
+  return (
+    <Flex>
+      <Sidebar activePage="Shippers" />
+      <Flex flex="1" justifyContent="center">
+        <Text>Shippers</Text>
+      </Flex>
+    </Flex>
+
+  );
 }

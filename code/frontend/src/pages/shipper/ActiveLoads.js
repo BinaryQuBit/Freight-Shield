@@ -1,6 +1,7 @@
 import Sidebar from "../../components/sidebar/ShipperSideBar.js";
 import React, { useEffect } from "react";
 import axios from "axios";
+import { Flex, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 export default function ActiveLoads() {
@@ -23,5 +24,13 @@ export default function ActiveLoads() {
       });
   }, [navigate]);
 
-  return <Sidebar activePage="activeLoads" />;
+  return (
+    <Flex>
+      <Sidebar activePage="activeLoad" />
+      <Flex flex="1" justifyContent="center">
+        <Text>Active Load</Text>
+      </Flex>
+    </Flex>
+
+  ) ;
 }

@@ -27,7 +27,7 @@ export default function TrackLoad() {
       <Flex>
         <Sidebar activePage="trackLoad" />
         <Flex flex="1" justifyContent="center">
-          <Text>Hello World</Text>
+          <Text>Track a Load</Text>
         </Flex>
       </Flex>
     </>
