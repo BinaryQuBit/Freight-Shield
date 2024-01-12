@@ -75,9 +75,6 @@ export default function ShipperSideBar({ activePage }) {
           title="Logged in as Shipper"
         />
 
-
-
-
         <NavItem
           navSize={navSize}
           icon={FiHome}
@@ -141,6 +138,8 @@ export default function ShipperSideBar({ activePage }) {
           <NavItem navSize={navSize} icon={FiLogOut} title="Sign Out" onClick={logout}/>
         </Flex>
       </Flex>
+
     </Flex>
+    
   );
 }
