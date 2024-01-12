@@ -66,11 +66,11 @@ export default function LoginForm() {
           </BlueButton>
         </form>
         <Flex justify="center" mt="4">
-          <Button variant="link" color="#0866FF" fontSize="14px">
+          <Button variant="link" color="#0866FF" fontSize="14px" onClick={() => navigate("/forgotPassword")}>
             Forgot Password?
           </Button>
         </Flex>
-        <Flex justify="center" mt="4">
+        <Flex justify="center" mt="4" onClick={() => navigate("/register")}>
           <GreenButton w="full">Create new account</GreenButton>
         </Flex>
       </Card>

@@ -1,4 +1,7 @@
-// Model for all users which includes authentication and hashing
+// Model for ad which includes authentication and hashing
+
+
+// Need to made for super user
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 

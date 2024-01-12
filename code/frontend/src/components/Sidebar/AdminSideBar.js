@@ -1,4 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+// !!!
+import axios from "axios";
+
 import {
   Flex,
   IconButton,
@@ -18,6 +23,19 @@ export default function AdminSideBar({ activePage }) {
   const [navSize, changeNavSize] = useState("large");
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
+  const navigate = useNavigate();
+
+
+  // !!! 
+  const logout = () => {
+    axios.get('http://localhost:8080/api/users/logout', { withCredentials: true })
+      .then(() => {
+        navigate('/login')
+      })
+      .catch((error) => {
+        console.error('Logout failed:', error);
+      });
+  };
 
   return (
     <Flex
@@ -55,30 +73,35 @@ export default function AdminSideBar({ activePage }) {
           icon={MdOutlinePendingActions}
           title="Pending"
           active={activePage === "pending"}
+          onClick={() => navigate("/pending")}
         />
         <NavItem
           navSize={navSize}
           icon={GrCertificate}
           title="Approved"
           active={activePage === "approved"}
+          onClick={() => navigate("/approved")}
         />
         <NavItem
           navSize={navSize}
           icon={FaUserLock}
           title="Administrators"
           active={activePage === "administrators"}
+          onClick={() => navigate("/administrators")}
         />
         <NavItem
           navSize={navSize}
           icon={FaHardHat}
           title="Shippers"
           active={activePage === "shippers"}
+          onClick={() => navigate("/shippers")}
         />
         <NavItem
           navSize={navSize}
           icon={FiTruck}
           title="Carriers"
           active={activePage === "carriers"}
+          onClick={() => navigate("/carriers")}
         />
       </Flex>
       <Flex p="5%" flexDir="column" w="100%">
@@ -110,8 +133,10 @@ export default function AdminSideBar({ activePage }) {
             icon={FiSettings}
             title="Settings"
             active={activePage === "adminSettings"}
+            onClick={() => navigate("/adminsettings")}
           />
-          <NavItem navSize={navSize} icon={FiLogOut} title="Sign Out" />
+          
+          <NavItem navSize={navSize} icon={FiLogOut} title="Sign Out" onClick={logout} />
         </Flex>
       </Flex>
     </Flex>
