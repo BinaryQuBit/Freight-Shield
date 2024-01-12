@@ -1,5 +1,6 @@
 import Sidebar from "../../components/sidebar/CarrierSideBar";
 import React, { useEffect } from "react";
+import { Flex, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 export default function Marketplace() {
@@ -22,5 +23,15 @@ export default function Marketplace() {
       });
   }, [navigate]);
 
-  return <Sidebar activePage="marketplace" />;
+  //return <Sidebar activePage="marketplace" />;
+
+  return (
+    <Flex>
+      <Sidebar activePage="marketplace" />
+      <Flex flex="1" justifyContent="center">
+        <Text>Marketplace</Text>
+      </Flex>
+    </Flex>
+
+  ) ;
 }

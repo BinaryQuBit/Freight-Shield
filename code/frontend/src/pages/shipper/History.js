@@ -1,5 +1,6 @@
 import Sidebar from "../../components/sidebar/ShipperSideBar.js";
 import React, { useEffect } from "react";
+import { Flex, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 export default function History() {
@@ -21,5 +22,13 @@ export default function History() {
         }
       });
   }, [navigate]);
-  return <Sidebar activePage="history" />;
+  
+  return (
+    <Flex>
+      <Sidebar activePage="history" />
+      <Flex flex="1" justifyContent="center">
+        <Text>History</Text>
+      </Flex>
+    </Flex>
+  )
 }

@@ -1,5 +1,6 @@
 import Sidebar from "../../components/sidebar/AdminSideBar";
 import React, { useEffect } from "react";
+import { Flex, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 export default function Pending() {
@@ -22,5 +23,15 @@ export default function Pending() {
       });
   }, [navigate]);
   
-  return <Sidebar activePage="pending" />;
+  // return <Sidebar activePage="pending" />;
+
+  return (
+    <Flex>
+      <Sidebar activePage="Pending" />
+      <Flex flex="1" justifyContent="center">
+        <Text>Pending</Text>
+      </Flex>
+    </Flex>
+
+  );
 }

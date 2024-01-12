@@ -1,5 +1,6 @@
 import Sidebar from "../../components/sidebar/AdminSideBar";
 import React, { useEffect } from "react";
+import { Flex, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 export default function AdminSettings() {
@@ -22,5 +23,15 @@ export default function AdminSettings() {
       });
   }, [navigate]);
 
-  return <Sidebar activePage="adminSettings" />;
+  //return <Sidebar activePage="adminSettings" />;
+
+  return (
+    <Flex>
+      <Sidebar activePage="administrators" />
+      <Flex flex="1" justifyContent="center">
+        <Text>Admin Settings</Text>
+      </Flex>
+    </Flex>
+
+  );
 }
