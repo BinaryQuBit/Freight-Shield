@@ -15,6 +15,7 @@ import {
   FiBook,
   FiLogOut,
   FiHome,
+  FiCheckCircle
 } from "react-icons/fi";
 import NavItem from "./NavItem";
 import Logo from "../logo/Logo.js";
