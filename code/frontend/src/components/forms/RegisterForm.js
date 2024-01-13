@@ -26,6 +26,7 @@ export default function RegisterForm() {
   const onCloseTerms = () => setTermsOpen(false);
   const onOpenPrivacy = () => setPrivacyOpen(true);
   const onClosePrivacy = () => setPrivacyOpen(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
