@@ -3,8 +3,8 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 export default function Marketplace() {
-  const navigate = useNavigate();
-
+  const navigate = useNavigate(); 
+  
   useEffect(() => {
     axios
       .get("/marketplace", { withCredentials: true })

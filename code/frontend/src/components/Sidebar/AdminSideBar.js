@@ -25,8 +25,6 @@ export default function AdminSideBar({ activePage }) {
   const isDark = colorMode === "dark";
   const navigate = useNavigate();
 
-
-  // !!! 
   const logout = () => {
     axios.get('http://localhost:8080/api/users/logout', { withCredentials: true })
       .then(() => {
