@@ -1,17 +1,9 @@
-// Model for ad which includes authentication and hashing
-
-
-// Need to made for super user
+// Model for Super User which includes authentication and hashing
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
-const userSchema = mongoose.Schema(
+const superUserSchema = mongoose.Schema(
   {
-    role: {
-      type: String,
-      required: true,
-      enum: ["shipper", "carrier"],
-    },
     email: {
       type: String,
       required: true,
@@ -27,7 +19,7 @@ const userSchema = mongoose.Schema(
   }
 );
 
-userSchema.pre("save", async function (next) {
+superUserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
   }
@@ -36,10 +28,10 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-userSchema.methods.matchPassword = async function (enteredPassword) {
+superUserSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-const User = mongoose.model("User", userSchema);
+const SuperUser = mongoose.model("SuperUser", superUserSchema);
 
-export default User;
+export default SuperUser;

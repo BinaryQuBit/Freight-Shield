@@ -2,7 +2,10 @@
 
 import asyncHandler from "express-async-handler";
 import generateToken from "../utils/generateToken.js";
-import User from "../models/userModel.js";
+import Admin from "../models/adminModel.js";
+import Carrier from "../models/carrierModel.js";
+import Shipper from "../models/shipperModel.js";
+import SuperUser from "../models/superUser.js";
 
 // @desc    Login and Authentication
 // route    POST /api/users/login
@@ -10,19 +13,49 @@ import User from "../models/userModel.js";
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
-  console.log(email);
+  const admin = await Admin.findOne({ email });
+  const carrier = await Carrier.findOne({ email });
+  const shipper = await Shipper.findOne({ email });
+  const superUser = await SuperUser.findOne({ email });
 
-  if (user && (await user.matchPassword(password))) {
-    generateToken(res, user._id);
-    res.status(201).json({
-      _id: user._id,
-      email: user.email,
+  if (admin && await admin.matchPassword(password)) {
+    generateToken(res, admin._id, "admin");
+    return res.status(201).json({
+      _id: admin._id,
+      email: admin.email,
+      role: "admin"
     });
-  } else {
-    res.status(400);
-    throw new Error("Invalid email or password");
   }
+
+  if (carrier && await carrier.matchPassword(password)) {
+    generateToken(res, carrier._id, "carrier");
+    return res.status(201).json({
+      _id: carrier._id,
+      email: carrier.email,
+      role: "carrier"
+    });
+  }
+
+  if (shipper && await shipper.matchPassword(password)) {
+    generateToken(res, shipper._id, "shipper");
+    return res.status(201).json({
+      _id: shipper._id,
+      email: shipper.email,
+      role: "shipper"
+    });
+  }
+
+  if (superUser && await superUser.matchPassword(password)) {
+    generateToken(res, superUser._id, "superUser");
+    return res.status(201).json({
+      _id: superUser._id,
+      email: superUser.email,
+      role: "superUser"
+    });
+  }
+
+  res.status(400);
+  throw new Error("Invalid email or password");
 });
 
 // @desc    Register a new user
@@ -32,11 +65,17 @@ const loginUser = asyncHandler(async (req, res) => {
 const registerUser = asyncHandler(async (req, res) => {
   const { role, email, password, confirmPassword } = req.body;
 
-  const userExist = await User.findOne({ email });
+  const shipperExist = await Shipper.findOne({ email });
+  const carrierExist = await Carrier.findOne({ email });
 
-  if (userExist) {
+  if (shipperExist) {
     res.status(400);
-    throw new Error("User already exists");
+    throw new Error("Shipper already exists");
+  }
+
+  if (carrierExist) {
+    res.status(400);
+    throw new Error("Carrier already exists");
   }
 
   if (password !== confirmPassword) {
@@ -44,22 +83,38 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("Password dont match");
   }
 
-  const user = await User.create({
-    role,
-    email,
-    password,
-  });
-  
-
-  if (user) {
-    generateToken(res, user._id);
-    res.status(201).json({
-      _id: user._id,
-      email: user.email,
+  if (role == "shipper") {
+    const shipper = await Shipper.create({
+      email,
+      password,
     });
-  } else {
-    res.status(400);
-    throw new Error("Invalid user data");
+    if (shipper) {
+      generateToken(res, shipper._id);
+      res.status(201).json({
+        _id: shipper._id,
+        email: shipper.email,
+      });
+    } else {
+      res.status(400);
+      throw new Error("Invalid Shipper Data");
+    }
+  }
+
+  if (role == "carrier") {
+    const carrier = await Carrier.create({
+      email,
+      password,
+    });
+    if (carrier) {
+      generateToken(res, carrier._id);
+      res.status(201).json({
+        _id: carrier._id,
+        email: carrier.email,
+      });
+    } else {
+      res.status(400);
+      throw new Error("Invalid Carrier Data");
+    }
   }
 
   res.status(200).json({ message: "Register User" });
