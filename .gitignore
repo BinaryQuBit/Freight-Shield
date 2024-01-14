@@ -1,3 +1,5 @@
 node_modules
 .env
 .DS_Store
+/code/mobile/FreightShield/frontend/.DS_Store
+/code.mobile/FreightShield/assets/.DS_Store
