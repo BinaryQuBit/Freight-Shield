@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Radio, RadioGroup, Text } from "@chakra-ui/react";
 import Sidebar from "../../components/sidebar/ShipperSideBar";
 import {
   Card,
@@ -28,8 +28,12 @@ export default function PostLoad() {
   const [pickUpLocation, setPickUpLocation] = useState();
   const [pickUpDate, setPickUpDate] = useState();
   const [pickUpTime, setPickUpTime] = useState();
+  const [dropOffDate, setDropOffDate] = useState();
+  const [dropOffTime, setDropOffTime] = useState();
   const [dropOffLocation, setDropOffLocation] = useState();
   const navigate = useNavigate();
+  const [ltlValue, ltlSetValue] = useState("LTL");
+  const [unitRequested, setUnitRequested] = useState("Dry Van");
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -109,7 +113,7 @@ export default function PostLoad() {
                     />
                   </Stack>
 
-                  <HStack>
+                  <HStack spacing={5}>
                     <Stack>
                       <Text fontFamily="Lora" fontWeight={"500"}>
                         Pick Up Date
@@ -133,6 +137,30 @@ export default function PostLoad() {
                         onChange={(event) => setPickUpTime(event.target.value)}
                       />
                     </Stack>
+                  
+                    <Stack>
+                      <Text fontFamily="Lora" fontWeight={"500"}>
+                        Drop Off Date
+                      </Text>
+                      <Input
+                        placeholder="Select Date and Time"
+                        size="md"
+                        type="date"
+                        onChange={(event) => setDropOffDate(event.target.value)}
+                      />
+                    </Stack>
+
+                    <Stack>
+                      <Text fontFamily="Lora" fontWeight={"500"}>
+                        Drop Off Time
+                      </Text>
+                      <Input
+                        placeholder="Select Time"
+                        size="md"
+                        type="time"
+                        onChange={(event) => setDropOffTime(event.target.value)}
+                      />
+                    </Stack>
                   </HStack>
 
                   <Stack>
@@ -151,58 +179,65 @@ export default function PostLoad() {
                     <Text fontFamily="Lora" fontWeight={"500"}>
                       Unit Requested
                     </Text>
-                    <SimpleGrid columns={4} spacing={4}>
-                      <Checkbox colorScheme="green">Dry Van</Checkbox>
-                      <Checkbox colorScheme="green">Flat Bed</Checkbox>
-                      <Checkbox colorScheme="green">Reefer</Checkbox>
-                      <Checkbox colorScheme="green">Low Boy</Checkbox>
-                      <Checkbox colorScheme="green">Step Deck</Checkbox>
-                      <Checkbox colorScheme="green">Tank</Checkbox>
-                      <Checkbox colorScheme="green">Conestega</Checkbox>
-                      <Checkbox colorScheme="green">Double Drop</Checkbox>
-                      <Checkbox colorScheme="green">Car Carriers</Checkbox>
-                      <Checkbox colorScheme="green">Side kit</Checkbox>
-                      <Checkbox colorScheme="green">Dump</Checkbox>
-                      <Checkbox colorScheme="green">Live Floor</Checkbox>
-                      <Checkbox colorScheme="green">End Dump</Checkbox>
-                      <Checkbox colorScheme="green">Side Dump</Checkbox>
-                      <Checkbox colorScheme="green">OverLoad</Checkbox>
-                      <Checkbox colorScheme="green">Rocky Mountain</Checkbox>
-                      <Checkbox colorScheme="green">Twinpike</Checkbox>
-                      <Checkbox colorScheme="green">LHV</Checkbox>
-                      <Checkbox colorScheme="green">Super V</Checkbox>
-                    </SimpleGrid>
+                    <RadioGroup onChange={setUnitRequested} value={unitRequested}>
+                      <SimpleGrid columns={4} spacing={4}>
+                        <Radio colorScheme="green" value="Dry Van">Dry Van</Radio>
+                        <Radio colorScheme="green" value="Flat Bed">Flat Bed</Radio>
+                        <Radio colorScheme="green" value="Reefer">Reefer</Radio>
+                        <Radio colorScheme="green" value="Low Boy">Low Boy</Radio>
+                        <Radio colorScheme="green" value="Step Deck">Step Deck</Radio>
+                        <Radio colorScheme="green" value="Tank">Tank</Radio>
+                        <Radio colorScheme="green" value="Conestega">Conestega</Radio>
+                        <Radio colorScheme="green" value="Double Drop">Double Drop</Radio>
+                        <Radio colorScheme="green" value="Car Carriers">Car Carriers</Radio>
+                        <Radio colorScheme="green" value="Side kit">Side kit</Radio>
+                        <Radio colorScheme="green" value="Dump">Dump</Radio>
+                        <Radio colorScheme="green" value="Live Floor">Live Floor</Radio>
+                        <Radio colorScheme="green" value="End Dump">End Dump</Radio>
+                        <Radio colorScheme="green" value="Side Dump">Side Dump</Radio>
+                        <Radio colorScheme="green" value="OverLoad">OverLoad</Radio>
+                        <Radio colorScheme="green" value="Rocky Mountain">Rocky Mountain</Radio>
+                        <Radio colorScheme="green" value="Twinpike">Twinpike</Radio>
+                        <Radio colorScheme="green" value="LHV">LHV</Radio>
+                        <Radio colorScheme="green" value="Super V">Super V</Radio>
+                      </SimpleGrid>
+                    </RadioGroup>
+                    
                   </Stack>
 
                   <Stack>
                     <Text fontFamily="Lora" fontWeight={"500"}>
                       Type of Load
                     </Text>
-                    <SimpleGrid columns={4} spacing={0}>
-                      <Checkbox colorScheme="green">LTL</Checkbox>
-                      <Checkbox colorScheme="green">Full Load</Checkbox>
-                    </SimpleGrid>
-                  </Stack>
+                    <RadioGroup onChange={ltlSetValue} value={ltlValue}>
+                      <SimpleGrid columns={4} spacing={0}>
+                        <Radio colorScheme="green" value="LTL">LTL</Radio>
+                        <Radio colorScheme="green" value="Full Load">Full Load</Radio>
+                      </SimpleGrid>
+                    </RadioGroup>
 
-                  <Stack>
-                    <SimpleGrid columns={4} spacing={0}>
-                      <Text fontFamily="Lora" fontWeight={"500"}>
-                        Size of Load
-                      </Text>
+                    {ltlValue === "LTL" && (
+                      <Stack>
+                        <SimpleGrid columns={4} spacing={0}>
+                          <Text fontFamily="Lora" fontWeight={"500"}>
+                            Size of Load (Ft)
+                          </Text>
 
-                      <NumberInput
-                        size="lg"
-                        maxW={32}
-                        defaultValue={47}
-                        min={10}
-                      >
-                        <NumberInputField />
-                        <NumberInputStepper>
-                          <NumberIncrementStepper />
-                          <NumberDecrementStepper />
-                        </NumberInputStepper>
-                      </NumberInput>
-                    </SimpleGrid>
+                          <NumberInput
+                            size="lg"
+                            maxW={32}
+                            defaultValue={47}
+                            min={10}
+                          >
+                            <NumberInputField />
+                            <NumberInputStepper>
+                              <NumberIncrementStepper />
+                              <NumberDecrementStepper />
+                            </NumberInputStepper>
+                          </NumberInput>
+                        </SimpleGrid>
+                      </Stack>
+                    )}
                   </Stack>
 
                   <Stack>
@@ -223,16 +258,16 @@ export default function PostLoad() {
                         accept=".jpg, .jpeg, .pdf, .png, .gif"
                         mb={4}
                       />
-                      <Button colorScheme="teal" size="md">
+                      <GreenButton colorScheme="teal" size="md">
                         Upload File
-                      </Button>
+                      </GreenButton>
                     </SimpleGrid>
                   </Stack>
 
                   <HStack mt={4}>
                     <GreenButton>Reset</GreenButton>
                     <Spacer />
-                    <BlueButton type="submit">Post</BlueButton>
+                    <GreenButton type="submit">Post</GreenButton>
                   </HStack>
                 </Stack>
               </form>
