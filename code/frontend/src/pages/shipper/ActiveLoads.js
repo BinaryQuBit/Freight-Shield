@@ -1,29 +1,36 @@
-import React, { useEffect } from 'react';
 import Sidebar from "../../components/sidebar/ShipperSideBar.js";
+import React, { useEffect } from "react";
 import axios from "axios";
+import { Flex, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 export default function ActiveLoads() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch active loads if authenticated
-    axios.get("http://localhost:8080/api/users/activeloads", { withCredentials: true })
+    axios
+      .get("/activeloads", { withCredentials: true })
       .then((response) => {
-        console.log("Active loads fetched successfully");
-        // Handle your response here
+        console.log("Active Loads Fetched Successfully");
       })
       .catch((error) => {
-        console.error("Error fetching loads:", error);
-        // Redirect if token is invalid or expired
-        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-          navigate('/login');
+        console.error("Error Fetching Loads: ", error);
+        if (
+          error.response &&
+          (error.response.status === 401 || error.response.status === 403)
+        ) {
+          navigate("/login");
         }
       });
   }, [navigate]);
 
   return (
-    <Sidebar activePage="activeLoads" />
-  );
-}
+    <Flex>
+      <Sidebar activePage="activeLoad" />
+      <Flex flex="1" justifyContent="center">
+        <Text>Active Load</Text>
+      </Flex>
+    </Flex>
 
+  ) ;
+}

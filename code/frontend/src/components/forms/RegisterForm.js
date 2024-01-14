@@ -20,7 +20,7 @@ export default function RegisterForm() {
 
   // To handle the registration
   const [role, setRole] = useState("");
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -35,9 +35,9 @@ export default function RegisterForm() {
     event.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:8080/register", {
+      const response = await axios.post("http://localhost:8080/api/users/register", {
         role,
-        username,
+        email,
         password,
         confirmPassword,
       });
@@ -65,13 +65,13 @@ export default function RegisterForm() {
                 <option value="carrier">I am a Carrier</option>
               </Select>
             </FormControl>
-            <FormControl mt="6" id="username" isRequired>
+            <FormControl mt="6" id="email" isRequired>
               <Input
                 type="text"
-                name="username"
+                name="email"
                 placeholder="Email"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </FormControl>
             <FormControl mt="6" id="password" isRequired>

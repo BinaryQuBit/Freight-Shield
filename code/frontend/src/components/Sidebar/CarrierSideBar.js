@@ -1,4 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+//!!!!
+import axios from "axios";
+
+
 import {
   Flex,
   IconButton,
@@ -7,7 +13,7 @@ import {
   Switch,
   FormLabel,
 } from "@chakra-ui/react";
-import { FiMenu, FiLogOut, FiSettings } from "react-icons/fi";
+import { FiMenu, FiLogOut, FiSettings, FiHome } from "react-icons/fi";
 import {
   FaPlaceOfWorship,
   FaTrailer,
@@ -21,6 +27,19 @@ export default function CarrierSideBar({ activePage }) {
   const [navSize, changeNavSize] = useState("large");
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
+  const navigate = useNavigate();
+
+
+  // !!!
+  const logout = () => {
+    axios.get('http://localhost:8080/api/users/logout', { withCredentials: true })
+      .then(() => {
+        navigate('/login')
+      })
+      .catch((error) => {
+        console.error('Logout failed:', error);
+      });
+  };
 
   return (
     <Flex
@@ -53,29 +72,40 @@ export default function CarrierSideBar({ activePage }) {
             },
           }}
         />
+
+        <NavItem
+          navSize={navSize}
+          icon={FiHome}
+          title="Logged in as Carrier"
+        />  
+
         <NavItem
           navSize={navSize}
           icon={FaPlaceOfWorship}
           title="Marketplace"
           active={activePage === "marketplace"}
+          onClick={() => navigate("/marketplace")}
         />
         <NavItem
           navSize={navSize}
           icon={FaTrailer}
           title="My Loads"
           active={activePage === "myLoads"}
+          onClick={() => navigate("/myloads")}
         />
         <NavItem
           navSize={navSize}
           icon={FaUserPlus}
           title="Driver Profile"
           active={activePage === "driverProfile"}
+          onClick={() => navigate("/driverprofile")}
         />
         <NavItem
           navSize={navSize}
           icon={FaTruck}
           title="Unit Profile"
           active={activePage === "unitProfile"}
+          onClick={() => navigate("/unitprofile")}
         />
       </Flex>
       <Flex p="5%" flexDir="column" w="100%">
@@ -106,9 +136,11 @@ export default function CarrierSideBar({ activePage }) {
             navSize={navSize}
             icon={FiSettings}
             title="Settings"
-            active={activePage === "adminSettings"}
+            active={activePage === "carrierSettings"}
+            onClick={() => navigate("/carriersettings")}
           />
-          <NavItem navSize={navSize} icon={FiLogOut} title="Sign Out" />
+          
+          <NavItem navSize={navSize} icon={FiLogOut} title="Sign Out" onClick={logout}  />
         </Flex>
       </Flex>
     </Flex>
