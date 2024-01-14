@@ -4,7 +4,6 @@ import {
   Card,
   Input,
   Stack,
-  Center,
   HStack,
   Spacer,
   VStack,
@@ -23,6 +22,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { EaseOut } from "../../components/responsiveness/EaseOut";
 
 export default function PostLoad() {
   const [pickUpLocation, setPickUpLocation] = useState();
@@ -87,7 +87,7 @@ export default function PostLoad() {
           <VStack mt={10}>
             <Text fontFamily="Lora" fontSize={25} fontWeight={"1000"} mt={2}>
               Post a Load
-            </Text>
+            </Text> 
             <Card
               width="100%"
               mb={20}
