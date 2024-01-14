@@ -1,5 +1,6 @@
-import React from "react";
-import { useState } from "react";
+import { React, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   Box,
   Button,
@@ -8,14 +9,17 @@ import {
   Input,
   Card,
   Text,
+  Select,
 } from "@chakra-ui/react";
 import GreenButton from "../buttons/GreenButton";
 import Terms from "../laws/TermsConditions";
 import Privacy from "../laws/PrivacyPolicy";
-import {useNavigate} from "react-router-dom";
 
 export default function RegisterForm() {
+  const navigate = useNavigate();
+
   // To handle the registration
+  const [role, setRole] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -31,16 +35,16 @@ export default function RegisterForm() {
     event.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8080/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password, confirmPassword }),
+      const response = await axios.post("http://localhost:8080/register", {
+        role,
+        username,
+        password,
+        confirmPassword,
       });
 
-      const data = await response.json();
-      console.log(data);
+      if (response.status === 201) {
+        navigate("/login");
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -51,6 +55,16 @@ export default function RegisterForm() {
       <Box p="4" w={{ base: "full", md: "50%" }}>
         <Card p="20px" maxWidth={{ base: "auto", md: "400px" }} mx="auto">
           <form onSubmit={handleSubmit}>
+            <FormControl mt="6" id="role" isRequired>
+              <Select
+                placeholder="Select role"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              >
+                <option value="shipper">I am a Shipper</option>
+                <option value="carrier">I am a Carrier</option>
+              </Select>
+            </FormControl>
             <FormControl mt="6" id="username" isRequired>
               <Input
                 type="text"
@@ -113,7 +127,12 @@ export default function RegisterForm() {
               <Text as="b" mr={"2"} fontSize={"13"}>
                 Already have an Account?
               </Text>
-              <Button variant="link" color="#0866FF" fontSize="14px" onClick={() => navigate('/login')}>
+              <Button
+                variant="link"
+                color="#0866FF"
+                fontSize="14px"
+                onClick={() => navigate("/login")}
+              >
                 Log In
               </Button>
             </Flex>

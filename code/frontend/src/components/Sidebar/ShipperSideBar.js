@@ -18,11 +18,25 @@ import {
 } from "react-icons/fi";
 import NavItem from "./NavItem";
 import Logo from "../logo/Logo.js";
+import { Navigate, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function ShipperSideBar({ activePage }) {
   const [navSize, changeNavSize] = useState("large");
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
+  const navigate = useNavigate();
+
+  const logout = () => {
+    axios.post('http://localhost:8080/api/users/logout', { withCredentials: true })
+      .then(() => {
+        navigate('/login')
+      })
+      .catch((error) => {
+        console.error('Logout failed:', error);
+      });
+  };
+  
 
   return (
     <Flex
@@ -110,7 +124,7 @@ export default function ShipperSideBar({ activePage }) {
             title="Settings"
             active={activePage === "shipperSettings"}
           />
-          <NavItem navSize={navSize} icon={FiLogOut} title="Sign Out" />
+          <NavItem navSize={navSize} icon={FiLogOut} title="Sign Out" onClick={logout}/>
         </Flex>
       </Flex>
     </Flex>
