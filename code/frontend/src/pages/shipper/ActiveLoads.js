@@ -3,7 +3,7 @@ import {EaseOut} from "../../components/responsiveness/EaseOut.js"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ShipperSideBar from "../../components/sidebar/ShipperSideBar.js"
-import { Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 
 export default function ActiveLoads() {
   const navigate = useNavigate();
@@ -26,10 +26,15 @@ export default function ActiveLoads() {
   }, [navigate]);
 
   return (
-    <>
+   
+
+    <div style={{ display: 'flex' }}>
       <ShipperSideBar activePage="activeLoads" />
-      <EaseOut title="Active Loads"></EaseOut>
-    </>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+        <Text>Hello World</Text>
+      </div>
+    </div>
+    
   );
 }
 
