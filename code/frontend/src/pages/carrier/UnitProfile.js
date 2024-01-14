@@ -1,5 +1,6 @@
 import Sidebar from "../../components/sidebar/CarrierSideBar";
 import React, { useEffect } from "react";
+import { Flex, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 export default function UnitProfile() {
@@ -22,5 +23,15 @@ export default function UnitProfile() {
       });
   }, [navigate]);
 
-  return <Sidebar activePage="unitProfile" />;
+  //return <Sidebar activePage="unitProfile" />;
+
+  return (
+    <Flex>
+      <Sidebar activePage="unitProfle" />
+      <Flex flex="1" justifyContent="center">
+        <Text>Unit Profle</Text>
+      </Flex>
+    </Flex>
+
+  ) ;
 }

@@ -1,5 +1,6 @@
 import Sidebar from "../../components/sidebar/CarrierSideBar";
 import React, { useEffect } from "react";
+import { Flex, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 export default function DriverProfile() {
@@ -22,5 +23,15 @@ export default function DriverProfile() {
       });
   }, [navigate]);
 
-  return <Sidebar activePage="driverProfile" />;
+  //return <Sidebar activePage="driverProfile" />;
+
+  return (
+    <Flex>
+      <Sidebar activePage="driverProfile" />
+      <Flex flex="1" justifyContent="center">
+        <Text>Driver Profile</Text>
+      </Flex>
+    </Flex>
+
+  ) ;
 }

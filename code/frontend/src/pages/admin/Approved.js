@@ -1,5 +1,6 @@
 import Sidebar from "../../components/sidebar/AdminSideBar";
 import React, { useEffect } from "react";
+import { Flex, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 export default function Approved() {
@@ -22,5 +23,15 @@ export default function Approved() {
       });
   }, [navigate]);
   
-  return <Sidebar activePage="approved" />;
+  //return <Sidebar activePage="approved" />;
+
+  return (
+    <Flex>
+      <Sidebar activePage="Approved" />
+      <Flex flex="1" justifyContent="center">
+        <Text>Approved</Text>
+      </Flex>
+    </Flex>
+
+  );
 }
