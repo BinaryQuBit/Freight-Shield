@@ -1,5 +1,6 @@
 import Sidebar from "../../components/sidebar/ShipperSideBar";
 import React from "react";
+import { Flex, Text } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -23,5 +24,15 @@ export default function ShipperSettings() {
       });
   }, [navigate]);
 
-  return <Sidebar activePage="shipperSettings" />;
+  // return <Sidebar activePage="shipperSettings" />;
+
+  return (
+    <Flex>
+      <Sidebar activePage="shipperSettings" />
+      <Flex flex="1" justifyContent="center">
+        <Text>Shipper Settings</Text>
+      </Flex>
+    </Flex>
+
+  );
 }

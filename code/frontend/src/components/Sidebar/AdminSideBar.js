@@ -12,7 +12,7 @@ import {
   Switch,
   FormLabel,
 } from "@chakra-ui/react";
-import { FiTruck, FiMenu, FiLogOut, FiSettings } from "react-icons/fi";
+import { FiTruck, FiMenu, FiLogOut, FiSettings, FiHome } from "react-icons/fi";
 import { MdOutlinePendingActions } from "react-icons/md";
 import { GrCertificate } from "react-icons/gr";
 import { FaHardHat, FaUserLock } from "react-icons/fa";
@@ -65,6 +65,12 @@ export default function AdminSideBar({ activePage }) {
               background: "#0866FF",
             },
           }}
+        />
+
+        <NavItem
+          navSize={navSize}
+          icon={FiHome}
+          title="Logged in as Administrator"
         />
         <NavItem
           navSize={navSize}

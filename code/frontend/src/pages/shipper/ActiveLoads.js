@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import {EaseOut} from "../../components/responsiveness/EaseOut.js"
 import axios from "axios";
+import { Flex, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import ShipperSideBar from "../../components/sidebar/ShipperSideBar.js"
 import { Text } from "@chakra-ui/react";
