@@ -27,7 +27,12 @@ export default function LoginForm() {
   
       if (response.status === 201) {
         const userRole = response.data.role;
-  
+        const businessName = response.data.businessName;
+
+        // if (businessName == null) {
+        //   navigate("/history")
+        //   return;
+        // }
         if (userRole === "shipper") {
           navigate("/activeloads");
         } else if (userRole === "carrier") {

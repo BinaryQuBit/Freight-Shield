@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { SidebarContext } from "../responsiveness/Context.js"
 import {
   Flex,
   IconButton,
@@ -20,15 +21,16 @@ import NavItem from "./NavItem";
 import Logo from "../logo/Logo.js";
 import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useContext } from 'react';
 
 export default function ShipperSideBar({ activePage }) {
-  const [navSize, changeNavSize] = useState("large");
+  const { navSize, setNavSize } = useContext(SidebarContext);
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
   const navigate = useNavigate();
 
   const logout = () => {
-    axios.get('http://localhost:8080/api/users/logout', { withCredentials: true })
+    axios.get('/logout', { withCredentials: true })
       .then(() => {
         navigate('/login')
       })
@@ -39,17 +41,18 @@ export default function ShipperSideBar({ activePage }) {
 
   return (
     <Flex
-      paddingTop={10}
-      pos="fixed"
-      top="0"
-      zIndex="10"
-      pt={10}
-      h="100vh"
-      boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
-      w={navSize === "small" ? "75px" : "200px"}
-      flexDir="column"
-      justifyContent="flex-start"
-      background={isDark ? "#343541" : "#E4E9F7"}
+    paddingTop={10}
+    pos="fixed"
+    top="0"
+    zIndex="10"
+    pt={10}
+    h="100vh"
+    overflowY="auto"
+    boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
+    w={navSize === "small" ? "75px" : "200px"}
+    flexDir="column"
+    justifyContent="flex-start"
+    background={isDark ? "#343541" : "#E4E9F7"}
     >
       <Flex align="center" justify="center" p="5%" h="20%">
         <Logo color={isDark ? "white" : "#0866FF"} />
@@ -60,7 +63,7 @@ export default function ShipperSideBar({ activePage }) {
           size="lg"
           variant="ghost"
           icon={<FiMenu />}
-          onClick={() => changeNavSize(navSize === "small" ? "large" : "small")}
+          onClick={() => setNavSize(navSize === "small" ? "large" : "small")}
           sx={{
             "&:hover": {
               color: "white",
@@ -96,6 +99,8 @@ export default function ShipperSideBar({ activePage }) {
           active={activePage === "history"}
           onClick={() => navigate("/history")}
         />
+        
+        
       </Flex>
       <Flex p="5%" flexDir="column" w="100%">
         <Divider />

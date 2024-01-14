@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { SidebarProvider } from "./components/responsiveness/Context.js";
 
 import Login from "./pages/Login.js";
 import Register from "./pages/Register.js";
@@ -19,9 +20,14 @@ import MyLoads from "./pages/carrier/MyLoads.js";
 import DriverProfile from "./pages/carrier/DriverProfile.js";
 import UnitProfile from "./pages/carrier/UnitProfile.js";
 import CarrierSettings from "./pages/carrier/CarrierSettings.js";
+import CarrierBusinessDetails from "./pages/registration/carrier/CarrierBusinessDetails.js"
+import CarrierCompanyDetails from "./pages/registration/carrier/CarrierCompanyDetails.js"
+import ShipperBusinessDetails from "./pages/registration/shipper/ShipperBusinessDetails.js"
+import ShipperCompanyDetails from "./pages/registration/shipper/ShipperCompanyDetails.js"
 
 export default function App() {
   return (
+    <SidebarProvider>
     <BrowserRouter>
       <Routes>
         <Route path="/register" element={<Register />} />
@@ -43,7 +49,12 @@ export default function App() {
         <Route path="/driverprofile" element={<DriverProfile />} />
         <Route path="/unitprofile" element={<UnitProfile />} />
         <Route path="/carriersettings" element={<CarrierSettings />} />
+        <Route path="/carrierbusinessdetails" element={<CarrierBusinessDetails/>} />
+        <Route path="/carriercompanydetails" element={<CarrierCompanyDetails/>} />
+        <Route path="/shipperbusinessdetails" element={<ShipperBusinessDetails/>} />
+        <Route path="/shippercompanydetails" element={<ShipperCompanyDetails/>} />
       </Routes>
     </BrowserRouter>
+    </SidebarProvider>
   );
 }
