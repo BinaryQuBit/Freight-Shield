@@ -20,25 +20,29 @@ export default function LoginForm() {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8080/api/users/login", {
+      const response = await axios.post("/login", {
         email,
         password,
       });
+  
       if (response.status === 201) {
-        // const userRole = response.data.role;
-        // if (userRole === "shipper") {
-        //   navigate("/activeloads");
-        // } else if (userRole === "carrier") {
-        //   navigate("/marketplace");
-        // } else {
-        //   navigate("/pending");
-        // }
-        navigate("/activeloads");
+        const userRole = response.data.role;
+  
+        if (userRole === "shipper") {
+          navigate("/activeloads");
+        } else if (userRole === "carrier") {
+          navigate("/marketplace");
+        } else if (userRole === "admin") {
+          navigate("/pending");
+        } else {
+          navigate("/");
+        }
       }
     } catch (error) {
       console.error("Login error:", error);
     }
   };
+  
   return (
     <Box p="4" w={{ base: "full", md: "50%" }}>
       <Card p="20px" maxWidth={{ base: "auto", md: "400px" }} mx="auto">
