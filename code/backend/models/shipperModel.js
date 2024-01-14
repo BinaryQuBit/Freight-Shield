@@ -13,6 +13,91 @@ const shipperSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    businessName: {
+      type: String,
+      required: true,
+    },
+    streetAddress: {
+      type: String,
+      required: true,
+    },
+    apptNumber: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    province: {
+      type: String,
+      required: true,
+    },
+    postalCode: {
+      type: String,
+      required: true,
+    },
+    country: {
+      type: String,
+      required: true,
+    },
+    sameAddress: {
+      type: Boolean,
+      required: true,
+    },
+    mailingAddress: {
+      type: String,
+    },
+    mailingApptNumber: {
+      type: String,
+    },
+    mailingCity: {
+      type: String,
+    },
+    mailingProvince: {
+      type: String,
+    },
+    mailingPostalCode: {
+      type: String,
+    },
+    mailingCountry: {
+      type: String,
+    },
+    companyPhoneNumber: {
+      type: String,
+      required: true,
+    },
+    companyEmailAddress: {
+      type: String,
+      required: true,
+    },
+    companyWebsite: {
+      type: String,
+    },
+    businessNumber: {
+      type: String,
+      required: true,
+    },
+    proofBusiness: {
+      type: Buffer,
+      required: true,
+    },
+    proofInsurance: {
+      type: Buffer,
+      required: true,
+    },
+    primaryContactName: {
+      type: String,
+      required: true,
+    },
+    primaryContactEmailAddress: {
+      type: String,
+      required: true,
+    },
+    primaryContactPhoneNumber: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
