@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SidebarContext } from "../responsiveness/Context.js"
 import {
   Flex,
@@ -40,7 +40,25 @@ export default function ShipperSideBar({ activePage }) {
       });
   };
 
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth < 768) {
+        setNavSize('small');
+      } else {
+        setNavSize('large');
+      }
+    }
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, [setNavSize]);
+
   return (
+    <div style={{ width: navSize === 'small' ? '50px' : '200px' }}>
+
+    
     <Flex
     paddingTop={10}
     pos="fixed"
@@ -146,6 +164,6 @@ export default function ShipperSideBar({ activePage }) {
       </Flex>
 
     </Flex>
-    
+    </div>
   );
 }
