@@ -19,7 +19,7 @@ import {
 } from "@chakra-ui/react";
 import GreenButton from "../../components/buttons/GreenButton";
 import BlueButton from "../../components/buttons/BlueButton";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -37,7 +37,7 @@ export default function PostLoad() {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Prevent default form submission behavior
+    event.preventDefault();
 
     try {
       const result = await axios.post("http://localhost:8080/postLoad", {
@@ -61,17 +61,32 @@ export default function PostLoad() {
     }
   };
 
+  useEffect(() => {
+    axios
+      .post("/postload", { withCredentials: true })
+      .then((response) => {
+        console.log("Posted Load Successfully");
+      })
+      .catch((error) => {
+        console.error("Error Posting Load: ", error);
+        if (
+          error.response &&
+          (error.response.status === 401 || error.response.status === 403)
+        ) {
+          navigate("/login");
+        }
+      });
+  }, [navigate]);
+
   return (
     <>
       <Flex>
-        <Sidebar activePage="postLoad" />
+        <Sidebar activePage="postLoad"/>
+        <Spacer></Spacer>
         <Flex flex={1} justifyContent="center">
-          {" "}
-          {/* Use flex property to fill available space */}
           <VStack mt={10}>
             <Text fontFamily="Lora" fontSize={25} fontWeight={"1000"} mt={2}>
-              {" "}
-              Post a Load{" "}
+              Post a Load
             </Text>
             <Card
               width="100%"
@@ -224,6 +239,7 @@ export default function PostLoad() {
               </form>
             </Card>
           </VStack>
+        
         </Flex>
       </Flex>
     </>

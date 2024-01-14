@@ -1,3 +1,4 @@
+// A custom error handler that handles not found and other errors
 const notFound = (req, res, next) => {
   const error = new Error(`Not Found - ${req.originalUrl}`);
   res.status(404);
