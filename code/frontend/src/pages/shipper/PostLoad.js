@@ -85,7 +85,8 @@ export default function PostLoad() {
   return (
     <>
       <Flex>
-        <Sidebar activePage="postLoad" />
+        <Sidebar activePage="postLoad"/>
+        <Spacer></Spacer>
         <Flex flex={1} justifyContent="center">
           <VStack mt={10}>
             <Text fontFamily="Lora" fontSize={25} fontWeight={"1000"} mt={2}>
@@ -273,6 +274,7 @@ export default function PostLoad() {
               </form>
             </Card>
           </VStack>
+        
         </Flex>
       </Flex>
     </>

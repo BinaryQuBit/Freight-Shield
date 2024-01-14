@@ -12,7 +12,7 @@ export default function Header({ title }) {
       <Box p="4" mb={{ base: "4", md: "0" }} textAlign="center">
         <Image src={Logo} alt="Logo" mx="auto" p={"10px"} />
         <Text pb={"5"}>Connecting Shippers and Truckers Seamlessly</Text>
-        <strong>{title}</strong> {/* Use the title prop here */}
+        <strong>{title}</strong>
       </Box>
     </Flex>
   );

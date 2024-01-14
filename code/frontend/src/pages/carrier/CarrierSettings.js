@@ -1,5 +1,6 @@
 import Sidebar from "../../components/sidebar/CarrierSideBar";
 import React, { useEffect } from "react";
+import { Flex, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 export default function CarrierSettings() {
@@ -22,5 +23,16 @@ export default function CarrierSettings() {
       });
   }, [navigate]);
   
-  return <Sidebar activePage="carrierSettings" />;
+  //return <Sidebar activePage="carrierSettings" />;
+
+  
+  return (
+    <Flex>
+      <Sidebar activePage="carrierSettings" />
+      <Flex flex="1" justifyContent="center">
+        <Text>Active Load</Text>
+      </Flex>
+    </Flex>
+
+  ) ;
 }
