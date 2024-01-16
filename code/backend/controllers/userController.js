@@ -6,6 +6,7 @@ import Admin from "../models/adminModel.js";
 import Carrier from "../models/carrierModel.js";
 import Shipper from "../models/shipperModel.js";
 import SuperUser from "../models/superUser.js";
+import Marketplace from "../models/marketplaceModel.js";
 
 // @desc    Login and Authentication
 // route    POST /api/users/login
@@ -352,13 +353,16 @@ const unitProfile = asyncHandler(async (req, res) => {
 // route    Get /api/users/activeloads
 // @access  Private
 const activeLoads = asyncHandler(async (req, res) => {
-  const user = {
-    _id: req.user._id,
-    email: req.user.email,
-  };
+  try {
+    const userEmail = req.user.email;
+    const loads = await Marketplace.find({ email: userEmail });
 
-  res.status(200).json({ user });
+    res.status(200).json(loads);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
+
 
 // @desc    Getting History
 // route    GET /api/users/history
@@ -376,13 +380,38 @@ const history = asyncHandler(async (req, res) => {
 // route    POST /api/users/postload
 // @access  Private
 const postLoad = asyncHandler(async (req, res) => {
-  const user = {
-    _id: req.user._id,
-    email: req.user.email,
-  };
+  const {
+    pickUpLocation,
+    pickUpDate,
+    pickUpTime,
+    dropOffDate,
+    dropOffTime,
+    dropOffLocation,
+    unitRequested,
+    typeLoad,
+    sizeLoad,
+    additionalInformation,
+    additionalDocument
+  } = req.body;
 
-  res.status(200).json({ user });
+  const postLoad = await Marketplace.create({
+    email: req.user.email,
+    pickUpLocation,
+    pickUpDate,
+    pickUpTime,
+    dropOffDate,
+    dropOffTime,
+    dropOffLocation,
+    unitRequested,
+    typeLoad,
+    sizeLoad,
+    additionalInformation,
+    additionalDocument,
+  });
+
+  res.status(200).json({ postLoad });
 });
+
 
 // @desc    Shipper Settings
 // route    GET /api/users/shippersettings
@@ -433,6 +462,8 @@ const trackLoad = asyncHandler(async (req, res) => {
 
   res.status(200).json({ user });
 });
+
+
 
 export {
   loginUser,

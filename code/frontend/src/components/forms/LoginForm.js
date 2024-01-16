@@ -11,7 +11,7 @@ import {
   Card,
 } from "@chakra-ui/react";
 import BlueButton from "../buttons/BlueButton";
-import GreenButton from "../buttons/GreenButton";
+import GreenButton from "../buttons/GreenButton";  
 export default function LoginForm() {
   axios.defaults.withCredentials = true;
   const [email, setEmail] = useState("");
@@ -27,7 +27,7 @@ export default function LoginForm() {
   
       if (response.status === 201) {
         const userRole = response.data.role;
-        const businessName = response.data.businessName;
+        // const businessName = response.data.businessName;
 
         // if (businessName == null) {
         //   navigate("/history")

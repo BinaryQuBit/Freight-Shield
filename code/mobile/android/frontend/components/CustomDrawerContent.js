@@ -26,7 +26,7 @@ const CustomDrawerContent = (props) => {
       </DrawerContentScrollView>
       
       <TouchableOpacity style={styles.logoutContainer} onPress={handleLogout}>
-          <FontAwesomeIcon icon={faHandMiddleFinger} size={24} color='white'/>
+          {/* <FontAwesomeIcon icon={faHandMiddleFinger} size={24} color='white'/> */}
           <Text  style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
     </View>
