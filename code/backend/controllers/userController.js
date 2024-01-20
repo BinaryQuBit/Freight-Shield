@@ -6,6 +6,8 @@ import Admin from "../models/adminModel.js";
 import Carrier from "../models/carrierModel.js";
 import Shipper from "../models/shipperModel.js";
 import SuperUser from "../models/superUser.js";
+import Marketplace from "../models/marketplaceModel.js";
+import Driver from "../models/driverModel.js";
 
 // @desc    Login and Authentication
 // route    POST /api/users/login
@@ -17,6 +19,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const carrier = await Carrier.findOne({ email });
   const shipper = await Shipper.findOne({ email });
   const superUser = await SuperUser.findOne({ email });
+  const driver = await Driver.findOne({ email });
 
   if (admin && await admin.matchPassword(password)) {
     generateToken(res, admin._id, "admin");
@@ -54,6 +57,15 @@ const loginUser = asyncHandler(async (req, res) => {
     });
   }
 
+  if (driver && await driver.matchPassword(password)) {
+    generateToken(res, driver._id, "driver");
+    return res.status(201).json({
+      _id: driver._id,
+      email: driver.email,
+      role: "driver"
+    });
+  }
+
   res.status(400);
   throw new Error("Invalid email or password");
 });
@@ -67,6 +79,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   const shipperExist = await Shipper.findOne({ email });
   const carrierExist = await Carrier.findOne({ email });
+  const driverExist = await Driver.findOne({ email });
 
   if (shipperExist) {
     res.status(400);
@@ -76,6 +89,11 @@ const registerUser = asyncHandler(async (req, res) => {
   if (carrierExist) {
     res.status(400);
     throw new Error("Carrier already exists");
+  }
+
+  if (driverExist) {
+    res.status(400);
+    throw new Error("Driver already exists");
   }
 
   if (password !== confirmPassword) {
@@ -114,6 +132,23 @@ const registerUser = asyncHandler(async (req, res) => {
     } else {
       res.status(400);
       throw new Error("Invalid Carrier Data");
+    }
+  }
+
+  if (role == "driver") {
+    const driver = await Driver.create({
+      email,
+      password,
+    });
+    if (driver) {
+      generateToken(res, driver._id);
+      res.status(201).json({
+        _id: driver._id,
+        email: driver.email,
+      });
+    } else {
+      res.status(400);
+      throw new Error("Invalid Driver Data");
     }
   }
 
@@ -352,13 +387,16 @@ const unitProfile = asyncHandler(async (req, res) => {
 // route    Get /api/users/activeloads
 // @access  Private
 const activeLoads = asyncHandler(async (req, res) => {
-  const user = {
-    _id: req.user._id,
-    email: req.user.email,
-  };
+  try {
+    const userEmail = req.user.email;
+    const loads = await Marketplace.find({ email: userEmail });
 
-  res.status(200).json({ user });
+    res.status(200).json(loads);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
+
 
 // @desc    Getting History
 // route    GET /api/users/history
@@ -376,13 +414,38 @@ const history = asyncHandler(async (req, res) => {
 // route    POST /api/users/postload
 // @access  Private
 const postLoad = asyncHandler(async (req, res) => {
-  const user = {
-    _id: req.user._id,
-    email: req.user.email,
-  };
+  const {
+    pickUpLocation,
+    pickUpDate,
+    pickUpTime,
+    dropOffDate,
+    dropOffTime,
+    dropOffLocation,
+    unitRequested,
+    typeLoad,
+    sizeLoad,
+    additionalInformation,
+    additionalDocument
+  } = req.body;
 
-  res.status(200).json({ user });
+  const postLoad = await Marketplace.create({
+    email: req.user.email,
+    pickUpLocation,
+    pickUpDate,
+    pickUpTime,
+    dropOffDate,
+    dropOffTime,
+    dropOffLocation,
+    unitRequested,
+    typeLoad,
+    sizeLoad,
+    additionalInformation,
+    additionalDocument,
+  });
+
+  res.status(200).json({ postLoad });
 });
+
 
 // @desc    Shipper Settings
 // route    GET /api/users/shippersettings
@@ -433,6 +496,10 @@ const trackLoad = asyncHandler(async (req, res) => {
 
   res.status(200).json({ user });
 });
+
+//////////////////// Android App ////////////////////
+
+
 
 export {
   loginUser,
