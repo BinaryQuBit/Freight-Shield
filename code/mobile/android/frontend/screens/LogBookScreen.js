@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Button, StyleSheet, Alert } from 'react-native';
 import LoadDetails from './LoadDetails';
 import DriverManual from './DriverManual';
-import PreInspectionForm from '../froms/PreInspectionForm';
+import PreInspectionForm from '../forms/PreInspectionForm';
 import MapView, { Polyline } from 'react-native-maps';
 import { GOOGLE_MAPS_API_KEY } from '@env'; // Make sure to replace with your actual API key
 import polyline from '@mapbox/polyline';

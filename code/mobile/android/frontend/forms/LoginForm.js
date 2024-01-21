@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 
 const LoginForm = ({ onForgotPassword }) => {
@@ -15,9 +15,19 @@ const LoginForm = ({ onForgotPassword }) => {
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
 
+  useFocusEffect(
+    React.useCallback(() => {
+      // Reset form fields when screen is focused
+      setEmail('');
+      setPassword('');
+      //setActiveForm('login'); // Set the default active form
+      // Add any other states that need to be reset
+    }, [])
+  );
+
   const handleLogin = async () => {
     try {
-      const response = await axios.post("http://10.69.92.62:8080/api/users/login", { email, password });
+      const response = await axios.post("http://142.3.84.67:8080/api/users/login", { email, password });
 
       if (response.status === 201) {
         navigation.navigate('Drawer', { screen: 'Home'});

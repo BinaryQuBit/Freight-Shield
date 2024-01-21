@@ -1,22 +1,25 @@
-import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import { StyleSheet, Text, View, StatusBar, Button } from "react-native";
-import tw from "tailwind-react-native-classnames";
-import Map from "../components/Map";
-import { SafeAreaView } from 'react-native-safe-area-context';
-
+import React from 'react';
+import { StyleSheet, View, Text } from 'react-native';
 
 export default function HomeScreen() {
-    const navigation = useNavigation();
-
-    return (
-      <SafeAreaView style={tw`bg-green-100 h-full`}>
-        <View style={[tw`bg-red-100`,{marginTop: StatusBar.currentHeight}]}>
-          <Text> Hello Home Screen</Text>
-          
-        </View>
-      </SafeAreaView> 
-    );
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Home Screen</Text>
+    </View>
+  );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center', // Center content vertically
+    alignItems: 'center', // Center content horizontally
+    backgroundColor: '#ffffff', // You can change the background color
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#3949ab', // Change the color to suit your theme
+    textAlign: 'center', // Ensure text is centered
+  },
+});

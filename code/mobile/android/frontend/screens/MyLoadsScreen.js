@@ -5,7 +5,7 @@ import { faInfoCircle, faUser, faMapMarkedAlt, faTruckLoading, faTruck, faMapMar
 
 const ICON_SIZE = 20;
 
-export default function MyLoadScreen() {
+export default function MyLoadsScreen() {
 
     const [refreshing, setRefreshing] = React.useState(false);
     

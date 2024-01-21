@@ -1,14 +1,10 @@
 import React from 'react';
-import { StyleSheet, View, Text, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
-import { useNavigation } from '@react-navigation/native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faHandMiddleFinger } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 const CustomDrawerContent = (props) => {
-
-    const navigation = useNavigation();
-
   const handleLogout = () => {
     // Handle the logout logic
     console.log('User logged out');
@@ -24,11 +20,11 @@ const CustomDrawerContent = (props) => {
         <DrawerItemList {...props} />
         {/* Additional components or items */}
       </DrawerContentScrollView>
-      
+
       <TouchableOpacity style={styles.logoutContainer} onPress={handleLogout}>
-          {/* <FontAwesomeIcon icon={faHandMiddleFinger} size={24} color='white'/> */}
-          <Text  style={styles.logoutText}>Logout</Text>
-        </TouchableOpacity>
+          <FontAwesomeIcon icon={faArrowRightFromBracket} size={24} color='white'/>
+          <Text style={styles.logoutText}>Logout</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -42,26 +38,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e1e1e1',
   },
   profileName: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
+    color: '#333',
   },
   logoutContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 15,
-    backgroundColor: 'blue', // Tomato color
+    backgroundColor: '#007bff', // Modern blue shade
     borderRadius: 5,
-    margin: 20,
+    marginHorizontal: 20,
+    marginBottom: 20,
   },
   logoutText: {
-    color: '#fff', // White color
+    color: 'white',
     fontSize: 18,
-    marginLeft: 10, // Add some space between the icon and the text
+    marginLeft: 10,
   },
-  
 });
 
 export default CustomDrawerContent;
