@@ -35,7 +35,7 @@ export default function RegisterForm() {
     event.preventDefault();
 
     try {
-      const response = await axios.post("/register", {
+      const response = await axios.post("http://localhost:8080/api/users/register", {
         role,
         email,
         password,

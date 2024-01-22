@@ -8,7 +8,7 @@ export default function DriverProfile() {
 
   useEffect(() => {
     axios
-      .get("/driverprofile", { withCredentials: true })
+      .get("http://localhost:8080/api/users/driverprofile", { withCredentials: true })
       .then((response) => {
         console.log("Driver Profile Fetched Successfully");
       })

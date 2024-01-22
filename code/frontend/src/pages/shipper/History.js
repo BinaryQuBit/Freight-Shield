@@ -8,7 +8,7 @@ export default function History() {
 
   useEffect(() => {
     axios
-      .get("/history", { withCredentials: true })
+      .get("http://localhost:8080/api/users/history", { withCredentials: true })
       .then((response) => {
         console.log("History Fetched Successfully");
       })

@@ -8,7 +8,7 @@ export default function Carriers() {
 
   useEffect(() => {
     axios
-      .get("/carriers", { withCredentials: true })
+      .get("http://localhost:8080/api/users/carriers", { withCredentials: true })
       .then((response) => {
         console.log("Carriers Fetched Successfully");
       })

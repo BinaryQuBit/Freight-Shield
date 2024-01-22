@@ -8,7 +8,7 @@ export default function AdminSettings() {
 
   useEffect(() => {
     axios
-      .get("/adminsettings", { withCredentials: true })
+      .get("http://localhost:8080/api/users/adminsettings", { withCredentials: true })
       .then((response) => {
         console.log("Admin Settings Fetched Successfully");
       })

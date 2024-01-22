@@ -31,7 +31,7 @@ export default function ShipperSideBar({ activePage }) {
 
   const logout = () => {
     axios
-      .get("/logout", { withCredentials: true })
+      .get("http://localhost:8080/api/users/logout", { withCredentials: true })
       .then(() => {
         navigate("/login");
       })

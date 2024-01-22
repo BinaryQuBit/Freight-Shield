@@ -8,7 +8,7 @@ export default function Marketplace() {
   
   useEffect(() => {
     axios
-      .get("/marketplace", { withCredentials: true })
+      .get("http://localhost:8080/api/users/marketplace", { withCredentials: true })
       .then((response) => {
         console.log("Marketplace Fetched Successfully");
       })

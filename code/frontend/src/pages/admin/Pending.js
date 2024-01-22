@@ -22,7 +22,7 @@ export default function Pending() {
 
   useEffect(() => {
     axios
-      .get("/pending", { withCredentials: true })
+      .get("http://localhost:8080/api/users/pending", { withCredentials: true })
       .then((response) => {
         console.log("Pending Fetched Successfully");
       })

@@ -8,7 +8,7 @@ export default function TrackLoad() {
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get("/trackload", { withCredentials: true })
+      .get("http://localhost:8080/api/users/trackload", { withCredentials: true })
       .then((response) => {
         console.log("Track Load Fetched Successfully");
       })

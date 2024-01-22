@@ -8,7 +8,7 @@ export default function Shippers() {
 
   useEffect(() => {
     axios
-      .get("/shippers", { withCredentials: true })
+      .get("http://localhost:8080/api/users/shippers", { withCredentials: true })
       .then((response) => {
         console.log("Shippers Fetched Successfully");
       })

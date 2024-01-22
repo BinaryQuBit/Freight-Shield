@@ -33,7 +33,7 @@ export default function ActiveLoads() {
 
   useEffect(() => {
     axios
-      .get("/activeloads", { withCredentials: true })
+      .get("http://localhost:8080/api/users/activeloads", { withCredentials: true })
       .then((response) => {
         setLoads(response.data);
         console.log("Active Loads Fetched Successfully");

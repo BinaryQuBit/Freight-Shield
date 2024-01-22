@@ -8,7 +8,7 @@ export default function UnitProfile() {
 
   useEffect(() => {
     axios
-      .get("/unitprofile", { withCredentials: true })
+      .get("http://localhost:8080/api/users/unitprofile", { withCredentials: true })
       .then((response) => {
         console.log("Unit Profile Fetched Successfully");
       })

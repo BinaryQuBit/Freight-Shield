@@ -8,7 +8,7 @@ export default function MyLoads() {
 
   useEffect(() => {
     axios
-      .get("/myloads", { withCredentials: true })
+      .get("http://localhost:8080/api/users/myloads", { withCredentials: true })
       .then((response) => {
         console.log("My Loads Fetched Successfully");
       })

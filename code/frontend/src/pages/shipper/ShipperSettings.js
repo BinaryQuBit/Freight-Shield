@@ -9,7 +9,7 @@ export default function ShipperSettings() {
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get("/shippersettings", { withCredentials: true })
+      .get("http://localhost:8080/api/users/shippersettings", { withCredentials: true })
       .then((response) => {
         console.log("Shipper Settings Fetched Successfully");
       })

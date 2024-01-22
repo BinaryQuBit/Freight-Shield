@@ -10,7 +10,7 @@ export default function Administrators() {
 
   useEffect(() => {
     axios
-      .get("/administrators", { withCredentials: true })
+      .get("http://localhost:8080/api/users/administrators", { withCredentials: true })
       .then((response) => {
         console.log("Administrators Fetched Successfully");
       })

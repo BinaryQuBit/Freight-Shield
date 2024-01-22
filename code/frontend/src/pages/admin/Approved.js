@@ -8,7 +8,7 @@ export default function Approved() {
 
   useEffect(() => {
     axios
-      .get("/approved", { withCredentials: true })
+      .get("http://localhost:8080/api/users/approved", { withCredentials: true })
       .then((response) => {
         console.log("Approved Fetched Successfully");
       })
