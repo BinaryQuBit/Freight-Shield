@@ -1,17 +1,22 @@
-import { Button } from "@chakra-ui/react";
+import React from 'react';
+import { Button } from '@chakra-ui/react';
 
-export default function BlueButton({ mt, w, children, type, onClick }) {
+export default function BlueButton({ mt, w, children, type, onClick, icon, variant, backgroundColor }) {
   return (
     <Button
-      color="white"
-      _hover={{ bg: "#42B72A" }}
-      bg="#0866FF"
+      variant={variant}
       mt={mt}
       w={w}
       type={type}
       onClick={onClick}
+      colorVariant={backgroundColor}
     >
-      {children}
+      <div className="icon-wrapper">{icon}</div>
+      <div className="content-wrapper">{children}</div>
     </Button>
   );
 }
+
+
+
+

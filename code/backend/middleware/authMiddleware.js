@@ -1,11 +1,11 @@
 // authMiddleware.js
 
-import jwt from 'jsonwebtoken';
-import asyncHandler from 'express-async-handler';
-import Admin from '../models/adminModel.js';
-import Carrier from '../models/carrierModel.js';
-import Shipper from '../models/shipperModel.js';
-import SuperUser from '../models/superUser.js';
+import jwt from "jsonwebtoken";
+import asyncHandler from "express-async-handler";
+import Admin from "../models/adminModel.js";
+import Carrier from "../models/carrierModel.js";
+import Shipper from "../models/shipperModel.js";
+import SuperUser from "../models/superUser.js";
 
 const protect = asyncHandler(async (req, res, next) => {
   let token = req.cookies.jwt;
@@ -20,34 +20,34 @@ const protect = asyncHandler(async (req, res, next) => {
 
     let user;
     switch (decoded.role) {
-      case 'admin':
+      case "admin":
         user = await Admin.findById(decoded.userId).select("-password");
         break;
-      case 'carrier':
+      case "carrier":
         user = await Carrier.findById(decoded.userId).select("-password");
         break;
-      case 'shipper':
+      case "shipper":
         user = await Shipper.findById(decoded.userId).select("-password");
         break;
-      case 'superUser':
+      case "superUser":
         user = await SuperUser.findById(decoded.userId).select("-password");
         break;
       default:
-        throw new Error('Role not recognized');
+        throw new Error("Role not recognized");
     }
 
     if (!user) {
-      throw new Error('User not found');
+      throw new Error("User not found");
     }
 
     req.user = user;
     req.role = decoded.role;
     next();
   } catch (error) {
-    if (error.name === 'JsonWebTokenError') {
+    if (error.name === "JsonWebTokenError") {
       res.status(401);
       throw new Error("Invalid token");
-    } else if (error.name === 'TokenExpiredError') {
+    } else if (error.name === "TokenExpiredError") {
       res.status(401);
       throw new Error("Token expired");
     } else {
@@ -58,7 +58,7 @@ const protect = asyncHandler(async (req, res, next) => {
 });
 
 const adminOnly = (req, res, next) => {
-  if (req.role == 'admin') {
+  if (req.role == "admin") {
     return next();
   }
   res.status(403);
@@ -66,7 +66,7 @@ const adminOnly = (req, res, next) => {
 };
 
 const carrierOnly = (req, res, next) => {
-  if (req.role == 'carrier') {
+  if (req.role == "carrier") {
     return next();
   }
   res.status(403);
@@ -74,11 +74,56 @@ const carrierOnly = (req, res, next) => {
 };
 
 const shipperOnly = (req, res, next) => {
-  if (req.role == 'shipper') {
+  if (req.role == "shipper") {
     return next();
   }
   res.status(403);
   throw new Error("Access denied");
 };
 
-export { protect, adminOnly, carrierOnly, shipperOnly };
+const shipperDetailsComplete = asyncHandler(async (req, res, next) => {
+  if (req.role != "shipper") {
+    return;
+  }
+
+  const {
+    businessName,
+    streetAddress,
+    city,
+    province,
+    postalCode,
+    country,
+    mailingStreetAddress,
+    mailingCity,
+    mailingProvince,
+    mailingPostalCode,
+    mailingCountry,
+    firstName,
+    lastName,
+    companyPhoneNumber,
+  } = req.user;
+
+  if (
+    !businessName ||
+    !streetAddress ||
+    !city ||
+    !province ||
+    !postalCode ||
+    !country ||
+    !mailingStreetAddress ||
+    !mailingCity ||
+    !mailingProvince ||
+    !mailingPostalCode ||
+    !mailingCountry ||
+    !firstName ||
+    !lastName ||
+    !companyPhoneNumber
+  ) {
+    res.status(403);
+    throw new Error("Access denied. Need Shipper Company Details");
+  }
+  next();
+});
+
+
+export { protect, adminOnly, carrierOnly, shipperOnly, shipperDetailsComplete };
