@@ -11,43 +11,72 @@ import {
   Card,
 } from "@chakra-ui/react";
 import BlueButton from "../buttons/BlueButton";
-import GreenButton from "../buttons/GreenButton";  
+import { FiTruck } from "react-icons/fi";
+
+// Start of the Login Form Component
 export default function LoginForm() {
+
+  // Include Credentials in the request
   axios.defaults.withCredentials = true;
+
+  // Hooks/states for email and password
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  
+  // Helper function to navigate based on user role
+  const navigateBasedOnUserRole = (userRole) => {
+    const routes = {
+      shipper: "/activeloads",
+      carrier: "/marketplace",
+      admin: "/pending",
+    };
+  
+    navigate(routes[userRole] || "/");
+  };
+  
+  // Start of the Login ~ What happens when the user clicks the login button
   const handleLogin = async (event) => {
     event.preventDefault();
-    try {
-      const response = await axios.post("/login", {
-        email,
-        password,
-      });
   
-      if (response.status === 201) {
-        const userRole = response.data.role;
-        // const businessName = response.data.businessName;
-
-        // if (businessName == null) {
-        //   navigate("/history")
-        //   return;
-        // }
-        if (userRole === "shipper") {
-          navigate("/activeloads");
-        } else if (userRole === "carrier") {
-          navigate("/marketplace");
-        } else if (userRole === "admin") {
-          navigate("/pending");
-        } else {
-          navigate("/");
-        }
+    try {
+      const loginResponse = await axios.post("/login", { email, password });
+  
+      if (![201, 200].includes(loginResponse.status)) {
+        throw new Error('Login failed');
       }
+  
+      const userRole = loginResponse.data.role;
+  
+      const { data } = await axios.get("/login");
+      const isContactDetailsIncomplete = [
+        'firstName', 'lastName', 'companyPhoneNumber', 'streetAddress', 
+        'city', 'province', 'postalCode', 'country', 'mailingStreetAddress',
+        'mailingCity', 'mailingProvince', 'mailingPostalCode', 'mailingCountry'
+      ].some(field => data[0][field] == null);
+  
+      const isBusinessDetailsIncomplete = [
+        'businessName', 'businessNumber', 'proofBusiness', 'proofInsurance'
+      ].some(field => data[0][field] == null);
+  
+      if (isContactDetailsIncomplete) {
+        navigate("/shippercontactdetails");
+        return;
+      }
+  
+      if (isBusinessDetailsIncomplete) {
+        navigate("/shipperbusinessdetails");
+        return;
+      }
+  
+      navigateBasedOnUserRole(userRole);
+  
     } catch (error) {
       console.error("Login error:", error);
     }
   };
   
+
   return (
     <Box p="4" w={{ base: "full", md: "50%" }}>
       <Card p="20px" maxWidth={{ base: "auto", md: "400px" }} mx="auto">
@@ -70,17 +99,36 @@ export default function LoginForm() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </FormControl>
-          <BlueButton mt="4" w="full" type="submit">
-            Log In
-          </BlueButton>
+          <BlueButton
+            backgroundColor="#0866FF"
+            icon={<FiTruck />}
+            mt="4"
+            w="full"
+            type="submit"
+            children="Log In"
+            variant="blueForwardButton"
+          />
         </form>
         <Flex justify="center" mt="4">
-          <Button variant="link" color="#0866FF" fontSize="14px" onClick={() => navigate("/forgotPassword")}>
+          <Button
+            variant="link"
+            color="#0866FF"
+            fontSize="14px"
+            onClick={() => navigate("/forgotPassword")}
+          >
             Forgot Password?
           </Button>
         </Flex>
-        <Flex justify="center" mt="4" onClick={() => navigate("/register")}>
-          <GreenButton w="full">Create new account</GreenButton>
+        <Flex justify="center" mt="4">
+          <BlueButton
+            backgroundColor="#42B72A"
+            icon={<FiTruck />}
+            mt="4"
+            w="full"
+            onClick={() => navigate("/register")}
+            children="Create an Account"
+            variant="blueForwardButton"
+          />
         </Flex>
       </Card>
       <Text textAlign="center" mt="2">
