@@ -1,10 +1,8 @@
 // Backend routes to normal and protected pages
 import express from "express";
+import upload from "../middleware/upload.js";
+import deleteFile from "../middleware/delete.js";
 import {
-  loginUser,
-  registerUser,
-  logoutUser,
-  forgotPassword,
   administrators,
   adminSettings,
   updateAdminSettings,
@@ -13,20 +11,48 @@ import {
   pending,
   updatePending,
   shippers,
+} from "../controllers/AdminController.js";
+
+import {
   carrierSettings,
   updateCarrierSettings,
   driverProfile,
   marketplace,
   myLoads,
   unitProfile,
+} from "../controllers/CarrierController.js";
+
+import {
+  loginUser,
+  registerUser,
+  logoutUser,
+  forgotPassword,
+  passLoginInformation,
+} from "../controllers/NewUserController.js";
+
+import {
   activeLoads,
   history,
   postLoad,
   shipperSettings,
   updateShipperSettings,
   trackLoad,
-} from "../controllers/userController.js";
-import { protect, adminOnly, carrierOnly, shipperOnly } from '../middleware/authMiddleware.js';
+  updateShipperContactDetails,
+  updateShipperBusinessDetails,
+  proofBusiness,
+  proofInsurance,
+  removeProofBusiness,
+  removeProofInsurance,
+} from "../controllers/ShipperController.js";
+
+import {
+  protect,
+  adminOnly,
+  carrierOnly,
+  shipperOnly,
+  shipperDetailsComplete,
+} from "../middleware/authMiddleware.js";
+
 const router = express.Router();
 
 // @access for all
@@ -54,11 +80,108 @@ router.get("/myloads", protect, carrierOnly, myLoads);
 router.get("/unitprofile", protect, carrierOnly, unitProfile);
 
 // @access only Shippers
-router.get("/activeloads", protect, shipperOnly, activeLoads);
-router.get("/history", protect, shipperOnly, history);
-router.post("/postload", protect, shipperOnly, postLoad);
-router.get("/shippersettings", protect, shipperOnly, shipperSettings);
-router.put("/shippersettings", protect, shipperOnly, updateShipperSettings);
-router.get("/trackload", protect, shipperOnly, trackLoad);
+router.get(
+  "/activeloads",
+  protect,
+  shipperOnly,
+  shipperDetailsComplete,
+  activeLoads
+);
+
+router.get(
+  "/history",
+  protect,
+  shipperOnly,
+  shipperDetailsComplete,
+  history
+);
+
+router.post(
+  "/postload",
+  protect,
+  shipperOnly,
+  shipperDetailsComplete,
+  postLoad
+);
+
+router.get(
+  "/shippersettings",
+  protect,
+  shipperOnly,
+  shipperDetailsComplete,
+  shipperSettings
+);
+
+router.put(
+  "/shippersettings",
+  protect,
+  shipperOnly,
+  shipperDetailsComplete,
+  updateShipperSettings
+);
+
+router.get(
+  "/trackload",
+  protect,
+  shipperOnly,
+  shipperDetailsComplete,
+  trackLoad
+);
+
+router.get(
+  "/login",
+  protect,
+  passLoginInformation
+);
+
+router.put(
+  "/shippercontactdetails",
+  protect,
+  shipperOnly,
+  updateShipperContactDetails
+);
+
+router.put(
+  "/shipperbusinessdetails",
+  protect,
+  shipperOnly,
+  upload.fields([
+    { name: "proofBusiness", maxCount: 1 },
+    { name: "proofInsurance", maxCount: 1 },
+  ]),
+  updateShipperBusinessDetails
+);
+
+router.put(
+  "/proofBusiness",
+  protect,
+  shipperOnly,
+  upload.fields([{ name: "proofBusiness", maxCount: 1 }]),
+  proofBusiness
+);
+
+router.delete(
+  "/proofBusiness/:filename",
+  protect,
+  shipperOnly,
+  deleteFile,
+  removeProofBusiness
+);
+
+router.put(
+  "/proofInsurance",
+  protect,
+  shipperOnly,
+  upload.fields([{ name: "proofInsurance", maxCount: 1 }]),
+  proofInsurance
+);
+
+router.delete(
+  "/proofInsurance/:filename",
+  protect,
+  shipperOnly,
+  deleteFile,
+  removeProofInsurance
+);
 
 export default router;

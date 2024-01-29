@@ -23,7 +23,8 @@ import CarrierSettings from "./pages/carrier/CarrierSettings.js";
 import CarrierBusinessDetails from "./pages/registration/carrier/CarrierBusinessDetails.js"
 import CarrierCompanyDetails from "./pages/registration/carrier/CarrierCompanyDetails.js"
 import ShipperBusinessDetails from "./pages/registration/shipper/ShipperBusinessDetails.js"
-import ShipperCompanyDetails from "./pages/registration/shipper/ShipperCompanyDetails.js"
+import ShipperContactDetails from "./pages/registration/shipper/ShipperContactDetails.js"
+import ShipperSubmission from "./pages/registration/shipper/ShipperSubmission.js";
 
 export default function App() {
   return (
@@ -52,7 +53,8 @@ export default function App() {
         <Route path="/carrierbusinessdetails" element={<CarrierBusinessDetails/>} />
         <Route path="/carriercompanydetails" element={<CarrierCompanyDetails/>} />
         <Route path="/shipperbusinessdetails" element={<ShipperBusinessDetails/>} />
-        <Route path="/shippercompanydetails" element={<ShipperCompanyDetails/>} />
+        <Route path="/shippercontactdetails" element={<ShipperContactDetails/>} />
+        <Route path="/shippersubmission" element={<ShipperSubmission/>} />
       </Routes>
     </BrowserRouter>
     </SidebarProvider>
