@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SidebarProvider } from "./components/responsiveness/Context.js";
 
+import Homepage from "./pages/Homepage.js";
 import Login from "./pages/Login.js";
 import Register from "./pages/Register.js";
 import ForgotPassword from "./pages/ForgotPassword.js"
@@ -31,6 +32,7 @@ export default function App() {
     <SidebarProvider>
     <BrowserRouter>
       <Routes>
+      <Route path="/" element={<Homepage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
