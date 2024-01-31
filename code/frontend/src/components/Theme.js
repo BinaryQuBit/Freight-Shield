@@ -8,6 +8,26 @@ const activeLabelStyles = {
 };
 
 const customTheme = extendTheme({
+  styles: {
+    global: {
+      "@keyframes fadeIn": {
+        from: { opacity: 0, transform: 'translateY(-20px)', visibility: 'hidden' },
+        to: { opacity: 1, transform: 'translateY(0)', visibility: 'visible' },
+      },      
+      "@keyframes fadeOut": {
+        from: { opacity: 1, transform: 'translateY(0)', visibility: 'visible' },
+        to: { opacity: 0, transform: 'translateY(-20px)', visibility: 'hidden' },
+      },
+      
+
+      '.fade-in': {
+        animation: 'fadeIn 0.5s ease-out forwards',
+      },
+      '.fade-out': {
+        animation: 'fadeOut 0.5s ease-out forwards',
+      },
+    },
+  },
   components: {
     Input: {
       variants: {
@@ -147,3 +167,4 @@ const customTheme = extendTheme({
 });
 
 export default customTheme;
+

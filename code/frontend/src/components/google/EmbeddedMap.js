@@ -1,24 +1,10 @@
-import React from 'react';
-import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
+/* global google */
+import React, { useState, useEffect } from 'react';
+import { GoogleMap, Marker, DirectionsRenderer, useLoadScript } from '@react-google-maps/api';
 
 const containerStyle = {
   width: '100%',
   height: '400px'
-};
-
-const calgary = {
-  lat: 51.0447,
-  lng: -114.0719
-};
-
-const vancouver = {
-  lat: 49.2827,
-  lng: -123.1207
-};
-
-const center = {
-  lat: (calgary.lat + vancouver.lat) / 2,
-  lng: (calgary.lng + vancouver.lng) / 2
 };
 
 const mapStyles = [
@@ -64,31 +50,60 @@ const mapStyles = [
   }
 ];
 
-function EmbeddedMap() {
+function EmbeddedMap({ pickUpLAT, pickUpLNG, dropOffLAT, dropOffLNG }) {
   const apiKey = process.env.REACT_APP_API_KEY;
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: apiKey
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: apiKey,
+    libraries: ['places']
   });
 
-  const onLoad = map => {
-    const bounds = new window.google.maps.LatLngBounds();
-    bounds.extend(new window.google.maps.LatLng(calgary.lat, calgary.lng));
-    bounds.extend(new window.google.maps.LatLng(vancouver.lat, vancouver.lng));
-    map.fitBounds(bounds);
+  const [directions, setDirections] = useState(null);
+
+
+    const fetchDirections = () => {
+      if (typeof pickUpLAT === 'number' && typeof pickUpLNG === 'number' && 
+          typeof dropOffLAT === 'number' && typeof dropOffLNG === 'number') {
+        const directionsService = new google.maps.DirectionsService();
+        directionsService.route({
+          origin: { lat: pickUpLAT, lng: pickUpLNG },
+          destination: { lat: dropOffLAT, lng: dropOffLNG },
+          travelMode: google.maps.TravelMode.DRIVING,
+        }, (result, status) => {
+          if (status === google.maps.DirectionsStatus.OK) {
+            setDirections(result);
+          } else {
+            console.error(`Error fetching directions: ${status}`);
+          }
+        });
+      } else {
+        console.error('Invalid latitude or longitude values.');
+      }
+    };
+    useEffect(() => {
+      if (isLoaded && !loadError) {
+        fetchDirections();
+      }
+    }, [pickUpLAT, pickUpLNG, dropOffLAT, dropOffLNG, isLoaded]);
+
+  const center = {
+    lat: (pickUpLAT + dropOffLAT) / 2,
+    lng: (pickUpLNG + dropOffLNG) / 2
   };
 
   const mapOptions = {
-    zoomControl: false,
-    scrollwheel: false,
-    disableDoubleClickZoom: true,
-    draggable: false,
-    keyboardShortcuts: false,
-    streetViewControl: false,
-    fullscreenControl: false,
+    zoomControl: true,
+    scrollwheel: true,
+    disableDoubleClickZoom: false,
+    draggable: true,
+    keyboardShortcuts: true,
+    streetViewControl: true,
+    fullscreenControl: true,
     styles: mapStyles
   };
 
-  
+  if (loadError) {
+    return <div>Error loading maps</div>;
+  }
 
   if (!isLoaded) {
     return <div>Loading...</div>;
@@ -99,21 +114,15 @@ function EmbeddedMap() {
       mapContainerStyle={containerStyle}
       center={center}
       zoom={5}
-      onLoad={onLoad}
       options={mapOptions}
     >
-      <Marker position={calgary} />
-      <Marker position={vancouver} />
+      <Marker position={{ lat: pickUpLAT, lng: pickUpLNG }} />
+      <Marker position={{ lat: dropOffLAT, lng: dropOffLNG }} />
+      {directions && <DirectionsRenderer directions={directions} />}
     </GoogleMap>
   );
 }
 
 export default React.memo(EmbeddedMap);
 
-
-// function MapComponent({ load }) {
-//     const mapCenter = {
-//       lat: parseFloat(load?.latitude || center.lat),
-//       lng: parseFloat(load?.longitude || center.lng)
-//     };
 

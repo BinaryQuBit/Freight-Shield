@@ -4,6 +4,7 @@ import { Button } from '@chakra-ui/react';
 export default function BlueButton({ mt, w, children, type, onClick, icon, variant, backgroundColor }) {
   return (
     <Button
+      rounded={"no"}
       variant={variant}
       mt={mt}
       w={w}

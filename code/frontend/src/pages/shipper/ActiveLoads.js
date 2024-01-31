@@ -108,9 +108,9 @@ export default function ActiveLoads() {
                     >
                       <Box flex="1" textAlign="center">
                         <Text fontSize="lg">
-                          <strong>From:</strong> {load.pickUpLocation}
+                          <strong>From:</strong> {load.pickUpCity}
                           <Box as="span" ml="4" mr="4"></Box>
-                          <strong>To:</strong> {load.dropOffLocation}
+                          <strong>To:</strong> {load.dropOffCity}
                         </Text>
                       </Box>
                       <AccordionIcon />
@@ -163,9 +163,12 @@ export default function ActiveLoads() {
                         <GreenButton>Edit</GreenButton>
                       </Box>
                       <Box flex="1" ml="4">
-                        {" "}
-                        {/* Map Container */}
-                        <EmbeddedMap />
+                      <EmbeddedMap 
+  pickUpLAT={parseFloat(load.pickUpLAT)} 
+  pickUpLNG={parseFloat(load.pickUpLNG)} 
+  dropOffLAT={parseFloat(load.dropOffLAT)} 
+  dropOffLNG={parseFloat(load.dropOffLNG)} 
+                      />
                       </Box>
                     </Flex>
                   </AccordionPanel>
