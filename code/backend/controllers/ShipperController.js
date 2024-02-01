@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import Shipper from "../models/shipperModel.js";
 import Marketplace from "../models/marketplaceModel.js";
+import mongoose from "mongoose";
 
 // @desc    Update Shipper Contact Details
 // route    PUT /api/users/shippercontactdetails
@@ -114,42 +115,6 @@ const history = asyncHandler(async (req, res) => {
   };
 
   res.status(200).json({ user });
-});
-
-// @desc    Posting Load
-// route    POST /api/users/postload
-// @access  Private
-const postLoad = asyncHandler(async (req, res) => {
-  const {
-    pickUpLocation,
-    pickUpDate,
-    pickUpTime,
-    dropOffDate,
-    dropOffTime,
-    dropOffLocation,
-    unitRequested,
-    typeLoad,
-    sizeLoad,
-    additionalInformation,
-    additionalDocument,
-  } = req.body;
-
-  const postLoad = await Marketplace.create({
-    email: req.user.email,
-    pickUpLocation,
-    pickUpDate,
-    pickUpTime,
-    dropOffDate,
-    dropOffTime,
-    dropOffLocation,
-    unitRequested,
-    typeLoad,
-    sizeLoad,
-    additionalInformation,
-    additionalDocument,
-  });
-
-  res.status(200).json({ postLoad });
 });
 
 // @desc    Shipper Settings
@@ -350,8 +315,8 @@ const proofInsurance = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Remove Proof of Business
-// route    DELETE /api/users/proofBusiness
+// @desc    Remove Proof of Insurance
+// route    DELETE /api/users/proofBusinessinsurance
 // @access  Private
 const removeProofInsurance = asyncHandler(async (req, res) => {
   const email = req.user.email;
@@ -378,6 +343,68 @@ const removeProofInsurance = asyncHandler(async (req, res) => {
   } catch (error) {
     res.status(500).send({ message: "Server error", error: error.message });
   }
+});
+
+
+
+
+
+
+// @desc    Posting Load
+// route    POST /api/users/postload
+// @access  Private
+const postLoad = asyncHandler(async (req, res) => {
+  try {
+  const {
+    pickUpLocation,
+    pickUpDate,
+    pickUpTime,
+    dropOffDate,
+    dropOffTime,
+    dropOffLocation,
+    unitRequested,
+    typeLoad,
+    sizeLoad,
+    additionalInformation,
+    pickUpCity,
+    dropOffCity,
+    pickUpLAT,
+    pickUpLNG,
+    dropOffLAT,
+    dropOffLNG,
+  } = req.body;
+
+  let filename = null;
+    if (req.file && req.file.path) {
+      filename = req.file.path.split('\\').pop();
+    }
+
+  const newLoad = await Marketplace.create({
+    email: req.user.email,
+    pickUpLocation,
+    pickUpDate,
+    pickUpTime,
+    dropOffDate,
+    dropOffTime,
+    dropOffLocation,
+    unitRequested,
+    typeLoad,
+    sizeLoad,
+    additionalInformation,
+    additionalDocument: filename,
+    pickUpCity,
+    dropOffCity,
+    pickUpLAT,
+    pickUpLNG,
+    dropOffLAT,
+    dropOffLNG,
+    status: 'Pending',
+  });
+  res.status(200).json({ message: 'Load posted successfully', newLoad });
+} catch (error) {
+  console.error("Error in postLoad:", error);
+  res.status(500).send({ message: "Server error", error: error.message });
+}
 });
 
 export {
