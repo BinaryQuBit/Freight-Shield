@@ -167,11 +167,24 @@ export default function ActiveLoads() {
                           <strong>Unit Requested:</strong> {load.unitRequested}
                         </Text>
                         <Text fontSize="md" mb="2">
+                          <strong>Type of Load:</strong> {load.typeLoad}
+                        </Text>
+                        {load.typeLoad === "LTL" ? (
+                          <Text fontSize="md" mb="2">
+                            <strong>Size of Load:</strong> {load.sizeLoad} feet
+                          </Text>
+                        ) : (
+                          <Text fontSize="md" mb="2">
+                            <strong>Size of Load:</strong> Full Load
+                          </Text>
+                        )}
+
+                        <Text fontSize="md" mb="2">
                           <strong>Additional Information:</strong>{" "}
                           {load.additionalInformation}
                         </Text>
                         <Text fontSize="md" mb="2">
-                          <strong>Additional Documents:</strong>{" "}
+                          <strong>Additional Document:</strong>{" "}
                           {load.additionalDocument ? (
                             <a
                               href={`http://localhost:8080/uploads/${load.additionalDocument}`}
