@@ -16,6 +16,16 @@ const GooglePlacesAutocomplete = ({ type, name, placeholder, value, onChange, bo
         console.error('Google Maps JavaScript API not loaded');
         return;
       }
+
+    const modalContent = document.querySelector('.modal-content');
+
+    document.getElementById(autocompleteId).addEventListener('focus', () => {
+      const pacContainer = document.querySelector('.pac-container');
+      if (modalContent && pacContainer) {
+        modalContent.appendChild(pacContainer);
+        pacContainer.style.position = 'absolute';
+      }
+    });
     
       const autocomplete = new window.google.maps.places.Autocomplete(
         document.getElementById(autocompleteId),

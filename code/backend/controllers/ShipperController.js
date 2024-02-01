@@ -345,11 +345,6 @@ const removeProofInsurance = asyncHandler(async (req, res) => {
   }
 });
 
-
-
-
-
-
 // @desc    Posting Load
 // route    POST /api/users/postload
 // @access  Private
@@ -407,6 +402,25 @@ const postLoad = asyncHandler(async (req, res) => {
 }
 });
 
+// @desc    Updating Load
+// route    PUT /api/users/postload
+// @access  Private
+
+const updateLoad = asyncHandler(async (req, res) => {
+
+  const { id } = req.params;
+  const updateData = req.body;
+
+  try {
+    const updatedLoad = await Marketplace.findByIdAndUpdate(id, updateData, { new: true });
+    res.json(updatedLoad);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+
+
 export {
   activeLoads,
   history,
@@ -420,4 +434,5 @@ export {
   proofInsurance,
   removeProofBusiness,
   removeProofInsurance,
+  updateLoad,
 };
