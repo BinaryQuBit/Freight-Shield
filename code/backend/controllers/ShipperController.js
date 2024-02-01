@@ -398,6 +398,7 @@ const postLoad = asyncHandler(async (req, res) => {
     pickUpLNG,
     dropOffLAT,
     dropOffLNG,
+    status: 'Pending',
   });
   res.status(200).json({ message: 'Load posted successfully', newLoad });
 } catch (error) {
