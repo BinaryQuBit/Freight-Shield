@@ -98,6 +98,7 @@ router.get(
 
 router.post(
   "/postload",
+  upload.single('additionalDocument'),
   protect,
   shipperOnly,
   shipperDetailsComplete,
