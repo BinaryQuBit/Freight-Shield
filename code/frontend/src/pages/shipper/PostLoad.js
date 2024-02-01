@@ -43,7 +43,7 @@ const PostLoad = () => {
   const [dropOffTime, setDropOffTime] = useState();
   const [dropOffLocation, setDropOffLocation] = useState();
   const [unitRequested, setUnitRequested] = useState("Dry Van");
-  const [typeLoad, setTypeLoad] = useState("fullLoad");
+  const [typeLoad, setTypeLoad] = useState("Full Load");
   const [sizeLoad, setSizeLoad] = useState("47");
   const [additionalInformation, setAdditionalInformation] = useState("");
   const [additionalDocument, setAdditionalDocument] = useState(null);
@@ -133,7 +133,7 @@ const PostLoad = () => {
     setDropOffTime("");
     setDropOffLocation("");
     setUnitRequested("Dry Van");
-    setTypeLoad("fullLoad");
+    setTypeLoad("Full Load");
     setSizeLoad("47");
     setAdditionalInformation("");
     setAdditionalDocument(null);
@@ -400,7 +400,7 @@ const PostLoad = () => {
                     spacing={4}
                   >
                     <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={4}>
-                      <Radio color={customBlue} value="fullLoad">
+                      <Radio color={customBlue} value="Full Load">
                         Full Load
                       </Radio>
                       <Radio color={customBlue} value="LTL">

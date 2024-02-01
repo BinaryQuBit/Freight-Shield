@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { CiEdit } from "react-icons/ci";
-import { FiCompass } from "react-icons/fi";
+import { MdDelete, MdEditSquare } from "react-icons/md";
 import {
   Flex,
   Input,
@@ -24,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 import Easeout from "../../components/responsiveness/EaseOut.js";
 import BlueButton from "../../components/buttons/BlueButton.js";
 import { useTheme } from "@chakra-ui/react";
+import PostedLoadEdit from "../../components/editButton/PostedLoadEdit.js";
 
 export default function ActiveLoads() {
   //  Theme
@@ -36,6 +36,19 @@ export default function ActiveLoads() {
   const [filteredLoads, setFilteredLoads] = useState([]);
   const [loads, setLoads] = useState([]);
   const navigate = useNavigate();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedLoad, setSelectedLoad] = useState(null);
+
+  const openModal = (load) => {
+    setSelectedLoad(load);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedLoad(null);
+  };
 
   useEffect(() => {
     axios
@@ -154,12 +167,36 @@ export default function ActiveLoads() {
                           <strong>Unit Requested:</strong> {load.unitRequested}
                         </Text>
                         <Text fontSize="md" mb="2">
+                          <strong>Type of Load:</strong> {load.typeLoad}
+                        </Text>
+                        {load.typeLoad === "LTL" ? (
+                          <Text fontSize="md" mb="2">
+                            <strong>Size of Load:</strong> {load.sizeLoad} feet
+                          </Text>
+                        ) : (
+                          <Text fontSize="md" mb="2">
+                            <strong>Size of Load:</strong> Full Load
+                          </Text>
+                        )}
+
+                        <Text fontSize="md" mb="2">
                           <strong>Additional Information:</strong>{" "}
                           {load.additionalInformation}
                         </Text>
                         <Text fontSize="md" mb="2">
-                          <strong>Additional Documents:</strong>{" "}
-                          {load.additionalDocument}
+                          <strong>Additional Document:</strong>{" "}
+                          {load.additionalDocument ? (
+                            <a
+                              href={`http://localhost:8080/uploads/${load.additionalDocument}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{ color: "blue" }}
+                            >
+                              View Document
+                            </a>
+                          ) : (
+                            "None"
+                          )}
                         </Text>
                       </Box>
                       <Box flex="1" ml="4">
@@ -174,18 +211,19 @@ export default function ActiveLoads() {
                     <Flex justify={"space-between"}>
                       <BlueButton
                         color={customBlue}
-                        icon={<CiEdit />}
+                        icon={<MdEditSquare />}
                         mt="4"
                         w="90px"
                         children="Edit"
                         variant="blueBackwardButton"
+                        onClick={() => openModal(load)}
                       />
                       <BlueButton
                         color={customBlue}
-                        icon={<FiCompass />}
+                        icon={<MdDelete />}
                         mt="4"
                         w="90px"
-                        children="Track"
+                        children="Delete"
                         variant="blueForwardButton"
                       />
                     </Flex>
@@ -196,6 +234,11 @@ export default function ActiveLoads() {
           </Card>
         </Flex>
       </Easeout>
+      <PostedLoadEdit
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        load={selectedLoad}
+      />
     </>
   );
 }

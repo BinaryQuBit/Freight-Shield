@@ -43,6 +43,7 @@ import {
   proofInsurance,
   removeProofBusiness,
   removeProofInsurance,
+  updateLoad,
 } from "../controllers/ShipperController.js";
 
 import {
@@ -184,5 +185,13 @@ router.delete(
   deleteFile,
   removeProofInsurance
 );
+
+router.put(
+  "/postload/:id",
+  protect,
+  shipperOnly,
+  upload.fields([{ name: "additionalDocument", maxCount: 1 }]),
+  updateLoad,
+)
 
 export default router;

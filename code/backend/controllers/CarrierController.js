@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Carrier from "../models/carrierModel.js";
+import Marketplace from "../models/marketplaceModel.js";
 
 // @desc    Carrier Settings
 // route    GET /api/users/shippers
@@ -55,12 +56,13 @@ const driverProfile = asyncHandler(async (req, res) => {
 // route    GET /api/users/marketplace
 // @access  Private
 const marketplace = asyncHandler(async (req, res) => {
-  const user = {
-    _id: req.user._id,
-    email: req.user.email,
+  const allLoads = await Marketplace.find();
+
+  const response = {
+    loads: allLoads,
   };
 
-  res.status(200).json({ user });
+  res.status(200).json(response);
 });
 
 // @desc    Getting myloads
