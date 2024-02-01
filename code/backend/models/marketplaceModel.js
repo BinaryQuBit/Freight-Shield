@@ -68,6 +68,9 @@ const marketplaceSchema = mongoose.Schema(
     dropOffLNG: {
       type: String,
     },
+    status:{
+      type: String,
+    }
   },
   {
     timestamps: true,

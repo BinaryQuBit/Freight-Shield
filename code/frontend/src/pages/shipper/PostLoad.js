@@ -479,12 +479,12 @@ const PostLoad = () => {
                           href={additionalDocumentFileName}
                           target="_blank"
                           rel="noopener noreferrer"
-                          style={{ marginRight: "auto", color: customBlue }}
+                          style={{ marginRight: "auto", color: "blue" }}
                         >
                           View Additional Document
                         </a>
                         <FiXCircle
-                          color={customBlue}
+                          color="blue"
                           onClick={() =>
                             removeAdditionalDocument(additionalDocumentFileName)
                           }
@@ -497,11 +497,12 @@ const PostLoad = () => {
                         <label
                           htmlFor="additionalDocumentInput"
                           style={{ marginRight: "auto" }}
+                          color={customBlue}
                         >
                           Upload Additional Document
                         </label>
                         <FiUpload
-                          style={{ marginRight: "8px", color: customBlue }}
+                          style={{ marginRight: "8px", color: "blue" }}
                         />
                         <Input
                           type="file"
@@ -524,7 +525,7 @@ const PostLoad = () => {
                 <Flex justifyContent="space-between">
                   {/* This is Reset Button */}
                   <BlueButton
-                    backgroundColor="#0866FF"
+                    color={customBlue}
                     icon={<GrPowerReset />}
                     mt="4"
                     w="90px"
@@ -535,7 +536,7 @@ const PostLoad = () => {
 
                   {/* This is Post Button */}
                   <BlueButton
-                    backgroundColor="#0866FF"
+                    color={customBlue}
                     icon={<FiTruck />}
                     mt="4"
                     w="90px"

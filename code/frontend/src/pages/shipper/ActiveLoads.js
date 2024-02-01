@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { CiEdit } from "react-icons/ci";
+import { FiCompass } from "react-icons/fi";
 import {
   Flex,
   Input,
@@ -17,13 +19,17 @@ import {
 } from "@chakra-ui/react";
 import ShipperSideBar from "../../components/sidebar/ShipperSideBar";
 import UserHeader from "../../components/header/UserHeader";
-import { SidebarContext } from "../../components/responsiveness/Context";
-import GreenButton from "../../components/buttons/GreenButton.js";
 import EmbeddedMap from "../../components/google/EmbeddedMap.js";
 import { useNavigate } from "react-router-dom";
+import Easeout from "../../components/responsiveness/EaseOut.js";
+import BlueButton from "../../components/buttons/BlueButton.js";
+import { useTheme } from "@chakra-ui/react";
 
 export default function ActiveLoads() {
-  const { navSize } = useContext(SidebarContext);
+  //  Theme
+  const theme = useTheme();
+  const customBlue = theme.colors.customBlue;
+
   const [fromSearchTerm, setFromSearchTerm] = useState("");
   const [toSearchTerm, setToSearchTerm] = useState("");
   const [statusSearchTerm, setStatusSearchTerm] = useState("");
@@ -67,12 +73,7 @@ export default function ActiveLoads() {
   return (
     <>
       <ShipperSideBar activePage="activeLoads" />
-      <Flex
-        ml={navSize === "small" ? "50px" : "200px"}
-        transition="margin 0.3s ease-in-out"
-        justifyContent="center"
-        direction={"column"}
-      >
+      <Easeout>
         <UserHeader title="Active Loads" />
         <Flex
           pt={"10"}
@@ -93,9 +94,9 @@ export default function ActiveLoads() {
               placeholder="Select Status"
               onChange={(e) => setStatusSearchTerm(e.target.value)}
             >
-              <option value="In Transit">In Transit</option>
-              <option value="Delivered">Delivered</option>
               <option value="Pending">Pending</option>
+              <option value="Assigned">Assigned</option>
+              <option value="In Transit">In Transit</option>
             </Select>
           </Stack>
           <Card overflowX="auto" width="full" p="4">
@@ -111,6 +112,13 @@ export default function ActiveLoads() {
                           <strong>From:</strong> {load.pickUpCity}
                           <Box as="span" ml="4" mr="4"></Box>
                           <strong>To:</strong> {load.dropOffCity}
+                          <Badge
+                            colorScheme={getStatusColor(load.status)}
+                            p="1"
+                            float={"right"}
+                          >
+                            {load.status}
+                          </Badge>
                         </Text>
                       </Box>
                       <AccordionIcon />
@@ -118,17 +126,10 @@ export default function ActiveLoads() {
                   </h2>
                   <AccordionPanel pb={4}>
                     <Flex
-                      direction="row"
-                      align="center"
-                      justify="space-between"
+                      direction={{ base: "column", md: "column", lg: "row" }}
+                      align={{ lg: "center" }}
                     >
                       <Box flex="1">
-                        {" "}
-                        {/* Text Container*/}
-                        <Badge p="1" mr="2">
-                          {load.status}
-                          This is status
-                        </Badge>
                         <Text fontSize="md" mb="2">
                           <strong>Pickup Location:</strong>{" "}
                           {load.pickUpLocation}
@@ -160,16 +161,33 @@ export default function ActiveLoads() {
                           <strong>Additional Documents:</strong>{" "}
                           {load.additionalDocument}
                         </Text>
-                        <GreenButton>Edit</GreenButton>
                       </Box>
                       <Box flex="1" ml="4">
-                      <EmbeddedMap 
-  pickUpLAT={parseFloat(load.pickUpLAT)} 
-  pickUpLNG={parseFloat(load.pickUpLNG)} 
-  dropOffLAT={parseFloat(load.dropOffLAT)} 
-  dropOffLNG={parseFloat(load.dropOffLNG)} 
-                      />
+                        <EmbeddedMap
+                          pickUpLAT={parseFloat(load.pickUpLAT)}
+                          pickUpLNG={parseFloat(load.pickUpLNG)}
+                          dropOffLAT={parseFloat(load.dropOffLAT)}
+                          dropOffLNG={parseFloat(load.dropOffLNG)}
+                        />
                       </Box>
+                    </Flex>
+                    <Flex justify={"space-between"}>
+                      <BlueButton
+                        color={customBlue}
+                        icon={<CiEdit />}
+                        mt="4"
+                        w="90px"
+                        children="Edit"
+                        variant="blueBackwardButton"
+                      />
+                      <BlueButton
+                        color={customBlue}
+                        icon={<FiCompass />}
+                        mt="4"
+                        w="90px"
+                        children="Track"
+                        variant="blueForwardButton"
+                      />
                     </Flex>
                   </AccordionPanel>
                 </AccordionItem>
@@ -177,18 +195,18 @@ export default function ActiveLoads() {
             </Accordion>
           </Card>
         </Flex>
-      </Flex>
+      </Easeout>
     </>
   );
 }
 
 function getStatusColor(status) {
   switch (status.toLowerCase()) {
-    case "in transit":
-      return "blue";
-    case "delivered":
-      return "green";
     case "pending":
+      return "blue";
+    case "assigned":
+      return "green";
+    case "inTransit":
       return "orange";
     default:
       return "gray";
