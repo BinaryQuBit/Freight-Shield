@@ -59,8 +59,6 @@ const marketplace = asyncHandler(async (req, res) => {
   const allLoads = await Marketplace.find();
 
   const response = {
-    _id: req.user._id,
-    email: req.user.email,
     loads: allLoads,
   };
 
