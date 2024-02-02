@@ -78,10 +78,12 @@ export default function ActiveLoads() {
           ?.toLowerCase()
           .includes(toSearchTerm.toLowerCase()) &&
         (statusSearchTerm === "" ||
-          load?.status?.toLowerCase() === statusSearchTerm.toLowerCase())
+          load?.status?.toLowerCase() === statusSearchTerm.toLowerCase()) &&
+        load?.status?.toLowerCase() !== "delivered"
     );
     setFilteredLoads(filtered);
   }, [fromSearchTerm, toSearchTerm, statusSearchTerm, loads]);
+  
 
   return (
     <>

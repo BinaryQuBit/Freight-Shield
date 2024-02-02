@@ -12,7 +12,6 @@ import {
   FiMenu,
   FiSettings,
   FiTruck,
-  FiCompass,
   FiBook,
   FiLogOut,
   FiHome,
@@ -58,36 +57,35 @@ export default function ShipperSideBar({ activePage }) {
   return (
     <div style={{ width: navSize === "small" ? "50px" : "200px" }}>
       <Flex
- pos="fixed"
- top="0"
- zIndex="10"
- h="100vh"
- overflowY="auto"
- boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
- flexDir="column"
- justifyContent="flex-start"
- background={isDark ? "#343541" : "#E4E9F7"}
- w={navSize === "small" ? "50px" : "200px"}
- transition="width 0.3s ease-in-out"
+        pos="fixed"
+        top="0"
+        zIndex="10"
+        h="100vh"
+        overflowY="auto"
+        boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
+        flexDir="column"
+        justifyContent="flex-start"
+        background={isDark ? "#343541" : "#E4E9F7"}
+        w={navSize === "small" ? "50px" : "200px"}
+        transition="width 0.3s ease-in-out"
       >
         <Flex align="center" justify="center" p="5%" h="20%">
           <Logo color={isDark ? "white" : "#0866FF"} />
         </Flex>
         <Flex flexDir="column" as="nav" align="center" p="5%" flexGrow={1}>
-        <IconButton
-    aria-label="Open Menu"
-    size="lg"
-    variant="ghost"
-    icon={<FiMenu />}
-    onClick={() => setNavSize(navSize === "small" ? "large" : "small")}
-    sx={{
-        "&:hover": {
-            color: "white",
-            background: "#0866FF",
-        },
-    }}
-/>
-
+          <IconButton
+            aria-label="Open Menu"
+            size="lg"
+            variant="ghost"
+            icon={<FiMenu />}
+            onClick={() => setNavSize(navSize === "small" ? "large" : "small")}
+            sx={{
+              "&:hover": {
+                color: "white",
+                background: "#0866FF",
+              },
+            }}
+          />
 
           <NavItem
             navSize={navSize}
@@ -102,13 +100,6 @@ export default function ShipperSideBar({ activePage }) {
             title="Post a Load"
             active={activePage === "postLoad"}
             onClick={() => navigate("/postload")}
-          />
-          <NavItem
-            navSize={navSize}
-            icon={FiCompass}
-            title="Track a Load"
-            active={activePage === "trackLoad"}
-            onClick={() => navigate("/trackload")}
           />
           <NavItem
             navSize={navSize}
@@ -160,4 +151,4 @@ export default function ShipperSideBar({ activePage }) {
       </Flex>
     </div>
   );
-} 
+}
