@@ -45,6 +45,7 @@ export default function App() {
         <Route path="/trackLoad" element={<TrackLoad />} />
         <Route path="/history" element={<History />} />
         <Route path="/shippersettings" element={<ShipperSettings />} />
+        
         <Route path="/marketplace" element={<Marketplace />} />
         <Route path="/myloads" element={<MyLoads />} />
         <Route path="/driverprofile" element={<DriverProfile />} />
