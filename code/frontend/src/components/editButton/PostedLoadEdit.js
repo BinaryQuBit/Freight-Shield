@@ -110,8 +110,6 @@ const PostedLoadEdit = ({ isOpen, onClose, load }) => {
     onClose();
   };
 
-
-
   useEffect(() => {
     setPickUpLocation(load?.pickUpLocation || "");
     setPickUpDate(load?.pickUpDate || "");
@@ -136,7 +134,7 @@ const PostedLoadEdit = ({ isOpen, onClose, load }) => {
   const handleEdit = async (event) => {
     event.preventDefault();
     const loadId = load._id;
-    console.error('Load id ', loadId);
+    console.error("Load id ", loadId);
     const formData = new FormData();
     formData.append("pickUpLocation", pickUpLocation);
     formData.append("pickUpDate", pickUpDate);
@@ -159,19 +157,19 @@ const PostedLoadEdit = ({ isOpen, onClose, load }) => {
     }
 
     try {
-        const response = await axios.put(`/postload/${loadId}`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        navigate("/activeloads");
+      const response = await axios.put(`/postload/${loadId}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      navigate("/activeloads");
 
-        // This is a force reload
-        window.location.reload();
-      } catch (error) {
-        console.error("Error updating load:", error);
-      }
-    };
+      // This is a force reload
+      window.location.reload();
+    } catch (error) {
+      console.error("Error updating load:", error);
+    }
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={() => {}} size="3xl" isClosable={false}>
@@ -428,6 +426,11 @@ const PostedLoadEdit = ({ isOpen, onClose, load }) => {
                 <FormLabel>Additional Information</FormLabel>
               </FormControl>
 
+
+
+
+
+
               <FormControl mr={"1.5"} id="additionalDocument">
                 <FormLabel fontSize={"13.5px"} ml={"15px"}>
                   Additional Document
@@ -442,10 +445,10 @@ const PostedLoadEdit = ({ isOpen, onClose, load }) => {
                   position="relative"
                   rounded={"no"}
                 >
-                  {additionalDocumentFileName ? (
+                  {load?.additionalDocument ? (
                     <>
                       <a
-                        href={additionalDocumentFileName}
+                        href={`http://localhost:8080/uploads/${load?.additionalDocument}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{ marginRight: "auto", color: "blue" }}
@@ -455,7 +458,7 @@ const PostedLoadEdit = ({ isOpen, onClose, load }) => {
                       <FiXCircle
                         color="blue"
                         onClick={() =>
-                          removeAdditionalDocument(additionalDocumentFileName)
+                          removeAdditionalDocument(load?.additionalDocument)
                         }
                         cursor="pointer"
                         size="1.25em"
@@ -488,6 +491,11 @@ const PostedLoadEdit = ({ isOpen, onClose, load }) => {
                   )}
                 </Box>
               </FormControl>
+
+
+
+
+
 
               <Flex justifyContent="space-between">
                 {/* This is Close Button */}
