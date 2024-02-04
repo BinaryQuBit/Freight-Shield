@@ -44,6 +44,8 @@ import {
   removeProofBusiness,
   removeProofInsurance,
   updateLoad,
+  removeAdditionalDocument,
+  deleteLoad,
 } from "../controllers/ShipperController.js";
 
 import {
@@ -174,7 +176,7 @@ router.put(
   "/proofInsurance",
   protect,
   shipperOnly,
-  upload.fields([{ name: "proofInsurance", maxCount: 1 }]),
+  upload.fields([{ name: "proofInsurance", maxCount: 1 }]), 
   proofInsurance
 );
 
@@ -193,5 +195,22 @@ router.put(
   upload.fields([{ name: "additionalDocument", maxCount: 1 }]),
   updateLoad,
 )
+
+router.delete(
+  "/postload/:id/removeAdditionalDocument/:filename",
+  protect,
+  shipperOnly,
+  deleteFile,
+  removeAdditionalDocument
+);
+
+router.delete(
+  "/activeloads/:id/:filename",
+  protect,
+  shipperOnly,
+  deleteFile,
+  deleteLoad
+);
+
 
 export default router;

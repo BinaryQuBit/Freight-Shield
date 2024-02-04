@@ -27,53 +27,42 @@ import { FiTruck, FiUpload, FiXCircle } from "react-icons/fi";
 import { IoMdCloseCircle } from "react-icons/io";
 import BlueButton from "../buttons/BlueButton";
 
-const PostedLoadEdit = ({ isOpen, onClose, load }) => {
+const PostedLoadEdit = ({ isOpen, onClose, load, onLoadUpdate }) => {
+  // Navigate
+  const navigate = useNavigate();
   // Using Theme
   const theme = useTheme();
   const customBlue = theme.colors.customBlue;
-
-  // Navigate
-  const navigate = useNavigate();
 
   // Restrict the calender
   const today = new Date().toISOString().split("T")[0];
 
   // Initial States
-  const [pickUpLocation, setPickUpLocation] = useState(
-    load?.pickUpLocation || ""
-  );
-  const [pickUpDate, setPickUpDate] = useState(load?.pickUpDate || "");
-  const [pickUpTime, setPickUpTime] = useState(load?.pickUpTime || "");
-  const [dropOffDate, setDropOffDate] = useState(load?.dropOffDate || "");
-  const [dropOffTime, setDropOffTime] = useState(load?.dropOffTime || "");
-  const [dropOffLocation, setDropOffLocation] = useState(
-    load?.dropOffLocation || ""
-  );
-  const [unitRequested, setUnitRequested] = useState(
-    load?.unitRequested || "Dry Van"
-  );
-  const [typeLoad, setTypeLoad] = useState(load?.typeLoad || "fullLoad");
-  const [sizeLoad, setSizeLoad] = useState(load?.sizeLoad || "47");
-  const [additionalInformation, setAdditionalInformation] = useState(
-    load?.additionalInformation || ""
-  );
-  const [additionalDocument, setAdditionalDocument] = useState(
-    load?.additionalDocument || ""
-  );
-  const [additionalDocumentFileName, setAdditionalDocumentFileName] = useState(
-    load?.additionalDocumentFileName || ""
-  );
-  const [pickUpCity, setPickUpCity] = useState(load?.pickUpCity || "");
-  const [dropOffCity, setDropOffCity] = useState(load?.dropOffCity || "");
-  const [pickUpLAT, setPickUpLAT] = useState(load?.pickUpLAT || "");
-  const [pickUpLNG, setPickUpLNG] = useState(load?.pickUpLNG || "");
-  const [dropOffLAT, setDropOffLAT] = useState(load?.dropOffLAT || "");
-  const [dropOffLNG, setDropOffLNG] = useState(load?.dropOffLNG || "");
+  const [pickUpLocation, setPickUpLocation] = useState();
+  const [pickUpDate, setPickUpDate] = useState();
+  const [pickUpTime, setPickUpTime] = useState();
+  const [dropOffDate, setDropOffDate] = useState();
+  const [dropOffTime, setDropOffTime] = useState();
+  const [dropOffLocation, setDropOffLocation] = useState();
+  const [unitRequested, setUnitRequested] = useState("Dry Van");
+  const [typeLoad, setTypeLoad] = useState("Full Load");
+  const [sizeLoad, setSizeLoad] = useState("47");
+  const [additionalInformation, setAdditionalInformation] = useState("");
+  const [additionalDocument, setAdditionalDocument] = useState(null);
+  const [additionalDocumentFileName, setAdditionalDocumentFileName] =
+    useState("");
+  const [pickUpCity, setPickUpCity] = useState("");
+  const [dropOffCity, setDropOffCity] = useState("");
+  const [pickUpLAT, setPickUpLAT] = useState("");
+  const [pickUpLNG, setPickUpLNG] = useState("");
+  const [dropOffLAT, setDropOffLAT] = useState("");
+  const [dropOffLNG, setDropOffLNG] = useState("");
+  const [currentLoad, setCurrentLoad] = useState(load);
 
-  // Error States
   const [pickUpLocationError, setPickUpLocationError] = useState("");
   const [dropOffLocationError, setDropOffLocationError] = useState("");
   const [sizeLoadError, setSizeLoadError] = useState("");
+
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   // The date change
@@ -81,62 +70,33 @@ const PostedLoadEdit = ({ isOpen, onClose, load }) => {
     setPickUpDate(event.target.value);
   };
 
-  // Remove BLOB
-  const removeAdditionalDocument = (fileUrl) => {
-    try {
-      URL.revokeObjectURL(fileUrl);
-      setAdditionalDocument(null);
-      setAdditionalDocumentFileName("");
-
-      console.log("Additional document removed successfully.");
-    } catch (error) {
-      console.error("Error removing additional document:", error);
-    }
-  };
-
-  // Upload BLOB
-  const handleAdditionalDocumentChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setAdditionalDocument(file);
-
-      const fileURL = URL.createObjectURL(file);
-      setAdditionalDocumentFileName(fileURL);
-    }
-  };
-
-  // To close the modal
-  const handleCloseClick = () => {
-    onClose();
-  };
-
-
+  useEffect(() => {
+    setPickUpLocation(load?.pickUpLocation);
+    setPickUpDate(load?.pickUpDate);
+    setPickUpTime(load?.pickUpTime);
+    setDropOffDate(load?.dropOffDate);
+    setDropOffTime(load?.dropOffTime);
+    setDropOffLocation(load?.dropOffLocation);
+    setUnitRequested(load?.unitRequested);
+    setTypeLoad(load?.typeLoad);
+    setSizeLoad(load?.sizeLoad);
+    setAdditionalInformation(load?.additionalInformation);
+    setAdditionalDocument(load?.additionalDocument);
+    setAdditionalDocumentFileName(load?.additionalDocumentFileName);
+    setPickUpCity(load?.pickUpCity);
+    setDropOffCity(load?.dropOffCity);
+    setPickUpLAT(load?.pickUpLAT);
+    setPickUpLNG(load?.pickUpLNG);
+    setDropOffLAT(load?.dropOffLAT);
+    setDropOffLNG(load?.dropOffLNG);
+  }, [load]);
 
   useEffect(() => {
-    setPickUpLocation(load?.pickUpLocation || "");
-    setPickUpDate(load?.pickUpDate || "");
-    setPickUpTime(load?.pickUpTime || "");
-    setDropOffDate(load?.dropOffDate || "");
-    setDropOffTime(load?.dropOffTime || "");
-    setDropOffLocation(load?.dropOffLocation || "");
-    setUnitRequested(load?.unitRequested || "Dry Van");
-    setTypeLoad(load?.typeLoad || "fullLoad");
-    setSizeLoad(load?.sizeLoad || "47");
-    setAdditionalInformation(load?.additionalInformation || "");
-    setAdditionalDocument(load?.additionalDocument || "");
-    setAdditionalDocumentFileName(load?.additionalDocumentFileName || "");
-    setPickUpCity(load?.pickUpCity || "");
-    setDropOffCity(load?.dropOffCity || "");
-    setPickUpLAT(load?.pickUpLAT || "");
-    setPickUpLNG(load?.pickUpLNG || "");
-    setDropOffLAT(load?.dropOffLAT || "");
-    setDropOffLNG(load?.dropOffLNG || "");
+    setCurrentLoad(load);
   }, [load]);
 
   const handleEdit = async (event) => {
     event.preventDefault();
-    const loadId = load._id;
-    console.error('Load id ', loadId);
     const formData = new FormData();
     formData.append("pickUpLocation", pickUpLocation);
     formData.append("pickUpDate", pickUpDate);
@@ -159,19 +119,77 @@ const PostedLoadEdit = ({ isOpen, onClose, load }) => {
     }
 
     try {
-        const response = await axios.put(`/postload/${loadId}`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        navigate("/activeloads");
+      const response = await axios.put(`/postload/${load._id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      onLoadUpdate();
+      navigate("/activeloads");
+      handleCloseClick();
+    } catch (error) {
+      console.error("Error updating load:", error);
+    }
+  };
 
-        // This is a force reload
-        window.location.reload();
-      } catch (error) {
-        console.error("Error updating load:", error);
+  const handleAdditionalDocumentChange = (event) => {
+    const file = event.target.files[0];
+    console.log("This is frontend file: ", file);
+    if (file) {
+      setAdditionalDocument(file);
+      const fileURL = URL.createObjectURL(file);
+      setAdditionalDocumentFileName(fileURL);
+    }
+  };
+
+  const removeAdditionalDocument = (fileUrl) => {
+    try {
+      URL.revokeObjectURL(fileUrl);
+      setAdditionalDocument(null);
+      setAdditionalDocumentFileName("");
+
+      console.log("Additional document removed successfully.");
+    } catch (error) {
+      console.error("Error removing additional document:", error);
+    }
+  };
+
+  // To close the modal
+  const handleCloseClick = () => {
+    onClose();
+  };
+
+  const removeDocument = async () => {
+    try {
+      const filename = currentLoad.additionalDocument.split("/").pop();
+      if (!filename) {
+        console.error("Filename is undefined");
+        return;
       }
-    };
+      console.log("Removing file: ", filename);
+  
+      const url = `/postload/${currentLoad._id}/removeAdditionalDocument/${filename}`;
+      const response = await axios.delete(url, {
+        withCredentials: true,
+      });
+  
+      if (response.status === 200) {
+        console.log("Document removed successfully");
+        setCurrentLoad(prevLoad => ({
+          ...prevLoad,
+          additionalDocument: null,
+          additionalDocumentFileName: "",
+        }));
+        setAdditionalDocument(null);
+        setAdditionalDocumentFileName("");
+      } else {
+        console.error("Failed to remove the document");
+      }
+    } catch (error) {
+      console.error("Error removing the document:", error);
+    }
+  };
+
 
   return (
     <Modal isOpen={isOpen} onClose={() => {}} size="3xl" isClosable={false}>
@@ -430,7 +448,7 @@ const PostedLoadEdit = ({ isOpen, onClose, load }) => {
 
               <FormControl mr={"1.5"} id="additionalDocument">
                 <FormLabel fontSize={"13.5px"} ml={"15px"}>
-                  Additional Document
+                  Additional Documents
                 </FormLabel>
                 <Box
                   display="flex"
@@ -454,9 +472,30 @@ const PostedLoadEdit = ({ isOpen, onClose, load }) => {
                       </a>
                       <FiXCircle
                         color="blue"
-                        onClick={() =>
-                          removeAdditionalDocument(additionalDocumentFileName)
-                        }
+                        onClick={() => {
+                          removeAdditionalDocument(additionalDocumentFileName);
+                          removeDocument(load.additionalDocument);
+                        }}
+                        cursor="pointer"
+                        size="1.25em"
+                      />
+                    </>
+                  ) : load?.additionalDocument ? (
+                    <>
+                      <a
+                        href={`http://localhost:8080/uploads/${load.additionalDocument}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ marginRight: "auto", color: "blue" }}
+                      >
+                        View Existing Document
+                      </a>
+                      <FiXCircle
+                        color="blue"
+                        onClick={() => {
+                          removeAdditionalDocument(additionalDocumentFileName);
+                          removeDocument(load.additionalDocument);
+                        }}
                         cursor="pointer"
                         size="1.25em"
                       />

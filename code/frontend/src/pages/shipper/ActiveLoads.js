@@ -40,17 +40,7 @@ export default function ActiveLoads() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedLoad, setSelectedLoad] = useState(null);
 
-  const openModal = (load) => {
-    setSelectedLoad(load);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedLoad(null);
-  };
-
-  useEffect(() => {
+  const fetchLoads = () => {
     axios
       .get("/activeloads", { withCredentials: true })
       .then((response) => {
@@ -66,7 +56,26 @@ export default function ActiveLoads() {
           navigate("/login");
         }
       });
+  };
+
+  useEffect(() => {
+    fetchLoads();
   }, [navigate]);
+
+  const handleLoadUpdate = () => {
+    fetchLoads();
+  };
+
+  const openModal = (load) => {
+    setSelectedLoad(load);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedLoad(null);
+    handleLoadUpdate();
+  };
 
   useEffect(() => {
     const filtered = loads.filter(
@@ -78,10 +87,23 @@ export default function ActiveLoads() {
           ?.toLowerCase()
           .includes(toSearchTerm.toLowerCase()) &&
         (statusSearchTerm === "" ||
-          load?.status?.toLowerCase() === statusSearchTerm.toLowerCase())
+          load?.status?.toLowerCase() === statusSearchTerm.toLowerCase()) &&
+        load?.status?.toLowerCase() !== "delivered"
     );
     setFilteredLoads(filtered);
   }, [fromSearchTerm, toSearchTerm, statusSearchTerm, loads]);
+
+  const handleDeleteLoad = (loadId, filename) => {
+    axios.delete(`/activeloads/${loadId}/${filename}`, { withCredentials: true })
+      .then(() => {
+        console.log(`Load with id ${loadId} deleted successfully.`);
+        setLoads(currentLoads => currentLoads.filter(load => load.id !== loadId));
+        fetchLoads();
+      })
+      .catch(error => {
+      });
+  };
+  
 
   return (
     <>
@@ -104,12 +126,13 @@ export default function ActiveLoads() {
               onChange={(e) => setToSearchTerm(e.target.value)}
             />
             <Select
-              placeholder="Select Status"
+              placeholder="View All"
               onChange={(e) => setStatusSearchTerm(e.target.value)}
             >
               <option value="Pending">Pending</option>
               <option value="Assigned">Assigned</option>
               <option value="In Transit">In Transit</option>
+              <option value="Delayed">Delayed</option>
             </Select>
           </Stack>
           <Card overflowX="auto" width="full" p="4">
@@ -208,25 +231,79 @@ export default function ActiveLoads() {
                         />
                       </Box>
                     </Flex>
-                    <Flex justify={"space-between"}>
-                      <BlueButton
-                        color={customBlue}
-                        icon={<MdEditSquare />}
-                        mt="4"
-                        w="90px"
-                        children="Edit"
-                        variant="blueBackwardButton"
-                        onClick={() => openModal(load)}
-                      />
-                      <BlueButton
-                        color={customBlue}
-                        icon={<MdDelete />}
-                        mt="4"
-                        w="90px"
-                        children="Delete"
-                        variant="blueForwardButton"
-                      />
+                    <Flex
+                      direction={{ base: "column", md: "column", lg: "row" }}
+                      align={{ lg: "center" }}
+                    >
+                      {(load.status.toLowerCase() === "assigned" ||
+                        load.status.toLowerCase() === "in transit" ||
+                        load.status.toLowerCase() === "delayed") && (
+                        <Box flex={"1"}>
+                          <Text
+                            textAlign={"center"}
+                            pt={"10"}
+                            fontWeight={"bold"}
+                            fontSize={"18"}
+                          >
+                            Carrier Information
+                          </Text>
+                          <Text fontSize="md" mb="2">
+                            <strong>Name:</strong>
+                          </Text>
+                          <Text fontSize="md" mb="2">
+                            <strong>Phone Number:</strong>
+                          </Text>
+                          <Text fontSize={"md"} mb={"2"}>
+                            <strong>Email:</strong>
+                          </Text>
+                        </Box>
+                      )}
+                      {(load.status.toLowerCase() === "in transit" ||
+                        load.status.toLowerCase() === "delayed") && (
+                        <Box flex={"1"}>
+                          <Text
+                            textAlign={"center"}
+                            pt={"10"}
+                            fontWeight={"bold"}
+                            fontSize={"18"}
+                          >
+                            Driver Information
+                          </Text>
+                          <Text fontSize={"md"} mb={"2"}>
+                            <strong>Name:</strong>
+                          </Text>
+                          <Text fontSize={"md"} mb={"2"}>
+                            <strong>Phone Number:</strong>
+                          </Text>
+                          <Text fontSize={"md"} mb={"2"}>
+                            <strong>Email:</strong>
+                          </Text>
+                        </Box>
+                      )}
                     </Flex>
+
+                    {load.status.toLowerCase() === "pending" && (
+                      <Flex justify={"space-between"}>
+                        <BlueButton
+                          color={customBlue}
+                          icon={<MdEditSquare />}
+                          mt="4"
+                          w="90px"
+                          children="Edit"
+                          variant="blueBackwardButton"
+                          onClick={() => openModal(load)}
+                        />
+                        <BlueButton
+                          color={customBlue}
+                          icon={<MdDelete />}
+                          mt="4"
+                          w="90px"
+                          children="Delete"
+                          variant="blueForwardButton"
+                          onClick={() => handleDeleteLoad(load._id, load.additionalDocument)}
+                        />
+                      </Flex>
+                    )}
                   </AccordionPanel>
                 </AccordionItem>
               ))}
@@ -234,11 +311,14 @@ export default function ActiveLoads() {
           </Card>
         </Flex>
       </Easeout>
-      <PostedLoadEdit
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        load={selectedLoad}
-      />
+      {isModalOpen && (
+        <PostedLoadEdit
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          load={selectedLoad}
+          onLoadUpdate={handleLoadUpdate}
+        />
+      )}
     </>
   );
 }
@@ -248,9 +328,11 @@ function getStatusColor(status) {
     case "pending":
       return "blue";
     case "assigned":
-      return "green";
-    case "inTransit":
+      return "yellow";
+    case "in transit":
       return "orange";
+    case "delayed":
+      return "red";
     default:
       return "gray";
   }
