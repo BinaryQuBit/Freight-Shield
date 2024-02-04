@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
 import Shipper from "../models/shipperModel.js";
 import Marketplace from "../models/marketplaceModel.js";
-import mongoose from "mongoose";
+import { marketplace } from "./CarrierController.js";
 
 // @desc    Update Shipper Contact Details
 // route    PUT /api/users/shippercontactdetails
@@ -372,7 +372,10 @@ const postLoad = asyncHandler(async (req, res) => {
   let filename = null;
     if (req.file && req.file.path) {
       filename = req.file.path.split('\\').pop();
+      console.log("filename: ", filename);
     }
+    console.log("req.file: ", req.file);
+    console.log("req.file.path: ", req.file.path);
 
   const newLoad = await Marketplace.create({
     email: req.user.email,
@@ -402,22 +405,85 @@ const postLoad = asyncHandler(async (req, res) => {
 }
 });
 
-// @desc    Updating Load
+// @desc    Updating Load 
 // route    PUT /api/users/postload
 // @access  Private
-
 const updateLoad = asyncHandler(async (req, res) => {
-
   const { id } = req.params;
-  const updateData = req.body;
+  let updateData = { ...req.body };
 
+  if (req.files && req.files['additionalDocument'] && req.files['additionalDocument'].length) {
+    const filename = req.files['additionalDocument'][0].filename;
+    updateData.additionalDocument = filename;
+  } else {
+    console.log('No additionalDocument file uploaded');
+  }
   try {
-    const updatedLoad = await Marketplace.findByIdAndUpdate(id, updateData, { new: true });
+    const updatedLoad = await Marketplace.findByIdAndUpdate(id, { $set: updateData }, { new: true });
+    if (!updatedLoad) {
+      return res.status(404).json({ message: "Load not found" });
+    }
     res.json(updatedLoad);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error("Error in updateLoad:", error);
+    res.status(400).json({ message: "Error updating load", error: error.message });
   }
 });
+
+// @desc    Remove Addtional document
+// route    DELETE /api/users/postload
+// @access  Private
+const removeAdditionalDocument = asyncHandler(async (req, res) => {
+  const { id, filename } = req.params;
+  const load = await Marketplace.findById(id);
+  if (!load) {
+    return res.status(404).send({ message: "Load not found" });
+  }
+  if (!load.additionalDocument) {
+    return res
+      .status(400)
+      .send({ message: "No additional document file to delete." });
+  }
+  const storedFilename = load.additionalDocument.split("/").pop();
+  if (filename !== storedFilename) {
+    return res.status(400).send({ message: "Filename does not match." });
+  }
+  await Marketplace.findByIdAndUpdate(
+    id,
+    { $set: { additionalDocument: "" } },
+    { new: true }
+  );
+
+  const updatedLoad = await Marketplace.findById(id);
+  console.log('Updated Load:', updatedLoad);
+
+  if (updatedLoad.additionalDocument === null) {
+    res.send({ message: "Additional document deleted successfully." });
+  } else {
+    res.status(500).send({ message: "Failed to delete the additional document." });
+  }
+});
+
+// @desc    Delete Load
+// route    DELETE /api/users/activeloads/${loadId}
+// @access  Private
+const deleteLoad = async (req, res) => {
+  try {
+    const loadId = req.params.id;
+    
+    const load = await Marketplace.findByIdAndDelete(loadId);
+
+    if (!load) {
+      return res.status(404).json({ message: 'Load not found' });
+    }
+
+    res.status(200).json({ message: 'Load deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 
 
 
@@ -435,4 +501,6 @@ export {
   removeProofBusiness,
   removeProofInsurance,
   updateLoad,
+  removeAdditionalDocument,
+  deleteLoad,
 };
