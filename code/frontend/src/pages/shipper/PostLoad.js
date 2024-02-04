@@ -459,7 +459,7 @@ const PostLoad = () => {
                   <FormLabel>Additional Information</FormLabel>
                 </FormControl>
 
-                <FormControl mr={"1.5"} id="additionalDocument">
+                <FormControl mr={"1.5"} id="additionalDocument"> 
                   <FormLabel fontSize={"13.5px"} ml={"15px"}>
                     Additional Documents
                   </FormLabel>
