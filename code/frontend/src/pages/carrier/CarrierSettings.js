@@ -3,6 +3,9 @@ import React, { useEffect } from "react";
 import { Flex, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import EaseOut from "../../components/responsiveness/EaseOut"
+import UserHeader from "../../components/header/UserHeader";
+
 export default function CarrierSettings() {
   const navigate = useNavigate();
 
@@ -22,17 +25,13 @@ export default function CarrierSettings() {
         }
       });
   }, [navigate]);
-  
-  //return <Sidebar activePage="carrierSettings" />;
 
-  
   return (
-    <Flex>
+    <>
       <Sidebar activePage="carrierSettings" />
-      <Flex flex="1" justifyContent="center">
-        <Text>Active Load</Text>
-      </Flex>
-    </Flex>
-
-  ) ;
+      <EaseOut>
+        <UserHeader title="Carrier Settings" />
+      </EaseOut>
+    </>
+  );
 }

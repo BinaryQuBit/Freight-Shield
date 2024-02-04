@@ -3,6 +3,9 @@ import React, { useEffect } from "react";
 import { Flex, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import EaseOut from "../../components/responsiveness/EaseOut"
+import UserHeader from "../../components/header/UserHeader";
+
 export default function Marketplace() {
   const navigate = useNavigate(); 
   
@@ -23,15 +26,12 @@ export default function Marketplace() {
       });
   }, [navigate]);
 
-  //return <Sidebar activePage="marketplace" />;
-
   return (
-    <Flex>
+    <>
       <Sidebar activePage="marketplace" />
-      <Flex flex="1" justifyContent="center">
-        <Text>Marketplace</Text>
-      </Flex>
-    </Flex>
-
-  ) ;
+      <EaseOut>
+        <UserHeader title="Marketplace" />
+      </EaseOut>
+    </>
+  );
 }

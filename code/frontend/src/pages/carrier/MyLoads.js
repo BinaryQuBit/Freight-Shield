@@ -3,6 +3,9 @@ import React, { useEffect } from "react";
 import { Flex, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import EaseOut from "../../components/responsiveness/EaseOut"
+import UserHeader from "../../components/header/UserHeader";
+
 export default function MyLoads() {
   const navigate = useNavigate();
 
@@ -23,15 +26,12 @@ export default function MyLoads() {
       });
   }, [navigate]);
 
-  //return <Sidebar activePage="myLoads" />;
-
   return (
-    <Flex>
+    <>
       <Sidebar activePage="myLoads" />
-      <Flex flex="1" justifyContent="center">
-        <Text>My Loads</Text>
-      </Flex>
-    </Flex>
-
-  ) ;
+      <EaseOut>
+        <UserHeader title="My Loads" />
+      </EaseOut>
+    </>
+  );
 }
