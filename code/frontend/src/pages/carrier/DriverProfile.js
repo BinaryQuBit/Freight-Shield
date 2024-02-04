@@ -3,6 +3,9 @@ import React, { useEffect } from "react";
 import { Flex, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import EaseOut from "../../components/responsiveness/EaseOut"
+import UserHeader from "../../components/header/UserHeader";
+
 export default function DriverProfile() {
   const navigate = useNavigate();
 
@@ -23,15 +26,12 @@ export default function DriverProfile() {
       });
   }, [navigate]);
 
-  //return <Sidebar activePage="driverProfile" />;
-
   return (
-    <Flex>
+    <>
       <Sidebar activePage="driverProfile" />
-      <Flex flex="1" justifyContent="center">
-        <Text>Driver Profile</Text>
-      </Flex>
-    </Flex>
-
-  ) ;
+      <EaseOut>
+        <UserHeader title="Driver Profiles" />
+      </EaseOut>
+    </>
+  );
 }

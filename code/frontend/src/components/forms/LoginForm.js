@@ -42,33 +42,41 @@ export default function LoginForm() {
     try {
       const loginResponse = await axios.post("/login", { email, password });
   
+      // Check if login was successful
       if (![201, 200].includes(loginResponse.status)) {
         throw new Error('Login failed');
       }
   
+      // Extract the user role from the response
       const userRole = loginResponse.data.role;
   
-      const { data } = await axios.get("/login");
-      const isContactDetailsIncomplete = [
-        'firstName', 'lastName', 'companyPhoneNumber', 'streetAddress', 
-        'city', 'province', 'postalCode', 'country', 'mailingStreetAddress',
-        'mailingCity', 'mailingProvince', 'mailingPostalCode', 'mailingCountry'
-      ].some(field => data[0][field] == null);
-  
-      const isBusinessDetailsIncomplete = [
-        'businessName', 'businessNumber', 'proofBusiness', 'proofInsurance'
-      ].some(field => data[0][field] == null);
-  
-      if (isContactDetailsIncomplete) {
-        navigate("/shippercontactdetails");
+      // If the user is a carrier, navigate them directly to the marketplace
+      if (userRole === 'carrier') {
+        navigate("/marketplace");
         return;
       }
   
-      if (isBusinessDetailsIncomplete) {
-        navigate("/shipperbusinessdetails");
-        return;
-      }
+      if (userRole === 'shipper') {
+        const { data } = await axios.get("/login");
+        const isContactDetailsIncomplete = [
+          'firstName', 'lastName', 'companyPhoneNumber', 'streetAddress', 
+          'city', 'province', 'postalCode', 'country', 'mailingStreetAddress',
+          'mailingCity', 'mailingProvince', 'mailingPostalCode', 'mailingCountry'
+        ].some(field => data[0][field] == null);
   
+        const isBusinessDetailsIncomplete = [
+          'businessName', 'businessNumber', 'proofBusiness', 'proofInsurance'
+        ].some(field => data[0][field] == null);
+        if (isContactDetailsIncomplete) {
+          navigate("/shippercontactdetails");
+          return;
+        }
+  
+        if (isBusinessDetailsIncomplete) {
+          navigate("/shipperbusinessdetails");
+          return;
+        }
+      }
       navigateBasedOnUserRole(userRole);
   
     } catch (error) {
@@ -76,7 +84,6 @@ export default function LoginForm() {
     }
   };
   
-
   return (
     <Box p="4" w={{ base: "full", md: "50%" }}>
       <Card p="20px" maxWidth={{ base: "auto", md: "400px" }} mx="auto">
