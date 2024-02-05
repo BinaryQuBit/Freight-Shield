@@ -100,7 +100,7 @@ export default function Marketplace() {
   }, [navigate]);
 
   const [selectedLoadIndex, setSelectedLoadIndex] = useState(null);
-  const [isAssignCardOpen, setIsAssignCardOpen] = useState(false);
+  const [isAssignCardOpen, setIsAssignCardOpen] = useState(false); 
   const [selectedUnit, setSelectedUnit] = useState(null);
   //const [isOpen, setIsOpen] = useState(false);
 

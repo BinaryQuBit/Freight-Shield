@@ -119,6 +119,26 @@ const unitProfile = asyncHandler(async (req, res) => {
   res.status(200).json({ units: carrier.units });
 });
 
+// @desc    Assigning Unit
+// route    PUT /api/users/marketplace/:id
+// @access  Private
+const assignUnit = asyncHandler(async (req, res) => {
+  const loadId = req.params.id;
+  const { status, assignedUnit } = req.body;
+
+  const load = await Marketplace.findById(loadId);
+  if (!load) {
+    return res.status(404).json({ message: 'Load not found.' });
+  }
+
+  load.status = status;
+  load.assignedUnit = assignedUnit;
+
+  await load.save();
+
+  res.status(200).json({ message: 'Load updated successfully', load });
+});
+
 
 
 export {
@@ -129,4 +149,5 @@ export {
   myLoads,
   unitProfile,
   addUnit,
+  assignUnit,
 };

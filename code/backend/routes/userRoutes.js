@@ -21,6 +21,7 @@ import {
   myLoads,
   unitProfile,
   addUnit,
+  assignUnit,
 } from "../controllers/CarrierController.js";
 
 import {
@@ -84,6 +85,7 @@ router.get("/marketplace", protect, carrierOnly, marketplace);
 router.get("/myloads", protect, carrierOnly, myLoads);
 router.get("/unitprofile", protect, carrierOnly, unitProfile);
 router.post("/addunit", protect, carrierOnly, addUnit);
+router.put("/marketplace/:id", protect, carrierOnly, assignUnit )
 
 // @access only Shippers
 router.get(
