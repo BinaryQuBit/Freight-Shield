@@ -124,6 +124,7 @@ const unitProfile = asyncHandler(async (req, res) => {
 // @access  Private
 const assignUnit = asyncHandler(async (req, res) => {
   const loadId = req.params.id;
+  const carrierEmail = req.user.email;
   const { status, assignedUnit } = req.body;
 
   const load = await Marketplace.findById(loadId);
@@ -133,6 +134,7 @@ const assignUnit = asyncHandler(async (req, res) => {
 
   load.status = status;
   load.assignedUnit = assignedUnit;
+  load.carrierEmail = carrierEmail;
 
   await load.save();
 
