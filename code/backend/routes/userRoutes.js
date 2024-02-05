@@ -34,6 +34,7 @@ import {
   activeLoads,
   history,
   postLoad,
+  postTruck,
   shipperSettings,
   updateShipperSettings,
   trackLoad,
@@ -107,6 +108,11 @@ router.post(
   shipperDetailsComplete,
   postLoad
 );
+
+// Correct route definition
+router.post("/unitprofile", protect, carrierOnly, postTruck);
+
+
 
 router.get(
   "/shippersettings",

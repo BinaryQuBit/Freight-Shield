@@ -487,6 +487,46 @@ const deleteLoad = async (req, res) => {
 
 
 
+// @desc    Posting Truck
+// route    POST /api/users/posttruck
+// @access  Private
+const postTruck = asyncHandler(async (req, res) => {
+  try {
+    const {
+      unitNumber,
+      vin,
+      model,
+      year,
+      make,
+      mileage,
+      status,
+      additionalDetails,
+      insurance,
+      maintenanceHistory,
+    } = req.body;
+
+    const newTruck = await Truck.create({
+      unitNumber,
+      vin,
+      model,
+      year,
+      make,
+      mileage,
+      status,
+      additionalDetails,
+      insurance,
+      maintenanceHistory,
+    });
+
+    res.status(200).json({ message: 'Truck posted successfully', newTruck });
+  } catch (error) {
+    console.error("Error in postTruck:", error);
+    res.status(500).send({ message: "Server error", error: error.message });
+  }
+});
+
+
+
 export {
   activeLoads,
   history,
@@ -503,4 +543,5 @@ export {
   updateLoad,
   removeAdditionalDocument,
   deleteLoad,
+  postTruck,
 };
