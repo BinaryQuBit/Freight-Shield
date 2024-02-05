@@ -12,11 +12,22 @@ import {
   AccordionButton,
   AccordionItem,
   Accordion,
+  Select,
+  ModalHeader,
+  ModalContent,
+  ModalOverlay,
+  Modal,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Button,
 } from "@chakra-ui/react";
 import UserHeader from "../../components/header/UserHeader";
 import EmbeddedMap from "../../components/google/EmbeddedMap.js";
 import { useNavigate } from "react-router-dom";
-import EaseOut from "../../components/responsiveness/EaseOut"
+import EaseOut from "../../components/responsiveness/EaseOut";
+import GreenButton from "../../components/buttons/GreenButton";
+import BlueButton from "../../components/buttons/BlueButton";
 
 export default function Marketplace() {
   const navigate = useNavigate();
@@ -45,6 +56,7 @@ export default function Marketplace() {
       });
   }, [navigate]);
 
+  // get loads
   useEffect(() => {
     const filtered = loads.filter(
       (load) =>
@@ -63,6 +75,66 @@ export default function Marketplace() {
   const handleDetailsClick = (index) => {
     setSelectedDetailIndex(index === selectedDetailIndex ? null : index);
   };
+
+  // get units
+  const [units, setUnits] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/unitprofile", {
+          withCredentials: true,
+        });
+        setUnits(response.data.units);
+      } catch (error) {
+        console.error("Error Fetching Unit Profile: ", error);
+        if (
+          error.response &&
+          (error.response.status === 401 || error.response.status === 403)
+        ) {
+          navigate("/login");
+        }
+      }
+    };
+
+    fetchData();
+  }, [navigate]);
+
+  const [selectedLoadIndex, setSelectedLoadIndex] = useState(null);
+  const [isAssignCardOpen, setIsAssignCardOpen] = useState(false);
+  const [selectedUnit, setSelectedUnit] = useState(null);
+  //const [isOpen, setIsOpen] = useState(false);
+
+  const handleAcceptClick = (index) => {
+    setSelectedLoadIndex(index);
+    setIsAssignCardOpen(true);
+    setSelectedUnit(null); 
+  };
+
+  const handleAssignCardClose = () => {
+    setIsAssignCardOpen(false);
+    setSelectedLoadIndex(null);
+    setSelectedUnit(null);
+  };
+
+  const handleAssignUnit = async (unit) => {
+    try {
+      const response = await axios.put(`/marketplace/${loads[selectedLoadIndex]._id}`, {
+        status: "Assigned",
+        assignedUnit: unit,
+      }, { withCredentials: true });
+  
+      console.log("Load status updated successfully", response.data);
+  
+      // Close the modal and update the local state if needed
+      handleAssignCardClose();
+      // You might want to update the local state here if needed
+    } catch (error) {
+      console.error("Error updating load status: ", error);
+      // Handle the error, show a message, etc.
+    }
+  };
+  
+
 
   return (
     <>
@@ -92,6 +164,7 @@ export default function Marketplace() {
                   <th>From</th>
                   <th>To</th>
                   <th>Details</th>
+                  <th>Accept</th>
                 </tr>
               </thead>
               <tbody>
@@ -99,22 +172,25 @@ export default function Marketplace() {
                   <React.Fragment key={load.id}>
                     <tr>
                       <td style={{ textAlign: "center" }}>{load.pickUpCity}</td>
-                      <td style={{ textAlign: "center" }}>{load.dropOffCity}</td>
+                      <td style={{ textAlign: "center" }}>
+                        {load.dropOffCity}
+                      </td>
 
-                      <td onClick={() => handleDetailsClick(index)} colSpan="2">
+                      <td onClick={() => handleDetailsClick(index)} colSpan="1">
                         <Accordion allowToggle>
-                          <AccordionItem border={'none'} key={load.id} my="2">
+                          <AccordionItem border={"none"} key={load.id} my="2">
                             <AccordionButton
                               _expanded={{ bg: "gray.100", color: "black" }}
-                              
                             >
                               <Box flex={"1"}>
-                              <AccordionIcon />
+                                <AccordionIcon />
                               </Box>
-                              
                             </AccordionButton>{" "}
                           </AccordionItem>
                         </Accordion>
+                      </td>
+                      <td style={{ textAlign: "center" }}>
+                        <GreenButton onClick={() => handleAcceptClick(index)}>Accept</GreenButton>
                       </td>
                     </tr>
                     {selectedDetailIndex === index && (
@@ -130,7 +206,7 @@ export default function Marketplace() {
                               align={{ lg: "center" }}
                             >
                               <Box flex="1">
-                                <Text  fontSize="md" mb="2">
+                                <Text fontSize="md" mb="2">
                                   <strong>Pickup Location:</strong>{" "}
                                   {load.pickUpLocation}
                                 </Text>
@@ -187,6 +263,37 @@ export default function Marketplace() {
             </table>
           </Card>
         </Flex>
+
+        <Modal isOpen={isAssignCardOpen} onClose={handleAssignCardClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Modal Title</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Text>Select a unit to assign to this load:</Text>
+              <Select
+                value={selectedUnit}
+                onChange={(e) => setSelectedUnit(e.target.value)}
+              >
+                {units.map((unit) => (
+                  <option key={unit.unitNumber} value={unit.unitNumber}>
+                    {unit.unitNumber}
+                  </option>
+                ))}
+              </Select>
+            </ModalBody>
+
+            <ModalFooter>
+              <BlueButton
+                colorScheme="green"
+                onClick={() => handleAssignUnit(selectedUnit)}
+              >
+                Assign
+              </BlueButton>
+              <BlueButton onClick={handleAssignCardClose}>Cancel</BlueButton>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </EaseOut>
     </>
   );
