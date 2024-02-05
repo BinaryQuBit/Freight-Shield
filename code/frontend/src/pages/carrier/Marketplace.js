@@ -57,20 +57,20 @@ export default function Marketplace() {
   }, [navigate]);
 
   // get loads
-  useEffect(() => {
-    const filtered = loads.filter(
-      (load) =>
-        load?.pickUpLocation
-          ?.toLowerCase()
-          .includes(fromSearchTerm.toLowerCase()) &&
-        load?.dropOffLocation
-          ?.toLowerCase()
-          .includes(toSearchTerm.toLowerCase()) &&
-        (statusSearchTerm === "" ||
-          load?.status?.toLowerCase() === statusSearchTerm.toLowerCase())
-    );
-    setFilteredLoads(filtered);
-  }, [fromSearchTerm, toSearchTerm, statusSearchTerm, loads]);
+  // get loads
+useEffect(() => {
+  const filtered = loads.filter(
+    (load) =>
+      load?.pickUpLocation
+        ?.toLowerCase()
+        .includes(fromSearchTerm.toLowerCase()) &&
+      load?.dropOffLocation
+        ?.toLowerCase()
+        .includes(toSearchTerm.toLowerCase()) &&
+      !["assigned", "assigned"].includes(load?.status?.toLowerCase())
+  );
+  setFilteredLoads(filtered);
+}, [fromSearchTerm, toSearchTerm, statusSearchTerm, loads]);
 
   const handleDetailsClick = (index) => {
     setSelectedDetailIndex(index === selectedDetailIndex ? null : index);
@@ -118,21 +118,34 @@ export default function Marketplace() {
 
   const handleAssignUnit = async (unit) => {
     try {
-      const response = await axios.put(`/marketplace/${loads[selectedLoadIndex]._id}`, {
-        status: "Assigned",
-        assignedUnit: unit,
-      }, { withCredentials: true });
+      const response = await axios.put(
+        `/marketplace/${loads[selectedLoadIndex]._id}`,
+        {
+          status: "Assigned",
+          assignedUnit: unit,
+        },
+        { withCredentials: true }
+      );
   
       console.log("Load status updated successfully", response.data);
   
-      // Close the modal and update the local state if needed
+      // Update the local state to reflect the changes
+      const updatedLoads = [...loads];
+      updatedLoads[selectedLoadIndex] = {
+        ...updatedLoads[selectedLoadIndex],
+        status: "Assigned",
+        assignedUnit: unit,
+      };
+      setLoads(updatedLoads);
+  
+      // Close the modal
       handleAssignCardClose();
-      // You might want to update the local state here if needed
     } catch (error) {
       console.error("Error updating load status: ", error);
       // Handle the error, show a message, etc.
     }
   };
+  
   
 
 
