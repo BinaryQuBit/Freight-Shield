@@ -1,9 +1,10 @@
 import React from 'react';
-import { Button } from '@chakra-ui/react';
+import { Button, Box } from '@chakra-ui/react';
 
-export default function BlueButton({ mt, w, children, type, onClick, icon, variant, backgroundColor }) {
+export default function BlueButton({ mt, w, children, type, onClick, icon, variant, backgroundColor, floatSide, m }) {
   return (
-    <Button
+    <Box>
+<Button
       rounded={"no"}
       variant={variant}
       mt={mt}
@@ -11,10 +12,14 @@ export default function BlueButton({ mt, w, children, type, onClick, icon, varia
       type={type}
       onClick={onClick}
       colorVariant={backgroundColor}
+      float={floatSide}
+      m={m}
     >
       <div className="icon-wrapper">{icon}</div>
       <div className="content-wrapper">{children}</div>
     </Button>
+    </Box>
+    
   );
 }
 

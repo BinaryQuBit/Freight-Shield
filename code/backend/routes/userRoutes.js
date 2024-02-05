@@ -20,6 +20,7 @@ import {
   marketplace,
   myLoads,
   unitProfile,
+  addUnit,
 } from "../controllers/CarrierController.js";
 
 import {
@@ -82,6 +83,7 @@ router.get("/driverprofile", protect, carrierOnly, driverProfile);
 router.get("/marketplace", protect, carrierOnly, marketplace);
 router.get("/myloads", protect, carrierOnly, myLoads);
 router.get("/unitprofile", protect, carrierOnly, unitProfile);
+router.post("/addunit", protect, carrierOnly, addUnit);
 
 // @access only Shippers
 router.get(
@@ -108,11 +110,6 @@ router.post(
   shipperDetailsComplete,
   postLoad
 );
-
-// Correct route definition
-router.post("/unitprofile", protect, carrierOnly, postTruck);
-
-
 
 router.get(
   "/shippersettings",
