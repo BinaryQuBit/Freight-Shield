@@ -3,11 +3,30 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CustomDrawerContent = (props) => {
-  const handleLogout = () => {
+  const handleLogout = async () => {
     // Handle the logout logic
-    console.log('User logged out');
+    // Remove the token from AsyncStorage
+    try {
+      await AsyncStorage.removeItem('token');
+      //console.log('token removed');
+
+      // Verify if the token has been removed
+      const token = await AsyncStorage.getItem('token');
+      if (token === null) {
+          console.log('Token successfully removed, user logged out');
+      } else {
+          console.log('Token not removed, user still logged in');
+      }
+
+    } catch(e) {
+        // Error removing value
+        console.log(e);
+    }
+    
+    
     props.navigation.navigate('Welcome');
   };
 
@@ -15,7 +34,7 @@ const CustomDrawerContent = (props) => {
     <View style={styles.container}>
       <DrawerContentScrollView {...props}>
         <View style={styles.userProfileContainer}>
-            <Text style={styles.profileName}>Mohammed</Text>
+            <Text style={styles.profileName}>email</Text>
         </View>
         <DrawerItemList {...props} />
         {/* Additional components or items */}

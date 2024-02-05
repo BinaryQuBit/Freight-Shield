@@ -15,6 +15,8 @@ import { faClock, faBook, faTruckLoading, faMapMarked, faUser, faGear, faHome, f
 import LogBookScreen from '../screens/LogBookScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import MessageScreen from '../screens/MessageScreen';
+import LogBookScreen2 from '../screens/LogBookScreen2';
+
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -59,6 +61,7 @@ export default function DrawerRoutes() {
               ), 
             }}
           />
+          
           <Drawer.Screen 
             name="Current Map Screen" 
             component={CurrentMapScreen} 
@@ -71,6 +74,7 @@ export default function DrawerRoutes() {
             ), 
             }}
           />
+          {/*
           <Drawer.Screen 
             name="Message" 
             component={MessageScreen}
@@ -83,6 +87,7 @@ export default function DrawerRoutes() {
             ), 
             }}
           />
+          */}
           <Drawer.Screen 
             name="My Loads" 
             component={MyLoadScreen}
@@ -95,7 +100,19 @@ export default function DrawerRoutes() {
             ), 
             }}
           />
-          
+          <Drawer.Screen 
+            name="LogBook" 
+            component={LogBookScreen2}
+            options={{ headerTitleAlign: 'center',
+            drawerLabel: ({ color }) => (
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <FontAwesomeIcon icon={faBook} color={color} size={24} />
+                <Text style={{ color, marginLeft: 10 }}>LogBook</Text>
+              </View>
+            ), 
+            }}
+          />
+          {/*
           <Drawer.Screen 
             name="LogBook" 
             component={LogBookScreen} 
@@ -109,6 +126,7 @@ export default function DrawerRoutes() {
               ),
             }}
           />
+          */}
     
         </Drawer.Navigator>
       );

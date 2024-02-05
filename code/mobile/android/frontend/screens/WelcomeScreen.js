@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, Image, Button,TouchableOpacity, StyleSheet, Animated,TouchableWithoutFeedback, Dimensions } from 'react-native';
 import LoginForm from '../forms/LoginForm';
 import ForgotPasswordForm from '../forms/ForgotPasswordForm';
@@ -9,12 +9,13 @@ import { useFocusEffect } from '@react-navigation/native';
 const screenHeight = Dimensions.get('window').height;
 
 
-export default function WelcomeScreen({ navigation }) {
+export default function WelcomeScreen({ navigation}) {
   const [isModalVisible, setModalVisible] = useState(false);
   const animation = useRef(new Animated.Value(screenHeight)).current; // starting at screenHeight
   const [activeForm, setActiveForm] = useState('login'); // 'login' or 'forgotPassword'
   const logoAnimation = useRef(new Animated.Value(0)).current; // New animated value for the logo
-
+  //const [prefilledEmail, setPrefilledEmail] = useState('');
+  
   useFocusEffect(
     React.useCallback(() => {
       // Reset form fields when screen is focused
@@ -30,7 +31,9 @@ export default function WelcomeScreen({ navigation }) {
 
   const showLoginForm = () => {
     setActiveForm('login');
+    //setPrefilledEmail(email); // Set the email to state
   };
+  
 
   const slideUp = (formType) => {
     setActiveForm(formType); 
@@ -118,15 +121,14 @@ export default function WelcomeScreen({ navigation }) {
               ]}
             >
               {activeForm === 'login' && (
-                <LoginForm onForgotPassword={showForgotPassword}/>
-                
+                  <LoginForm onForgotPassword={showForgotPassword} />
               )}
               {activeForm === 'forgotPassword' && (
                 <ForgotPasswordForm onBackToLogin={showLoginForm} />
               )}
               {activeForm === 'signup' && (
-                <SignupForm />
-              )}
+                <SignupForm onSwitchToLogin={showLoginForm} />
+            )}
             </Animated.View>
             
           </View>

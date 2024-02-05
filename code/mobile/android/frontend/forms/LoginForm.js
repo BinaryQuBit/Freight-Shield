@@ -9,6 +9,9 @@ import {
 } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { EXPO_SERVER_IP } from "@env";
+
 
 const LoginForm = ({ onForgotPassword }) => {
   const [email, setEmail] = useState("");
@@ -18,19 +21,30 @@ const LoginForm = ({ onForgotPassword }) => {
   useFocusEffect(
     React.useCallback(() => {
       // Reset form fields when screen is focused
-      setEmail('');
-      setPassword('');
+      setEmail('Mohammed1@gmail.com');
+      setPassword('12345');
       //setActiveForm('login'); // Set the default active form
       // Add any other states that need to be reset
     }, [])
   );
 
   const handleLogin = async () => {
+    
+    console.log(`Email: ${email}, Password: ${password}`);
+    
     try {
       const response = await axios.post("http://142.3.84.67:8080/api/users/login", { email, password });
-
-      if (response.status === 201) {
-        navigation.navigate('Drawer', { screen: 'Home'});
+    
+      if (response.status === 200) {
+        // Save the token
+        const { token } = response.data;
+        AsyncStorage.setItem('token', token);
+        await AsyncStorage.setItem('token', token);
+        const storedToken = await AsyncStorage.getItem('token');
+        console.log('Stored token:', storedToken);
+  
+        // Navigate to the home screen
+        navigation.navigate('Drawer', { screen: 'Home', params: { email: email } });
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -40,6 +54,45 @@ const LoginForm = ({ onForgotPassword }) => {
       );
     }
   };
+
+//   const handleLogin = async () => {
+//   try {
+//     // Mock response for testing
+//     const response = {
+//       status: 201,
+//       data: {
+//         email: 'driver@driver.com',
+//         password: '12345'
+//       }
+//     };
+
+//     if (email === response.data.email && password === response.data.password) {
+//       navigation.navigate('Drawer', { screen: 'Home'});
+//     } else {
+//       console.error("Login error: Invalid credentials");
+//       Alert.alert("Invalid credentials");
+//     }
+//   } catch (error) {
+//     console.error("Login error:", error);
+//     Alert.alert("Login error", error.message);
+//   }
+// };
+
+  // const handleLogin = async () => {
+  //   try {
+  //     const response = await axios.post("http://142.3.84.67:8080/api/users/login", { email, password });
+      
+  //     if (response.status === 201) {
+  //       navigation.navigate('Drawer', { screen: 'Home'});
+  //     }
+  //   } catch (error) {
+  //     console.error("Login error:", error);
+  //     Alert.alert(
+  //       "Login Failed",
+  //       "Please check your credentials and try again."
+  //     );
+  //   }
+  // };
 
   return (
     <View style={styles.formContainer}>

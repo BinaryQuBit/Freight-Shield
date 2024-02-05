@@ -10,25 +10,33 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 
-const SignupForm = () => {
+const SignupForm = (props) => {
+    //const [firstName, setFirstName] = useState("");
+    //const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [dotNumber, setDotNumber] = useState("");
     const navigation = useNavigation();
 
+    
     const handleSignup = async () => {
         if (password !== confirmPassword) {
             Alert.alert("Signup Failed", "Passwords do not match.");
             return;
         }
-
+        /*firstName, lastName */
         try {
-            const response = await axios.post("http://142.3.84.67:8080/api/users/signup", { email, password, dotNumber });
+            const response = await axios.post("http://142.3.84.67:8080/api/users/register", { 
+        email, password, dotNumber });
 
             if (response.status === 201) {
                 Alert.alert("Signup Successful", "You can now login with your new account.");
-                navigation.navigate("Login");
+                props.onSwitchToLogin(email); // Use the prop here
+                //navigation.navigate("Welcome");
+                // this.props.navigation.navigate('WelcomeScreen', {
+                //     onGoBack: () => this.slideUp(),
+                // });
             }
         } catch (error) {
             Alert.alert("Signup Failed", "Please check your details and try again.");
@@ -36,6 +44,7 @@ const SignupForm = () => {
     };
 
     return (
+        
         <View style={styles.formContainer}>
             <TextInput
                 placeholder="DOT Number"
@@ -43,6 +52,23 @@ const SignupForm = () => {
                 value={dotNumber}
                 style={styles.input}
             />
+            {
+                /* 
+            <TextInput
+                placeholder="First Name"
+                onChangeText={setFirstName}
+                value={firstName}
+                style={styles.input}
+            />
+            <TextInput
+                placeholder="Last Name"
+                onChangeText={setLastName}
+                value={lastName}
+                style={styles.input}
+            />
+                */
+            }
+            
             <TextInput
                 placeholder="Email"
                 onChangeText={setEmail}
@@ -68,6 +94,7 @@ const SignupForm = () => {
                 <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableOpacity>
         </View>
+        
     );
 };
 

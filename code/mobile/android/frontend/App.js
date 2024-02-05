@@ -11,6 +11,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import WelcomeScreen from './screens/WelcomeScreen';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DrawerRoutes from './components/DrawerRoutes';
+import LogBookForm from './forms/LogBookForm';
+
 
 
 const Drawer = createDrawerNavigator();
@@ -44,6 +46,8 @@ export default function App() {
             <Stack.Navigator initialRouteName="Welcome">
               <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false, gestureEnabled: false }} />
               <Stack.Screen name="Drawer" component={DrawerRoutes} options={{ headerShown: false, gestureEnabled: false }} />
+              <Stack.Screen name="LogBookForm" component={LogBookForm} />
+              
             </Stack.Navigator>
           </SafeAreaView>
         </NavigationContainer>
