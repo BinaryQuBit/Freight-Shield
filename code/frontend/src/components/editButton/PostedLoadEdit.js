@@ -126,6 +126,7 @@ const PostedLoadEdit = ({ isOpen, onClose, load, onLoadUpdate }) => {
       });
       onLoadUpdate();
       navigate("/activeloads");
+      
       handleCloseClick();
     } catch (error) {
       console.error("Error updating load:", error);

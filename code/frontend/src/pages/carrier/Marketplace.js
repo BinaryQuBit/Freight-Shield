@@ -17,7 +17,6 @@ import UserHeader from "../../components/header/UserHeader";
 import EmbeddedMap from "../../components/google/EmbeddedMap.js";
 import { useNavigate } from "react-router-dom";
 import EaseOut from "../../components/responsiveness/EaseOut"
-import UserHeader from "../../components/header/UserHeader";
 
 export default function Marketplace() {
   const navigate = useNavigate();
@@ -68,7 +67,7 @@ export default function Marketplace() {
   return (
     <>
       <Sidebar activePage="marketplace" />
-      <Easeout>
+      <EaseOut>
         <UserHeader title="Loads" />
         <Flex
           pt={"10"}
@@ -188,7 +187,7 @@ export default function Marketplace() {
             </table>
           </Card>
         </Flex>
-      </Easeout>
+      </EaseOut>
     </>
   );
 }

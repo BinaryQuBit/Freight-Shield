@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { CiEdit } from "react-icons/ci";
-import { FiCompass } from "react-icons/fi";
+import { MdEditSquare, MdDelete } from "react-icons/md";
 import {
   Flex,
   Input,
@@ -24,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 import Easeout from "../../components/responsiveness/EaseOut.js";
 import BlueButton from "../../components/buttons/BlueButton.js";
 import { useTheme } from "@chakra-ui/react";
+import PostedLoadEdit from "../../components/editButton/PostedLoadEdit.js"
 
 export default function ActiveLoads() {
   //  Theme

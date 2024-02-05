@@ -77,17 +77,49 @@ const myLoads = asyncHandler(async (req, res) => {
   res.status(200).json({ user });
 });
 
+// @desc    Adding Unit Profiles
+// route    POST /api/users/addunit
+// @access  Private
+const addUnit = asyncHandler(async (req, res) => {
+  const email = req.user.email;
+  const unitData = req.body;
+
+  if (!email || !unitData) {
+    res.status(400).json({ message: 'Email and unit data are required.' });
+    return;
+  }
+
+  const carrier = await Carrier.findOne({ email });
+  if (!carrier) {
+    res.status(404).json({ message: 'Carrier not found.' });
+    return;
+  }
+  
+  try {
+    await carrier.addUnit(unitData);
+    res.status(200).json({ message: 'Unit added successfully', carrier });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 // @desc    Getting Unit Profiles
 // route    GET /api/users/unitprofiles
 // @access  Private
 const unitProfile = asyncHandler(async (req, res) => {
-  const user = {
-    _id: req.user._id,
-    email: req.user.email,
-  };
+  const email = req.user.email;
 
-  res.status(200).json({ user });
+  const carrier = await Carrier.findOne({ email });
+
+  if (!carrier) {
+    res.status(404).json({ message: 'Carrier not found.' });
+    return;
+  }
+
+  res.status(200).json({ units: carrier.units });
 });
+
+
 
 export {
   carrierSettings,
@@ -96,4 +128,5 @@ export {
   marketplace,
   myLoads,
   unitProfile,
+  addUnit,
 };
