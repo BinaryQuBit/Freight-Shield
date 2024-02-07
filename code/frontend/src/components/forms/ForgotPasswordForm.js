@@ -8,7 +8,7 @@ import {
   Card,
   Text,
 } from "@chakra-ui/react";
-import GreenButton from "../buttons/GreenButton";
+// import GreenButton from "../buttons/GreenButton";
 
 export default function ForgotPasswordForm() {
   return (
@@ -29,9 +29,9 @@ export default function ForgotPasswordForm() {
             />
           </FormControl>
 
-          <GreenButton mt="4" w="full">
+          {/* <GreenButton mt="4" w="full">
             Reset Password
-          </GreenButton>
+          </GreenButton> */}
           <Flex justify="center" mt="4">
             <Text as="b" mr={"2"} fontSize={"13"}>
               Already have an Account?

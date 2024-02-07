@@ -26,8 +26,8 @@ import UserHeader from "../../components/header/UserHeader";
 import EmbeddedMap from "../../components/google/EmbeddedMap.js";
 import { useNavigate } from "react-router-dom";
 import EaseOut from "../../components/responsiveness/EaseOut";
-import GreenButton from "../../components/buttons/GreenButton";
-import BlueButton from "../../components/buttons/BlueButton";
+// import GreenButton from "../../components/buttons/GreenButton";
+import CustomButton from "../../components/buttons/CustomButton";
 
 export default function Marketplace() {
   const navigate = useNavigate();
@@ -102,12 +102,12 @@ useEffect(() => {
   const [selectedLoadIndex, setSelectedLoadIndex] = useState(null);
   const [isAssignCardOpen, setIsAssignCardOpen] = useState(false); 
   const [selectedUnit, setSelectedUnit] = useState(null);
-  //const [isOpen, setIsOpen] = useState(false);
+  const [selectedLoadId, setSelectedLoadId] = useState(null);
 
-  const handleAcceptClick = (index) => {
-    setSelectedLoadIndex(index);
+  const handleAcceptClick = (loadId) => {
+    setSelectedLoadId(loadId);
     setIsAssignCardOpen(true);
-    setSelectedUnit(null); 
+    setSelectedUnit(null);
   };
 
   const handleAssignCardClose = () => {
@@ -116,10 +116,13 @@ useEffect(() => {
     setSelectedUnit(null);
   };
 
+  
   const handleAssignUnit = async (unit) => {
+    if (!selectedLoadId) return;
+  
     try {
       const response = await axios.put(
-        `/marketplace/${loads[selectedLoadIndex]._id}`,
+        `/marketplace/${selectedLoadId}`,
         {
           status: "Assigned",
           assignedUnit: unit,
@@ -130,19 +133,15 @@ useEffect(() => {
       console.log("Load status updated successfully", response.data);
   
       // Update the local state to reflect the changes
-      const updatedLoads = [...loads];
-      updatedLoads[selectedLoadIndex] = {
-        ...updatedLoads[selectedLoadIndex],
-        status: "Assigned",
-        assignedUnit: unit,
-      };
+      const updatedLoads = loads.map((load) =>
+        load._id === selectedLoadId ? { ...load, status: "Assigned", assignedUnit: unit } : load
+      );
       setLoads(updatedLoads);
   
-      // Close the modal
+      // Close the modal and reset selection
       handleAssignCardClose();
     } catch (error) {
       console.error("Error updating load status: ", error);
-      // Handle the error, show a message, etc.
     }
   };
   
@@ -203,7 +202,17 @@ useEffect(() => {
                         </Accordion>
                       </td>
                       <td style={{ textAlign: "center" }}>
-                        <GreenButton onClick={() => handleAcceptClick(index)}>Accept</GreenButton>
+                      <CustomButton
+              variant={"blueForwardButton"}
+              w={"100px"}
+              onClick={() => handleAcceptClick(load._id)}
+              backgroundColor="#42B72A"
+              children={"Accept"}
+              // icon={}
+              mt={"7"}
+              
+            />
+                      {/* <GreenButton onClick={() => handleAcceptClick(load._id)}>Accept</GreenButton> */}
                       </td>
                     </tr>
                     {selectedDetailIndex === index && (
@@ -297,13 +306,13 @@ useEffect(() => {
             </ModalBody>
 
             <ModalFooter>
-              <BlueButton
+              <CustomButton
                 colorScheme="green"
                 onClick={() => handleAssignUnit(selectedUnit)}
               >
                 Assign
-              </BlueButton>
-              <BlueButton onClick={handleAssignCardClose}>Cancel</BlueButton>
+              </CustomButton>
+              <CustomButton onClick={handleAssignCardClose}>Cancel</CustomButton>
             </ModalFooter>
           </ModalContent>
         </Modal>

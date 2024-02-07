@@ -105,7 +105,7 @@
 import CarrierSideBar from "../../components/sidebar/CarrierSideBar";
 import React, { useState, useEffect } from "react";
 import { useTheme } from "@chakra-ui/react";
-import BlueButton from "../../components/buttons/BlueButton";
+import CustomButton from "../../components/buttons/CustomButton";
 import { IoMdAddCircle } from "react-icons/io";
 import AddUnit from "../../components/editButton/UnitAdd";
 import {
@@ -161,7 +161,7 @@ const closeAddUnitModal = () => setIsAddUnitModalOpen(false);
       <CarrierSideBar activePage="unitProfile" />
       <EaseOut>
         <UserHeader title={"Unit Profiles"} />
-        <BlueButton
+        <CustomButton
           color={customBlue}
           w="90px"
           children="Add"

@@ -1,6 +1,5 @@
-// Model for Shippers which includes authentication and hashing
 import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
+import { hashPassword, comparePassword } from "../utils/HashPassword.js";
 
 const shipperSchema = mongoose.Schema(
   {
@@ -104,16 +103,14 @@ const shipperSchema = mongoose.Schema(
 );
 
 shipperSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    next();
+  if (this.isModified("password")) {
+    this.password = await hashPassword(this.password);
   }
-
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  next();
 });
 
-shipperSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+shipperSchema.methods.matchPassword = function (enteredPassword) {
+  return comparePassword(enteredPassword, this.password);
 };
 
 const Shipper = mongoose.model("Shipper", shipperSchema);

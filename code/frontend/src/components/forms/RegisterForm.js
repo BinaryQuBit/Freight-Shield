@@ -1,6 +1,7 @@
 import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { MdSwitchAccount } from "react-icons/md";
 import {
   Box,
   Button,
@@ -11,7 +12,7 @@ import {
   Text,
   Select,
 } from "@chakra-ui/react";
-import GreenButton from "../buttons/GreenButton";
+import CustomButton from "../buttons/CustomButton"
 import Terms from "../laws/TermsConditions";
 import Privacy from "../laws/PrivacyPolicy";
 
@@ -93,9 +94,15 @@ export default function RegisterForm() {
               />
             </FormControl>
 
-            <GreenButton w="full" mt={6} type="submit">
-              Create an account
-            </GreenButton>
+            <CustomButton
+              variant={"blueForwardButton"}
+              w={"100%"}
+              type={"submit"}
+              backgroundColor="#42B72A"
+              children={"Create an Account"}
+              icon={<MdSwitchAccount/>}
+              mt={"7"}
+            />
 
             <Flex justify="center" mt={"1"}>
               <Text as="b" fontSize={"10"}>

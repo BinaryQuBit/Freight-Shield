@@ -8,32 +8,38 @@ import EaseOut from "../../components/responsiveness/EaseOut";
 export default function MyLoads() {
   const navigate = useNavigate();
   const [loads, setLoads] = useState([]);
+  const [loginEmail, setLoginEmail] = useState(null);
 
   useEffect(() => {
-    axios
-      .get("/marketplace", { withCredentials: true })
+    axios.get("/marketplace", { withCredentials: true })
       .then((response) => {
-        console.log("My Loads Fetched Successfully", response.data.loads);
-        setLoads(response.data.loads); // Update state with fetched loads
+        setLoads(response.data.loads);
       })
       .catch((error) => {
-        console.error("Error Fetching My Loads: ", error);
-        if (
-          error.response &&
-          (error.response.status === 401 || error.response.status === 403)
-        ) {
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
           navigate("/login");
         }
       });
   }, [navigate]);
 
-  // Assuming carrierId is the property that should match
-const myCarrierId = "carrier@carrier.com"; // Replace with your actual carrierId
+  useEffect(() => {
+    const fetchShipperLoginDetails = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/users/login", { withCredentials: true });
+        if (response.data.email) {
+          setLoginEmail(response.data.email);
+        }
+      } catch (error) {
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+          navigate("/login");
+        }
+      }
+    };
 
-// Filter loads to include only those with matching carrierId
-const filteredLoads = loads.filter((load) => load.carrierEmail === myCarrierId);
+    fetchShipperLoginDetails();
+  }, [navigate]);
 
-
+  const filteredLoads = loads.filter((load) => load.carrierEmail === loginEmail);
 
   return (
     <>
@@ -46,18 +52,16 @@ const filteredLoads = loads.filter((load) => load.carrierEmail === myCarrierId);
                 <Th>From</Th>
                 <Th>To</Th>
                 <Th>Status</Th>
-                {/* Add more headers based on your load object */}
               </Tr>
             </Thead>
             <Tbody>
-            {filteredLoads.map((load) => (
-  <Tr key={load._id}>
-    <Td>{load.pickUpCity}</Td>
-    <Td>{load.dropOffCity}</Td>
-    <Td>{load.status}</Td>
-    {/* Add more cells based on your load object */}
-  </Tr>
-))}
+              {filteredLoads.map((load) => (
+                <Tr key={load._id}>
+                  <Td>{load.pickUpCity}</Td>
+                  <Td>{load.dropOffCity}</Td>
+                  <Td>{load.status}</Td>
+                </Tr>
+              ))}
             </Tbody>
           </Table>
         </Flex>
@@ -65,3 +69,4 @@ const filteredLoads = loads.filter((load) => load.carrierEmail === myCarrierId);
     </>
   );
 }
+

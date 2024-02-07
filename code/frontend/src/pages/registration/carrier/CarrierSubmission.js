@@ -2,17 +2,17 @@ import React, { useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-export default function CarrierBusinessDetails() {
+function CarrierSubmission() {
   const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get("/carrierbusinessdetails", { withCredentials: true })
+      .get("/carriersubmission", { withCredentials: true })
       .then((response) => {
-        console.log("Carrier Business Details Fetched Successfully");
+        console.log("Carrier Submission Fetched Successfully");
       })
       .catch((error) => {
-        console.error("Error Fetching Carrier Business Details: ", error);
+        console.error("Error Fetching Carrier Submission: ", error);
         if (
           error.response &&
           (error.response.status === 401 || error.response.status === 403)
@@ -22,6 +22,8 @@ export default function CarrierBusinessDetails() {
       });
   }, [navigate]);
   return (
-    <div>CarrierBusinessDetails</div>
+    <div>CarrierSubmission</div>
   )
 }
+
+export default CarrierSubmission
