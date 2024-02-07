@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-export default function CarrierBusinessDetails() {
+export default function CarrierContactDetails() {
   const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get("/carrierbusinessdetails", { withCredentials: true })
+      .get("/carriercontactdetails", { withCredentials: true })
       .then((response) => {
         console.log("Carrier Business Details Fetched Successfully");
       })
@@ -22,6 +22,6 @@ export default function CarrierBusinessDetails() {
       });
   }, [navigate]);
   return (
-    <div>CarrierBusinessDetails</div>
+    <div>CarrierCompanyDetails</div>
   )
 }

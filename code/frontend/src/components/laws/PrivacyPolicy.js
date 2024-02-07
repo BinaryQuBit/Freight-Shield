@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 
 import Logo from "../logo/Logo.svg";
-import GreenButton from "../buttons/GreenButton";
+// import GreenButton from "../buttons/GreenButton";
 
 export default function Privacy({ isPrivacyOpen, onClosePrivacy }) {
   return (
@@ -150,7 +150,7 @@ export default function Privacy({ isPrivacyOpen, onClosePrivacy }) {
           </UnorderedList>
         </ModalBody>
         <ModalFooter>
-          <GreenButton onClick={onClosePrivacy}>Close</GreenButton>
+          {/* <GreenButton onClick={onClosePrivacy}>Close</GreenButton> */}
         </ModalFooter>
       </ModalContent>
     </Modal>

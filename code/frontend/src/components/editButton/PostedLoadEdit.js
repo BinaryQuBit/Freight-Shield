@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {
@@ -25,7 +25,7 @@ import AutoCompletePlaces from "../google/AutoCompletePlaces";
 import { useTheme } from "@chakra-ui/react";
 import { FiTruck, FiUpload, FiXCircle } from "react-icons/fi";
 import { IoMdCloseCircle } from "react-icons/io";
-import BlueButton from "../buttons/BlueButton";
+import CustomButton from "../buttons/CustomButton";
 
 const PostedLoadEdit = ({ isOpen, onClose, load, onLoadUpdate }) => {
   // Navigate
@@ -531,7 +531,7 @@ const PostedLoadEdit = ({ isOpen, onClose, load, onLoadUpdate }) => {
 
               <Flex justifyContent="space-between">
                 {/* This is Close Button */}
-                <BlueButton
+                <CustomButton
                   color={customBlue}
                   icon={<IoMdCloseCircle />}
                   mt="4"
@@ -542,7 +542,7 @@ const PostedLoadEdit = ({ isOpen, onClose, load, onLoadUpdate }) => {
                 />
 
                 {/* This is Update Button */}
-                <BlueButton
+                <CustomButton
                   color={customBlue}
                   icon={<FiTruck />}
                   mt="4"

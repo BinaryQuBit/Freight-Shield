@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useTheme } from "@chakra-ui/react";
 import axios from "axios";
-import BlueButton from "../buttons/BlueButton";
+import CustomButton from "../buttons/CustomButton";
 import { useNavigate } from "react-router-dom";
 import { FiTruck } from "react-icons/fi";
 import {
@@ -423,7 +423,7 @@ export default function ShipperSubmissionDetails() {
           </FormControl>
           <Flex justifyContent={"space-between"} mt={"7"}>
             {/* This is Back Button */}
-            <BlueButton
+            <CustomButton
               backgroundColor="#0866FF"
               icon={<FiTruck />}
               mt="4"
@@ -434,7 +434,7 @@ export default function ShipperSubmissionDetails() {
             />
 
             {/* This is Next Button */}
-            <BlueButton
+            <CustomButton
               backgroundColor="#0866FF"
               icon={<FiTruck />}
               mt="4"

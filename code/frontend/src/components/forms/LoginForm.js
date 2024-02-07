@@ -1,6 +1,8 @@
 import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FiTruck } from "react-icons/fi";
 import axios from "axios";
+import CustomButton from "../buttons/CustomButton";
 import {
   Box,
   Button,
@@ -10,21 +12,15 @@ import {
   Text,
   Card,
 } from "@chakra-ui/react";
-import BlueButton from "../buttons/BlueButton";
-import { FiTruck } from "react-icons/fi";
 
-// Start of the Login Form Component
 export default function LoginForm() {
 
-  // Include Credentials in the request
   axios.defaults.withCredentials = true;
 
-  // Hooks/states for email and password
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   
-  // Helper function to navigate based on user role
   const navigateBasedOnUserRole = (userRole) => {
     const routes = {
       shipper: "/activeloads",
@@ -35,22 +31,18 @@ export default function LoginForm() {
     navigate(routes[userRole] || "/");
   };
   
-  // Start of the Login ~ What happens when the user clicks the login button
   const handleLogin = async (event) => {
     event.preventDefault();
   
     try {
       const loginResponse = await axios.post("/login", { email, password });
-  
-      // Check if login was successful
+
       if (![201, 200].includes(loginResponse.status)) {
         throw new Error('Login failed');
       }
   
-      // Extract the user role from the response
       const userRole = loginResponse.data.role;
   
-      // If the user is a carrier, navigate them directly to the marketplace
       if (userRole === 'carrier') {
         navigate("/marketplace");
         return;
@@ -58,6 +50,7 @@ export default function LoginForm() {
   
       if (userRole === 'shipper') {
         const { data } = await axios.get("/login");
+
         const isContactDetailsIncomplete = [
           'firstName', 'lastName', 'companyPhoneNumber', 'streetAddress', 
           'city', 'province', 'postalCode', 'country', 'mailingStreetAddress',
@@ -67,6 +60,7 @@ export default function LoginForm() {
         const isBusinessDetailsIncomplete = [
           'businessName', 'businessNumber', 'proofBusiness', 'proofInsurance'
         ].some(field => data[0][field] == null);
+
         if (isContactDetailsIncomplete) {
           navigate("/shippercontactdetails");
           return;
@@ -106,7 +100,7 @@ export default function LoginForm() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </FormControl>
-          <BlueButton
+          <CustomButton
             backgroundColor="#0866FF"
             icon={<FiTruck />}
             mt="4"
@@ -115,7 +109,6 @@ export default function LoginForm() {
             children="Log In"
             variant="blueForwardButton"
           />
-        </form>
         <Flex justify="center" mt="4">
           <Button
             variant="link"
@@ -126,8 +119,7 @@ export default function LoginForm() {
             Forgot Password?
           </Button>
         </Flex>
-        <Flex justify="center" mt="4">
-          <BlueButton
+          <CustomButton
             backgroundColor="#42B72A"
             icon={<FiTruck />}
             mt="4"
@@ -136,7 +128,7 @@ export default function LoginForm() {
             children="Create an Account"
             variant="blueForwardButton"
           />
-        </Flex>
+        </form>
       </Card>
       <Text textAlign="center" mt="2">
         <strong>Your Ultimate Loadboard Solution!</strong>

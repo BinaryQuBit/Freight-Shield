@@ -21,7 +21,7 @@ import UserHeader from "../../components/header/UserHeader";
 import EmbeddedMap from "../../components/google/EmbeddedMap.js";
 import { useNavigate } from "react-router-dom";
 import Easeout from "../../components/responsiveness/EaseOut.js";
-import BlueButton from "../../components/buttons/BlueButton.js";
+import CustomButton from "../../components/buttons/CustomButton.js";
 import { useTheme } from "@chakra-ui/react";
 import PostedLoadEdit from "../../components/editButton/PostedLoadEdit.js"
 
@@ -284,7 +284,7 @@ export default function ActiveLoads() {
 
                     {load.status.toLowerCase() === "pending" && (
                       <Flex justify={"space-between"}>
-                        <BlueButton
+                        <CustomButton
                           color={customBlue}
                           icon={<MdEditSquare />}
                           mt="4"
@@ -293,7 +293,7 @@ export default function ActiveLoads() {
                           variant="blueBackwardButton"
                           onClick={() => openModal(load)}
                         />
-                        <BlueButton
+                        <CustomButton
                           color={customBlue}
                           icon={<MdDelete />}
                           mt="4"

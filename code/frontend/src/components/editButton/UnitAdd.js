@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import BlueButton from "../buttons/BlueButton";
+import CustomButton from "../buttons/CustomButton";
 import { useTheme } from "@chakra-ui/react";
 import { FiUpload, FiXCircle } from "react-icons/fi";
 import { IoMdAddCircle } from "react-icons/io";
@@ -242,7 +242,7 @@ function AddUnit({ isOpen, onClose }) {
             </Flex>
             <Flex justifyContent="space-between">
                 {/* This is Close Button */}
-                <BlueButton
+                <CustomButton
                   color={customBlue}
                   icon={<IoMdCloseCircle />}
                   mt="4"
@@ -253,7 +253,7 @@ function AddUnit({ isOpen, onClose }) {
                 />
 
                 {/* This is Add Button */}
-                <BlueButton
+                <CustomButton
                   color={customBlue}
                   icon={<IoMdAddCircle />}
                   mt="4"

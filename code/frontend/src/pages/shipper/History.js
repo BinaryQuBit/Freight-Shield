@@ -22,7 +22,7 @@ import EaseOut from "../../components/responsiveness/EaseOut.js";
 import UserHeader from "../../components/header/UserHeader.js";
 import { useTheme } from "@chakra-ui/react";
 import EmbeddedMap from "../../components/google/EmbeddedMap.js";
-import BlueButton from "../../components/buttons/BlueButton.js";
+import CustomButton from "../../components/buttons/CustomButton.js";
 import { MdDelete, MdEditSquare } from "react-icons/md";
 
 export default function History() {

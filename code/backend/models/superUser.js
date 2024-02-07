@@ -1,6 +1,5 @@
-// Model for Super User which includes authentication and hashing
 import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
+import { hashPassword, comparePassword } from "../utils/HashPassword.js";
 
 const superUserSchema = mongoose.Schema(
   {
@@ -20,16 +19,14 @@ const superUserSchema = mongoose.Schema(
 );
 
 superUserSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    next();
+  if (this.isModified("password")) {
+    this.password = await hashPassword(this.password);
   }
-
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  next();
 });
 
-superUserSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+superUserSchema.methods.matchPassword = function (enteredPassword) {
+  return comparePassword(enteredPassword, this.password);
 };
 
 const SuperUser = mongoose.model("SuperUser", superUserSchema);

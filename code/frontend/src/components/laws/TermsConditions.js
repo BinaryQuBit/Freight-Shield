@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 
 import Logo from "../logo/Logo.svg";
-import GreenButton from "../buttons/GreenButton";
+// import GreenButton from "../buttons/GreenButton";
 
 export default function Terms({ isTermsOpen, onCloseTerms }) {
   return (
@@ -177,9 +177,9 @@ export default function Terms({ isTermsOpen, onCloseTerms }) {
           </UnorderedList>
         </ModalBody>
         <ModalFooter>
-          <GreenButton onClick={onCloseTerms}>
+          {/* <GreenButton onClick={onCloseTerms}>
             Close
-          </GreenButton>
+          </GreenButton> */}
         </ModalFooter>
       </ModalContent>
     </Modal>

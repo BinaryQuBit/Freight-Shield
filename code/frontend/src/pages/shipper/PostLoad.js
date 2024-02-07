@@ -24,7 +24,7 @@ import {
 import Sidebar from "../../components/sidebar/ShipperSideBar";
 import UserHeader from "../../components/header/UserHeader";
 import axios from "axios";
-import BlueButton from "../../components/buttons/BlueButton";
+import CustomButton from "../../components/buttons/CustomButton";
 
 const PostLoad = () => {
   // Navigation
@@ -65,6 +65,23 @@ const PostLoad = () => {
   const handlePickUpDateChange = (event) => {
     setPickUpDate(event.target.value);
   };
+
+  useEffect(() => {
+    axios
+      .get("/postload", { withCredentials: true })
+      .then((response) => {
+        console.log("PostLoad Fetched Successfully");
+      })
+      .catch((error) => {
+        console.error("Error Fetching PostLoad: ", error);
+        if (
+          error.response &&
+          (error.response.status === 401 || error.response.status === 403)
+        ) {
+          navigate("/login");
+        }
+      });
+  }, [navigate]);
 
   const handlePost = async (event) => {
     event.preventDefault();
@@ -524,7 +541,7 @@ const PostLoad = () => {
 
                 <Flex justifyContent="space-between">
                   {/* This is Reset Button */}
-                  <BlueButton
+                  <CustomButton
                     color={customBlue}
                     icon={<GrPowerReset />}
                     mt="4"
@@ -535,7 +552,7 @@ const PostLoad = () => {
                   />
 
                   {/* This is Post Button */}
-                  <BlueButton
+                  <CustomButton
                     color={customBlue}
                     icon={<FiTruck />}
                     mt="4"
