@@ -1,26 +1,10 @@
-import React, { useEffect } from "react";
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+
+import Protector from "../../../components/utils/methods/getters/Protector.js";
 
 export default function CarrierBusinessDetails() {
-  const navigate = useNavigate();
+  Protector("/carrierbusinessdetails")
 
-  useEffect(() => {
-    axios
-      .get("/carrierbusinessdetails", { withCredentials: true })
-      .then((response) => {
-        console.log("Carrier Business Details Fetched Successfully");
-      })
-      .catch((error) => {
-        console.error("Error Fetching Carrier Business Details: ", error);
-        if (
-          error.response &&
-          (error.response.status === 401 || error.response.status === 403)
-        ) {
-          navigate("/login");
-        }
-      });
-  }, [navigate]);
   return (
     <div>CarrierBusinessDetails</div>
   )

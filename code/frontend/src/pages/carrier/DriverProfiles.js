@@ -1,31 +1,11 @@
 import Sidebar from "../../components/sidebar/CarrierSideBar";
-import React, { useEffect } from "react";
-import { Flex, Text } from "@chakra-ui/react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import EaseOut from "../../components/responsiveness/EaseOut"
 import UserHeader from "../../components/header/UserHeader";
+import Protector from "../../components/utils/methods/getters/Protector.js"
 
 export default function DriverProfile() {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    axios
-      .get("/driverprofiles", { withCredentials: true })
-      .then((response) => {
-        console.log("Driver Profile Fetched Successfully");
-      })
-      .catch((error) => {
-        console.error("Error Fetching Driver Profile: ", error);
-        if (
-          error.response &&
-          (error.response.status === 401 || error.response.status === 403)
-        ) {
-          navigate("/login");
-        }
-      });
-  }, [navigate]);
-
+  Protector("/driverprofiles");
   return (
     <>
       <Sidebar activePage="driverProfile" />

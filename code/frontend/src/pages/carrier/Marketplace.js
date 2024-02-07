@@ -28,8 +28,10 @@ import { useNavigate } from "react-router-dom";
 import EaseOut from "../../components/responsiveness/EaseOut";
 // import GreenButton from "../../components/buttons/GreenButton";
 import CustomButton from "../../components/buttons/CustomButton";
+import Protector from "../../components/utils/methods/getters/Protector.js";
 
 export default function Marketplace() {
+  Protector("/marketplace");
   const navigate = useNavigate();
   const [loads, setLoads] = useState([]);
   const [fromSearchTerm, setFromSearchTerm] = useState("");
@@ -38,23 +40,7 @@ export default function Marketplace() {
   const [filteredLoads, setFilteredLoads] = useState([]);
   const [selectedDetailIndex, setSelectedDetailIndex] = useState(null);
 
-  useEffect(() => {
-    axios
-      .get("/marketplace", { withCredentials: true })
-      .then((response) => {
-        console.log("Marketplace Fetched Successfully", response.data);
-        setLoads(response.data.loads);
-      })
-      .catch((error) => {
-        console.error("Error Fetching Marketplace: ", error);
-        if (
-          error.response &&
-          (error.response.status === 401 || error.response.status === 403)
-        ) {
-          navigate("/marketplace");
-        }
-      });
-  }, [navigate]);
+
 
   // get loads
   // get loads

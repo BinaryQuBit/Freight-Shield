@@ -1,29 +1,12 @@
-import React, { useEffect } from "react";
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
 import Header from "../../../components/header/Header.js";
 import { RegistrationProgress } from '../../../components/progressBar/RegistrationProgess.js';
 import ShipperSubmissionDetails from '../../../components/forms/ShipperSubmissionDetails.js';
+import Protector from "../../../components/utils/methods/getters/Protector.js";
 
 function ShipperSubmission() {
-  const navigate = useNavigate();
+Protector("/shippersubmission")
 
-  useEffect(() => {
-    axios
-      .get("/shippersubmission", { withCredentials: true })
-      .then((response) => {
-        console.log("Shipper Submission Fetched Successfully");
-      })
-      .catch((error) => {
-        console.error("Error Shipper Submission: ", error);
-        if (
-          error.response &&
-          (error.response.status === 401 || error.response.status === 403)
-        ) {
-          navigate("/login");
-        }
-      });
-  }, [navigate]);
   return (
     <>
     <Header />

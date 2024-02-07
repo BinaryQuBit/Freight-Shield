@@ -5,6 +5,7 @@ import { useTheme } from "@chakra-ui/react";
 import { FiTruck, FiUpload, FiXCircle } from "react-icons/fi";
 import { GrPowerReset } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
+import Protector from "../../components/utils/methods/getters/Protector";
 // import Validation from "../../components/utils/Validation.js";
 import {
   Flex,
@@ -27,6 +28,7 @@ import axios from "axios";
 import CustomButton from "../../components/buttons/CustomButton";
 
 const PostLoad = () => {
+  Protector("/postload")
   // Navigation
   const navigate = useNavigate();
   // Using Theme
@@ -65,23 +67,6 @@ const PostLoad = () => {
   const handlePickUpDateChange = (event) => {
     setPickUpDate(event.target.value);
   };
-
-  useEffect(() => {
-    axios
-      .get("/postload", { withCredentials: true })
-      .then((response) => {
-        console.log("PostLoad Fetched Successfully");
-      })
-      .catch((error) => {
-        console.error("Error Fetching PostLoad: ", error);
-        if (
-          error.response &&
-          (error.response.status === 401 || error.response.status === 403)
-        ) {
-          navigate("/login");
-        }
-      });
-  }, [navigate]);
 
   const handlePost = async (event) => {
     event.preventDefault();
