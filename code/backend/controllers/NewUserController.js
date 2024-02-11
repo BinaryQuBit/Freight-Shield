@@ -46,7 +46,8 @@ const passLoginInformation = asyncHandler(async (req, res) => {
 // route    POST /api/users/login
 // @access  Public
 const loginUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  let { email, password } = req.body;
+  email = email.toLowerCase();
   const admin = await Admin.findOne({ email });
   const carrier = await Carrier.findOne({ email });
   const shipper = await Shipper.findOne({ email });

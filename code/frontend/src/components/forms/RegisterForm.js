@@ -108,6 +108,7 @@ export default function RegisterForm() {
     }
   };
 
+  // Start of UI
   return (
     <>
       <Box p="4" w={{ base: "full", md: "50%" }}>
