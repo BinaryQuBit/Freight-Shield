@@ -11,8 +11,10 @@ import { Box, Flex, Text, Card } from "@chakra-ui/react";
 
 // Custom Imports
 import CustomButton from "../buttons/CustomButton";
-import CustomFormControl from "../utils/forms/CustomInput";
+import CustomInput from "../utils/forms/CustomInput";
 import CustomLink from "../buttons/CustomLink";
+import { EmailValidation } from "../utils/validation/EmailValidation";
+import { PasswordValidation } from "../utils/validation/PasswordValidation";
 
 // Start of the Build
 export default function LoginForm() {
@@ -27,26 +29,33 @@ export default function LoginForm() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
+  // Password Visibility Hooks
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Functions
+  const toggleShowPassword = () => setShowPassword(!showPassword);
+
   // Login Handle
   const handleLogin = async (event) => {
     event.preventDefault();
 
-    // Validation
+    // Reset Error Hooks
     setEmailError("");
     setPasswordError("");
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isEmailValid = emailPattern.test(email);
-    const isPasswordValid = password.length >= 8;
-    if (!isEmailValid) {
-      setEmailError("Email is Invalid");
-      return;
-    }
-    if (!isPasswordValid) {
-      setPasswordError("Password must be at least 8 characters long");
-      return;
-    }
 
-    // Start of Post Method and Routing based on information
+    // Validation Checks
+    const emailError = EmailValidation(email);
+    const passwordError = PasswordValidation(password);
+
+    // Set Error
+    setEmailError(emailError);
+    setPasswordError(passwordError);
+
+    // Start of Post Method
+    if (emailError || passwordError) {
+      console.log(emailError, passwordError);
+      return;
+    }
     try {
       const loginResponse = await axios.post("/login", { email, password });
 
@@ -54,7 +63,7 @@ export default function LoginForm() {
         throw new Error("Login failed");
       }
 
-      const role = loginResponse.data;
+      const role = loginResponse.data.role;
 
       if (role === "carrier") {
         navigate("/marketplace");
@@ -64,7 +73,14 @@ export default function LoginForm() {
         navigate("/pending");
       }
     } catch (error) {
-      console.error("Login error:", error);
+      if (error.response && error.response.status === 400) {
+        console.error("Error: ", error.response.data.message);
+        if (error.response.data.message.includes("Invalid")) {
+          setPasswordError("Invalid Email or Password")
+        }
+      } else {
+      console.error("Error submitting form:", error);
+      }
     }
   };
 
@@ -78,25 +94,34 @@ export default function LoginForm() {
         rounded={"no"}
       >
         <form onSubmit={handleLogin} noValidate>
-          <CustomFormControl
+          <CustomInput
             id={"email"}
             label={"Email"}
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setEmailError("");
+            }}
             isError={!!emailError}
             errorMessage={emailError}
             isRequired={true}
-            mt={2}
+            type={"email"}
           />
-          <CustomFormControl
+          <CustomInput
             id={"password"}
             label={"Password"}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setPasswordError("");
+            }}
             isError={!!passwordError}
             errorMessage={passwordError}
             isRequired={true}
             mt={8}
+            isPassword={true}
+            showPassword={showPassword}
+            onToggleShowPassword={toggleShowPassword}
           />
           <CustomButton
             backgroundColor="#0866FF"
@@ -108,7 +133,8 @@ export default function LoginForm() {
             variant="blueForwardButton"
           />
           <Flex justify="center" mt="2">
-            <CustomLink 
+            <CustomLink
+              fontSize={"14px"}
               onClick={() => navigate("/forgotpassword")}
               children={"Forgot Password"}
             />
