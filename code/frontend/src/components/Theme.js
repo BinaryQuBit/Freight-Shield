@@ -49,7 +49,7 @@ const customTheme = extendTheme({
     Button: {
       variants: {
         blueForwardButton: (props) => {
-          const backgroundColor = props.colorVariant || "#0866FF";
+          const backgroundColor = props.colorvariant || "#0866FF";
           
           return {
             backgroundColor: backgroundColor,
@@ -90,7 +90,7 @@ const customTheme = extendTheme({
           };
         },
         blueBackwardButton: (props) => {
-          const backgroundColor = props.colorVariant || "#0866FF";
+          const backgroundColor = props.colorvariant || "#0866FF";
 
           return {
             color: "white",
@@ -141,7 +141,7 @@ const customTheme = extendTheme({
                 ...activeLabelStyles,
               },
             },
-            "input:not(:placeholder-shown) + label, .chakra-select__wrapper + label, textarea:not(:placeholder-shown) ~ label": {
+            "input:not(:placeholder-shown) ~ label, .chakra-select__wrapper:not(:placeholder-shown) ~ label, textarea:not(:placeholder-shown) ~ label": {
               ...activeLabelStyles,
             },
             label: {

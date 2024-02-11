@@ -76,6 +76,26 @@ const loginUser = asyncHandler(async (req, res) => {
       _id: shipper._id,
       email: shipper.email,
       role: "shipper",
+      firstName: shipper.firstName,
+      lastName: shipper.lastName,
+      companyPhoneNumber: shipper.companyPhoneNumber,
+      streetAddress: shipper.streetAddress,
+      apptNumber: shipper.apptNumber,
+      city: shipper.city,
+      province: shipper.province,
+      postalCode: shipper.postalCode,
+      country: shipper.country,
+      mailingStreetAddress: shipper.mailingStreetAddress,
+      mailingApptNumber: shipper.mailingApptNumber,
+      mailingCity: shipper.mailingCity,
+      mailingProvince: shipper.mailingProvince,
+      mailingPostalCode: shipper.mailingPostalCode,
+      mailingCountry: shipper.mailingCountry,
+      businessName: shipper.businessName,
+      businessNumber: shipper.businessNumber,
+      proofBusiness: shipper.proofBusiness,
+      proofInsurance: shipper.proofInsurance,
+      website: shipper.website,
     });
   }
 
@@ -96,9 +116,11 @@ const loginUser = asyncHandler(async (req, res) => {
 // route    POST /api/users/register
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { role, email, password, confirmPassword } = req.body;
-  const shipperExist = await Shipper.findOne({ email });
-  const carrierExist = await Carrier.findOne({ email });
+  let { role, email, password, confirmPassword } = req.body;
+  const shipperExist = await Shipper.findOne({ email }).collation({ locale: 'en', strength: 2 });
+  const carrierExist = await Carrier.findOne({ email }).collation({ locale: 'en', strength: 2 });
+
+  email = email.toLowerCase();
 
   if (shipperExist) {
     res.status(400);

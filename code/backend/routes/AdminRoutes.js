@@ -13,6 +13,7 @@ import {
 
 const router = express.Router();
 
+/////////////////////////////////////////////////////// GETTERS ///////////////////////////////////////////////////////
 router.get("/administrators", protect, adminOnly, administrators);
 router.get("/pending", protect, adminOnly, pending);
 router.get("/approved", protect, adminOnly, approved);

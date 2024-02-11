@@ -12,10 +12,6 @@ const shipperSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    role: {
-      type: String,
-      required: false,
-    },
     firstName: {
       type: String,
       required: false,
@@ -103,6 +99,9 @@ const shipperSchema = mongoose.Schema(
 );
 
 shipperSchema.pre("save", async function (next) {
+  if (this.isModified("email")) {
+    this.email = this.email.toLowerCase();
+  }
   if (this.isModified("password")) {
     this.password = await hashPassword(this.password);
   }

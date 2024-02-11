@@ -105,14 +105,14 @@ export default function CarrierSideBar({ activePage }) {
           icon={FaUserPlus}
           title="Driver Profiles"
           active={activePage === "driverProfile"}
-          onClick={() => navigate("/driverprofile")}
+          onClick={() => navigate("/driverprofiles")}
         />
         <NavItem
           navSize={navSize}
           icon={FaTruck}
           title="Unit Profiles"
           active={activePage === "unitProfile"}
-          onClick={() => navigate("/unitprofile")}
+          onClick={() => navigate("/unitprofiles")}
         />
 
         </Flex>
