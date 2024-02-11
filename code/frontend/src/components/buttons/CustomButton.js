@@ -11,7 +11,7 @@ export default function BlueButton({ mt, w, children, type, onClick, icon, varia
       w={w}
       type={type}
       onClick={onClick}
-      colorVariant={backgroundColor}
+      colorvariant={backgroundColor}
       float={floatSide}
       m={m}
     >

@@ -14,13 +14,14 @@ import {
 } from "@chakra-ui/react";
 
 import Logo from "../logo/Logo.svg";
-// import GreenButton from "../buttons/GreenButton";
+import CustomButton from "../buttons/CustomButton";
+import { IoMdCloseCircle } from "react-icons/io";
 
 export default function Privacy({ isPrivacyOpen, onClosePrivacy }) {
   return (
-    <Modal isOpen={isPrivacyOpen} onClose={onClosePrivacy}>
+    <Modal size="3xl" isOpen={isPrivacyOpen} onClose={onClosePrivacy}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent p={"30px"} rounded={"none"}>
         <Flex justifyContent="center">
           <Image src={Logo} w="200px" padding="5px" />
         </Flex>
@@ -150,7 +151,13 @@ export default function Privacy({ isPrivacyOpen, onClosePrivacy }) {
           </UnorderedList>
         </ModalBody>
         <ModalFooter>
-          {/* <GreenButton onClick={onClosePrivacy}>Close</GreenButton> */}
+          <CustomButton
+            variant={"blueForwardButton"}
+            w={"90px"}
+            onClick={onClosePrivacy}
+            children={"Close"}
+            icon={<IoMdCloseCircle />}
+          />
         </ModalFooter>
       </ModalContent>
     </Modal>
