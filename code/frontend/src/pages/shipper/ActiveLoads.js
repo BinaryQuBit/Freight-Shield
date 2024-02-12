@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { MdDelete, MdEditSquare } from "react-icons/md";
+import { MdEditSquare, MdDelete } from "react-icons/md";
 import {
   Flex,
   Input,
@@ -21,12 +21,14 @@ import UserHeader from "../../components/header/UserHeader";
 import EmbeddedMap from "../../components/google/EmbeddedMap.js";
 import { useNavigate } from "react-router-dom";
 import Easeout from "../../components/responsiveness/EaseOut.js";
-import BlueButton from "../../components/buttons/BlueButton.js";
+import CustomButton from "../../components/buttons/CustomButton.js";
 import { useTheme } from "@chakra-ui/react";
-import PostedLoadEdit from "../../components/editButton/PostedLoadEdit.js";
+import PostedLoadEdit from "../../components/editButton/PostedLoadEdit.js"
+import Protector from "../../components/utils/methods/getters/Protector.js";
 
 export default function ActiveLoads() {
-  //  Theme
+  Protector("/activeloads");
+
   const theme = useTheme();
   const customBlue = theme.colors.customBlue;
 
@@ -40,32 +42,6 @@ export default function ActiveLoads() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedLoad, setSelectedLoad] = useState(null);
 
-  const fetchLoads = () => {
-    axios
-      .get("/activeloads", { withCredentials: true })
-      .then((response) => {
-        setLoads(response.data);
-        console.log("Active Loads Fetched Successfully");
-      })
-      .catch((error) => {
-        console.error("Error Fetching Active Loads: ", error);
-        if (
-          error.response &&
-          (error.response.status === 401 || error.response.status === 403)
-        ) {
-          navigate("/login");
-        }
-      });
-  };
-
-  useEffect(() => {
-    fetchLoads();
-  }, [navigate]);
-
-  const handleLoadUpdate = () => {
-    fetchLoads();
-  };
-
   const openModal = (load) => {
     setSelectedLoad(load);
     setIsModalOpen(true);
@@ -74,7 +50,6 @@ export default function ActiveLoads() {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedLoad(null);
-    handleLoadUpdate();
   };
 
   useEffect(() => {
@@ -98,7 +73,6 @@ export default function ActiveLoads() {
       .then(() => {
         console.log(`Load with id ${loadId} deleted successfully.`);
         setLoads(currentLoads => currentLoads.filter(load => load.id !== loadId));
-        fetchLoads();
       })
       .catch(error => {
       });
@@ -284,7 +258,7 @@ export default function ActiveLoads() {
 
                     {load.status.toLowerCase() === "pending" && (
                       <Flex justify={"space-between"}>
-                        <BlueButton
+                        <CustomButton
                           color={customBlue}
                           icon={<MdEditSquare />}
                           mt="4"
@@ -293,7 +267,7 @@ export default function ActiveLoads() {
                           variant="blueBackwardButton"
                           onClick={() => openModal(load)}
                         />
-                        <BlueButton
+                        <CustomButton
                           color={customBlue}
                           icon={<MdDelete />}
                           mt="4"
@@ -316,7 +290,6 @@ export default function ActiveLoads() {
           isOpen={isModalOpen}
           onClose={closeModal}
           load={selectedLoad}
-          onLoadUpdate={handleLoadUpdate}
         />
       )}
     </>

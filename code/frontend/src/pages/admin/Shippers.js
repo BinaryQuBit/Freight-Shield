@@ -1,28 +1,11 @@
 import Sidebar from "../../components/sidebar/AdminSideBar";
-import React, { useEffect } from "react";
+import React from "react";
 import { Flex, Text } from "@chakra-ui/react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-export default function Shippers() {
-  const navigate = useNavigate();
+import Protector from "../../components/utils/methods/getters/Protector.js"
 
-  useEffect(() => {
-    axios
-      .get("/shippers", { withCredentials: true })
-      .then((response) => {
-        console.log("Shippers Fetched Successfully");
-      })
-      .catch((error) => {
-        console.error("Error Fetching Shippers: ", error);
-        if (
-          error.response &&
-          (error.response.status === 401 || error.response.status === 403)
-        ) {
-          navigate("/login");
-        }
-      });
-  }, [navigate]);
-  
+export default function Shippers() {
+  Protector("/shippers");
+
   return (
     <Flex>
       <Sidebar activePage="Shippers" />

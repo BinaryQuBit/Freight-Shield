@@ -5,6 +5,7 @@ import { useTheme } from "@chakra-ui/react";
 import { FiTruck, FiUpload, FiXCircle } from "react-icons/fi";
 import { GrPowerReset } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
+import Protector from "../../components/utils/methods/getters/Protector";
 // import Validation from "../../components/utils/Validation.js";
 import {
   Flex,
@@ -24,9 +25,10 @@ import {
 import Sidebar from "../../components/sidebar/ShipperSideBar";
 import UserHeader from "../../components/header/UserHeader";
 import axios from "axios";
-import BlueButton from "../../components/buttons/BlueButton";
+import CustomButton from "../../components/buttons/CustomButton";
 
 const PostLoad = () => {
+  Protector("/postload")
   // Navigation
   const navigate = useNavigate();
   // Using Theme
@@ -524,7 +526,7 @@ const PostLoad = () => {
 
                 <Flex justifyContent="space-between">
                   {/* This is Reset Button */}
-                  <BlueButton
+                  <CustomButton
                     color={customBlue}
                     icon={<GrPowerReset />}
                     mt="4"
@@ -535,7 +537,7 @@ const PostLoad = () => {
                   />
 
                   {/* This is Post Button */}
-                  <BlueButton
+                  <CustomButton
                     color={customBlue}
                     icon={<FiTruck />}
                     mt="4"

@@ -1,37 +1,56 @@
-// Model for Carriers which includes authentication and hashing
 import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
+import { hashPassword, comparePassword } from "../utils/HashPassword.js";
 
-const carrierSchema = mongoose.Schema(
-  {
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
+const unitSchema = new mongoose.Schema({
+  unitNumber: {
+    type: String,
+    unique: true
   },
-  {
-    timestamps: true,
-  }
-);
 
-carrierSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    next();
-  }
+  unitType: { type: String },
+  unitMake: { type: String },
+  unitModel: { type: String },
+  unitYear: { type: Number },
+  unitVIN: { type: String },
+  unitLicensePlate: { type: String },
+  unitStatus: { type: String, enum: ['active', 'inactive', 'maintenance'] },
+}, { _id: false, timestamps: true });
 
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+const carrierSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  units: [unitSchema],
+}, {
+  timestamps: true,
 });
 
-carrierSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+carrierSchema.pre("save", async function (next) {
+  if (this.isModified("password")) {
+    this.password = await hashPassword(this.password);
+  }
+  next();
+});
+
+carrierSchema.methods.matchPassword = function (enteredPassword) {
+  return comparePassword(enteredPassword, this.password);
 };
 
-const Carrier = mongoose.model("Carrier", carrierSchema);
+carrierSchema.methods.addUnit = async function (unitData) {
 
+  const unitExists = this.units.some(unit => unit.unitNumber === unitData.unitNumber);
+  if (unitExists) {
+    throw new Error('Unit number must be unique within the carrier.');
+  }
+  this.units.push(unitData);
+  await this.save();
+};
+
+const Carrier = mongoose.model('Carrier', carrierSchema);
 export default Carrier;

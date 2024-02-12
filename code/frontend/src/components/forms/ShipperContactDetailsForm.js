@@ -13,7 +13,7 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import axios from "axios";
-import BlueButton from "../buttons/BlueButton";
+import CustomButton from "../buttons/CustomButton";
 import logout from "../methods/logout";
 import { FiTruck } from "react-icons/fi";
 
@@ -582,7 +582,7 @@ export default function ShipperCompanyDetailsForm() {
 
           <Flex justifyContent={"space-between"} mt={"7"}>
             {/* This is Logout Button */}
-            <BlueButton
+            <CustomButton
               backgroundColor="#0866FF"
               icon={<FiTruck />}
               mt="4"
@@ -593,7 +593,7 @@ export default function ShipperCompanyDetailsForm() {
             />
 
             {/* This is Next Button */}
-            <BlueButton
+            <CustomButton
               backgroundColor="#0866FF"
               icon={<FiTruck />}
               mt="4"

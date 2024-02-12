@@ -12,19 +12,20 @@ import Carriers from "./pages/admin/Carriers.js"
 import AdminSettings from "./pages/admin/AdminSettings.js"
 import ActiveLoads from "./pages/shipper/ActiveLoads.js"
 import PostLoad from "./pages/shipper/PostLoad.js";
-import TrackLoad from "./pages/shipper/TrackLoad.js";
 import History from "./pages/shipper/History.js";
 import ShipperSettings from "./pages/shipper/ShipperSettings.js";
 import Marketplace from "./pages/carrier/Marketplace.js";
 import MyLoads from "./pages/carrier/MyLoads.js";
-import DriverProfile from "./pages/carrier/DriverProfile.js";
-import UnitProfile from "./pages/carrier/UnitProfile.js";
+import DriverProfiles from "./pages/carrier/DriverProfiles.js";
+import UnitProfiles from "./pages/carrier/UnitProfiles.js";
 import CarrierSettings from "./pages/carrier/CarrierSettings.js";
 import CarrierBusinessDetails from "./pages/registration/carrier/CarrierBusinessDetails.js"
-import CarrierCompanyDetails from "./pages/registration/carrier/CarrierCompanyDetails.js"
+import CarrierContactDetails from "./pages/registration/carrier/CarrierContactDetails.js"
+import CarrierSubmission from "./pages/registration/carrier/CarrierSubmission.js";
 import ShipperBusinessDetails from "./pages/registration/shipper/ShipperBusinessDetails.js"
 import ShipperContactDetails from "./pages/registration/shipper/ShipperContactDetails.js"
 import ShipperSubmission from "./pages/registration/shipper/ShipperSubmission.js";
+
 
 export default function App() {
   return (
@@ -41,17 +42,17 @@ export default function App() {
         <Route path="/carriers" element={<Carriers />} />
         <Route path="/adminsettings" element={<AdminSettings />} />
         <Route path="/activeloads" element={<ActiveLoads />} />
-        <Route path="/postLoad" element={<PostLoad />} />
-        <Route path="/trackLoad" element={<TrackLoad />} />
+        <Route path="/postload" element={<PostLoad />} />
         <Route path="/history" element={<History />} />
         <Route path="/shippersettings" element={<ShipperSettings />} />
         <Route path="/marketplace" element={<Marketplace />} />
         <Route path="/myloads" element={<MyLoads />} />
-        <Route path="/driverprofile" element={<DriverProfile />} />
-        <Route path="/unitprofile" element={<UnitProfile />} />
+        <Route path="/driverprofiles" element={<DriverProfiles />} />
+        <Route path="/unitprofiles" element={<UnitProfiles />} />
         <Route path="/carriersettings" element={<CarrierSettings />} />
         <Route path="/carrierbusinessdetails" element={<CarrierBusinessDetails/>} />
-        <Route path="/carriercompanydetails" element={<CarrierCompanyDetails/>} />
+        <Route path="/carriercontactdetails" element={<CarrierContactDetails/>} />
+        <Route path="/carriersubmission" element={<CarrierSubmission/>} />
         <Route path="/shipperbusinessdetails" element={<ShipperBusinessDetails/>} />
         <Route path="/shippercontactdetails" element={<ShipperContactDetails/>} />
         <Route path="/shippersubmission" element={<ShipperSubmission/>} />

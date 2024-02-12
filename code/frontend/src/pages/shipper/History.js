@@ -5,7 +5,6 @@ import {
   Text,
   Stack,
   Input,
-  Select,
   Card,
   Accordion,
   AccordionItem,
@@ -14,18 +13,18 @@ import {
   Badge,
   AccordionIcon,
   AccordionPanel,
-  Divider,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import EaseOut from "../../components/responsiveness/EaseOut.js";
 import UserHeader from "../../components/header/UserHeader.js";
 import { useTheme } from "@chakra-ui/react";
-import EmbeddedMap from "../../components/google/EmbeddedMap.js";
-import BlueButton from "../../components/buttons/BlueButton.js";
-import { MdDelete, MdEditSquare } from "react-icons/md";
+import Protector from "../../components/utils/methods/getters/Protector.js"
+
 
 export default function History() {
+  Protector("/history")
+
   const theme = useTheme();
   const customBlue = theme.colors.customBlue;
 
