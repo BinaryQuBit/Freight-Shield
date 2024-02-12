@@ -1,47 +1,185 @@
-import React from "react";
+// React Imports
+import { React, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { RiLockPasswordFill } from "react-icons/ri";
+
+// Axios Import
+import axios from "axios";
+
+// Chakra UI Imports
+import { Box, Flex, Card, Text } from "@chakra-ui/react";
+
+// Custom Imports
+import CustomButton from "../buttons/CustomButton";
+import CustomInput from "../utils/forms/CustomInput";
+import CustomLink from "../buttons/CustomLink";
+import { EmailValidation } from "../utils/validation/EmailValidation";
 import {
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  Input,
-  Card,
-  Text,
-} from "@chakra-ui/react";
-// import GreenButton from "../buttons/GreenButton";
+  PasswordValidation,
+  ConfirmPasswordValidation,
+} from "../utils/validation/PasswordValidation";
+import OTPModal from "../utils/validation/OTPModal";
 
+// Start of the Build
 export default function ForgotPasswordForm() {
-  return (
-    <Box p="4" w={{ base: "full", md: "50%" }}>
-      <Card p="20px" maxWidth={{ base: "auto", md: "400px" }} mx="auto">
-        <form>
-          <FormControl mt="6" id="username" isRequired>
-            <Input type="text" name="username" placeholder="Email" />
-          </FormControl>
-          <FormControl mt="6" id="password" isRequired>
-            <Input type="password" name="password" placeholder="Password" />
-          </FormControl>
-          <FormControl mt="6" id="confirmPassword" isRequired>
-            <Input
-              type="password"
-              name="password"
-              placeholder="Confirm Password"
-            />
-          </FormControl>
+  const navigate = useNavigate();
 
-          {/* <GreenButton mt="4" w="full">
-            Reset Password
-          </GreenButton> */}
-          <Flex justify="center" mt="4">
-            <Text as="b" mr={"2"} fontSize={"13"}>
-              Already have an Account?
-            </Text>
-            <Button variant="link" color="#0866FF" fontSize="14px">
-              Log In
-            </Button>
-          </Flex>
-        </form>
-      </Card>
-    </Box>
+  // Hooks
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  // Error Hooks
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+  // Password Visibility Hooks
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // Modal Hook
+  const [isOTPOpen, setOTPOpen] = useState(false);
+
+  // Functions
+  const toggleShowPassword = () => setShowPassword(!showPassword);
+  const toggleShowConfirmPassword = () =>
+    setShowConfirmPassword(!showConfirmPassword);
+  const onOpenOTP = () => setOTPOpen(true);
+  const onCloseOTP = () => setOTPOpen(false);
+
+  // Handle Registration
+  const handleForgotPassword = async (event) => {
+    event.preventDefault();
+
+    // Reset Error Hook
+    setEmailError("");
+    setPasswordError("");
+    setConfirmPasswordError("");
+
+    // Validation Check
+    const emailError = EmailValidation(email);
+    const passwordError = PasswordValidation(password);
+    const confirmPasswordError = ConfirmPasswordValidation(
+      password,
+      confirmPassword
+    );
+
+    // Set Error
+    setEmailError(emailError);
+    setPasswordError(passwordError);
+    setConfirmPasswordError(confirmPasswordError);
+
+    if (emailError || passwordError || confirmPasswordError) {
+      console.log(emailError, passwordError, confirmPasswordError);
+      return;
+    }
+
+    try {
+      const response = await axios.post("/forgotpassword", { email });
+
+      if (response.status === 200) {
+        console.log(response.data.message);
+        onOpenOTP();
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        console.error("Error: ", error.response.data.message);
+        if (error.response.data.message.includes("does not exist")) {
+          setEmailError("Account does not exist");
+        }
+      } else {
+        console.error("Error submitting form:", error);
+      }
+    }
+  };
+
+  // Start of UI
+  return (
+    <>
+      <Box p="4" w={{ base: "full", md: "50%" }}>
+        <Card
+          p="20px"
+          maxWidth={{ base: "auto", md: "400px" }}
+          mx="auto"
+          rounded={"none"}
+        >
+          <form onSubmit={handleForgotPassword} noValidate>
+            <CustomInput
+              id={"email"}
+              label={"Email"}
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setEmailError("");
+              }}
+              isError={!!emailError}
+              errorMessage={emailError}
+              isRequired={true}
+              type={"email"}
+              mt={"4"}
+            />
+            <CustomInput
+              id={"password"}
+              label={"Password"}
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setPasswordError("");
+              }}
+              isError={!!passwordError}
+              errorMessage={passwordError}
+              isRequired={true}
+              mt={8}
+              isPassword={true}
+              showPassword={showPassword}
+              onToggleShowPassword={toggleShowPassword}
+            />
+            <CustomInput
+              id={"confirmPassword"}
+              label={"Confirm Password"}
+              value={confirmPassword}
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+                setConfirmPasswordError("");
+              }}
+              isError={!!confirmPasswordError}
+              errorMessage={confirmPasswordError}
+              isRequired={true}
+              mt={8}
+              isPassword={true}
+              showPassword={showConfirmPassword}
+              onToggleShowPassword={toggleShowConfirmPassword}
+            />
+            <CustomButton
+              variant={"blueForwardButton"}
+              w={"100%"}
+              type={"submit"}
+              backgroundColor="#42B72A"
+              children={"Reset Password"}
+              icon={<RiLockPasswordFill />}
+              mt={"7"}
+            />
+            <Flex justify="center" mt="4">
+              <Text as="b" mr={"2"} fontSize={"13"}>
+                Remember your password?
+              </Text>
+              <CustomLink
+                fontSize={"14px"}
+                onClick={() => navigate("/login")}
+                children={"Log In"}
+              />
+            </Flex>
+          </form>
+        </Card>
+      </Box>
+      <OTPModal
+        isOTPOpen={isOTPOpen}
+        onCloseOTP={onCloseOTP}
+        email={email}
+        password={password}
+        confirmPassword={confirmPassword}
+      />
+    </>
   );
 }
