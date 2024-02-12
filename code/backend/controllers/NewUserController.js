@@ -1,9 +1,12 @@
 import asyncHandler from "express-async-handler";
 import generateToken from "../utils/GenerateToken.js";
+import { sendEmail } from "../utils/Mailer.js";
 import Admin from "../models/AdminModel.js";
 import Carrier from "../models/CarrierModel.js";
 import Shipper from "../models/ShipperModel.js";
 import SuperUser from "../models/SuperUser.js";
+import OTP from "../models/ForgotPasswordModel.js";
+import { getOtpEmailTemplate } from "../utils/emailTemplates/ForgotPasswordTemplate.js"
 
 ////////////////////////////// Getters //////////////////////////////
 
@@ -118,8 +121,14 @@ const loginUser = asyncHandler(async (req, res) => {
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
   let { role, email, password, confirmPassword } = req.body;
-  const shipperExist = await Shipper.findOne({ email }).collation({ locale: 'en', strength: 2 });
-  const carrierExist = await Carrier.findOne({ email }).collation({ locale: 'en', strength: 2 });
+  const shipperExist = await Shipper.findOne({ email }).collation({
+    locale: "en",
+    strength: 2,
+  });
+  const carrierExist = await Carrier.findOne({ email }).collation({
+    locale: "en",
+    strength: 2,
+  });
 
   email = email.toLowerCase();
 
@@ -220,7 +229,84 @@ const registerUser = asyncHandler(async (req, res) => {
 // route    POST /api/users/forgotpassword
 // @access  Public
 const forgotPassword = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "Password Updated" });
+  let { email } = req.body;
+  email = email.toLowerCase();
+
+  const shipperExist = await Shipper.findOne({ email }).collation({
+    locale: "en",
+    strength: 2,
+  });
+  if (!shipperExist) {
+    return res.status(400).json({ message: "User does not exist" });
+  }
+
+  const otp = Math.floor(100000 + Math.random() * 900000);
+  const logoURL = "https://raw.githubusercontent.com/BinaryQuBit/Freight-Shield/main/githubPages/images/alharbi.jpg"
+  const subject = "Password Reset ~ OTP";
+  const htmlContent = getOtpEmailTemplate(otp, logoURL);
+
+  try {
+    await sendEmail(email, subject, htmlContent);
+    const expiresAt = new Date(new Date().getTime() + 10 * 60 * 1000);
+    const existingOtp = await OTP.findOne({ email });
+    if (existingOtp) {
+      existingOtp.otp = otp;
+      existingOtp.expiresAt = expiresAt;
+      await existingOtp.save();
+    } else {
+      const newOtp = new OTP({ email, otp, expiresAt });
+      await newOtp.save();
+    }
+
+    res.status(200).json({ message: "OTP sent successfully to your email." });
+  } catch (error) {
+    console.error("Forgot Password Error:", error);
+    res
+      .status(500)
+      .json({ message: "Failed to send OTP.", error: error.message });
+  }
+});
+
+// @desc    Verify OTP and update password
+// route    POST /api/users/verify
+// @access  Public
+const verifyOTP = asyncHandler(async (req, res) => {
+  let { email, password, confirmPassword, otpNumber } = req.body;
+  email = email.toLowerCase();
+
+  if (password !== confirmPassword) {
+    return res
+      .status(400)
+      .json({ message: "Password and Confirm Password do not match" });
+  }
+
+  const userExist = await OTP.findOne({ email }).collation({
+    locale: "en",
+    strength: 2,
+  });
+  console.log("This is the user: ", email);
+
+  if (userExist) {
+    const now = new Date();
+    if (userExist.otp !== otpNumber) {
+      return res.status(400).json({ message: "Invalid OTP" });
+    } else if (userExist.expiresAt < now) {
+      return res.status(400).json({ message: "OTP expired" });
+    } else {
+      const user = await Shipper.findOne({ email });
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      user.password = password;
+      await user.save();
+
+      await OTP.deleteOne({ email });
+
+      res.json({ message: "Password updated successfully" });
+    }
+  } else {
+    res.status(404).json({ message: "OTP request not found" });
+  }
 });
 
 export {
@@ -229,4 +315,5 @@ export {
   logoutUser,
   forgotPassword,
   passLoginInformation,
+  verifyOTP,
 };

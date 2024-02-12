@@ -68,7 +68,7 @@ export default function LoginForm() {
       if (role === "carrier") {
         navigate("/marketplace");
       } else if (role === "shipper") {
-          navigate("/activeloads");
+        navigate("/activeloads");
       } else if (role === "admin") {
         navigate("/pending");
       }
@@ -76,15 +76,15 @@ export default function LoginForm() {
       if (error.response && error.response.status === 400) {
         console.error("Error: ", error.response.data.message);
         if (error.response.data.message.includes("Invalid")) {
-          setPasswordError("Invalid Email or Password")
+          setPasswordError("Invalid Email or Password");
         }
       } else {
-      console.error("Error submitting form:", error);
+        console.error("Error submitting form:", error);
       }
     }
   };
 
-  // Start of the UI 
+  // Start of the UI
   return (
     <Box p="4" w={{ base: "full", md: "50%" }}>
       <Card
@@ -106,6 +106,7 @@ export default function LoginForm() {
             errorMessage={emailError}
             isRequired={true}
             type={"email"}
+            mt={"4"}
           />
           <CustomInput
             id={"password"}
