@@ -24,6 +24,7 @@ export default function OTPModal({
   email,
   password,
   confirmPassword,
+  onModalClose,
 }) {
   const navigate = useNavigate();
   const [otp, setOtp] = useState(Array(6).fill(""));
@@ -54,6 +55,11 @@ export default function OTPModal({
       newOtp[index] = value;
       setOtp(newOtp);
     }
+  };
+
+  const resetClose = () => {
+    onCloseOTP();
+    onModalClose();
   };
 
   const handleBackspace = (e, index) => {
@@ -94,14 +100,14 @@ export default function OTPModal({
   };
 
   return (
-    <Modal isOpen={isOTPOpen} onClose={onCloseOTP}>
+    <Modal isOpen={isOTPOpen} onClose={resetClose}>
       <ModalOverlay />
       <ModalContent p={"30px"} rounded={"none"}>
         <Flex justifyContent="center">
           <Image src={Logo} w="200px" padding="5px" />
         </Flex>
         <ModalHeader textAlign="center">OTP Verification</ModalHeader>
-        <ModalCloseButton />
+        <ModalCloseButton onClick={resetClose} />
         <ModalBody>
           <Flex justifyContent="space-between" pb={4}>
             {otp.map((item, index) => (

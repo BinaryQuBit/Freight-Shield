@@ -47,6 +47,14 @@ export default function ForgotPasswordForm() {
     setShowConfirmPassword(!showConfirmPassword);
   const onOpenOTP = () => setOTPOpen(true);
   const onCloseOTP = () => setOTPOpen(false);
+  const onOTPClose = () => {
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setEmailError("");
+    setPasswordError("");
+    setConfirmPasswordError("");
+  };
 
   // Handle Registration
   const handleForgotPassword = async (event) => {
@@ -179,6 +187,7 @@ export default function ForgotPasswordForm() {
         email={email}
         password={password}
         confirmPassword={confirmPassword}
+        onModalClose={onOTPClose}
       />
     </>
   );

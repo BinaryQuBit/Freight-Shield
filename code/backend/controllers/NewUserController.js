@@ -241,7 +241,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
   }
 
   const otp = Math.floor(100000 + Math.random() * 900000);
-  const logoURL = "https://raw.githubusercontent.com/BinaryQuBit/Freight-Shield/main/githubPages/images/alharbi.jpg"
+  const logoURL = "https://raw.githubusercontent.com/BinaryQuBit/Freight-Shield/main/githubPages/images/banner.jpg"
   const subject = "Password Reset ~ OTP";
   const htmlContent = getOtpEmailTemplate(otp, logoURL);
 
