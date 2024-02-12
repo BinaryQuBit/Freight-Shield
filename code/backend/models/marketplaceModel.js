@@ -70,7 +70,10 @@ const marketplaceSchema = mongoose.Schema(
     },
     status:{
       type: String,
-    }
+    },
+    carrierEmail:{
+      type: String,
+    },
   },
   {
     timestamps: true,

@@ -1,29 +1,10 @@
 import Sidebar from "../../components/sidebar/AdminSideBar";
-import React, { useEffect } from "react";
+import React from "react";
 import { Flex, Text } from "@chakra-ui/react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-export default function Carriers() {
-  const navigate = useNavigate();
+import Protector from "../../components/utils/methods/getters/Protector.js"
 
-  useEffect(() => {
-    axios
-      .get("/carriers", { withCredentials: true })
-      .then((response) => {
-        console.log("Carriers Fetched Successfully");
-      })
-      .catch((error) => {
-        console.error("Error Fetching Carriers: ", error);
-        if (
-          error.response &&
-          (error.response.status === 401 || error.response.status === 403)
-        ) {
-          navigate("/login");
-        }
-      });
-  }, [navigate]);
-  
-  //return <Sidebar activePage="carriers" />;
+export default function Carriers() {
+  Protector("/carriers");
 
   return (
     <Flex>

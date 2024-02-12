@@ -10,7 +10,7 @@ export default function Login() {
         direction={{ base: "column", md: "row" }}
         align="center"
         justify="center"
-        h="100vh"
+        minH="100vh"
         w="full"
       >
         <Box p="4" mb={{ base: "4", md: "0" }} textAlign="center">
@@ -19,6 +19,6 @@ export default function Login() {
         </Box>
         <LoginForm />
       </Flex>
-    </Container>
+    </Container> 
   );
 }

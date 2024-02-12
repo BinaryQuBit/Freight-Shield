@@ -14,13 +14,14 @@ import {
 } from "@chakra-ui/react";
 
 import Logo from "../logo/Logo.svg";
-import GreenButton from "../buttons/GreenButton";
+import CustomButton from "../buttons/CustomButton"
+import { IoMdCloseCircle } from "react-icons/io";
 
 export default function Terms({ isTermsOpen, onCloseTerms }) {
   return (
-    <Modal isOpen={isTermsOpen} onClose={onCloseTerms}>
+    <Modal size="3xl" isOpen={isTermsOpen} onClose={onCloseTerms}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent p={"30px"} rounded={"none"}>
         <Flex justifyContent="center">
           <Image src={Logo} w="200px" padding="5px" />
         </Flex>
@@ -177,9 +178,14 @@ export default function Terms({ isTermsOpen, onCloseTerms }) {
           </UnorderedList>
         </ModalBody>
         <ModalFooter>
-          <GreenButton onClick={onCloseTerms}>
-            Close
-          </GreenButton>
+        <CustomButton
+            variant={"blueForwardButton"}
+            w={"90px"}
+            onClick={onCloseTerms}
+            children={"Close"}
+            icon={<IoMdCloseCircle />}
+          />
+          
         </ModalFooter>
       </ModalContent>
     </Modal>
