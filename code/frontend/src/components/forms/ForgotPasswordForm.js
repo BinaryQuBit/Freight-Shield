@@ -47,6 +47,14 @@ export default function ForgotPasswordForm() {
     setShowConfirmPassword(!showConfirmPassword);
   const onOpenOTP = () => setOTPOpen(true);
   const onCloseOTP = () => setOTPOpen(false);
+  const onOTPClose = () => {
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setEmailError("");
+    setPasswordError("");
+    setConfirmPasswordError("");
+  };
 
   // Handle Registration
   const handleForgotPassword = async (event) => {
@@ -121,7 +129,7 @@ export default function ForgotPasswordForm() {
             />
             <CustomInput
               id={"password"}
-              label={"Password"}
+              label={"New Password"}
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
@@ -137,7 +145,7 @@ export default function ForgotPasswordForm() {
             />
             <CustomInput
               id={"confirmPassword"}
-              label={"Confirm Password"}
+              label={"Confirm New Password"}
               value={confirmPassword}
               onChange={(e) => {
                 setConfirmPassword(e.target.value);
@@ -179,6 +187,7 @@ export default function ForgotPasswordForm() {
         email={email}
         password={password}
         confirmPassword={confirmPassword}
+        onModalClose={onOTPClose}
       />
     </>
   );

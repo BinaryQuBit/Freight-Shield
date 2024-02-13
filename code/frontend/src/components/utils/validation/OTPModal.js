@@ -24,10 +24,13 @@ export default function OTPModal({
   email,
   password,
   confirmPassword,
+  onModalClose,
 }) {
   const navigate = useNavigate();
   const [otp, setOtp] = useState(Array(6).fill(""));
   const [timer, setTimer] = useState(599);
+
+  const [otpError, setOtpError] = useState("")
 
   useEffect(() => {
     let interval;
@@ -56,6 +59,11 @@ export default function OTPModal({
     }
   };
 
+  const resetClose = () => {
+    onCloseOTP();
+    onModalClose();
+  };
+
   const handleBackspace = (e, index) => {
     if (e.key === "Backspace") {
       if (e.target.value === "" && index > 0) {
@@ -80,10 +88,14 @@ export default function OTPModal({
       onCloseOTP();
       navigate("/login");
     } catch (error) {
-      console.error(
-        "Verification failed:",
-        error.response ? error.response.data.message : error.message
-      );
+      if (error.response && error.response.status === 400) {
+        console.error("Error: ", error.response.data.message);
+        if (error.response.data.message.includes("Invalid OTP")) {
+          setOtpError("Invalid Code");
+        }
+      } else {
+        console.error("Error submitting form:", error);
+      }
     }
   };
 
@@ -94,14 +106,14 @@ export default function OTPModal({
   };
 
   return (
-    <Modal isOpen={isOTPOpen} onClose={onCloseOTP}>
+    <Modal isOpen={isOTPOpen} onClose={resetClose}>
       <ModalOverlay />
       <ModalContent p={"30px"} rounded={"none"}>
         <Flex justifyContent="center">
           <Image src={Logo} w="200px" padding="5px" />
         </Flex>
         <ModalHeader textAlign="center">OTP Verification</ModalHeader>
-        <ModalCloseButton />
+        <ModalCloseButton onClick={resetClose} />
         <ModalBody>
           <Flex justifyContent="space-between" pb={4}>
             {otp.map((item, index) => (
@@ -124,6 +136,7 @@ export default function OTPModal({
           <Flex justifyContent="center" mb="4">
             <Text fontSize="lg">OTP expires in {formatTimer()}</Text>
           </Flex>
+          {otpError && <Text color="red.500" textAlign="center" mb="4">{otpError}</Text>}
         </ModalBody>
         <ModalFooter>
           <CustomButton
