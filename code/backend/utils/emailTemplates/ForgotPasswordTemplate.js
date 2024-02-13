@@ -23,8 +23,8 @@ export const getOtpEmailTemplate = (otp, logoURL) => {
             display: block;
             margin-left: auto;
             margin-right: auto;
-            width: 50%;
-          }
+            width: 100%;
+          }          
           .content {
               text-align: center;
               color: #333333;
@@ -52,7 +52,7 @@ export const getOtpEmailTemplate = (otp, logoURL) => {
   <body>
       <div class="container">
           <div class="content">
-              <img src="${logoURL}" alt="Logo" />
+              <img src="${logoURL}" alt="Logo" class="center"/>
               <h1>OTP for Password Reset</h1>
               <p class="otp">${otp}</p>
               <p class="instructions">
