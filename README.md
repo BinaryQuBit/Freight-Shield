@@ -73,6 +73,8 @@
 
 - <a href = "https://www.youtube.com/watch?v=nKSjt_0bmjk">Freight Shield Vlog 2</a>
 
+- <a href = "https://youtu.be/QjNZk3Wbh70">Freight Shield Vlog 3</a>
+
 <br>
 
 <div><u>
