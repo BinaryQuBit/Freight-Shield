@@ -62,6 +62,7 @@ export default function OTPModal({
   const resetClose = () => {
     onCloseOTP();
     onModalClose();
+    setTimer(599);
   };
 
   const handleBackspace = (e, index) => {
