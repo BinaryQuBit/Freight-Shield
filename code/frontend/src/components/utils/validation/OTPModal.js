@@ -30,6 +30,8 @@ export default function OTPModal({
   const [otp, setOtp] = useState(Array(6).fill(""));
   const [timer, setTimer] = useState(599);
 
+  const [otpError, setOtpError] = useState("")
+
   useEffect(() => {
     let interval;
     if (isOTPOpen && timer > 0) {
@@ -86,10 +88,14 @@ export default function OTPModal({
       onCloseOTP();
       navigate("/login");
     } catch (error) {
-      console.error(
-        "Verification failed:",
-        error.response ? error.response.data.message : error.message
-      );
+      if (error.response && error.response.status === 400) {
+        console.error("Error: ", error.response.data.message);
+        if (error.response.data.message.includes("Invalid OTP")) {
+          setOtpError("Invalid Code");
+        }
+      } else {
+        console.error("Error submitting form:", error);
+      }
     }
   };
 
@@ -130,6 +136,7 @@ export default function OTPModal({
           <Flex justifyContent="center" mb="4">
             <Text fontSize="lg">OTP expires in {formatTimer()}</Text>
           </Flex>
+          {otpError && <Text color="red.500" textAlign="center" mb="4">{otpError}</Text>}
         </ModalBody>
         <ModalFooter>
           <CustomButton
