@@ -121,6 +121,7 @@ const loginUser = asyncHandler(async (req, res) => {
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
   let { role, email, password, confirmPassword } = req.body;
+  email = email.toLowerCase();
   const shipperExist = await Shipper.findOne({ email }).collation({
     locale: "en",
     strength: 2,
@@ -129,8 +130,6 @@ const registerUser = asyncHandler(async (req, res) => {
     locale: "en",
     strength: 2,
   });
-
-  email = email.toLowerCase();
 
   if (shipperExist) {
     res.status(400);
@@ -236,7 +235,13 @@ const forgotPassword = asyncHandler(async (req, res) => {
     locale: "en",
     strength: 2,
   });
-  if (!shipperExist) {
+
+  const carrierExist = await Carrier.findOne({ email }).collation({
+    locale: "en",
+    strength: 2,
+  });
+
+  if (!shipperExist && !carrierExist) {
     return res.status(400).json({ message: "User does not exist" });
   }
 
@@ -280,23 +285,29 @@ const verifyOTP = asyncHandler(async (req, res) => {
       .json({ message: "Password and Confirm Password do not match" });
   }
 
-  const userExist = await OTP.findOne({ email }).collation({
+  const otpRecord = await OTP.findOne({ email }).collation({
     locale: "en",
     strength: 2,
   });
   console.log("This is the user: ", email);
 
-  if (userExist) {
+  if (otpRecord) {
     const now = new Date();
-    if (userExist.otp !== otpNumber) {
+    if (otpRecord.otp !== otpNumber) {
       return res.status(400).json({ message: "Invalid OTP" });
-    } else if (userExist.expiresAt < now) {
+    } else if (otpRecord.expiresAt < now) {
       return res.status(400).json({ message: "OTP expired" });
     } else {
-      const user = await Shipper.findOne({ email });
+      let user = await Shipper.findOne({ email });
+
+      if (!user) {
+        user = await Carrier.findOne({ email });
+      }
+
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
+
       user.password = password;
       await user.save();
 
@@ -308,6 +319,7 @@ const verifyOTP = asyncHandler(async (req, res) => {
     res.status(404).json({ message: "OTP request not found" });
   }
 });
+
 
 export {
   loginUser,

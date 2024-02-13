@@ -129,7 +129,7 @@ export default function ForgotPasswordForm() {
             />
             <CustomInput
               id={"password"}
-              label={"Password"}
+              label={"New Password"}
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
@@ -145,7 +145,7 @@ export default function ForgotPasswordForm() {
             />
             <CustomInput
               id={"confirmPassword"}
-              label={"Confirm Password"}
+              label={"Confirm New Password"}
               value={confirmPassword}
               onChange={(e) => {
                 setConfirmPassword(e.target.value);
