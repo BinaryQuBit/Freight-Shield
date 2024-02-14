@@ -1,3 +1,4 @@
+// Test to update name
 // Upload middleware
 
 import path from "path";
@@ -16,13 +17,22 @@ var storage = multer.diskStorage({
 var upload = multer({
   storage: storage,
   fileFilter: function (req, file, callback) {
-    if (file.mimetype == "image/png" || file.mimetype == "image/jpg") {
+    if (
+      [
+        "image/png",
+        "image/jpg",
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      ].includes(file.mimetype)
+    ) {
       callback(null, true);
     } else {
-      console.log("only jpg & png file supported!");
-      callback(null, false);
+      console.log("Unsupported file type!");
+      callback(new Error("Unsupported file type!"), false);
     }
   },
+
   limits: {
     fileSize: 1024 * 1024 * 2,
   },

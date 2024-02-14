@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { ChakraProvider } from '@chakra-ui/react';
 
 // Import to handle global theme
-import Theme from './components/Theme';
+import Theme from './components/theme';
 
 // Create a root.
 const root = createRoot(document.getElementById('root'));

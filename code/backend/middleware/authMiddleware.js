@@ -1,3 +1,4 @@
+// Test to update name
 // authMiddleware.js
 
 import jwt from "jsonwebtoken";
@@ -16,7 +17,6 @@ const protect = asyncHandler(async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("Decoded JWT: ", decoded);
 
     let user;
     switch (decoded.role) {
