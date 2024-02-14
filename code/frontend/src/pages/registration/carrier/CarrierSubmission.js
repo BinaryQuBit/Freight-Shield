@@ -1,5 +1,5 @@
 import React from "react";
-import Protector from "../../../components/utils/methods/getters/Protector.js";
+import Protector from "../../../components/utils/methods/getters/protector.js";
 
 function CarrierSubmission() {
   Protector("/carriersubmission")

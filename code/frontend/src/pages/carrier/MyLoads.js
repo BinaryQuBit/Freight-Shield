@@ -1,9 +1,9 @@
-import Sidebar from "../../components/sidebar/CarrierSideBar";
+import Sidebar from "../../components/sidebar/carrierSideBar.js";
 import React, { useState, useEffect } from "react";
 import { Flex, Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import EaseOut from "../../components/responsiveness/EaseOut";
-import Protector from "../../components/utils/methods/getters/Protector.js"
+import EaseOut from "../../components/responsiveness/easeOut.js";
+import Protector from "../../components/utils/methods/getters/protector.js"
 
 export default function MyLoads() {
   Protector("/myloads");

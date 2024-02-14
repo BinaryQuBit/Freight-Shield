@@ -1,9 +1,9 @@
-import CarrierSideBar from "../../components/sidebar/CarrierSideBar";
+import CarrierSideBar from "../../components/sidebar/carrierSideBar.js";
 import React, { useState } from "react";
 import { useTheme } from "@chakra-ui/react";
-import CustomButton from "../../components/buttons/CustomButton";
+import CustomButton from "../../components/buttons/customButton.js";
 import { IoMdAddCircle } from "react-icons/io";
-import AddUnit from "../../components/editButton/UnitAdd";
+import AddUnit from "../../components/editButton/unitAdd.js";
 import {
   Card,
   Accordion,
@@ -16,9 +16,9 @@ import {
   HStack,
   VStack,
 } from "@chakra-ui/react";
-import EaseOut from "../../components/responsiveness/EaseOut";
-import UserHeader from "../../components/header/UserHeader";
-import Protector from "../../components/utils/methods/getters/Protector.js"
+import EaseOut from "../../components/responsiveness/easeOut.js";
+import UserHeader from "../../components/header/userHeader.js";
+import Protector from "../../components/utils/methods/getters/protector.js"
 
 export default function UnitProfile() {
 Protector("/unitprofiles");

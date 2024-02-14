@@ -1,7 +1,8 @@
+// Test to update name
 import asyncHandler from "express-async-handler";
 import path from "path"
-import Shipper from "../models/ShipperModel.js";
-import Marketplace from "../models/MarketplaceModel.js";
+import Shipper from "../models/shipperModel.js";
+import Marketplace from "../models/marketplaceModel.js";
 
 ////////////////////////////// Getters //////////////////////////////
 

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Flex, Text } from '@chakra-ui/react';
-import { SidebarContext } from "../../components/responsiveness/Context.js";
+import { SidebarContext } from "./context.js";
 
 const EaseOut = ({ children }) => {
   const { navSize } = useContext(SidebarContext);

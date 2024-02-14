@@ -1,3 +1,4 @@
+// Test to update name
 import express from "express";
 
 import {
@@ -6,7 +7,7 @@ import {
   logoutUser,
   forgotPassword,
   verifyOTP,
-} from "../controllers/NewUserController.js";
+} from "../controllers/newUserController.js";
 
 const router = express.Router();
 

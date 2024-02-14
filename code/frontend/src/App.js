@@ -1,30 +1,30 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { SidebarProvider } from "./components/responsiveness/Context.js";
+import { SidebarProvider } from "./components/responsiveness/context.js";
 
-import Login from "./pages/Login.js";
-import Register from "./pages/Register.js";
-import ForgotPassword from "./pages/ForgotPassword.js"
-import Pending from "./pages/admin/Pending.js"
-import Approved from "./pages/admin/Approved.js"
-import Administrators from "./pages/admin/Administrators.js"
-import Shippers from "./pages/admin/Shippers.js"
-import Carriers from "./pages/admin/Carriers.js"
-import AdminSettings from "./pages/admin/AdminSettings.js"
-import ActiveLoads from "./pages/shipper/ActiveLoads.js"
-import PostLoad from "./pages/shipper/PostLoad.js";
-import History from "./pages/shipper/History.js";
-import ShipperSettings from "./pages/shipper/ShipperSettings.js";
-import Marketplace from "./pages/carrier/Marketplace.js";
-import MyLoads from "./pages/carrier/MyLoads.js";
-import DriverProfiles from "./pages/carrier/DriverProfiles.js";
-import UnitProfiles from "./pages/carrier/UnitProfiles.js";
-import CarrierSettings from "./pages/carrier/CarrierSettings.js";
-import CarrierBusinessDetails from "./pages/registration/carrier/CarrierBusinessDetails.js"
-import CarrierContactDetails from "./pages/registration/carrier/CarrierContactDetails.js"
-import CarrierSubmission from "./pages/registration/carrier/CarrierSubmission.js";
-import ShipperBusinessDetails from "./pages/registration/shipper/ShipperBusinessDetails.js"
-import ShipperContactDetails from "./pages/registration/shipper/ShipperContactDetails.js"
-import ShipperSubmission from "./pages/registration/shipper/ShipperSubmission.js";
+import Login from "./pages/login.js";
+import Register from "./pages/register.js";
+import ForgotPassword from "./pages/forgotPassword.js"
+import Pending from "./pages/admin/pending.js"
+import Approved from "./pages/admin/approved.js"
+import Administrators from "./pages/admin/administrators.js"
+import Shippers from "./pages/admin/shippers.js"
+import Carriers from "./pages/admin/carriers.js"
+import AdminSettings from "./pages/admin/adminSettings.js"
+import ActiveLoads from "./pages/shipper/activeLoads.js"
+import PostLoad from "./pages/shipper/postLoad.js";
+import History from "./pages/shipper/history.js";
+import ShipperSettings from "./pages/shipper/shipperSettings.js";
+import Marketplace from "./pages/carrier/marketplace.js";
+import MyLoads from "./pages/carrier/myLoads.js";
+import DriverProfiles from "./pages/carrier/driverProfiles.js";
+import UnitProfiles from "./pages/carrier/unitProfiles.js";
+import CarrierSettings from "./pages/carrier/carrierSettings.js";
+import CarrierBusinessDetails from "./pages/registration/carrier/carrierBusinessDetails.js"
+import CarrierContactDetails from "./pages/registration/carrier/carrierContactDetails.js"
+import CarrierSubmission from "./pages/registration/carrier/carrierSubmission.js";
+import ShipperBusinessDetails from "./pages/registration/shipper/shipperBusinessDetails.js"
+import ShipperContactDetails from "./pages/registration/shipper/shipperContactDetails.js"
+import ShipperSubmission from "./pages/registration/shipper/shipperSubmission.js";
 
 
 export default function App() {

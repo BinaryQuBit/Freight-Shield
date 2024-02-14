@@ -14,8 +14,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 import axios from "axios";
-import Logo from "../../logo/Logo.svg";
-import CustomButton from "../../buttons/CustomButton";
+import Logo from "../../logo/logo.svg";
+import CustomButton from "../../buttons/customButton";
 import { FaCheck } from "react-icons/fa";
 
 export default function OTPModal({
@@ -62,6 +62,7 @@ export default function OTPModal({
   const resetClose = () => {
     onCloseOTP();
     onModalClose();
+    setTimer(599);
   };
 
   const handleBackspace = (e, index) => {

@@ -1,3 +1,4 @@
+// Test to update name
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -21,11 +22,11 @@ import {
   Box,
   Select,
 } from "@chakra-ui/react";
-import AutoCompletePlaces from "../google/AutoCompletePlaces";
+import AutoCompletePlaces from "../google/autoCompletePlaces";
 import { useTheme } from "@chakra-ui/react";
 import { FiTruck, FiUpload, FiXCircle } from "react-icons/fi";
 import { IoMdCloseCircle } from "react-icons/io";
-import CustomButton from "../buttons/CustomButton";
+import CustomButton from "../buttons/customButton";
 
 const PostedLoadEdit = ({ isOpen, onClose, load, onLoadUpdate }) => {
   // Navigate

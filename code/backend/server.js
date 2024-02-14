@@ -1,3 +1,4 @@
+// Test to update name
 import express from "express";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -6,12 +7,12 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import connectDB from "./config/db.js";
-import AdminRoutes from "./routes/AdminRoutes.js";
-import CarrierRoutes from "./routes/CarrierRoutes.js";
-// import DriverRoutes from "./routes/DriverRoutes.js";
-import NewUserRoutes from "./routes/NewUserRoutes.js";
-import ShipperRoutes from "./routes/ShipperRoutes.js";
-// import SuperUserRoutes from "./routes/SuperUserRoutes.js.js";
+import AdminRoutes from "./routes/adminRoutes.js";
+import CarrierRoutes from "./routes/carrierRoutes.js";
+// import DriverRoutes from "./routes/driverRoutes.js";
+import NewUserRoutes from "./routes/newUserRoutes.js";
+import ShipperRoutes from "./routes/shipperRoutes.js";
+// import SuperUserRoutes from "./routes/superUserRoutes.js.js";
 import cors from "cors";
 
 const __filename = fileURLToPath(import.meta.url);
