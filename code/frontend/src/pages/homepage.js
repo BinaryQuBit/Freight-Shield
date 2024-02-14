@@ -9,7 +9,7 @@ import {
   Link,
   Heading,
 } from "@chakra-ui/react";
-import Logo from "../components/logo/Logo.svg";
+import Logo from "../components/logo/logo.svg";
 import { useNavigate } from "react-router-dom";
 
 export default function Homepage() {
