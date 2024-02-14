@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import EaseOut from "../../components/responsiveness/EaseOut";
-import AutoCompletePlaces from "../../components/google/AutoCompletePlaces";
+import EaseOut from "../../components/responsiveness/easeOut";
+import AutoCompletePlaces from "../../components/google/autoCompletePlaces";
 import { useTheme } from "@chakra-ui/react";
 import { FiTruck, FiUpload, FiXCircle } from "react-icons/fi";
 import { GrPowerReset } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
-import Protector from "../../components/utils/methods/getters/Protector";
+import Protector from "../../components/utils/methods/getters/protector";
 // import Validation from "../../components/utils/Validation.js";
 import {
   Flex,
@@ -22,10 +22,10 @@ import {
   FormErrorMessage,
   Divider,
 } from "@chakra-ui/react";
-import Sidebar from "../../components/sidebar/ShipperSideBar";
-import UserHeader from "../../components/header/UserHeader";
+import Sidebar from "../../components/sidebar/shipperSideBar";
+import UserHeader from "../../components/header/userHeader";
 import axios from "axios";
-import CustomButton from "../../components/buttons/CustomButton";
+import CustomButton from "../../components/buttons/customButton";
 
 const PostLoad = () => {
   Protector("/postload")

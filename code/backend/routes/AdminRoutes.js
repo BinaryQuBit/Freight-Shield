@@ -1,3 +1,4 @@
+// Test to update name
 import express from "express";
 
 import { protect, adminOnly } from "../middleware/authMiddleware.js";

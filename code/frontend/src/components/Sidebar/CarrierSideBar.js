@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { SidebarContext } from "../responsiveness/Context.js";
+import { SidebarContext } from "../responsiveness/context.js";
 import {
   Flex,
   IconButton,
@@ -15,8 +15,8 @@ import {
   FaUserPlus,
   FaTruck,
 } from "react-icons/fa";
-import NavItem from "./NavItem";
-import Logo from "../logo/Logo.js";
+import NavItem from "./navItem.js";
+import Logo from "../logo/logo.js";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useContext } from "react";

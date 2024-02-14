@@ -1,3 +1,4 @@
+// Test to update name
 import { extendTheme } from "@chakra-ui/react";
 import { darken } from '@chakra-ui/theme-tools';
 import "@fontsource/lora/400.css";

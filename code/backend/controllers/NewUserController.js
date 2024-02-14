@@ -1,12 +1,13 @@
+// Test to update name
 import asyncHandler from "express-async-handler";
-import generateToken from "../utils/GenerateToken.js";
-import { sendEmail } from "../utils/Mailer.js";
-import Admin from "../models/AdminModel.js";
-import Carrier from "../models/CarrierModel.js";
-import Shipper from "../models/ShipperModel.js";
-import SuperUser from "../models/SuperUser.js";
-import OTP from "../models/ForgotPasswordModel.js";
-import { getOtpEmailTemplate } from "../utils/emailTemplates/ForgotPasswordTemplate.js"
+import generateToken from "../utils/generateToken.js";
+import { sendEmail } from "../utils/mailer.js";
+import Admin from "../models/adminModel.js";
+import Carrier from "../models/carrierModel.js";
+import Shipper from "../models/shipperModel.js";
+import SuperUser from "../models/superUser.js";
+import OTP from "../models/forgotPasswordModel.js";
+import { getOtpEmailTemplate } from "../utils/emailTemplates/forgotPasswordTemplate.js"
 
 ////////////////////////////// Getters //////////////////////////////
 

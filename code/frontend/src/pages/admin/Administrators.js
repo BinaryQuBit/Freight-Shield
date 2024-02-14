@@ -1,8 +1,8 @@
-import Sidebar from "../../components/sidebar/AdminSideBar";
+import Sidebar from "../../components/sidebar/adminSideBar.js";
 import React from "react";
 import { Button } from "@chakra-ui/react";
 import { Flex, Text, VStack, Card, Stack } from "@chakra-ui/react";
-import Protector from "../../components/utils/methods/getters/Protector.js"
+import Protector from "../../components/utils/methods/getters/protector.js"
 
 export default function Administrators() {
   Protector("/administrators")

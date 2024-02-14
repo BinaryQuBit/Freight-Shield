@@ -1,10 +1,10 @@
-import Sidebar from "../../components/sidebar/AdminSideBar";
+import Sidebar from "../../components/sidebar/adminSideBar";
 import React from "react";
 import { IconButton } from "@chakra-ui/react";
 import { FiCheckCircle, FiXCircle } from "react-icons/fi";
 import { VStack, Card, HStack } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
-import Protector from "../../components/utils/methods/getters/Protector";
+import Protector from "../../components/utils/methods/getters/protector";
 
 export default function Pending() {
   Protector("/pending");

@@ -1,7 +1,7 @@
-import Sidebar from "../../components/sidebar/AdminSideBar";
+import Sidebar from "../../components/sidebar/adminSideBar.js";
 import React from "react";
 import { Flex, Text } from "@chakra-ui/react";
-import Protector from "../../components/utils/methods/getters/Protector.js"
+import Protector from "../../components/utils/methods/getters/protector.js"
 
 export default function Carriers() {
   Protector("/carriers");
