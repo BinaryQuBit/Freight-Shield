@@ -10,11 +10,11 @@ import axios from "axios";
 import { Box, Flex, Text, Card } from "@chakra-ui/react";
 
 // Custom Imports
-import CustomButton from "../buttons/CustomButton";
-import CustomInput from "../utils/forms/CustomInput";
-import CustomLink from "../buttons/CustomLink";
-import { EmailValidation } from "../utils/validation/EmailValidation";
-import { PasswordValidation } from "../utils/validation/PasswordValidation";
+import CustomButton from "../buttons/customButton";
+import CustomInput from "../utils/forms/customInput";
+import CustomLink from "../buttons/customLink";
+import { EmailValidation } from "../utils/validation/emailValidation";
+import { PasswordValidation } from "../utils/validation/passwordValidation";
 
 // Start of the Build
 export default function LoginForm() {

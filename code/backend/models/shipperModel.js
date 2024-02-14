@@ -1,5 +1,6 @@
+// Test to update name
 import mongoose from "mongoose";
-import { hashPassword, comparePassword } from "../utils/HashPassword.js";
+import { hashPassword, comparePassword } from "../utils/hashPassword.js";
 
 const shipperSchema = mongoose.Schema(
   {

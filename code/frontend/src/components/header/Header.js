@@ -1,6 +1,6 @@
 import React from "react";
 import { Flex, Box, Image, Text } from "@chakra-ui/react";
-import Logo from "../logo/Logo.svg";
+import Logo from "../logo/logo.svg";
 
 export default function Header() {
   return (

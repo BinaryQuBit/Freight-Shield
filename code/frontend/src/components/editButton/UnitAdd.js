@@ -1,5 +1,6 @@
+// Test to update name
 import React, { useState } from "react";
-import CustomButton from "../buttons/CustomButton";
+import CustomButton from "../buttons/customButton";
 import { useTheme } from "@chakra-ui/react";
 import { FiUpload, FiXCircle } from "react-icons/fi";
 import { IoMdAddCircle } from "react-icons/io";

@@ -1,8 +1,8 @@
-import Sidebar from "../../components/sidebar/CarrierSideBar";
+import Sidebar from "../../components/sidebar/carrierSideBar.js";
 import React from "react";
-import EaseOut from "../../components/responsiveness/EaseOut"
-import UserHeader from "../../components/header/UserHeader";
-import Protector from "../../components/utils/methods/getters/Protector.js"
+import EaseOut from "../../components/responsiveness/easeOut.js"
+import UserHeader from "../../components/header/userHeader.js";
+import Protector from "../../components/utils/methods/getters/protector.js"
 
 export default function DriverProfile() {
   Protector("/driverprofiles");

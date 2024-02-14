@@ -1,3 +1,4 @@
+// Test to update name
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 dotenv.config();
@@ -30,5 +31,3 @@ export const sendEmail = async (to, subject, htmlContent) => {
     console.error('Error sending email:', error);
   }
 };
-
-

@@ -10,15 +10,15 @@ import axios from "axios";
 import { Box, Flex, Card, Text } from "@chakra-ui/react";
 
 // Custom Imports
-import CustomButton from "../buttons/CustomButton";
-import CustomInput from "../utils/forms/CustomInput";
-import CustomLink from "../buttons/CustomLink";
-import { EmailValidation } from "../utils/validation/EmailValidation";
+import CustomButton from "../buttons/customButton";
+import CustomInput from "../utils/forms/customInput";
+import CustomLink from "../buttons/customLink";
+import { EmailValidation } from "../utils/validation/emailValidation";
 import {
   PasswordValidation,
   ConfirmPasswordValidation,
-} from "../utils/validation/PasswordValidation";
-import OTPModal from "../utils/validation/OTPModal";
+} from "../utils/validation/passwordValidation";
+import otpModal from "../utils/validation/otpModal";
 
 // Start of the Build
 export default function ForgotPasswordForm() {
@@ -181,7 +181,7 @@ export default function ForgotPasswordForm() {
           </form>
         </Card>
       </Box>
-      <OTPModal
+      <otpModal
         isOTPOpen={isOTPOpen}
         onCloseOTP={onCloseOTP}
         email={email}

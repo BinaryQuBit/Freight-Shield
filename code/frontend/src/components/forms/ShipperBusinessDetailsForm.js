@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import CustomButton from "../buttons/CustomButton";
+import CustomButton from "../buttons/customButton";
 import { FiTruck, FiUpload, FiXCircle } from "react-icons/fi";
 import { useTheme } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";

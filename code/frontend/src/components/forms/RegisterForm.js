@@ -10,18 +10,18 @@ import axios from "axios";
 import { Box, Flex, Card, Text } from "@chakra-ui/react";
 
 // Custom Imports
-import CustomButton from "../buttons/CustomButton";
-import Terms from "../laws/TermsConditions";
-import Privacy from "../laws/PrivacyPolicy";
-import CustomInput from "../utils/forms/CustomInput";
-import CustomLink from "../buttons/CustomLink";
-import CustomSelect from "../utils/forms/CustomSelect";
-import { EmailValidation } from "../utils/validation/EmailValidation";
+import CustomButton from "../buttons/customButton";
+import Terms from "../laws/termsConditions";
+import Privacy from "../laws/privacyPolicy";
+import CustomInput from "../utils/forms/customInput";
+import CustomLink from "../buttons/customLink";
+import CustomSelect from "../utils/forms/customSelect";
+import { EmailValidation } from "../utils/validation/emailValidation";
 import {
   PasswordValidation,
   ConfirmPasswordValidation,
-} from "../utils/validation/PasswordValidation";
-import { SelectValidation } from "../utils/validation/SelectValidation";
+} from "../utils/validation/passwordValidation";
+import { SelectValidation } from "../utils/validation/selectValidation";
 
 // Start of the Build
 export default function RegisterForm() {

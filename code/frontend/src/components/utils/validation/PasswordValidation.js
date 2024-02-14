@@ -1,3 +1,4 @@
+// Test to update name
 export const PasswordValidation = (password) => {
   if (!password) {
     return "Password is required";
