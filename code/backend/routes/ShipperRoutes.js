@@ -25,7 +25,7 @@ import {
   deleteLoad,
   shipperSettings,
   shipperSubmission,
-} from "../controllers/ShipperController.js";
+} from "../controllers/shipperController.js";
 
 const router = express.Router();
 

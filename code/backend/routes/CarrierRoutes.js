@@ -15,7 +15,7 @@ import {
   carrierBusinessDetails,
   carrierCompanyDetails,
   carrierSubmission,
-} from "../controllers/CarrierController.js";
+} from "../controllers/carrierController.js";
 
 const router = express.Router();
 
