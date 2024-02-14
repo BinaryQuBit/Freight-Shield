@@ -18,7 +18,7 @@ import {
   PasswordValidation,
   ConfirmPasswordValidation,
 } from "../utils/validation/passwordValidation";
-import otpModal from "../utils/validation/otpModal";
+import OTPModal from "../utils/validation/otpModal.js";
 
 // Start of the Build
 export default function ForgotPasswordForm() {
@@ -181,7 +181,7 @@ export default function ForgotPasswordForm() {
           </form>
         </Card>
       </Box>
-      <otpModal
+      <OTPModal
         isOTPOpen={isOTPOpen}
         onCloseOTP={onCloseOTP}
         email={email}
