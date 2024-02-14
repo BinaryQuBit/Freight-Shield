@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Flex, Box, Image, Text } from "@chakra-ui/react";
-import Logo from "../components/logo/Logo.svg";
-import LoginForm from "../components/forms/LoginForm";
+import Logo from "../components/logo/logo.svg";
+import LoginForm from "../components/forms/loginForm";
 
 export default function Login() {
   return (

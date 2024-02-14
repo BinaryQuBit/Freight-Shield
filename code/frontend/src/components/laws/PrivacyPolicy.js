@@ -13,8 +13,8 @@ import {
   Flex,
 } from "@chakra-ui/react";
 
-import Logo from "../logo/Logo.svg";
-import CustomButton from "../buttons/CustomButton";
+import Logo from "../logo/logo.svg";
+import CustomButton from "../buttons/customButton";
 import { IoMdCloseCircle } from "react-icons/io";
 
 export default function Privacy({ isPrivacyOpen, onClosePrivacy }) {

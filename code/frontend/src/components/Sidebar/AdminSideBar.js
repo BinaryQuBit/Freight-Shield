@@ -16,8 +16,8 @@ import { FiTruck, FiMenu, FiLogOut, FiSettings, FiHome } from "react-icons/fi";
 import { MdOutlinePendingActions } from "react-icons/md";
 import { GrCertificate } from "react-icons/gr";
 import { FaHardHat, FaUserLock } from "react-icons/fa";
-import NavItem from "./NavItem.js";
-import Logo from "../logo/Logo.js";
+import NavItem from "./navItem.js";
+import Logo from "../logo/logo.js";
 
 export default function AdminSideBar({ activePage }) {
   const [navSize, changeNavSize] = useState("large");

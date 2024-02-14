@@ -1,8 +1,8 @@
 import React from 'react';
-import Header from "../../../components/header/Header.js";
-import ShipperBusinessDetailsForm from '../../../components/forms/ShipperBusinessDetailsForm.js';
-import { RegistrationProgress } from '../../../components/progressBar/RegistrationProgess.js';
-import Protector from "../../../components/utils/methods/getters/Protector.js"
+import Header from "../../../components/header/header.js";
+import ShipperBusinessDetailsForm from '../../../components/forms/shipperBusinessDetailsForm.js';
+import { RegistrationProgress } from '../../../components/progressBar/registrationProgess.js';
+import Protector from "../../../components/utils/methods/getters/protector.js"
 
 function ShipperBusinessDetails() {
   Protector("/shipperbusinessdetails")

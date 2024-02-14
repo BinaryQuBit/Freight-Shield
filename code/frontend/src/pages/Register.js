@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Flex, Box, Image, Text } from "@chakra-ui/react";
-import Logo from "../components/logo/Logo.svg";
-import RegisterForm from "../components/forms/RegisterForm";
+import Logo from "../components/logo/logo.svg";
+import RegisterForm from "../components/forms/registerForm";
 
 export default function Register() {
   return (

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useTheme } from "@chakra-ui/react";
 import axios from "axios";
-import CustomButton from "../buttons/CustomButton";
+import CustomButton from "../buttons/customButton";
 import { useNavigate } from "react-router-dom";
 import { FiTruck } from "react-icons/fi";
 import {

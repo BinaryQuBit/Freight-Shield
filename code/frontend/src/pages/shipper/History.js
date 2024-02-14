@@ -1,4 +1,4 @@
-import Sidebar from "../../components/sidebar/ShipperSideBar.js";
+import Sidebar from "../../components/sidebar/shipperSideBar.js";
 import React, { useEffect, useState } from "react";
 import {
   Flex,
@@ -16,10 +16,10 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import EaseOut from "../../components/responsiveness/EaseOut.js";
-import UserHeader from "../../components/header/UserHeader.js";
+import EaseOut from "../../components/responsiveness/easeOut.js";
+import UserHeader from "../../components/header/userHeader.js";
 import { useTheme } from "@chakra-ui/react";
-import Protector from "../../components/utils/methods/getters/Protector.js"
+import Protector from "../../components/utils/methods/getters/protector.js"
 
 
 export default function History() {

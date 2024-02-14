@@ -16,15 +16,15 @@ import {
   Select,
   Card,
 } from "@chakra-ui/react";
-import ShipperSideBar from "../../components/sidebar/ShipperSideBar";
-import UserHeader from "../../components/header/UserHeader";
-import EmbeddedMap from "../../components/google/EmbeddedMap.js";
+import ShipperSideBar from "../../components/sidebar/shipperSideBar.js";
+import UserHeader from "../../components/header/userHeader.js";
+import EmbeddedMap from "../../components/google/embeddedMap.js";
 import { useNavigate } from "react-router-dom";
-import Easeout from "../../components/responsiveness/EaseOut.js";
-import CustomButton from "../../components/buttons/CustomButton.js";
+import Easeout from "../../components/responsiveness/easeOut.js";
+import CustomButton from "../../components/buttons/customButton.js";
 import { useTheme } from "@chakra-ui/react";
-import PostedLoadEdit from "../../components/editButton/PostedLoadEdit.js"
-import Protector from "../../components/utils/methods/getters/Protector.js";
+import PostedLoadEdit from "../../components/editButton/postedLoadEdit.js"
+import Protector from "../../components/utils/methods/getters/protector.js";
 
 export default function ActiveLoads() {
   Protector("/activeloads");

@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Flex, Box, Image, Text } from "@chakra-ui/react";
-import Logo from "../components/logo/Logo.svg";
-import ForgetPasswordForm from "../components/forms/ForgotPasswordForm";
+import Logo from "../components/logo/logo.svg";
+import ForgetPasswordForm from "../components/forms/forgotPasswordForm";
 
 export default function ForgetPassword() {
   return (

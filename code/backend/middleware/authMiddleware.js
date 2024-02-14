@@ -1,11 +1,12 @@
+// Test to update name
 // authMiddleware.js
 
 import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
-import Admin from "../models/AdminModel.js";
-import Carrier from "../models/CarrierModel.js";
-import Shipper from "../models/ShipperModel.js";
-import SuperUser from "../models/SuperUser.js";
+import Admin from "../models/adminModel.js";
+import Carrier from "../models/carrierModel.js";
+import Shipper from "../models/shipperModel.js";
+import SuperUser from "../models/superUser.js";
 
 const protect = asyncHandler(async (req, res, next) => {
   let token = req.cookies.jwt;

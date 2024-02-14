@@ -1,7 +1,7 @@
-import Sidebar from "../../components/sidebar/AdminSideBar";
+import Sidebar from "../../components/sidebar/adminSideBar";
 import React from "react";
 import { Flex, Text } from "@chakra-ui/react";
-import Protector from "../../components/utils/methods/getters/Protector";
+import Protector from "../../components/utils/methods/getters/protector";
 
 export default function Approved() {
   Protector("/approved")

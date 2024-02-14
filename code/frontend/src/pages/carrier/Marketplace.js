@@ -1,4 +1,4 @@
-import Sidebar from "../../components/sidebar/CarrierSideBar";
+import Sidebar from "../../components/sidebar/carrierSideBar.js";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
@@ -22,13 +22,13 @@ import {
   ModalFooter,
   Button,
 } from "@chakra-ui/react";
-import UserHeader from "../../components/header/UserHeader";
-import EmbeddedMap from "../../components/google/EmbeddedMap.js";
+import UserHeader from "../../components/header/userHeader.js";
+import EmbeddedMap from "../../components/google/embeddedMap.js";
 import { useNavigate } from "react-router-dom";
-import EaseOut from "../../components/responsiveness/EaseOut";
+import EaseOut from "../../components/responsiveness/easeOut.js";
 // import GreenButton from "../../components/buttons/GreenButton";
-import CustomButton from "../../components/buttons/CustomButton";
-import Protector from "../../components/utils/methods/getters/Protector.js";
+import CustomButton from "../../components/buttons/customButton.js";
+import Protector from "../../components/utils/methods/getters/protector.js";
 
 export default function Marketplace() {
   Protector("/marketplace");
