@@ -1,9 +1,13 @@
+// Test to update name
 // Model for Marketplace which details of loads posted
 import mongoose from "mongoose";
 
 const marketplaceSchema = mongoose.Schema(
   {
     email: {
+      type: String,
+    },
+    loadNumber: {
       type: String,
     },
     pickUpLocation: {
@@ -45,8 +49,32 @@ const marketplaceSchema = mongoose.Schema(
       type: String,
     },
     additionalDocument: {
-      type: Buffer,
-    }
+      type: String,
+    },
+    pickUpCity: {
+      type: String,
+    },
+    dropOffCity:{
+      type: String,
+    },
+    pickUpLAT: {
+      type: String,
+    },
+    pickUpLNG: {
+      type: String,
+    },
+    dropOffLAT:{
+      type: String,
+    },
+    dropOffLNG: {
+      type: String,
+    },
+    status:{
+      type: String,
+    },
+    carrierEmail:{
+      type: String,
+    },
   },
   {
     timestamps: true,

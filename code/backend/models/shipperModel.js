@@ -1,6 +1,6 @@
-// Model for Shippers which includes authentication and hashing
+// Test to update name
 import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
+import { hashPassword, comparePassword } from "../utils/hashPassword.js";
 
 const shipperSchema = mongoose.Schema(
   {
@@ -12,10 +12,6 @@ const shipperSchema = mongoose.Schema(
     password: {
       type: String,
       required: true,
-    },
-    role: {
-      type: String,
-      required: false,
     },
     firstName: {
       type: String,
@@ -104,16 +100,17 @@ const shipperSchema = mongoose.Schema(
 );
 
 shipperSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    next();
+  if (this.isModified("email")) {
+    this.email = this.email.toLowerCase();
   }
-
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  if (this.isModified("password")) {
+    this.password = await hashPassword(this.password);
+  }
+  next();
 });
 
-shipperSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+shipperSchema.methods.matchPassword = function (enteredPassword) {
+  return comparePassword(enteredPassword, this.password);
 };
 
 const Shipper = mongoose.model("Shipper", shipperSchema);
