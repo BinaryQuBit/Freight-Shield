@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SidebarProvider } from "./components/responsiveness/context.js";
 
+import Homepage from "./pages/homepage.js";
 import Login from "./pages/login.js";
 import Register from "./pages/register.js";
 import ForgotPassword from "./pages/forgotPassword.js"
@@ -26,12 +27,12 @@ import ShipperBusinessDetails from "./pages/registration/shipper/shipperBusiness
 import ShipperContactDetails from "./pages/registration/shipper/shipperContactDetails.js"
 import ShipperSubmission from "./pages/registration/shipper/shipperSubmission.js";
 
-
 export default function App() {
   return (
     <SidebarProvider>
     <BrowserRouter>
       <Routes>
+      <Route path="/" element={<Homepage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
