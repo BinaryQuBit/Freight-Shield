@@ -25,6 +25,8 @@ const CustomInput = ({
   isPassword,
   showPassword,
   onToggleShowPassword,
+  mr,
+  ml,
 }) => {
   return (
 <FormControl
@@ -33,6 +35,8 @@ const CustomInput = ({
   isRequired={isRequired}
   isInvalid={isError}
   mt={mt}
+  mr={mr}
+  ml={ml}
 >
   <InputGroup size="md">
     <Input

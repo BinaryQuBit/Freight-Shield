@@ -25,6 +25,7 @@ import {
   deleteLoad,
   shipperSettings,
   shipperSubmission,
+  updateShipperContactDetails,
 } from "../controllers/shipperController.js";
 
 const router = express.Router();
@@ -43,7 +44,7 @@ router.get("/shippercontactdetails", protect, shipperOnly, shipperContactDetails
 router.post("/postload", upload.single("additionalDocument"), protect, shipperOnly, shipperDetailsComplete, postLoad);
 
 /////////////////////////////////////////////////////// PUTTERS ///////////////////////////////////////////////////////
-router.put("/shippercontactdetails", protect, shipperOnly, shipperContactDetails);
+router.put("/shippercontactdetails", protect, shipperOnly, updateShipperContactDetails);
 router.put("/shipperbusinessdetails", protect, shipperOnly, upload.fields([{ name: "proofBusiness", maxCount: 1 }, { name: "proofInsurance", maxCount: 1 },]), shipperBusinessDetails);
 router.put("/proofBusiness", protect, shipperOnly, upload.fields([{ name: "proofBusiness", maxCount: 1 }]), proofBusiness);
 router.put("/proofInsurance", protect, shipperOnly, upload.fields([{ name: "proofInsurance", maxCount: 1 }]), proofInsurance);

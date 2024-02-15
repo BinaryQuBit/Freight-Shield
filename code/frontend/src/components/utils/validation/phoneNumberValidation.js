@@ -8,5 +8,3 @@ export const PhoneNumberValidation = (phone) => {
   }
   return "";
 };
-
-// const phoneNumberRegex = /^[0-9]{10}$/;
