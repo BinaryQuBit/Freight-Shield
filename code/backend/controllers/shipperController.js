@@ -56,6 +56,18 @@ const shipperSettings = asyncHandler(async (req, res) => {
   res.status(200).json({ user });
 });
 
+// @desc    Getting Shipper Contact Details
+// route    GET /api/users/shippercontactdetails
+// @access  Private
+const shipperContactDetails = asyncHandler(async (req, res) => {
+  const user = {
+    _id: req.user._id,
+    email: req.user.email,
+  };
+
+  res.status(200).json({ user });
+});
+
 // @desc    Getting Shipper Submission
 // route    GET /api/users/shippersubmission
 // @access  Private
@@ -160,10 +172,10 @@ const updateLoad = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Update Shipper Contact Details
+// @desc    Update Shipper Contact Details 
 // route    PUT /api/users/shippercontactdetails
 // @access  Private
-const shipperContactDetails = asyncHandler(async (req, res) => {
+const updateShipperContactDetails = asyncHandler(async (req, res) => {
   const email = req.user.email;
   const shipperExist = await Shipper.findOne({ email });
 
@@ -193,28 +205,64 @@ const shipperContactDetails = asyncHandler(async (req, res) => {
     mailingProvince = province;
     mailingPostalCode = postalCode;
     mailingCountry = country;
-  }
+} else {
+    if (!mailingStreetAddress){
+        return res.status(400).json({ message: "Mailing Street Address must be filled" });
+    }
+    if (!mailingCity){
+        return res.status(400).json({ message: "Mailing City must be filled" });
+    }
+    if (!mailingProvince){
+        return res.status(400).json({ message: "Mailing Province must be filled" });
+    }
+    if (!mailingPostalCode){
+        return res.status(400).json({ message: "Mailing Postal Code must be filled" });
+    }
+    if (!mailingCountry){
+        return res.status(400).json({ message: "Mailing Country must be filled" });
+    }
+}
 
-  if (
-    !firstName ||
-    !lastName ||
-    !companyPhoneNumber ||
-    !streetAddress ||
-    !city ||
-    !province ||
-    !postalCode ||
-    !country ||
-    !mailingStreetAddress ||
-    !mailingCity ||
-    !mailingProvince ||
-    !mailingPostalCode ||
-    !mailingCountry
-  ) {
+  if (!firstName){
     return res
       .status(400)
-      .json({ message: "All required fields must be filled" });
+      .json({ message: "First Name must be filled" });
   }
-
+  if (!lastName){
+    return res
+      .status(400)
+      .json({ message: "Last Name must be filled" });
+  }
+  if (!companyPhoneNumber){
+    return res
+      .status(400)
+      .json({ message: "Company Phone Number must be filled" });
+  }
+  if (!streetAddress){
+    return res
+      .status(400)
+      .json({ message: "Street Address must be filled" });
+  }
+  if (!city){
+    return res
+      .status(400)
+      .json({ message: "City must be filled" });
+  }
+  if (!province){
+    return res
+      .status(400)
+      .json({ message: "Province must be filled" });
+  }
+  if (!postalCode){
+    return res
+      .status(400)
+      .json({ message: "Postal Code must be filled" });
+  }
+  if (!country){
+    return res
+      .status(400)
+      .json({ message: "Country must be filled" });
+  }
   if (shipperExist) {
     const updatedShipper = await Shipper.findOneAndUpdate(
       { email },
@@ -499,4 +547,5 @@ export {
   history,
   shipperSettings,
   shipperSubmission,
+  updateShipperContactDetails,
 };

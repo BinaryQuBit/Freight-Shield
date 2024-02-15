@@ -51,11 +51,13 @@ export default function LoginForm() {
     setEmailError(emailError);
     setPasswordError(passwordError);
 
-    // Start of Post Method
+    // Produce Error
     if (emailError || passwordError) {
       console.log(emailError, passwordError);
       return;
     }
+
+    // Start of POST Method
     try {
       const loginResponse = await axios.post("/login", { email, password });
 
@@ -91,7 +93,7 @@ export default function LoginForm() {
         p="20px"
         maxWidth={{ base: "auto", md: "400px" }}
         mx="auto"
-        rounded={"no"}
+        rounded={"none"}
       >
         <form onSubmit={handleLogin} noValidate>
           <CustomInput

@@ -9,5 +9,3 @@ export const PostalCodeValidation = (postalCode) => {
   }
   return "";
 };
-
-// const postalCodeRegex = /^[A-Za-z0-9]{5,6}$/;
