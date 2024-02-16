@@ -1,4 +1,3 @@
-// Test to update name
 import express from "express";
 import upload from "../middleware/upload.js";
 import deleteFile from "../middleware/delete.js";

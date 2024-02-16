@@ -1,5 +1,4 @@
 // Connection to Mongo Database 
-// Test to update name
 
 import mongoose from "mongoose";
 
