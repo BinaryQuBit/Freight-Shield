@@ -1,4 +1,4 @@
-// Test to update name
+
 /* global google */
 import React, { useState, useEffect } from 'react';
 import { GoogleMap, Marker, DirectionsRenderer, useLoadScript } from '@react-google-maps/api';

@@ -1,4 +1,3 @@
-// Test to update name
 import React from "react";
 import {
   Step,

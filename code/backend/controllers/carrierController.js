@@ -1,4 +1,3 @@
-// Test to update name
 import asyncHandler from "express-async-handler";
 import Carrier from "../models/carrierModel.js";
 import Marketplace from "../models/marketplaceModel.js";
@@ -6,7 +5,7 @@ import Marketplace from "../models/marketplaceModel.js";
 ////////////////////////////// Getters //////////////////////////////
 
 // @desc    Getting Marketplace
-// route    GET /api/users/marketplace
+// route    GET /marketplace
 // @access  Private
 const marketplace = asyncHandler(async (req, res) => {
   const pendingLoads = await Marketplace.find({ status: "Pending" });
@@ -19,7 +18,7 @@ const marketplace = asyncHandler(async (req, res) => {
 });
 
 // @desc    Getting Unit Profiles
-// route    GET /api/users/unitprofiles
+// route    GET /unitprofiles
 // @access  Private
 const unitProfile = asyncHandler(async (req, res) => {
   const email = req.user.email;
@@ -35,7 +34,7 @@ const unitProfile = asyncHandler(async (req, res) => {
 });
 
 // @desc    Getting My Loads
-// route    GET /api/users/myloads
+// route    GET /myloads
 // @access  Private
 const myLoads = asyncHandler(async (req, res) => {
   const user = {
@@ -47,7 +46,7 @@ const myLoads = asyncHandler(async (req, res) => {
 });
 
 // @desc    Getting Driver Profiles
-// route    GET /api/users/driverprofiles
+// route    GET /driverprofiles
 // @access  Private
 const driverProfiles = asyncHandler(async (req, res) => {
   const user = {
@@ -59,7 +58,7 @@ const driverProfiles = asyncHandler(async (req, res) => {
 });
 
 // @desc    Getting Unit Profiles
-// route    GET /api/users/unitprofiles
+// route    GET /unitprofiles
 // @access  Private
 const unitProfiles = asyncHandler(async (req, res) => {
   const user = {
@@ -71,7 +70,7 @@ const unitProfiles = asyncHandler(async (req, res) => {
 });
 
 // @desc    Getting Carrier Settings
-// route    GET /api/users/carriersettings
+// route    GET /carriersettings
 // @access  Private
 const carrierSettings = asyncHandler(async (req, res) => {
   const user = {
@@ -83,7 +82,7 @@ const carrierSettings = asyncHandler(async (req, res) => {
 });
 
 // @desc    Getting Carrier Business Details
-// route    GET /api/users/carrierbusinessdetails
+// route    GET /carrierbusinessdetails
 // @access  Private
 const carrierBusinessDetails = asyncHandler(async (req, res) => {
   const user = {
@@ -95,7 +94,7 @@ const carrierBusinessDetails = asyncHandler(async (req, res) => {
 });
 
 // @desc    Getting Carrier Company Details
-// route    GET /api/users/carriercompanydetails
+// route    GET /carriercompanydetails
 // @access  Private
 const carrierCompanyDetails = asyncHandler(async (req, res) => {
   const user = {
@@ -107,7 +106,7 @@ const carrierCompanyDetails = asyncHandler(async (req, res) => {
 });
 
 // @desc    Getting Carrier Submission
-// route    GET /api/users/carriersubmission
+// route    GET /carriersubmission
 // @access  Private
 const carrierSubmission = asyncHandler(async (req, res) => {
   const user = {
@@ -121,7 +120,7 @@ const carrierSubmission = asyncHandler(async (req, res) => {
 ////////////////////////////// Posters //////////////////////////////
 
 // @desc    Adding Unit Profiles
-// route    POST /api/users/addunit
+// route    POST /addunit
 // @access  Private
 const addUnit = asyncHandler(async (req, res) => {
   const email = req.user.email;
@@ -149,7 +148,7 @@ const addUnit = asyncHandler(async (req, res) => {
 ////////////////////////////// Putters //////////////////////////////
 
 // @desc    Assigning Unit
-// route    PUT /api/users/marketplace/:id
+// route    PUT /marketplace/:id
 // @access  Private
 const assignUnit = asyncHandler(async (req, res) => {
   const loadId = req.params.id;
