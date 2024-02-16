@@ -1,4 +1,3 @@
-// Test to update name
 import express from "express";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -23,6 +22,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 8080;
 
+// CORS configuration
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -30,24 +30,38 @@ app.use(
   })
 );
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 app.use("/api/users", AdminRoutes);
 app.use("/api/users", CarrierRoutes);
 // app.use("/api/users", DriverRoutes);
-app.use("/api/users", NewUserRoutes);
+app.use(NewUserRoutes);
 app.use("/api/users", ShipperRoutes);
 // app.use("/api/users", SuperUserRoutes);
 
+// Connect to the database
+connectDB();
+
+// Serving frontend static files
+const frontendPath = path.join(__dirname, '../frontend/build');
+app.use(express.static(frontendPath));
+
+// Catch-all handler to serve the index.html from the frontend
+app.get('*', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html'));
+});
+
+// Error-handling middleware
 app.use(notFound);
 app.use(errorHandler);
 
-app.listen(port, () => console.log(`Server started on port ${port}`));
+// Start the server
+app.listen(port, () => {
+  console.log(`Server started on port ${port}`);
+});
 
-connectDB();
 
-app.get("/", (req, res) => res.send("Server is ready"));
