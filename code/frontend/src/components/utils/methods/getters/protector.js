@@ -17,7 +17,7 @@ const Protectors = (path) => {
           error.response &&
           (error.response.status === 401 || error.response.status === 403)
         ) {
-          navigate("/login");
+          navigate("/login"); 
         }
       });
   }, [navigate, path]);

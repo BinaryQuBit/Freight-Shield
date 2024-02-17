@@ -7,7 +7,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import Protector from "../../components/utils/methods/getters/protector";
 
 export default function Pending() {
-  Protector("/pending");
+  Protector("/api/pending");
 
   return (
     <Flex>

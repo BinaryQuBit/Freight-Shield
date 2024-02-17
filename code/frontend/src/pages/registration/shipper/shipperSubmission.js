@@ -5,7 +5,7 @@ import ShipperSubmissionDetails from '../../../components/forms/shipperSubmissio
 import Protector from "../../../components/utils/methods/getters/protector.js";
 
 function ShipperSubmission() {
-Protector("/shippersubmission")
+Protector("/api/shippersubmission")
 
   return (
     <>

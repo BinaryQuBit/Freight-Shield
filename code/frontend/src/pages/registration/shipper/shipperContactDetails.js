@@ -5,7 +5,7 @@ import { RegistrationProgress } from "../../../components/progressBar/registrati
 import Protector from "../../../components/utils/methods/getters/protector.js";
 
 function ShipperContactDetails() {
-  Protector("/shippercontactdetails")
+  Protector("/api/shippercontactdetails")
   return (
     <>
       <Header />

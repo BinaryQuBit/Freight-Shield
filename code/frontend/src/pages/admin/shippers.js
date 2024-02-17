@@ -4,7 +4,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import Protector from "../../components/utils/methods/getters/protector.js"
 
 export default function Shippers() {
-  Protector("/shippers");
+  Protector("/api/shippers");
 
   return (
     <Flex>

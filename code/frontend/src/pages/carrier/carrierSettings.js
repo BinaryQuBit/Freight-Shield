@@ -5,7 +5,7 @@ import UserHeader from "../../components/header/userHeader.js";
 import Protector from "../../components/utils/methods/getters/protector.js"
 
 export default function CarrierSettings() {
-Protector("/carriersettings");
+Protector("/api/carriersettings");
 
   return (
     <>

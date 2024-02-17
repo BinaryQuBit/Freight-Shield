@@ -5,7 +5,6 @@ import { useTheme } from "@chakra-ui/react";
 import { FiTruck, FiUpload, FiXCircle } from "react-icons/fi";
 import { GrPowerReset } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
-import Protector from "../../components/utils/methods/getters/protector";
 // import Validation from "../../components/utils/Validation.js";
 import {
   Flex,
@@ -26,9 +25,10 @@ import Sidebar from "../../components/sidebar/shipperSideBar";
 import UserHeader from "../../components/header/userHeader";
 import axios from "axios";
 import CustomButton from "../../components/buttons/customButton";
+import Protector from "../../components/utils/methods/getters/protector";
 
 const PostLoad = () => {
-  Protector("/postload")
+  Protector("/api/postload")
   // Navigation
   const navigate = useNavigate();
   // Using Theme

@@ -6,7 +6,7 @@ import EaseOut from "../../components/responsiveness/easeOut.js";
 import Protector from "../../components/utils/methods/getters/protector.js"
 
 export default function MyLoads() {
-  Protector("/myloads");
+  Protector("/api/myloads");
 
   const navigate = useNavigate();
   const [loads, setLoads] = useState([]);

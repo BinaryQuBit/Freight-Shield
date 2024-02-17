@@ -1,10 +1,10 @@
 import Sidebar from "../../components/sidebar/shipperSideBar.js";
 import React from "react";
 import { Flex, Text } from "@chakra-ui/react";
-import Protector from "../../components/utils/methods/getters/protector.js"
+import Protector from "../../components/utils/methods/getters/protector.js";
 
 export default function ShipperSettings() {
-  Protector("/shippersettings")
+  Protector("/api/shippersettings")
 
   return (
     <Flex>

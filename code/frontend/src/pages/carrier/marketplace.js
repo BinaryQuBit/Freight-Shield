@@ -31,7 +31,7 @@ import CustomButton from "../../components/buttons/customButton.js";
 import Protector from "../../components/utils/methods/getters/protector.js";
 
 export default function Marketplace() {
-  Protector("/marketplace");
+  Protector("/api/marketplace");
   const navigate = useNavigate();
   const [loads, setLoads] = useState([]);
   const [fromSearchTerm, setFromSearchTerm] = useState("");
