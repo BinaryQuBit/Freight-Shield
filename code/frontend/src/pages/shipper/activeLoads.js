@@ -24,10 +24,11 @@ import Easeout from "../../components/responsiveness/easeOut.js";
 import CustomButton from "../../components/buttons/customButton.js";
 import { useTheme } from "@chakra-ui/react";
 import PostedLoadEdit from "../../components/editButton/postedLoadEdit.js"
-import Protector from "../../components/utils/methods/getters/protector.js";
+import Protector from "../../components/utils/methods/getters/protector.js"
 
 export default function ActiveLoads() {
-  Protector("/activeloads");
+  Protector("/api/activeloads");
+
 
   const theme = useTheme();
   const customBlue = theme.colors.customBlue;
@@ -67,17 +68,17 @@ export default function ActiveLoads() {
     );
     setFilteredLoads(filtered);
   }, [fromSearchTerm, toSearchTerm, statusSearchTerm, loads]);
+  
 
   const handleDeleteLoad = (loadId, filename) => {
     axios.delete(`/activeloads/${loadId}/${filename}`, { withCredentials: true })
       .then(() => {
         console.log(`Load with id ${loadId} deleted successfully.`);
         setLoads(currentLoads => currentLoads.filter(load => load.id !== loadId));
-      })
+      }) 
       .catch(error => {
       });
   };
-  
 
   return (
     <>

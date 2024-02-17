@@ -6,19 +6,21 @@ import Marketplace from "../models/marketplaceModel.js";
 ////////////////////////////// Getters //////////////////////////////
 
 // @desc    Getting Active Loads
-// route    GET /activeloads
+// route    GET /api/users/activeloads
 // @access  Private
 const activeLoads = asyncHandler(async (req, res) => {
-  const user = {
-    _id: req.user._id,
-    email: req.user.email,
-  };
+  try {
+    const userEmail = req.user.email;
+    const loads = await Marketplace.find({ email: userEmail });
 
-  res.status(200).json({ user });
+    res.status(200).json(loads);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 // @desc    Getting PostLoad
-// route    GET /postload
+// route    GET /api/users/postload
 // @access  Private
 const getPostLoad = asyncHandler(async (req, res) => {
   const user = {
@@ -30,7 +32,7 @@ const getPostLoad = asyncHandler(async (req, res) => {
 });
 
 // @desc    Getting History
-// route    GET /history
+// route    GET /api/users/history
 // @access  Private
 const history = asyncHandler(async (req, res) => {
   const user = {
@@ -42,7 +44,7 @@ const history = asyncHandler(async (req, res) => {
 });
 
 // @desc    Getting Shipper Settings
-// route    GET /shippersettings
+// route    GET /api/users/shippersettings
 // @access  Private
 const shipperSettings = asyncHandler(async (req, res) => {
   const user = {
@@ -54,7 +56,7 @@ const shipperSettings = asyncHandler(async (req, res) => {
 });
 
 // @desc    Getting Shipper Contact Details
-// route    GET /shippercontactdetails
+// route    GET /api/users/shippercontactdetails
 // @access  Private
 const shipperContactDetails = asyncHandler(async (req, res) => {
   const user = {
@@ -66,7 +68,7 @@ const shipperContactDetails = asyncHandler(async (req, res) => {
 });
 
 // @desc    Getting Shipper Submission
-// route    GET /shippersubmission
+// route    GET /api/users/shippersubmission
 // @access  Private
 const shipperSubmission = asyncHandler(async (req, res) => {
   const user = {
@@ -80,7 +82,7 @@ const shipperSubmission = asyncHandler(async (req, res) => {
 ////////////////////////////// Posters //////////////////////////////
 
 // @desc    Posting Load
-// route    POST /postload
+// route    POST /api/users/postload
 // @access  Private
 const postLoad = asyncHandler(async (req, res) => {
   try {
@@ -145,7 +147,7 @@ const postLoad = asyncHandler(async (req, res) => {
 ////////////////////////////// Putters //////////////////////////////
 
 // @desc    Updating Load 
-// route    PUT /postload
+// route    PUT /api/users/postload
 // @access  Private
 const updateLoad = asyncHandler(async (req, res) => {
   const { id } = req.params;
@@ -170,7 +172,7 @@ const updateLoad = asyncHandler(async (req, res) => {
 });
 
 // @desc    Update Shipper Contact Details 
-// route    PUT /shippercontactdetails
+// route    PUT /api/users/shippercontactdetails
 // @access  Private
 const updateShipperContactDetails = asyncHandler(async (req, res) => {
   const email = req.user.email;
@@ -294,7 +296,7 @@ const updateShipperContactDetails = asyncHandler(async (req, res) => {
 });
 
 // @desc    Update Shipper Business Details
-// route    PUT /shipperbusinessdetails
+// route    PUT /api/users/shipperbusinessdetails
 // @access  Private
 const shipperBusinessDetails = asyncHandler(async (req, res) => {
   const email = req.user.email;
@@ -332,7 +334,7 @@ const shipperBusinessDetails = asyncHandler(async (req, res) => {
 });
 
 // @desc    Upload Proof of Business
-// route    PUT /proofBusiness
+// route    PUT /api/users/proofBusiness
 // @access  Private
 const proofBusiness = asyncHandler(async (req, res) => {
   if (
@@ -372,7 +374,7 @@ const proofBusiness = asyncHandler(async (req, res) => {
 });
 
 // @desc    Upload Proof of Insurance
-// route    PUT /proofInsurance
+// route    PUT /api/users/proofInsurance
 // @access  Private
 const proofInsurance = asyncHandler(async (req, res) => {
   if (
@@ -414,7 +416,7 @@ const proofInsurance = asyncHandler(async (req, res) => {
 ////////////////////////////// Deleters //////////////////////////////
 
 // @desc    Remove Proof of Business
-// route    DELETE /proofBusiness
+// route    DELETE /api/users/proofBusiness
 // @access  Private
 const removeProofBusiness = asyncHandler(async (req, res) => {
   const email = req.user.email;
@@ -444,7 +446,7 @@ const removeProofBusiness = asyncHandler(async (req, res) => {
 });
 
 // @desc    Remove Proof of Insurance
-// route    DELETE /proofBusinessinsurance
+// route    DELETE /api/users/proofBusinessinsurance
 // @access  Private
 const removeProofInsurance = asyncHandler(async (req, res) => {
   const email = req.user.email;
@@ -475,7 +477,7 @@ const removeProofInsurance = asyncHandler(async (req, res) => {
 
 
 // @desc    Remove Addtional document
-// route    DELETE /postload
+// route    DELETE /api/users/postload
 // @access  Private
 const removeAdditionalDocument = asyncHandler(async (req, res) => {
   const { id, filename } = req.params;
@@ -509,7 +511,7 @@ const removeAdditionalDocument = asyncHandler(async (req, res) => {
 });
 
 // @desc    Delete Load
-// route    DELETE /activeloads/${loadId}
+// route    DELETE /api/users/activeloads/${loadId}
 // @access  Private
 const deleteLoad = async (req, res) => {
   try {

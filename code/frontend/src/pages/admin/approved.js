@@ -4,7 +4,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import Protector from "../../components/utils/methods/getters/protector";
 
 export default function Approved() {
-  Protector("/approved")
+  Protector("/api/approved")
 
   return (
     <Flex>

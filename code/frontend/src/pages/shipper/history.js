@@ -19,11 +19,9 @@ import { useNavigate } from "react-router-dom";
 import EaseOut from "../../components/responsiveness/easeOut.js";
 import UserHeader from "../../components/header/userHeader.js";
 import { useTheme } from "@chakra-ui/react";
-import Protector from "../../components/utils/methods/getters/protector.js"
 
 
 export default function History() {
-  Protector("/history")
 
   const theme = useTheme();
   const customBlue = theme.colors.customBlue;
@@ -37,7 +35,7 @@ export default function History() {
 
   useEffect(() => {
     axios
-      .get("/activeloads", { withCredentials: true })
+      .get("/api/activeloads", { withCredentials: true })
       .then((response) => {
         setLoads(response.data);
         console.log("Active Loads Fetched Successfully");

@@ -5,7 +5,7 @@ import { Flex, Text, VStack, Card, Stack } from "@chakra-ui/react";
 import Protector from "../../components/utils/methods/getters/protector.js"
 
 export default function Administrators() {
-  Protector("/administrators")
+  Protector("/api/administrators")
 
   return (
     <Flex>

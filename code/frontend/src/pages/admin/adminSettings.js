@@ -4,7 +4,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import Protector from "../../components/utils/methods/getters/protector.js"
 
 export default function AdminSettings() {
-  Protector("/adminsettings");
+  Protector("/api/adminsettings");
 
   return (
     <Flex>

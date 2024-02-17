@@ -30,11 +30,11 @@ app.use(cookieParser());
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-app.use(AdminRoutes);
-app.use(CarrierRoutes);
-// app.use(DriverRoutes);
 app.use(NewUserRoutes);
-app.use(ShipperRoutes);
+app.use('/api', AdminRoutes);
+app.use('/api', CarrierRoutes);
+// app.use(DriverRoutes);
+app.use('/api', ShipperRoutes);
 // app.use(SuperUserRoutes);
 
 connectDB();

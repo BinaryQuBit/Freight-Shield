@@ -21,7 +21,7 @@ import UserHeader from "../../components/header/userHeader.js";
 import Protector from "../../components/utils/methods/getters/protector.js"
 
 export default function UnitProfile() {
-Protector("/unitprofiles");
+Protector("/api/unitprofiles");
   // Using Theme
   const theme = useTheme();
   const customBlue = theme.colors.customBlue;
