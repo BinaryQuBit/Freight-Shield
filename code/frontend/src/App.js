@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SidebarProvider } from "./components/responsiveness/context.js";
 
-import Homepage from "./pages/homepage.js";
+import Homepage from "./pages/shared/homePage.js";
 import Login from "./pages/login.js";
 import Register from "./pages/register.js";
 import ForgotPassword from "./pages/forgotPassword.js"
