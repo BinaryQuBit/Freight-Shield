@@ -1,5 +1,5 @@
 # Use an official Node runtime as a parent image
-FROM node:14
+FROM node:20
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
@@ -20,4 +20,4 @@ EXPOSE 8080
 ENV NODE_ENV production
 
 # Run the app when the container launches
-CMD ["node", "server.js"]
+CMD ["npm", "start"]
