@@ -47,7 +47,7 @@ connectDB();
 //   res.sendFile(path.join(frontendPath, 'index.html'));
 // });
 
-const frontendPath = path.join(__dirname, 'public');
+const frontendPath = path.join(__dirname, 'public/build');
 app.use(express.static(frontendPath));
 
 app.get('*', (req, res) => {
