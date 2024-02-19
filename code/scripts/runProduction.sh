@@ -45,35 +45,29 @@ else
     exit 1
 fi
 
-# Stash any uncommitted changes
-echo "Stashing any uncommitted changes..."
-git stash push -m "Stashing changes before switching to Production branch"
+echo "Stashing any uncommitted backend changes..."
+git stash push -m "Stashing backend changes before switching to Production branch"
 
 echo "Switching to the Production branch..."
 git checkout Production
 
-# Apply the stashed changes
-echo "Applying stashed changes..."
+echo "Applying stashed backend changes..."
 git stash pop
 
-# Resolve conflicts by accepting incoming changes
 echo "Resolving any merge conflicts by accepting incoming changes..."
 git checkout --theirs .
 
-# Add and commit resolved changes
 echo "Adding and committing resolved changes..."
 git add .
 git commit -m "Resolve conflicts by accepting incoming changes"
 
-echo "Adding changes from the backend directory..."
+echo "Adding additional changes from the backend directory..."
 git add .
 
-echo "Committing the changes..."
+echo "Committing the additional changes..."
 git commit -m "Update backend with latest changes"
 
 echo "Pushing changes to the Production branch..."
 git push origin Production
 
 echo "Changes pushed to the Production branch successfully."
-
-
