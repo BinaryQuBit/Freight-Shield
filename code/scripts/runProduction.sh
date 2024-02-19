@@ -1,5 +1,7 @@
 #!/bin/bash
 
+./runDevelopment
+
 cd ./Freigh-Shield
 
 echo "Switching to the Production branch..."
