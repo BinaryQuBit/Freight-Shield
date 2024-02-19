@@ -2,7 +2,7 @@
 
 ./runDevelopment
 
-cd ./Freigh-Shield
+cd Freigh-Shield
 
 echo "Switching to the Production branch..."
 git checkout Production
