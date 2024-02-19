@@ -45,17 +45,20 @@ else
     exit 1
 fi
 
-echo "Adding changes from the backend directory..."
-git add .
-
-echo "Committing the changes..."
-git commit -m "Update backend with latest changes"
+# Stash any uncommitted changes
+echo "Stashing any uncommitted changes..."
+git stash push -m "Stashing changes before switching to Production branch"
 
 echo "Switching to the Production branch..."
 git checkout Production
 
+# Apply the stashed changes
+echo "Applying stashed changes..."
+git stash pop
+
 echo "Adding changes from the backend directory..."
-cd code/backend
+# Ensure you're in the correct directory to add changes
+cd "$BACKEND_DIR"
 git add .
 
 echo "Committing the changes..."
@@ -65,3 +68,4 @@ echo "Pushing changes to the Production branch..."
 git push origin Production
 
 echo "Changes pushed to the Production branch successfully."
+
