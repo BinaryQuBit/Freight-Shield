@@ -7,8 +7,8 @@ cd ./Freigh-Shield
 echo "Switching to the Production branch..."
 git checkout Production
 
-echo "Pulling the latest changes from the Production branch..."
-git pull origin Production
+# echo "Pulling the latest changes from the Production branch..."
+# git pull origin Production
 
 echo "Adding changes from the backend directory..."
 cd code/backend
