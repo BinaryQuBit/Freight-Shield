@@ -56,9 +56,16 @@ git checkout Production
 echo "Applying stashed changes..."
 git stash pop
 
+# Resolve conflicts by accepting incoming changes
+echo "Resolving any merge conflicts by accepting incoming changes..."
+git checkout --theirs .
+
+# Add and commit resolved changes
+echo "Adding and committing resolved changes..."
+git add .
+git commit -m "Resolve conflicts by accepting incoming changes"
+
 echo "Adding changes from the backend directory..."
-# Ensure you're in the correct directory to add changes
-cd "$BACKEND_DIR"
 git add .
 
 echo "Committing the changes..."
@@ -68,4 +75,5 @@ echo "Pushing changes to the Production branch..."
 git push origin Production
 
 echo "Changes pushed to the Production branch successfully."
+
 
