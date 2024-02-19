@@ -45,6 +45,12 @@ else
     exit 1
 fi
 
+echo "Adding changes from the backend directory..."
+git add .
+
+echo "Committing the changes..."
+git commit -m "Update backend with latest changes"
+
 echo "Switching to the Production branch..."
 git checkout Production
 
