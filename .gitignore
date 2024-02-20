@@ -1,3 +1,7 @@
 node_modules
 .env
 .DS_Store
+/code/scripts/
+/code/docker-compose.yml
+/code/backend/Dockerfile
+/code/frontend/Dockerfile
