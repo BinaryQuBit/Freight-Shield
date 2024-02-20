@@ -2,7 +2,6 @@ node_modules
 package-lock.json
 .env
 .DS_Store
-/code/scripts/
-/code/docker-compose.yml
-/code/backend/Dockerfile
-/code/frontend/Dockerfile
+/scripts
+docker-compose.yml
+Dockerfile
