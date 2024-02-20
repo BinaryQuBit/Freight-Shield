@@ -25,6 +25,7 @@ import {
   deleteLoad,
   shipperSettings,
   shipperSubmission,
+  shipperDasboard
 } from "../controllers/shipperController.js";
 
 const router = express.Router();
@@ -38,6 +39,7 @@ router.get("/shippersettings", protect, shipperOnly, shipperSettings);
 router.get("/shipperbusinessdetails", protect, shipperOnly, shipperBusinessDetails);
 router.get("/shippersubmission", protect, shipperOnly, shipperSubmission);
 router.get("/shippercontactdetails", protect, shipperOnly, shipperContactDetails);
+router.get("/shipperDashboard", protect, shipperOnly, shipperDasboard);
 
 /////////////////////////////////////////////////////// POSTERS ///////////////////////////////////////////////////////
 router.post("/postload", upload.single("additionalDocument"), protect, shipperOnly, shipperDetailsComplete, postLoad);

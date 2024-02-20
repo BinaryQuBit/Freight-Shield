@@ -26,6 +26,7 @@ import CarrierSubmission from "./pages/registration/carrier/carrierSubmission.js
 import ShipperBusinessDetails from "./pages/registration/shipper/shipperBusinessDetails.js"
 import ShipperContactDetails from "./pages/registration/shipper/shipperContactDetails.js"
 import ShipperSubmission from "./pages/registration/shipper/shipperSubmission.js";
+import ShipperDashboard from "./pages/shipper/dashBoard.js";
 
 export default function App() {
   return (
@@ -40,6 +41,7 @@ export default function App() {
         <Route path="/approved" element={<Approved />} />
         <Route path="/administrators" element={<Administrators />} />
         <Route path="/shippers" element={<Shippers />} />
+        <Route path="/shipperDashboard" element={<ShipperDashboard/>} />
         <Route path="/carriers" element={<Carriers />} />
         <Route path="/adminsettings" element={<AdminSettings />} />
         <Route path="/activeloads" element={<ActiveLoads />} />
