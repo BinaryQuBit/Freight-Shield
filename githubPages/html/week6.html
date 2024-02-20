@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/mystyle.css">
+    <title>Week 6</title>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <img src="../images/logo2.svg" alt="Logo">
+        </div>
+        <ul class="navbar">
+            <li>
+                <a href="../../index.html">Home</a>
+            </li>
+            <li>
+                <a>Semester 1</a>
+                <ul class="sub-nav">
+                    <li>
+                        <a>September</a>
+                        <ul class="sub-sub-nav">
+                            <li><a href="../html/week1.html">Week 1</a></li>
+                            <li><a href="../html/week2.html">Week 2</a></li>
+                            <li><a href="../html/week3.html">Week 3</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="active">October</a>
+                        <ul class="sub-sub-nav">
+                            <li><a href="../html/week4.html">Week 4</a></li>
+                            <li><a href="../html/week5.html">Week 5</a></li>
+                            <li><a href="../html/week6.html" class="active">Week 6</a></li>
+                            <li><a href="../html/week7.html">Week 7</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a>November</a>
+                        <ul class="sub-sub-nav">
+                            <li><a href="../html/week8.html">Week 8</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a>SCRUM Meetings</a>
+                <ul class="sub-nav">
+                    <li><a href="../html/scrum1.html">SCRUM Meeting 1</a></li>
+                    <li><a href="../html/scrum2.html" >SCRUM Meeting 2</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1 style="text-align: center"><strong>Project Timeline and Initialization Meeting</strong></h1>
+
+        <section class="info-section">
+            <div class="benefits-container">
+                <div class="benefits-content">
+                    <h2> Timeline </h2>
+                    <p>
+                        This is the Timeline for our project, highlighting the key milestones and deliverables required at specific times. 
+                        It spans from week 7 to 12, tracking our progress from the previous meeting up to the semester's end. Our immediate priority is the development of the 
+                        web application, after which we will shift our attention to the mobile app. The accompanying image provides a 
+                        visual representation of the timeline, though it may be difficult to discern the details. For a clearer view, 
+                        please refer to the full-sized image and additional meeting-related documents available in the <a href="#resources" style="scroll-behavior: smooth;">resources section</a> at the end of the page through the provided link.
+                    </p>
+                </div>
+                <div class="benefits-image">
+                    <img src="../images/Timeline.png" alt="Timeline" />
+                </div>
+            </div>
+        </section>
+        <br />
+
+        <section class="info-section">
+            <div class="benefits-container">
+                <div class="benefits-content">
+                    <h2> Gantt Chart </h2>
+                    <p>
+                        Our team has chosen to utilize a Gantt Chart to monitor and manage the progress of our projects. This tool offers a 
+                        comprehensive overview of completed tasks while effectively identifying those that require further attention. 
+                        Through the Gantt Chart, we can not only anticipate upcoming responsibilities but also allocate time based on task intricacy. 
+                        This structured approach ensures streamlined progress and efficient time management.
+                    </p>
+                </div>
+                <div class="benefits-image">
+                    <img src="../images/ganttChart.png" alt="Flow" />
+                </div>
+            </div>
+        </section>
+        <br />
+
+
+        <section class="info-section">
+            <div class="benefits-container">
+                <div class="benefits-content">
+                    <h2> Use Case Diagram </h2>
+                    <p>
+                        We created a use case diagram to visually represent the interactions between the users and the Freight Shield System. 
+                        This diagram serves as a tool to communicate the various functionalities available to different users within the system. 
+                        The 'Admin' role is responsible for checking both shipper and carrier compliance, while the 'Shipper' has the ability to 
+                        post a load, which then appears on the shipper dashboard. The 'Carrier Dashboard' enables the 'Dispatcher' to pick a load 
+                        and assign a driver, and it also extends to features such as live tracking and logbook integration. The 'Driver' interacts 
+                        with the system via the mobile app, utilizing it for live updates. These interactions are streamlined and interconnected, 
+                        ensuring that each user has the necessary tools and information to perform their roles effectively within the logistics 
+                        and shipment tracking process.
+                    </p>
+                </div>
+                <div class="benefits-image">
+                    <img src="../../Documents/UML Diagrams/UseCaseDiagram.jpeg" alt="Flow" />
+                </div>
+            </div>
+        </section>
+        <br />
+
+        <section class="info-section">
+            <div class="benefits-container">
+                <div class="benefits-content">
+                    <h2> Sequence Diagram </h2>
+                    <p>
+                        We have created a sequence diagram to show the order of actions within the Freight Shield System, mapping out 
+                        the communication between different components and stakeholders. The process begins with the 'Shipper' posting 
+                        a load, which is then sent to the 'Shipper Dashboard' and subsequently displayed on the 'Loadboard'. As the 
+                        sequence progresses, the 'Logbook' receives and sends data, playing a pivotal role in maintaining records. 
+                        'Live Tracking' is an integral feature that enables the sending and receiving of real-time location updates to 
+                        and from the 'Mobile App', ensuring the 'Driver' is continually updated. On the receiving end, the 'Carrier 
+                        Dashboard' is where the 'Dispatcher' interacts with the system, visualizing the load and then assigning it to 
+                        the 'Driver'. Notifications and data exchange between the 'Shipper', 'Driver', and 'Dispatcher' facilitate a 
+                        cohesive operational environment, showcasing the system's ability to synchronize logistics and communication 
+                        effectively.
+                    </p>
+                </div>
+                <div class="benefits-image">
+                    <img src="../../Documents/UML Diagrams/SequenceDiagram.jpeg" alt="Sequence Diagram" />
+                </div>
+            </div>
+        </section>
+        <br />
+
+        <section class="info-section" id="resources">
+            <div class="benefits-container">
+                <div class="benefits-content">
+                    <h2>Resources</h2>
+                    <ul>
+                        <li> 
+                            <a href="../images/Timeline.png">Timeline</a>
+                        </li>
+                        <li> 
+                            <a href="../images/ganttChart.png">Grantt Chart</a>
+                        </li>
+                        <li> 
+                            <a href="../../Documents/UML Diagrams/UseCaseDiagram.jpeg">Use Case Diagram</a>
+                        </li>
+                        <li> 
+                            <a href="../../Documents/UML Diagrams/SequenceDiagram.jpeg">Sequence Diagram</a>
+                        </li>
+                        <li> 
+                            <a href="../../Documents/Meetings/week6/meetingAgenda(week6).pdf">Meeting Agenda</a>
+                        </li>
+                        <li>
+                            <a href="../../Documents/Meetings/week6/meetingMinutes(week6).pdf">Meeting Minutes</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+    <br />
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2023 Freight Shield. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

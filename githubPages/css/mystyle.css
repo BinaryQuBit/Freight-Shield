@@ -1,0 +1,253 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: auto;
+    padding-top: 180px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f5f5f5;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo img {
+    max-height: 100px;
+    padding: 20px;
+}
+
+.navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+}
+
+.navbar li {
+    position: relative;
+    margin-left: 10px;
+}
+
+.navbar li a {
+    display: block;
+    
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+a{
+    color: black;
+}
+.navbar li a:hover,
+.navbar li a:focus {
+    background-color: #0866ff;
+    color: white;
+    border-radius: 15px;
+}
+
+.active{
+    background-color: #0866ff;
+    border-radius: 15px;
+    color: white;
+}
+
+.sub-nav, .sub-sub-nav {
+    display: none;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+}
+
+.navbar li:hover .sub-nav,
+.navbar li:focus-within .sub-nav,
+.sub-nav li:hover .sub-sub-nav,
+.sub-nav li:focus-within .sub-sub-nav {
+    display: block;
+}
+
+.sub-nav li a, .sub-sub-nav li a {
+    padding: 10px;
+    white-space: nowrap;
+}
+
+.sub-nav li a:hover,
+.sub-nav li a:focus,
+.sub-sub-nav li a:hover,
+.sub-sub-nav li a:focus {
+    background-color: #0866ff;
+    color: white;
+    border-radius: 15px;
+}
+
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navbar li {
+        margin: 5px 0;
+    }
+
+    .sub-nav {
+        position: static;
+    }
+}
+
+.sub-sub-nav {
+    left: 100%;
+    top: 0;
+}
+
+.info-section:hover {
+    box-shadow: 0 0 11px rgba(33,33,33,.2); 
+  }
+
+.info-section {
+    padding: 20px;
+    background-color: #e9e9ff;
+    margin: 20px auto;
+    max-width: 1200px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius:10px;
+}
+
+.info-section h1, .info-section h2 {
+    color: #333;
+    margin-top: 20px;
+}
+
+.info-section p {
+    color: #666;
+    line-height: 1.6;
+}
+
+.info-section ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+.info-section li {
+    margin-bottom: 10px;
+}
+
+.intro-container, .features-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.text-content, .features-text {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.features-text {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.benefits-content a:hover{
+    font-size: large;
+    color: red;
+}
+
+.features-text h2 {
+    align-self: center;
+}
+
+.image-content, .features-image {
+    flex-basis: 400px;
+}
+
+.image-content img, .features-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+.highlighted-text {
+    font-size: 1.2em; /* Makes the text a bit bigger */
+    font-style: italic; /* Makes the text italic */
+    font-family: 'Georgia', serif; /* A stylish font */
+}
+
+.benefits-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.benefits-content {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.benefits-image {
+    flex-basis: 300px; /* Adjust this value based on the size of your image */
+}
+
+.benefits-image img {
+    max-width: 100%;
+    height: auto;
+    box-shadow: 5px rgba(0, 0, 0, 0.1);
+}
+
+.benefitSection{
+    background-color: white;
+    text-align: center;
+}
+
+footer {
+    background-color: #f5f5f5;
+    padding: 20px 0;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.footer-content {
+    text-align: center;
+}
+
+
+.info-section h2 {
+    color: #333;
+    margin-top: 20px;
+    text-align: center;  /* This line centers the text */
+}
+
+.team-members {
+    display: flex;
+    gap: 20px; /* Space between team member boxes */
+}
+
+.team-member {
+    flex: 1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+}
+
+.team-member img {
+    max-width: 100%;
+    border-radius: 50%;
+}
+
+.container {
+    width: 70%;
+    margin: auto;
+}
