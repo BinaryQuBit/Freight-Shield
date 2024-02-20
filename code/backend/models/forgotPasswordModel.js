@@ -1,4 +1,3 @@
-// Test to update name
 import mongoose from 'mongoose';
 
 const otpSchema = new mongoose.Schema({

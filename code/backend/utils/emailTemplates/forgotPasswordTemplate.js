@@ -1,4 +1,3 @@
-// Test to update name
 export const getOtpEmailTemplate = (otp, logoURL) => {
   return `
   <!DOCTYPE html>

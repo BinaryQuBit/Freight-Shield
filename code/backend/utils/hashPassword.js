@@ -1,4 +1,3 @@
-// Test to update name
 import bcrypt from 'bcryptjs';
 
 const hashPassword = async (password) => {
