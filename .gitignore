@@ -1,7 +1,18 @@
-node_modules
-package-lock.json
+# Node_modules
+node_modules/
+
+# Environment
 .env
+
+# macOS
 .DS_Store
-/scripts
+
+# Ignore scripts
+/scripts/
+
 docker-compose.yml
-Dockerfile
+
+# Dockerfiles
+backend/Dockerfile
+frontend/Dockerfile
+docker-compose.yml
