@@ -6,6 +6,20 @@ import Marketplace from "../models/marketplaceModel.js";
 
 ////////////////////////////// Getters //////////////////////////////
 
+// @desc    Getting Dashboard
+// route    GET /api/users/activeloads
+// @access  Private
+const shipperDasboard = asyncHandler(async (req, res) => {
+  try {
+    const userEmail = req.user.email;
+    const loads = await Marketplace.find({ email: userEmail });
+
+    res.status(200).json(loads);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // @desc    Getting Active Loads
 // route    GET /api/users/activeloads
 // @access  Private
@@ -499,4 +513,5 @@ export {
   history,
   shipperSettings,
   shipperSubmission,
+  shipperDasboard,
 };
