@@ -40,19 +40,19 @@ app.use('/api', ShipperRoutes);
 connectDB();
 
 
-// const frontendPath = path.join(__dirname, '../frontend/build');
-// app.use(express.static(frontendPath));
-
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(frontendPath, 'index.html'));
-// });
-
-const frontendPath = path.join(__dirname, 'public/build');
+const frontendPath = path.join(__dirname, '../frontend/build');
 app.use(express.static(frontendPath));
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(frontendPath, 'index.html'));
+  res.sendFile(path.join(frontendPath, 'index.html'));
 });
+
+// const frontendPath = path.join(__dirname, 'public/build');
+// app.use(express.static(frontendPath));
+
+// app.get('*', (req, res) => {
+//     res.sendFile(path.join(frontendPath, 'index.html'));
+// });
 
 app.use(notFound);
 app.use(errorHandler);
