@@ -1,4 +1,3 @@
-// Test to update name
 import asyncHandler from "express-async-handler";
 import generateToken from "../utils/generateToken.js";
 import { sendEmail } from "../utils/mailer.js";
@@ -12,7 +11,7 @@ import { getOtpEmailTemplate } from "../utils/emailTemplates/forgotPasswordTempl
 ////////////////////////////// Getters //////////////////////////////
 
 // @desc    Logout user and destroying cookie
-// route    GET /api/users/logout
+// route    GET /logout
 // @access  Public
 const logoutUser = asyncHandler(async (req, res) => {
   res.cookie("jwt", "", {
@@ -23,7 +22,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 // @desc    Passing Login Information
-// route    GET /api/users/login
+// route    GET /login
 // @access  Private to all after initial steps
 const passLoginInformation = asyncHandler(async (req, res) => {
   try {
@@ -47,7 +46,7 @@ const passLoginInformation = asyncHandler(async (req, res) => {
 ////////////////////////////// Posters //////////////////////////////
 
 // @desc    Login and Authentication
-// route    POST /api/users/login
+// route    POST /login
 // @access  Public
 const loginUser = asyncHandler(async (req, res) => {
   let { email, password } = req.body;
@@ -118,7 +117,7 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 // @desc    Register a new user
-// route    POST /api/users/register
+// route    POST /register
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
   let { role, email, password, confirmPassword } = req.body;
@@ -226,7 +225,7 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 // @desc    Forget Password
-// route    POST /api/users/forgotpassword
+// route    POST /forgotpassword
 // @access  Public
 const forgotPassword = asyncHandler(async (req, res) => {
   let { email } = req.body;
@@ -274,7 +273,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
 });
 
 // @desc    Verify OTP and update password
-// route    POST /api/users/verify
+// route    POST /verify
 // @access  Public
 const verifyOTP = asyncHandler(async (req, res) => {
   let { email, password, confirmPassword, otpNumber } = req.body;

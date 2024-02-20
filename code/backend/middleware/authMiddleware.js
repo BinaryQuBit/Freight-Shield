@@ -1,4 +1,4 @@
-// Test to update name
+
 // authMiddleware.js
 
 import jwt from "jsonwebtoken";
