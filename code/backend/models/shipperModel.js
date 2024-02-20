@@ -1,4 +1,3 @@
-// Test to update name
 import mongoose from "mongoose";
 import { hashPassword, comparePassword } from "../utils/hashPassword.js";
 

@@ -1,4 +1,3 @@
-// Test to update name
 // generateToken.js
 
 import jwt from "jsonwebtoken";

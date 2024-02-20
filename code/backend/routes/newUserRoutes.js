@@ -1,4 +1,3 @@
-// Test to update name
 import express from "express";
 
 import {
