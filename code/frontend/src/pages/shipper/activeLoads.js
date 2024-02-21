@@ -27,7 +27,7 @@ import PostedLoadEdit from "../../components/editButton/postedLoadEdit.js"
 import Protector from "../../components/utils/methods/getters/protector.js";
 
 export default function ActiveLoads() {
-  Protector("/activeloads");
+  Protector("/api/activeloads");
 
   const theme = useTheme();
   const customBlue = theme.colors.customBlue;
