@@ -54,6 +54,11 @@ else
     exit 1
 fi
 
+echo "Committing all current changes to the main branch..."
+git add .
+git commit -m "Update frontend and backend with latest changes"
+git push origin main
+
 echo "Switching to the Production branch..."
 git checkout Production
 
@@ -61,13 +66,17 @@ echo "Pulling changes from the main branch..."
 git fetch origin main:main
 git merge main --no-edit
 
+echo "Removing .gitignore from the cache..."
+git rm --cached .gitignore
+
 echo "Stashing .gitignore to prevent it from being overwritten..."
 git stash push -m "Stash .gitignore" .gitignore
 
 echo "Accepting all incoming changes except for .gitignore..."
 git checkout --theirs .
+git checkout HEAD .gitignore
 
-echo "Restoring .gitignore..."
+echo "Restoring .gitignore from the stash..."
 git stash pop
 
 echo "Adding and committing merged changes..."
@@ -78,3 +87,4 @@ echo "Pushing changes to the Production branch..."
 git push origin Production
 
 echo "Changes pushed to the Production branch successfully."
+
