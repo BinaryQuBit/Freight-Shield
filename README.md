@@ -91,28 +91,40 @@
 - <a href = "https://code.visualstudio.com/download">Node JS</a> Framework (Ver. 18.16.1 LTS) -> Tested :white_check_mark:
 
 
-### Run app on your localhost (Front End):
+### Run app as Development
 ```Change to required directory```
 
-        code/frontend
-
-```Install required React scriptS```
-
-        npm install react-scripts --save
+        /code/scripts
 
 ```Run on your localhost```
 
-        npm start
+        ./runDevelopment.sh
 
-### Run app on your localhost (Back End):
+### Run app as Production
 ```Change to required directory```
 
-        code/backend
-
-```Install required React scriptS```
-
-        npm install react-scripts --save
+        /code/scripts
 
 ```Run on your localhost```
 
-        npm run dev
+        ./runProduction.sh
+
+### Run app in container (Docker)
+#### Need to have docker installed
+#### Tested on v4.27.2
+```Change to required directory```
+
+        /code/scripts
+
+```Run on your localhost```
+
+        ./runDockerUp.sh
+
+### Run app in container (Docker)
+```Change to required directory```
+
+        /code/scripts
+
+```Run on your localhost```
+
+        ./runDockerDown.sh

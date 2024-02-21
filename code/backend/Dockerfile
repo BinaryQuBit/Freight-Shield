@@ -20,4 +20,4 @@ EXPOSE 8080
 ENV NODE_ENV production
 
 # Run the app when the container launches
-CMD ["npm", "start"]
+CMD ["npm", "start"] 
