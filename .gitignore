@@ -6,6 +6,3 @@ node_modules/
 
 # macOS
 .DS_Store
-
-# Ignore scripts
-/code/scripts/
