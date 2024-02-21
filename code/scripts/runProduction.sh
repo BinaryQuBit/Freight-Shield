@@ -64,27 +64,27 @@ git checkout Production
 
 echo "Pulling changes from the main branch..."
 git fetch origin main:main
-git merge main --no-edit
 
-echo "Removing .gitignore from the cache..."
-git rm --cached .gitignore
-
-echo "Stashing .gitignore to prevent it from being overwritten..."
+echo "Stashing current .gitignore to prevent it from being overwritten..."
 git stash push -m "Stash .gitignore" .gitignore
 
-echo "Accepting all incoming changes except for .gitignore..."
-git checkout --theirs .
-git checkout HEAD .gitignore
+echo "Merging main into Production but keeping current .gitignore..."
+git merge main --no-edit --strategy-option=ours
 
-echo "Restoring .gitignore from the stash..."
-git stash pop
+echo "Restoring .gitignore from the stash and checking if there were changes..."
+if git stash list | grep -q "Stash .gitignore"; then
+    git stash pop
+else
+    echo ".gitignore was not modified, no need to restore."
+fi
 
 echo "Adding and committing merged changes..."
 git add .
-git commit -m "Merge main into Production and resolve conflicts"
+git commit -m "Merge main into Production and resolve conflicts while keeping current .gitignore"
 
 echo "Pushing changes to the Production branch..."
 git push origin Production
 
 echo "Changes pushed to the Production branch successfully."
+
 
