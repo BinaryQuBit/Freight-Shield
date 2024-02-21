@@ -120,11 +120,6 @@
 
         ./runDockerUp.sh
 
-### Run app in container (Docker)
-```Change to required directory```
-
-        /code/scripts
-
-```Run on your localhost```
+```To drop the service```
 
         ./runDockerDown.sh
