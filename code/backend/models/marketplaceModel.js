@@ -1,4 +1,5 @@
-// Model for Marketplace which details of loads posted
+// Marketplace Model
+
 import mongoose from "mongoose";
 
 const marketplaceSchema = mongoose.Schema(

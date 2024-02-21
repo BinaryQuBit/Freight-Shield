@@ -1,3 +1,5 @@
+// Terms and Conditions
+
 import {
   Modal,
   ModalOverlay,

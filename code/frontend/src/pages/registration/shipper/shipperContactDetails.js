@@ -1,3 +1,5 @@
+// Shipper Contact Details Page
+
 import React from "react";
 import Header from "../../../components/header/header.js";
 import ShipperCompanyDetailsForm from "../../../components/forms/shipperContactDetailsForm.js";

@@ -1,3 +1,5 @@
+// Carrier Model
+
 import mongoose from "mongoose";
 import { hashPassword, comparePassword } from "../utils/hashPassword.js";
 
