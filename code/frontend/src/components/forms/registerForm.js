@@ -1,3 +1,5 @@
+// Register Form
+
 // React Imports
 import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";

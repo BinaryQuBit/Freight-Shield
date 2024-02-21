@@ -1,3 +1,5 @@
+// Pending Page
+
 import Sidebar from "../../components/sidebar/adminSideBar";
 import React from "react";
 import { IconButton } from "@chakra-ui/react";

@@ -1,3 +1,5 @@
+// Routes
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SidebarProvider } from "./components/responsiveness/context.js";
 

@@ -1,4 +1,5 @@
-// Test to update name
+// Email Validation
+
 export const EmailValidation = (email) => {
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!email) {

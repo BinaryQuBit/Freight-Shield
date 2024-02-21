@@ -1,3 +1,5 @@
+// Forget Password Email Template
+
 export const getOtpEmailTemplate = (otp, logoURL) => {
   return `
   <!DOCTYPE html>

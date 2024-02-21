@@ -1,3 +1,5 @@
+// Approved Page
+
 import Sidebar from "../../components/sidebar/adminSideBar";
 import React from "react";
 import { Flex, Text } from "@chakra-ui/react";

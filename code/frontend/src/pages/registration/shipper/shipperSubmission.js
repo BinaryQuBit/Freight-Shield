@@ -1,3 +1,5 @@
+// Shipper Submission Page
+
 import React from "react";
 import Header from "../../../components/header/header.js";
 import { RegistrationProgress } from '../../../components/progressBar/registrationProgess.js';

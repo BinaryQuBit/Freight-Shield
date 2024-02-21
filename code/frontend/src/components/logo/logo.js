@@ -1,4 +1,4 @@
-// Test to update name
+// Logo for not protected routes
 import React from 'react';
 
 const LogoSVG = ({ color }) => (

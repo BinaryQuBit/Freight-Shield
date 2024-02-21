@@ -1,4 +1,5 @@
-// Test to update name
+// Nav Items
+
 import React from "react";
 import { Flex, Text, Icon, Link, Menu, MenuButton } from "@chakra-ui/react";
 

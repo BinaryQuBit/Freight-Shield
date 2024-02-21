@@ -1,3 +1,5 @@
+// Administrators Page
+
 import Sidebar from "../../components/sidebar/adminSideBar.js";
 import React from "react";
 import { Button } from "@chakra-ui/react";
