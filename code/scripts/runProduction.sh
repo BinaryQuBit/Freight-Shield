@@ -54,27 +54,25 @@ else
     exit 1
 fi
 
-echo "Stashing any uncommitted backend changes..."
-git stash push -m "Stashing backend changes before switching to Production branch"
-
 echo "Switching to the Production branch..."
 git checkout Production
 
-echo "Applying stashed backend changes..."
-git stash pop
+echo "Pulling changes from the main branch..."
+git fetch origin main:main
+git merge main --no-edit
 
-echo "Resolving any merge conflicts by accepting incoming changes..."
+echo "Stashing .gitignore to prevent it from being overwritten..."
+git stash push -m "Stash .gitignore" .gitignore
+
+echo "Accepting all incoming changes except for .gitignore..."
 git checkout --theirs .
 
-echo "Adding and committing resolved changes..."
-git add .
-git commit -m "Resolve conflicts by accepting incoming changes"
+echo "Restoring .gitignore..."
+git stash pop
 
-echo "Adding additional changes from the backend directory..."
+echo "Adding and committing merged changes..."
 git add .
-
-echo "Committing the additional changes..."
-git commit -m "Update backend with latest changes"
+git commit -m "Merge main into Production and resolve conflicts"
 
 echo "Pushing changes to the Production branch..."
 git push origin Production
