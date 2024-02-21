@@ -4,6 +4,7 @@ FRONTEND_DIR="../frontend"
 BACKEND_DIR="../backend"
 SOURCE_DIR="$FRONTEND_DIR/build"
 DEST_DIR="$BACKEND_DIR/public"
+COMPOSE_FILE="../docker-compose.yml"
 
 echo "Installing frontend dependencies..."
 cd "$FRONTEND_DIR"
@@ -54,5 +55,15 @@ else
     exit 1
 fi
 
-echo "Starting the backend server..."
-npm run server &
+cd .
+
+echo "Pulling the latest images..."
+docker-compose pull
+
+echo "Building services..."
+docker-compose build
+
+echo "Docker Going Up..."
+docker-compose up -d
+
+echo "Docker Compose has started the services successfully."
