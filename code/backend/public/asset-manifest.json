@@ -1,0 +1,37 @@
+{
+  "files": {
+    "main.css": "/static/css/main.aa771699.css",
+    "main.js": "/static/js/main.72b7f47b.js",
+    "static/js/453.8ab44547.chunk.js": "/static/js/453.8ab44547.chunk.js",
+    "static/media/background-image.jpg": "/static/media/background-image.209954db456d3c7df8ef.jpg",
+    "static/media/logo.svg": "/static/media/logo.d79be5bee94e0a5af4d34416816747ba.svg",
+    "static/media/lora-latin-700-normal.woff": "/static/media/lora-latin-700-normal.39c138b10cdf0a4ad1bf.woff",
+    "static/media/lora-latin-400-normal.woff": "/static/media/lora-latin-400-normal.5911a7bf453ef6cb8fee.woff",
+    "static/media/lora-latin-700-normal.woff2": "/static/media/lora-latin-700-normal.2276e439820419af0b78.woff2",
+    "static/media/lora-latin-400-normal.woff2": "/static/media/lora-latin-400-normal.10b891b7e240f01ac150.woff2",
+    "static/media/lora-cyrillic-ext-700-normal.woff": "/static/media/lora-cyrillic-ext-700-normal.84a445266f15e8863340.woff",
+    "static/media/lora-cyrillic-ext-400-normal.woff": "/static/media/lora-cyrillic-ext-400-normal.bb32d1bd026162efff00.woff",
+    "static/media/lora-cyrillic-400-normal.woff": "/static/media/lora-cyrillic-400-normal.1f12dd1007ec92b9106c.woff",
+    "static/media/lora-cyrillic-700-normal.woff": "/static/media/lora-cyrillic-700-normal.d7173012c9429b6fcf5c.woff",
+    "static/media/lora-latin-ext-400-normal.woff": "/static/media/lora-latin-ext-400-normal.0739b6cc0caab727fa6c.woff",
+    "static/media/lora-latin-ext-700-normal.woff": "/static/media/lora-latin-ext-700-normal.6c045c6fe3b39c7c33a6.woff",
+    "static/media/lora-cyrillic-ext-700-normal.woff2": "/static/media/lora-cyrillic-ext-700-normal.359179e29f122290bba4.woff2",
+    "static/media/lora-cyrillic-ext-400-normal.woff2": "/static/media/lora-cyrillic-ext-400-normal.98f484351afaa46c2402.woff2",
+    "static/media/lora-cyrillic-400-normal.woff2": "/static/media/lora-cyrillic-400-normal.4b0e177cde8d303b4176.woff2",
+    "static/media/lora-cyrillic-700-normal.woff2": "/static/media/lora-cyrillic-700-normal.c68abe4f687e9272b2a2.woff2",
+    "static/media/lora-latin-ext-700-normal.woff2": "/static/media/lora-latin-ext-700-normal.0aff8a9894e2bbaadb3e.woff2",
+    "static/media/lora-latin-ext-400-normal.woff2": "/static/media/lora-latin-ext-400-normal.01cdc2a983b56c100ce2.woff2",
+    "static/media/lora-vietnamese-400-normal.woff": "/static/media/lora-vietnamese-400-normal.919e7e262a915e6bc283.woff",
+    "static/media/lora-vietnamese-700-normal.woff": "/static/media/lora-vietnamese-700-normal.933d2789a95d2bf834fc.woff",
+    "static/media/lora-vietnamese-400-normal.woff2": "/static/media/lora-vietnamese-400-normal.c56b27672a7d06ccd0fc.woff2",
+    "static/media/lora-vietnamese-700-normal.woff2": "/static/media/lora-vietnamese-700-normal.c9b7cc9be60bba9eaee8.woff2",
+    "index.html": "/index.html",
+    "main.aa771699.css.map": "/static/css/main.aa771699.css.map",
+    "main.72b7f47b.js.map": "/static/js/main.72b7f47b.js.map",
+    "453.8ab44547.chunk.js.map": "/static/js/453.8ab44547.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.aa771699.css",
+    "static/js/main.72b7f47b.js"
+  ]
+}
