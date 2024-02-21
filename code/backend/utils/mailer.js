@@ -1,3 +1,5 @@
+// Mailer to send emails
+
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 dotenv.config();

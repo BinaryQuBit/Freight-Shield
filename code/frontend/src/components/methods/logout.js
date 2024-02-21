@@ -1,4 +1,5 @@
-// Test to update name
+// Logout Method
+
 import axios from "axios";
 
 const logout = (navigate) => {

@@ -1,4 +1,4 @@
-// Test to update name
+// Context for Nav Bar
 import React, { createContext, useState } from 'react';
 
 export const SidebarContext = createContext();

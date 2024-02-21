@@ -1,4 +1,5 @@
-// Test to update name
+// Auto Complete Places
+
 import React, { useEffect } from 'react';
 import { Input } from '@chakra-ui/react';
 import { useLoadScript } from '@react-google-maps/api';

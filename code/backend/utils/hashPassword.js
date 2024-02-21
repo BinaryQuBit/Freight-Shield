@@ -1,3 +1,5 @@
+// Hash Password
+
 import bcrypt from 'bcryptjs';
 
 const hashPassword = async (password) => {
