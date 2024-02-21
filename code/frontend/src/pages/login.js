@@ -16,7 +16,6 @@ export default function Login() {
         <Box p="4" mb={{ base: "4", md: "0" }} textAlign="center">
           <Image src={Logo} alt="Logo" mx="auto" p={"10px"} />
           <Text>Connecting Shippers and Truckers Seamlessly</Text>
-          <Text>Hello Changes</Text>
         </Box>
         <LoginForm />
       </Flex>

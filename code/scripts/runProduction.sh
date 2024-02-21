@@ -56,8 +56,13 @@ fi
 
 echo "Committing all current changes to the main branch..."
 git add .
+sleep 5
 git commit -m "Update frontend and backend with latest changes"
+sleep 5
+git commit -a
+sleep 5
 git push origin main
+sleep 5
 
 echo "Switching to the Production branch..."
 git checkout Production
