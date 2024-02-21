@@ -9,10 +9,3 @@ node_modules/
 
 # Ignore scripts
 /scripts/
-
-docker-compose.yml
-
-# Dockerfiles
-backend/Dockerfile
-frontend/Dockerfile
-docker-compose.yml
