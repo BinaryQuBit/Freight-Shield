@@ -22,7 +22,14 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT;
 
-app.use(cors());
+// app.use(cors());
+// app.use(cors({ origin: 'http://localhost:3000' }));
+
+if (process.env.NODE_ENV === "development") {
+    app.use(cors({ origin: 'http://localhost:3000' }));
+} else {
+    app.use(cors());
+}
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -39,20 +46,12 @@ app.use('/api', ShipperRoutes);
 
 connectDB();
 
-
-const frontendPath = path.join(__dirname, '../frontend/build');
+const frontendPath = path.join(__dirname, 'public');
 app.use(express.static(frontendPath));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(frontendPath, 'index.html'));
+    res.sendFile(path.join(frontendPath, 'index.html'));
 });
-
-// const frontendPath = path.join(__dirname, 'public/build');
-// app.use(express.static(frontendPath));
-
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(frontendPath, 'index.html'));
-// });
 
 app.use(notFound);
 app.use(errorHandler);
