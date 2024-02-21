@@ -1,5 +1,4 @@
 // Connection to Mongo Database
-// This is a Production Test
 
 import mongoose from "mongoose";
 
