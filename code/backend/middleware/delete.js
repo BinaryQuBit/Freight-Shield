@@ -1,4 +1,4 @@
-// Delete middleware
+// Delete Middleware
 
 import fs from "fs";
 import path from "path";

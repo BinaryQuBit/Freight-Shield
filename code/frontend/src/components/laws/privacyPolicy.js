@@ -1,3 +1,5 @@
+// Privacy Policy
+
 import {
   Modal,
   ModalOverlay,

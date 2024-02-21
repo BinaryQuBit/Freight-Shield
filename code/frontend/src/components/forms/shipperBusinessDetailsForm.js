@@ -1,3 +1,5 @@
+// Shipper Business Detail Form
+
 import React, { useState, useEffect } from "react";
 import CustomButton from "../buttons/customButton";
 import { FiTruck, FiUpload, FiXCircle } from "react-icons/fi";

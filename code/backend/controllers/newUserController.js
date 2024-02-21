@@ -1,3 +1,5 @@
+// New User Controller
+
 import asyncHandler from "express-async-handler";
 import generateToken from "../utils/generateToken.js";
 import { sendEmail } from "../utils/mailer.js";

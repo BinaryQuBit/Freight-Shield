@@ -1,3 +1,5 @@
+// Carrier Settings Page
+
 import Sidebar from "../../components/sidebar/carrierSideBar.js";
 import React from "react";
 import EaseOut from "../../components/responsiveness/easeOut.js"

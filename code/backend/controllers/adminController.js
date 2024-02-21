@@ -1,3 +1,5 @@
+// Admin Controller
+
 import asyncHandler from "express-async-handler";
 
 // @desc    Getting Administrators
