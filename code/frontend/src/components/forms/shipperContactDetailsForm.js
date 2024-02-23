@@ -1,7 +1,7 @@
-// Shipper Contact Detail Form
+// Shipper Contact Detail Form 
 
 // React Imports
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiTruck } from "react-icons/fi";
 // Axios Import
@@ -11,16 +11,9 @@ import axios from "axios";
 import { Box, Flex, Text, Card, RadioGroup, Radio } from "@chakra-ui/react";
 
 // Custom Imports
-import { CityValidation } from "../utils/validation/cityValidation.js";
-import { CountryValidation } from "../utils/validation/countryValidation.js";
-import {
-  FirstNameValidation,
-  LastNameValidation,
-} from "../utils/validation/nameValidation.js";
 import { PhoneNumberValidation } from "../utils/validation/phoneNumberValidation.js";
 import { PostalCodeValidation } from "../utils/validation/postalCodeValidation.js";
-import { ProvinceValidation } from "../utils/validation/provinceValidation.js";
-import { StreetAddressValidation } from "../utils/validation/streetAddressValidation.js";
+import { EmptyValidation } from "../utils/validation/emptyValidation.js";
 import CustomInput from "../utils/forms/customInput.js";
 import CustomButton from "../buttons/customButton";
 import logout from "../methods/logout";
@@ -83,14 +76,14 @@ export default function ShipperCompanyDetailsForm() {
     setCompanyPhoneNumberError("");
 
     // Validations Checks
-    const firstNameError = FirstNameValidation(firstName);
-    const lastNameError = LastNameValidation(lastName);
+    const firstNameError = EmptyValidation("First Name", firstName);
+    const lastNameError = EmptyValidation("Last Name", lastName);
     const companyPhoneNumberError = PhoneNumberValidation(companyPhoneNumber);
-    const streetAddressError = StreetAddressValidation(streetAddress);
-    const cityError = CityValidation(city);
-    const provinceError = ProvinceValidation(province);
+    const streetAddressError = EmptyValidation("Street Address", streetAddress);
+    const cityError = EmptyValidation("City", city);
+    const provinceError = EmptyValidation("Province", province);
     const postalCodeError = PostalCodeValidation(postalCode);
-    const countryError = CountryValidation(country);
+    const countryError = EmptyValidation("Country", country);
     let mailingStreetAddressError = "";
     let mailingCityError = "";
     let mailingProvinceError = "";
@@ -98,11 +91,11 @@ export default function ShipperCompanyDetailsForm() {
     let mailingCountryError = "";
 
     if (sameAsMailing === "no") {
-      mailingStreetAddressError = StreetAddressValidation(mailingStreetAddress);
-      mailingCityError = CityValidation(mailingCity);
-      mailingProvinceError = ProvinceValidation(mailingProvince);
+      mailingStreetAddressError = EmptyValidation("Street Address", mailingStreetAddress);
+      mailingCityError = EmptyValidation("City", mailingCity);
+      mailingProvinceError = EmptyValidation("Province", mailingProvince);
       mailingPostalCodeError = PostalCodeValidation(mailingPostalCode);
-      mailingCountryError = CountryValidation(mailingCountry);
+      mailingCountryError = EmptyValidation("Country", mailingCountry);
     }
 
     // Set Error
@@ -156,7 +149,7 @@ export default function ShipperCompanyDetailsForm() {
     // Start of PUT Method
     try {
       const shipperContactDetailsResponse = await axios.put(
-        "/shippercontactdetails",
+        "/api/shippercontactdetails",
         {
           sameAsMailing,
           streetAddress,
@@ -486,4 +479,4 @@ export default function ShipperCompanyDetailsForm() {
       </Card>
     </Box>
   );
-}
+} 

@@ -16,6 +16,7 @@ const protect = asyncHandler(async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("Decoded", decoded);
 
     let user;
     switch (decoded.role) {
@@ -41,6 +42,9 @@ const protect = asyncHandler(async (req, res, next) => {
 
     req.user = user;
     req.role = decoded.role;
+    req.areContactDetailsComplete = user.areContactDetailsComplete;
+    req.areBusinessDetailsComplete = user.areBusinessDetailsComplete;
+    req.isFormComplete = user.isFormComplete;
     next();
   } catch (error) {
     if (error.name === "JsonWebTokenError") {
@@ -80,49 +84,14 @@ const shipperOnly = (req, res, next) => {
   throw new Error("Access denied");
 };
 
-const shipperDetailsComplete = asyncHandler(async (req, res, next) => {
-  if (req.role != "shipper") {
-    return;
+const status = (req, res, next) => {
+  if (req.areContactDetailsComplete === true && req.areBusinessDetailsComplete === true && req.isFormComplete === true) {
+    return next();
   }
-
-  const {
-    businessName,
-    streetAddress,
-    city,
-    province,
-    postalCode,
-    country,
-    mailingStreetAddress,
-    mailingCity,
-    mailingProvince,
-    mailingPostalCode,
-    mailingCountry,
-    firstName,
-    lastName,
-    companyPhoneNumber,
-  } = req.user;
-
-  if (
-    !businessName ||
-    !streetAddress ||
-    !city ||
-    !province ||
-    !postalCode ||
-    !country ||
-    !mailingStreetAddress ||
-    !mailingCity ||
-    !mailingProvince ||
-    !mailingPostalCode ||
-    !mailingCountry ||
-    !firstName ||
-    !lastName ||
-    !companyPhoneNumber
-  ) {
+  else {
     res.status(403);
-    throw new Error("Access denied. Need Shipper Company Details");
+    throw new Error("Access denied. Need details filled");
   }
-  next();
-});
+};
 
-
-export { protect, adminOnly, carrierOnly, shipperOnly, shipperDetailsComplete };
+export { protect, adminOnly, carrierOnly, shipperOnly, status };

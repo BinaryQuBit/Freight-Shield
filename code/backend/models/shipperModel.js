@@ -94,6 +94,18 @@ const shipperSchema = mongoose.Schema(
       type: String,
       required: false,
     },
+    areContactDetailsComplete: {
+      type: Boolean,
+      required: false,
+    },
+    areBusinessDetailsComplete: {
+      type: Boolean,
+      required: false,
+    },
+    isFormComplete: { 
+      type: Boolean,
+      required: false,
+    }
   },
   {
     timestamps: true,

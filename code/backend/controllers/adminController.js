@@ -62,8 +62,8 @@ const carriers = asyncHandler(async (req, res) => {
     res.status(200).json({ user });
   });
 
-// @desc    Getting Carriers
-// route    GET /carriers
+// @desc    Getting Admin Settings
+// route    GET /adminsettings
 // @access  Private
 const adminsettings = asyncHandler(async (req, res) => {
     const user = {
