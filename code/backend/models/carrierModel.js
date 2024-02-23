@@ -1,4 +1,4 @@
-// Carrier Model
+// Carrier Model 
 
 import mongoose from "mongoose";
 import { hashPassword, comparePassword } from "../utils/hashPassword.js";
@@ -27,6 +27,114 @@ const carrierSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+  },
+  firstName: {
+    type: String,
+    required: false,
+  },
+  lastName: {
+    type: String,
+    required: false,
+  },
+  companyPhoneNumber: {
+    type: String,
+    required: false,
+  },
+  streetAddress: {
+    type: String,
+    required: false,
+  },
+  apptNumber: {
+    type: String,
+    required: false,
+  },
+  city: {
+    type: String,
+    required: false,
+  },
+  province: {
+    type: String,
+    required: false,
+  },
+  postalCode: {
+    type: String,
+    required: false,
+  },
+  country: {
+    type: String,
+    required: false,
+  },
+  mailingStreetAddress: {
+    type: String,
+    required: false,
+  },
+  mailingApptNumber: {
+    type: String,
+    required: false,
+  },
+  mailingCity: {
+    type: String,
+    required: false,
+  },
+  mailingProvince: {
+    type: String,
+    required: false,
+  },
+  mailingPostalCode: {
+    type: String,
+    required: false,
+  },
+  mailingCountry: {
+    type: String,
+    required: false,
+  },
+  businessName: {
+    type: String,
+    required: false,
+  },
+  doingBusinessAs: {
+    type: String,
+    required: false
+  },
+  businessNumber: {
+    type: String,
+    required: false,
+  },
+  carrierProfile: {
+    type: String,
+    required: false,
+  },
+  safetyFitnessCertificate: {
+    type: String,
+    required: false,
+  },
+  canadianCarrierCode: {
+    type: String,
+    required: false,
+  },
+  nationalSafetyCode: {
+    type: String,
+    required: false,
+  },
+  wcb: {
+    type: String,
+    required: false,
+  },
+  website: {
+    type: String,
+    required: false,
+  },
+  areContactDetailsComplete: {
+    type: Boolean,
+    required: false,
+  },
+  areBusinessDetailsComplete: {
+    type: Boolean,
+    required: false,
+  },
+  isFormComplete: { 
+    type: Boolean,
+    required: false,
   },
   units: [unitSchema],
 }, {

@@ -8,7 +8,7 @@ import Carrier from "../models/carrierModel.js";
 import Shipper from "../models/shipperModel.js";
 import SuperUser from "../models/superUser.js";
 import OTP from "../models/forgotPasswordModel.js";
-import { getOtpEmailTemplate } from "../utils/emailTemplates/forgotPasswordTemplate.js"
+import { getOtpEmailTemplate } from "../utils/emailTemplates/forgotPasswordTemplate.js";
 
 ////////////////////////////// Getters //////////////////////////////
 
@@ -21,28 +21,6 @@ const logoutUser = asyncHandler(async (req, res) => {
     expires: new Date(0),
   });
   res.status(200).json({ message: "User logged out" });
-});
-
-// @desc    Passing Login Information
-// route    GET /login
-// @access  Private to all after initial steps
-const passLoginInformation = asyncHandler(async (req, res) => {
-  try {
-    const userEmail = req.user.email;
-    let userInfo = await Shipper.findOne({ email: userEmail });
-
-    if (!userInfo) {
-      userInfo = await Carrier.findOne({ email: userEmail });
-    }
-
-    if (!userInfo) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.status(200).json(userInfo);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
 });
 
 ////////////////////////////// Posters //////////////////////////////
@@ -68,40 +46,46 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 
   if (carrier && (await carrier.matchPassword(password))) {
-    generateToken(res, carrier._id, "carrier");
+    const areContactDetailsComplete = carrier.areContactDetailsComplete;
+    const areBusinessDetailsComplete = carrier.areBusinessDetailsComplete;
+    const isFormComplete = carrier.isFormComplete;
+    generateToken(
+      res,
+      carrier._id,
+      "carrier",
+      areContactDetailsComplete,
+      areBusinessDetailsComplete,
+      isFormComplete
+    );
     return res.status(201).json({
       _id: carrier._id,
       email: carrier.email,
       role: "carrier",
+      areContactDetailsComplete: carrier.areContactDetailsComplete,
+      areBusinessDetailsComplete: carrier.areBusinessDetailsComplete,
+      isFormComplete: carrier.isFormComplete,
     });
   }
 
   if (shipper && (await shipper.matchPassword(password))) {
-    generateToken(res, shipper._id, "shipper");
+    const areContactDetailsComplete = shipper.areContactDetailsComplete;
+    const areBusinessDetailsComplete = shipper.areBusinessDetailsComplete;
+    const isFormComplete = shipper.isFormComplete;
+    generateToken(
+      res,
+      shipper._id,
+      "shipper",
+      areContactDetailsComplete,
+      areBusinessDetailsComplete,
+      isFormComplete
+    );
     return res.status(201).json({
       _id: shipper._id,
       email: shipper.email,
       role: "shipper",
-      firstName: shipper.firstName,
-      lastName: shipper.lastName,
-      companyPhoneNumber: shipper.companyPhoneNumber,
-      streetAddress: shipper.streetAddress,
-      apptNumber: shipper.apptNumber,
-      city: shipper.city,
-      province: shipper.province,
-      postalCode: shipper.postalCode,
-      country: shipper.country,
-      mailingStreetAddress: shipper.mailingStreetAddress,
-      mailingApptNumber: shipper.mailingApptNumber,
-      mailingCity: shipper.mailingCity,
-      mailingProvince: shipper.mailingProvince,
-      mailingPostalCode: shipper.mailingPostalCode,
-      mailingCountry: shipper.mailingCountry,
-      businessName: shipper.businessName,
-      businessNumber: shipper.businessNumber,
-      proofBusiness: shipper.proofBusiness,
-      proofInsurance: shipper.proofInsurance,
-      website: shipper.website,
+      areContactDetailsComplete: shipper.areContactDetailsComplete,
+      areBusinessDetailsComplete: shipper.areBusinessDetailsComplete,
+      isFormComplete: shipper.isFormComplete,
     });
   }
 
@@ -176,6 +160,9 @@ const registerUser = asyncHandler(async (req, res) => {
       proofBusiness: "",
       proofInsurance: "",
       website: "",
+      areContactDetailsComplete: false,
+      areBusinessDetailsComplete: false,
+      isFormComplete: false,
     });
     if (shipper) {
       generateToken(res, shipper._id);
@@ -193,6 +180,33 @@ const registerUser = asyncHandler(async (req, res) => {
     const carrier = await Carrier.create({
       email,
       password,
+      firstName: "",
+      lastName: "",
+      companyPhoneNumber: "",
+      streetAddress: "",
+      apptNumber: "",
+      city: "",
+      province: "",
+      postalCode: "",
+      country: "",
+      mailingStreetAddress: "",
+      mailingApptNumber: "",
+      mailingCity: "",
+      mailingProvince: "",
+      mailingPostalCode: "",
+      mailingCountry: "",
+      businessName: "",
+      doingBusinessAs: "",
+      businessNumber: "",
+      carrierProfile: "",
+      safetyFitnessCertificate: "",
+      canadianCarrierCode: "",
+      nationalSafetyCode: "",
+      wcb: "",
+      website: "",
+      areContactDetailsComplete: false,
+      areBusinessDetailsComplete: false,
+      isFormComplete: false,
     });
     if (carrier) {
       generateToken(res, carrier._id);
@@ -248,7 +262,8 @@ const forgotPassword = asyncHandler(async (req, res) => {
   }
 
   const otp = Math.floor(100000 + Math.random() * 900000);
-  const logoURL = "https://raw.githubusercontent.com/BinaryQuBit/Freight-Shield/main/githubPages/images/banner.jpg"
+  const logoURL =
+    "https://raw.githubusercontent.com/BinaryQuBit/Freight-Shield/main/githubPages/images/banner.jpg";
   const subject = "Password Reset ~ OTP";
   const htmlContent = getOtpEmailTemplate(otp, logoURL);
 
@@ -322,12 +337,4 @@ const verifyOTP = asyncHandler(async (req, res) => {
   }
 });
 
-
-export {
-  loginUser,
-  registerUser,
-  logoutUser,
-  forgotPassword,
-  passLoginInformation,
-  verifyOTP,
-};
+export { loginUser, registerUser, logoutUser, forgotPassword, verifyOTP };
