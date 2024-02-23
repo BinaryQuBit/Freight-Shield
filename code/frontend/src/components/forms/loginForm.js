@@ -68,12 +68,49 @@ export default function LoginForm() {
       }
 
       const role = loginResponse.data.role;
+      const contactDetails = loginResponse.data.areContactDetailsComplete;
+      const businessDetails = loginResponse.data.areBusinessDetailsComplete;
+      const submissionComplete = loginResponse.data.isFormComplete;
 
-      if (role === "carrier") {
-        navigate("/marketplace");
-      } else if (role === "shipper") {
-        navigate("/activeloads");
-      } else if (role === "admin") {
+      if (role === "carrier")
+      {
+        if(contactDetails == false)
+        {
+          navigate("/carriercontactdetails");
+        }
+        else if (businessDetails == false)
+        {
+          navigate("/carrierbusinessdetails");
+        }
+        else if (submissionComplete == false)
+        {
+          navigate("/carriersubmission");
+        }
+        else
+        {
+          navigate("/marketplace");
+        }
+      }
+      else if (role === "shipper") {
+        if(contactDetails == false)
+        {
+          navigate("/shippercontactdetails");
+        }
+        else if (businessDetails == false)
+        {
+          navigate("/shipperbusinessdetails");
+        }
+        else if (submissionComplete == false)
+        {
+          navigate("/shippersubmission");
+        }
+        else
+        {
+          navigate("/activeloads");
+        }
+      }
+      else if (role === "admin")
+      {
         navigate("/pending");
       }
     } catch (error) {

@@ -5,12 +5,13 @@ import multer from "multer";
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "backend/uploads/");
+    cb(null, "uploads/");
   },
   filename: function (req, file, cb) {
     let ext = path.extname(file.originalname);
-    cb(null, Date.now() + ext);
-  },
+    let uniqueSuffix = Date.now() + '-' + Math.random().toString(36).substr(2, 8);
+    cb(null, uniqueSuffix + ext);
+},
 });
 
 var upload = multer({
