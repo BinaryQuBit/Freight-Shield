@@ -13,9 +13,12 @@ const CustomUpload = ({
   setError,
   setFileState,
   fileUrl,
+  mr,
+  ml,
 }) => {
   const [file, setFile] = useState("");
   const [fileBlobUrl, setFileBlobUrl] = useState("");
+  const margin = typeof ml === 'number' ? ml : 0;
 
   useEffect(() => {
     if (fileUrl) {
@@ -53,6 +56,8 @@ const CustomUpload = ({
         borderRadius="4px"
         position="relative"
         rounded={"none"}
+        mr={mr}
+        ml={ml}
       >
         {fileBlobUrl ? (
           <>
@@ -94,7 +99,7 @@ const CustomUpload = ({
           </>
         )}
       </Box>
-      {isError && <FormErrorMessage ml={4}>{errorMessage}</FormErrorMessage>}
+      {isError && <FormErrorMessage ml={margin + 4}>{errorMessage}</FormErrorMessage>}
     </FormControl>
   );
 };

@@ -4,6 +4,9 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleMap, Marker, DirectionsRenderer, useLoadScript } from '@react-google-maps/api';
 
+// Reuse the same libraries array if needed
+const libraries = ['places'];
+
 const containerStyle = {
   width: '100%',
   height: '400px'
@@ -53,18 +56,16 @@ const mapStyles = [
 ];
 
 function EmbeddedMap({ pickUpLAT, pickUpLNG, dropOffLAT, dropOffLNG }) {
-  const apiKey = process.env.REACT_APP_API_KEY;
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: apiKey,
-    libraries: ['places']
+    googleMapsApiKey: process.env.REACT_APP_API_KEY,
+    libraries
   });
 
   const [directions, setDirections] = useState(null);
 
-
-    const fetchDirections = () => {
-      if (typeof pickUpLAT === 'number' && typeof pickUpLNG === 'number' && 
-          typeof dropOffLAT === 'number' && typeof dropOffLNG === 'number') {
+  useEffect(() => {
+    if (isLoaded && !loadError && typeof google !== 'undefined') {
+      const fetchDirections = () => {
         const directionsService = new google.maps.DirectionsService();
         directionsService.route({
           origin: { lat: pickUpLAT, lng: pickUpLNG },
@@ -77,15 +78,10 @@ function EmbeddedMap({ pickUpLAT, pickUpLNG, dropOffLAT, dropOffLNG }) {
             console.error(`Error fetching directions: ${status}`);
           }
         });
-      } else {
-        console.error('Invalid latitude or longitude values.');
-      }
-    };
-    useEffect(() => {
-      if (isLoaded && !loadError) {
-        fetchDirections();
-      }
-    }, [pickUpLAT, pickUpLNG, dropOffLAT, dropOffLNG, isLoaded]);
+      };
+      fetchDirections();
+    }
+  }, [pickUpLAT, pickUpLNG, dropOffLAT, dropOffLNG, isLoaded, loadError]);
 
   const center = {
     lat: (pickUpLAT + dropOffLAT) / 2,
@@ -103,13 +99,8 @@ function EmbeddedMap({ pickUpLAT, pickUpLNG, dropOffLAT, dropOffLNG }) {
     styles: mapStyles
   };
 
-  if (loadError) {
-    return <div>Error loading maps</div>;
-  }
-
-  if (!isLoaded) {
-    return <div>Loading...</div>;
-  }
+  if (loadError) return <div>Error loading maps</div>;
+  if (!isLoaded) return <div>Loading...</div>;
 
   return (
     <GoogleMap
@@ -126,5 +117,6 @@ function EmbeddedMap({ pickUpLAT, pickUpLNG, dropOffLAT, dropOffLNG }) {
 }
 
 export default React.memo(EmbeddedMap);
+
 
 

@@ -1,6 +1,15 @@
+// Active Loads
+
+// React Imports
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { MdEditSquare, MdDelete } from "react-icons/md";
+
+// Axios Import
+import axios from "axios";
+
+// Chakra UI Imports
+import { useTheme } from "@chakra-ui/react";
 import {
   Flex,
   Input,
@@ -16,32 +25,35 @@ import {
   Select,
   Card,
 } from "@chakra-ui/react";
+
+// Custom Imports
 import ShipperSideBar from "../../components/sidebar/shipperSideBar.js";
 import UserHeader from "../../components/header/userHeader.js";
 import EmbeddedMap from "../../components/google/embeddedMap.js";
-import { useNavigate } from "react-router-dom";
 import Easeout from "../../components/responsiveness/easeOut.js";
 import CustomButton from "../../components/buttons/customButton.js";
-import { useTheme } from "@chakra-ui/react";
-import PostedLoadEdit from "../../components/editButton/postedLoadEdit.js"
+import PostedLoadEdit from "../../components/editButton/postedLoadEdit.js";
 import Protector from "../../components/utils/methods/getters/protector.js";
+import { useData } from "../../components/utils/methods/getters/dataContext.js";
 
+// Start of the Build
 export default function ActiveLoads() {
+  axios.defaults.withCredentials = true;
   Protector("/api/activeloads");
-
+  const navigate = useNavigate();
   const theme = useTheme();
   const customBlue = theme.colors.customBlue;
+  const { data: loads } = useData();
 
+  // Hooks
   const [fromSearchTerm, setFromSearchTerm] = useState("");
   const [toSearchTerm, setToSearchTerm] = useState("");
   const [statusSearchTerm, setStatusSearchTerm] = useState("");
   const [filteredLoads, setFilteredLoads] = useState([]);
-  const [loads, setLoads] = useState([]);
-  const navigate = useNavigate();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedLoad, setSelectedLoad] = useState(null);
 
+  // Functions
   const openModal = (load) => {
     setSelectedLoad(load);
     setIsModalOpen(true);
@@ -52,45 +64,64 @@ export default function ActiveLoads() {
     setSelectedLoad(null);
   };
 
+  function getStatusColor(status) {
+    switch (status.toLowerCase()) {
+      case "pending":
+        return "blue";
+      case "assigned":
+        return "yellow";
+      case "in transit":
+        return "orange";
+      case "delayed":
+        return "red";
+      default:
+        return "gray";
+    }
+  }
+
+  // Search Handle
   useEffect(() => {
-    const filtered = loads.filter(
-      (load) =>
-        load?.pickUpLocation
-          ?.toLowerCase()
-          .includes(fromSearchTerm.toLowerCase()) &&
-        load?.dropOffLocation
-          ?.toLowerCase()
-          .includes(toSearchTerm.toLowerCase()) &&
-        (statusSearchTerm === "" ||
-          load?.status?.toLowerCase() === statusSearchTerm.toLowerCase()) &&
-        load?.status?.toLowerCase() !== "delivered"
-    );
-    setFilteredLoads(filtered);
+    if (Array.isArray(loads)) {
+      const filtered = loads.filter(
+        (load) =>
+          load.pickUpLocation
+            .toLowerCase()
+            .includes(fromSearchTerm.toLowerCase()) &&
+          load.dropOffLocation
+            .toLowerCase()
+            .includes(toSearchTerm.toLowerCase()) &&
+          (statusSearchTerm === "" ||
+            load.status.toLowerCase() === statusSearchTerm.toLowerCase()) &&
+          load.status.toLowerCase() !== "delivered"
+      );
+      setFilteredLoads(filtered);
+    } else {
+      setFilteredLoads([]);
+    }
   }, [fromSearchTerm, toSearchTerm, statusSearchTerm, loads]);
 
+  // Delete Handle
   const handleDeleteLoad = (loadId, filename) => {
-    axios.delete(`/activeloads/${loadId}/${filename}`, { withCredentials: true })
+    axios
+      .delete(`/activeloads/${loadId}/${filename}`, { withCredentials: true })
       .then(() => {
         console.log(`Load with id ${loadId} deleted successfully.`);
-        setLoads(currentLoads => currentLoads.filter(load => load.id !== loadId));
+        setFilteredLoads((currentLoads) =>
+          currentLoads.filter((load) => load.id !== loadId)
+        );
       })
-      .catch(error => {
+      .catch((error) => {
+        console.error("Error deleting load:", error);
       });
   };
-  
 
   return (
     <>
       <ShipperSideBar activePage="activeLoads" />
       <Easeout>
         <UserHeader title="Active Loads" />
-        <Flex
-          pt={"10"}
-          direction={"column"}
-          alignItems={"center"}
-          padding={"10"}
-        >
-          <Stack spacing={4} direction={"row"} mb="4">
+        <Flex pt="10" direction="column" alignItems="center" padding="10">
+          <Stack spacing={4} direction="row" mb="4">
             <Input
               placeholder="From..."
               onChange={(e) => setFromSearchTerm(e.target.value)}
@@ -111,7 +142,7 @@ export default function ActiveLoads() {
           </Stack>
           <Card overflowX="auto" width="full" p="4">
             <Accordion allowToggle>
-              {filteredLoads.map((load, index) => (
+              {filteredLoads.map((load) => (
                 <AccordionItem key={load.id} my="2">
                   <h2>
                     <AccordionButton
@@ -125,7 +156,7 @@ export default function ActiveLoads() {
                           <Badge
                             colorScheme={getStatusColor(load.status)}
                             p="1"
-                            float={"right"}
+                            float="right"
                           >
                             {load.status}
                           </Badge>
@@ -274,7 +305,9 @@ export default function ActiveLoads() {
                           w="90px"
                           children="Delete"
                           variant="blueForwardButton"
-                          onClick={() => handleDeleteLoad(load._id, load.additionalDocument)}
+                          onClick={() =>
+                            handleDeleteLoad(load._id, load.additionalDocument)
+                          }
                         />
                       </Flex>
                     )}
@@ -294,19 +327,4 @@ export default function ActiveLoads() {
       )}
     </>
   );
-}
-
-function getStatusColor(status) {
-  switch (status.toLowerCase()) {
-    case "pending":
-      return "blue";
-    case "assigned":
-      return "yellow";
-    case "in transit":
-      return "orange";
-    case "delayed":
-      return "red";
-    default:
-      return "gray";
-  }
 }
