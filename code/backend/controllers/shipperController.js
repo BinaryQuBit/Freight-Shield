@@ -12,9 +12,9 @@ import deleteFiles from "../middleware/delete.js";
 // @access  Private
 const getActiveLoads = asyncHandler(async (req, res) => {
   try {
-    const userEmail = req.user.shipperEmail;
-    const loads = await Marketplace.find({ email: userEmail });
-
+    const userEmail = req.user.email;
+    const loads = await Marketplace.find({ shipperEmail: userEmail });
+    console.log("This is my Email", userEmail)
     res.status(200).json(loads);
   } catch (error) {
     res.status(500).json({ message: error.message });
