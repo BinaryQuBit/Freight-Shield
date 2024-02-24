@@ -1,3 +1,5 @@
+// Login Form 
+
 // React Imports
 import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -51,11 +53,13 @@ export default function LoginForm() {
     setEmailError(emailError);
     setPasswordError(passwordError);
 
-    // Start of Post Method
+    // Produce Error
     if (emailError || passwordError) {
       console.log(emailError, passwordError);
       return;
     }
+
+    // Start of POST Method
     try {
       const loginResponse = await axios.post("/login", { email, password });
 
@@ -64,12 +68,49 @@ export default function LoginForm() {
       }
 
       const role = loginResponse.data.role;
+      const contactDetails = loginResponse.data.areContactDetailsComplete;
+      const businessDetails = loginResponse.data.areBusinessDetailsComplete;
+      const submissionComplete = loginResponse.data.isFormComplete;
 
-      if (role === "carrier") {
-        navigate("/marketplace");
-      } else if (role === "shipper") {
-        navigate("/activeloads");
-      } else if (role === "admin") {
+      if (role === "carrier")
+      {
+        if(contactDetails == false)
+        {
+          navigate("/carriercontactdetails");
+        }
+        else if (businessDetails == false)
+        {
+          navigate("/carrierbusinessdetails");
+        }
+        else if (submissionComplete == false)
+        {
+          navigate("/carriersubmission");
+        }
+        else
+        {
+          navigate("/marketplace");
+        }
+      }
+      else if (role === "shipper") {
+        if(contactDetails == false)
+        {
+          navigate("/shippercontactdetails");
+        }
+        else if (businessDetails == false)
+        {
+          navigate("/shipperbusinessdetails");
+        }
+        else if (submissionComplete == false)
+        {
+          navigate("/shippersubmission");
+        }
+        else
+        {
+          navigate("/activeloads");
+        }
+      }
+      else if (role === "admin")
+      {
         navigate("/pending");
       }
     } catch (error) {
@@ -91,7 +132,7 @@ export default function LoginForm() {
         p="20px"
         maxWidth={{ base: "auto", md: "400px" }}
         mx="auto"
-        rounded={"no"}
+        rounded={"none"}
       >
         <form onSubmit={handleLogin} noValidate>
           <CustomInput

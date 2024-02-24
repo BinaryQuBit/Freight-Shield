@@ -1,8 +1,9 @@
-// Test to update name
+// Shipper Controller
+
 import asyncHandler from "express-async-handler";
-import path from "path"
 import Shipper from "../models/shipperModel.js";
 import Marketplace from "../models/marketplaceModel.js";
+import deleteFiles from "../middleware/delete.js";
 
 ////////////////////////////// Getters //////////////////////////////
 
@@ -21,11 +22,11 @@ const shipperDasboard = asyncHandler(async (req, res) => {
 });
 
 // @desc    Getting Active Loads
-// route    GET /api/users/activeloads
+// route    GET /api/activeloads
 // @access  Private
-const activeLoads = asyncHandler(async (req, res) => {
+const getActiveLoads = asyncHandler(async (req, res) => {
   try {
-    const userEmail = req.user.email;
+    const userEmail = req.user.shipperEmail;
     const loads = await Marketplace.find({ email: userEmail });
 
     res.status(200).json(loads);
@@ -35,7 +36,7 @@ const activeLoads = asyncHandler(async (req, res) => {
 });
 
 // @desc    Getting PostLoad
-// route    GET /api/users/postload
+// route    GET /api/postload
 // @access  Private
 const getPostLoad = asyncHandler(async (req, res) => {
   const user = {
@@ -47,9 +48,9 @@ const getPostLoad = asyncHandler(async (req, res) => {
 });
 
 // @desc    Getting History
-// route    GET /api/users/history
+// route    GET /api/history
 // @access  Private
-const history = asyncHandler(async (req, res) => {
+const getHistory = asyncHandler(async (req, res) => {
   const user = {
     _id: req.user._id,
     email: req.user.email,
@@ -59,9 +60,9 @@ const history = asyncHandler(async (req, res) => {
 });
 
 // @desc    Getting Shipper Settings
-// route    GET /api/users/shippersettings
+// route    GET /api/shippersettings
 // @access  Private
-const shipperSettings = asyncHandler(async (req, res) => {
+const getShipperSettings = asyncHandler(async (req, res) => {
   const user = {
     _id: req.user._id,
     email: req.user.email,
@@ -70,114 +71,216 @@ const shipperSettings = asyncHandler(async (req, res) => {
   res.status(200).json({ user });
 });
 
-// @desc    Getting Shipper Submission
-// route    GET /api/users/shippersubmission
+// @desc    Getting Shipper Contact Details
+// route    GET /api/shippercontactdetails
 // @access  Private
-const shipperSubmission = asyncHandler(async (req, res) => {
-  const user = {
-    _id: req.user._id,
-    email: req.user.email,
-  };
+const getShipperContactDetails = asyncHandler(async (req, res) => {
+  try {
+    const userEmail = req.user.email;
+    const shipper = await Shipper.findOne({ email: userEmail });
 
-  res.status(200).json({ user });
+    if (!shipper) {
+      return res.status(404).json({ message: "Shipper not found" });
+    }
+
+    const status = {
+      areContactDetailsComplete: shipper.areContactDetailsComplete,
+    };
+
+    res.status(200).json(status);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// @desc    Getting Shipper Business Details
+// route    GET /api/shipperbusinessdetails
+// @access  Private
+const getShipperBusinessDetails = asyncHandler(async (req, res) => {
+  try {
+    const userEmail = req.user.email;
+    const shipper = await Shipper.findOne({ email: userEmail });
+
+    if (!shipper) {
+      return res.status(404).json({ message: "Shipper not found" });
+    }
+
+    const status = {
+      areBusinessDetailsComplete: shipper.areBusinessDetailsComplete,
+    };
+
+    res.status(200).json(status);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// @desc    Getting Shipper Submission
+// route    GET /api/shippersubmission
+// @access  Private
+const getShipperSubmission = asyncHandler(async (req, res) => {
+  try {
+    const userEmail = req.user.email;
+    const shipper = await Shipper.findOne({ email: userEmail });
+
+    if (!shipper) {
+      return res.status(404).json({ message: "Shipper not found" }); 
+    }
+
+    const response = {
+      firstName: shipper.firstName,
+      lastName: shipper.lastName,
+      companyPhoneNumber: shipper.companyPhoneNumber,
+      streetAddress: shipper.streetAddress,
+      apptNumber: shipper.apptNumber,
+      city: shipper.city,
+      province: shipper.province,
+      postalCode: shipper.postalCode,
+      country: shipper.country,
+      mailingStreetAddress: shipper.mailingStreetAddress,
+      mailingApptNumber: shipper.mailingApptNumber,
+      mailingCity: shipper.mailingCity,
+      mailingProvince: shipper.mailingProvince,
+      mailingPostalCode: shipper.mailingPostalCode,
+      mailingCountry: shipper.mailingCountry,
+      businessName: shipper.businessName,
+      businessNumber: shipper.businessNumber,
+      proofBusiness: shipper.proofBusiness,
+      proofInsurance: shipper.proofInsurance,
+      website: shipper.website,
+      isFormComplete: shipper.isFormComplete,
+    };
+
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 ////////////////////////////// Posters //////////////////////////////
 
 // @desc    Posting Load
-// route    POST /api/users/postload
+// route    POST /api/postload
 // @access  Private
 const postLoad = asyncHandler(async (req, res) => {
+  const shipperEmail = req.user.email;
+  const shipperExist = await Shipper.findOne({ email: shipperEmail });
+
+  if (!shipperExist) {
+    return res.status(404).json({ message: "Shipper not found" });
+  }
+
+  const shipperFirstName = shipperExist.firstName;
+  const shipperLastName = shipperExist.lastName;
+  const shipperPhoneNumber = shipperExist.companyPhoneNumber;
+  const shipperCompanyName = shipperExist.businessName;
+
+  const {
+    pickUpLocation,
+    pickUpDate,
+    pickUpTime,
+    dropOffDate,
+    dropOffTime,
+    dropOffLocation,
+    unitRequested,
+    typeLoad,
+    sizeLoad,
+    additionalInformation,
+    pickUpCity,
+    dropOffCity,
+    pickUpLAT,
+    pickUpLNG,
+    dropOffLAT,
+    dropOffLNG,
+  } = req.body;
+
+  const postLoad = {
+    pickUpLocation,
+    pickUpDate,
+    pickUpTime,
+    dropOffDate,
+    dropOffTime,
+    dropOffLocation,
+    unitRequested,
+    typeLoad,
+    sizeLoad,
+    additionalInformation,
+    pickUpCity,
+    dropOffCity,
+    pickUpLAT,
+    pickUpLNG,
+    dropOffLAT,
+    dropOffLNG,
+    status: "Pending",
+    shipperFirstName,
+    shipperLastName,
+    shipperPhoneNumber,
+    shipperCompanyName,
+    shipperEmail
+  };
+
+  console.log("Data", postLoad);
+
+  if (req.files && req.files.additionalDocument && req.files.additionalDocument.length > 0) {
+    postLoad.additionalDocument = req.files.additionalDocument[0].path;
+  }
+
   try {
-    const {
-      pickUpLocation,
-      pickUpDate,
-      pickUpTime,
-      dropOffDate,
-      dropOffTime,
-      dropOffLocation,
-      unitRequested,
-      typeLoad,
-      sizeLoad,
-      additionalInformation,
-      pickUpCity,
-      dropOffCity,
-      pickUpLAT,
-      pickUpLNG,
-      dropOffLAT,
-      dropOffLNG,
-    } = req.body;
+    const newLoad = await Marketplace.create(postLoad);
 
-    if (!pickUpLocation || !dropOffLocation || !pickUpDate || !dropOffDate) {
-      res.status(400).json({ message: 'Missing required fields' });
-      return;
+    if (newLoad) {
+      res.status(200).json({ message: "Load posted successfully", load: newLoad });
+    } else {
+      res.status(400).json({ message: "Unable to post load" });
     }
-
-    let filename = null;
-    if (req.file && req.file.path) {
-      filename = path.basename(req.file.path);
-    }
-
-    const newLoad = await Marketplace.create({
-      email: req.user.email,
-      pickUpLocation,
-      pickUpDate,
-      pickUpTime,
-      dropOffDate,
-      dropOffTime,
-      dropOffLocation,
-      unitRequested,
-      typeLoad,
-      sizeLoad,
-      additionalInformation,
-      additionalDocument: filename,
-      pickUpCity,
-      dropOffCity,
-      pickUpLAT,
-      pickUpLNG,
-      dropOffLAT,
-      dropOffLNG,
-      status: 'Pending',
-    });
-
-    res.status(200).json({ message: 'Load posted successfully', newLoad });
   } catch (error) {
-    console.error("Error in postLoad:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+      res.status(500).json({ message: "Server error", error: error.message });
   }
 });
 
+
+
 ////////////////////////////// Putters //////////////////////////////
 
-// @desc    Updating Load 
-// route    PUT /api/users/postload
+// @desc    Updating Load
+// route    PUT /api/postload:id
 // @access  Private
 const updateLoad = asyncHandler(async (req, res) => {
   const { id } = req.params;
   let updateData = { ...req.body };
 
-  if (req.files && req.files['additionalDocument'] && req.files['additionalDocument'].length) {
-    const filename = req.files['additionalDocument'][0].filename;
+  if (
+    req.files &&
+    req.files["additionalDocument"] &&
+    req.files["additionalDocument"].length
+  ) {
+    const filename = req.files["additionalDocument"][0].filename;
     updateData.additionalDocument = filename;
   } else {
-    console.log('No additionalDocument file uploaded');
+    console.log("No additionalDocument file uploaded");
   }
   try {
-    const updatedLoad = await Marketplace.findByIdAndUpdate(id, { $set: updateData }, { new: true });
+    const updatedLoad = await Marketplace.findByIdAndUpdate(
+      id,
+      { $set: updateData },
+      { new: true }
+    );
     if (!updatedLoad) {
       return res.status(404).json({ message: "Load not found" });
     }
     res.json(updatedLoad);
   } catch (error) {
     console.error("Error in updateLoad:", error);
-    res.status(400).json({ message: "Error updating load", error: error.message });
+    res
+      .status(400)
+      .json({ message: "Error updating load", error: error.message });
   }
 });
 
 // @desc    Update Shipper Contact Details
-// route    PUT /api/users/shippercontactdetails
+// route    PUT /api/shippercontactdetails
 // @access  Private
-const shipperContactDetails = asyncHandler(async (req, res) => {
+const updateShipperContactDetails = asyncHandler(async (req, res) => {
   const email = req.user.email;
   const shipperExist = await Shipper.findOne({ email });
 
@@ -207,28 +310,58 @@ const shipperContactDetails = asyncHandler(async (req, res) => {
     mailingProvince = province;
     mailingPostalCode = postalCode;
     mailingCountry = country;
+  } else {
+    if (!mailingStreetAddress) {
+      return res
+        .status(400)
+        .json({ message: "Mailing Street Address must be filled" });
+    }
+    if (!mailingCity) {
+      return res.status(400).json({ message: "Mailing City must be filled" });
+    }
+    if (!mailingProvince) {
+      return res
+        .status(400)
+        .json({ message: "Mailing Province must be filled" });
+    }
+    if (!mailingPostalCode) {
+      return res
+        .status(400)
+        .json({ message: "Mailing Postal Code must be filled" });
+    }
+    if (!mailingCountry) {
+      return res
+        .status(400)
+        .json({ message: "Mailing Country must be filled" });
+    }
   }
 
-  if (
-    !firstName ||
-    !lastName ||
-    !companyPhoneNumber ||
-    !streetAddress ||
-    !city ||
-    !province ||
-    !postalCode ||
-    !country ||
-    !mailingStreetAddress ||
-    !mailingCity ||
-    !mailingProvince ||
-    !mailingPostalCode ||
-    !mailingCountry
-  ) {
+  if (!firstName) {
+    return res.status(400).json({ message: "First Name must be filled" });
+  }
+  if (!lastName) {
+    return res.status(400).json({ message: "Last Name must be filled" });
+  }
+  if (!companyPhoneNumber) {
     return res
       .status(400)
-      .json({ message: "All required fields must be filled" });
+      .json({ message: "Company Phone Number must be filled" });
   }
-
+  if (!streetAddress) {
+    return res.status(400).json({ message: "Street Address must be filled" });
+  }
+  if (!city) {
+    return res.status(400).json({ message: "City must be filled" });
+  }
+  if (!province) {
+    return res.status(400).json({ message: "Province must be filled" });
+  }
+  if (!postalCode) {
+    return res.status(400).json({ message: "Postal Code must be filled" });
+  }
+  if (!country) {
+    return res.status(400).json({ message: "Country must be filled" });
+  }
   if (shipperExist) {
     const updatedShipper = await Shipper.findOneAndUpdate(
       { email },
@@ -248,6 +381,7 @@ const shipperContactDetails = asyncHandler(async (req, res) => {
         mailingProvince,
         mailingPostalCode,
         mailingCountry,
+        areContactDetailsComplete: true,
       },
       { new: true }
     );
@@ -263,9 +397,9 @@ const shipperContactDetails = asyncHandler(async (req, res) => {
 });
 
 // @desc    Update Shipper Business Details
-// route    PUT /api/users/shipperbusinessdetails
+// route    PUT /api/shipperbusinessdetails
 // @access  Private
-const shipperBusinessDetails = asyncHandler(async (req, res) => {
+const updateShipperBusinessDetails = asyncHandler(async (req, res) => {
   const email = req.user.email;
   const shipperExist = await Shipper.findOne({ email });
 
@@ -281,7 +415,27 @@ const shipperBusinessDetails = asyncHandler(async (req, res) => {
       .json({ message: "Business name and number are required" });
   }
 
-  const updateData = { businessName, businessNumber, website };
+  const updateData = {
+    businessName,
+    businessNumber,
+    website,
+    areBusinessDetailsComplete: true,
+  };
+
+  if (
+    req.files &&
+    req.files.proofBusiness &&
+    req.files.proofBusiness.length > 0
+  ) {
+    updateData.proofBusiness = req.files.proofBusiness[0].path;
+  }
+  if (
+    req.files &&
+    req.files.proofInsurance &&
+    req.files.proofInsurance.length > 0
+  ) {
+    updateData.proofInsurance = req.files.proofInsurance[0].path;
+  }
 
   try {
     const updatedShipper = await Shipper.findOneAndUpdate(
@@ -300,85 +454,130 @@ const shipperBusinessDetails = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Upload Proof of Business
-// route    PUT /api/users/proofBusiness
+// @desc    Update Shipper Details
+// route    PUT /api/shippersubmissiondetails
 // @access  Private
-const proofBusiness = asyncHandler(async (req, res) => {
-  if (
-    !req.files ||
-    !req.files.proofBusiness ||
-    !req.files.proofBusiness.length
-  ) {
-    return res
-      .status(400)
-      .send({ message: "Please upload a proof of business file." });
-  }
-
+const updateShipperSubmissionDetails = asyncHandler(async (req, res) => {
   const email = req.user.email;
   const shipperExist = await Shipper.findOne({ email });
 
   if (!shipperExist) {
-    return res.status(404).send({ message: "Shipper not found" });
+      return res.status(404).json({ message: "Shipper not found" });
   }
 
-  const filePath = `${req.files.proofBusiness[0].filename}`;
+  const {
+      streetAddress,
+      apptNumber,
+      city,
+      province,
+      postalCode,
+      country,
+      mailingStreetAddress,
+      mailingApptNumber,
+      mailingCity,
+      mailingProvince,
+      mailingPostalCode,
+      mailingCountry,
+      firstName,
+      lastName,
+      companyPhoneNumber,
+      businessName,
+      businessNumber,
+      website,
+  } = req.body;
+
+  if (!businessName || !businessNumber) {
+      return res.status(400).json({ message: "Business name and number are required" });
+  }
+
+  const updateData = {
+      streetAddress,
+      apptNumber,
+      city,
+      province,
+      postalCode,
+      country,
+      mailingStreetAddress,
+      mailingApptNumber,
+      mailingCity,
+      mailingProvince,
+      mailingPostalCode,
+      mailingCountry,
+      firstName,
+      lastName,
+      companyPhoneNumber,
+      businessName,
+      businessNumber,
+      website,
+  };
+
+  const filesToDelete = [];
+
+  if (req.files && req.files.proofBusiness && req.files.proofBusiness.length > 0) {
+      if (shipperExist.proofBusiness) {
+          filesToDelete.push(shipperExist.proofBusiness);
+      }
+      updateData.proofBusiness = req.files.proofBusiness[0].path;
+  }
+  if (req.files && req.files.proofInsurance && req.files.proofInsurance.length > 0) {
+      if (shipperExist.proofInsurance) {
+          filesToDelete.push(shipperExist.proofInsurance);
+      }
+      updateData.proofInsurance = req.files.proofInsurance[0].path;
+  }
 
   try {
-    await Shipper.findOneAndUpdate(
-      { email },
-      { proofBusiness: filePath },
-      { new: true }
-    );
+      const updatedShipper = await Shipper.findOneAndUpdate(
+          { email },
+          updateData,
+          { new: true }
+      );
 
-    res.send({
-      message: "Proof of Business file uploaded successfully.",
-      fileName: req.files.proofBusiness[0].filename,
-      filePath: filePath,
-    });
+      if (filesToDelete.length > 0) {
+          deleteFiles(filesToDelete);
+      }
+
+      if (updatedShipper) {
+          res.status(200).json({ shipper: updatedShipper });
+      } else {
+          res.status(404).json({ message: "Unable to update shipper details" });
+      }
   } catch (error) {
-    res.status(500).send({ message: "Server error", error: error.message });
+      res.status(500).json({ message: "Server error", error: error.message });
   }
 });
 
-// @desc    Upload Proof of Insurance
-// route    PUT /api/users/proofInsurance
+// @desc    Update Shipper Status
+// route    PUT /api/updateshipperstatus
 // @access  Private
-const proofInsurance = asyncHandler(async (req, res) => {
-  if (
-    !req.files ||
-    !req.files.proofInsurance ||
-    !req.files.proofInsurance.length
-  ) {
-    return res
-      .status(400)
-      .send({ message: "Please upload a proof of insurance file." });
-  }
-
+const updateShipperStatus = asyncHandler(async (req, res) => {
   const email = req.user.email;
   const shipperExist = await Shipper.findOne({ email });
 
   if (!shipperExist) {
-    return res.status(404).send({ message: "Shipper not found" });
+    return res.status(404).json({ message: "Shipper not found" });
   }
 
-  const filePath = `${req.files.proofInsurance[0].filename}`;
-
+  const updateData = {
+    isFormComplete: true,
+  };
   try {
-    await Shipper.findOneAndUpdate(
+    const updatedShipper = await Shipper.findOneAndUpdate(
       { email },
-      { proofInsurance: filePath },
+      updateData,
       { new: true }
     );
 
-    res.send({
-      message: "Proof of Insurance file uploaded successfully.",
-      fileName: req.files.proofInsurance[0].filename,
-      filePath: filePath,
-    });
+    if (updatedShipper) {
+      res.status(200).json({ shipper: updatedShipper });
+    } else {
+      res.status(404).json({ message: "Unable to update shipper details" });
+    }
   } catch (error) {
-    res.status(500).send({ message: "Server error", error: error.message });
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 });
+
 
 ////////////////////////////// Deleters //////////////////////////////
 
@@ -442,7 +641,6 @@ const removeProofInsurance = asyncHandler(async (req, res) => {
   }
 });
 
-
 // @desc    Remove Addtional document
 // route    DELETE /api/users/postload
 // @access  Private
@@ -468,12 +666,14 @@ const removeAdditionalDocument = asyncHandler(async (req, res) => {
   );
 
   const updatedLoad = await Marketplace.findById(id);
-  console.log('Updated Load:', updatedLoad);
+  console.log("Updated Load:", updatedLoad);
 
   if (updatedLoad.additionalDocument === null) {
     res.send({ message: "Additional document deleted successfully." });
   } else {
-    res.status(500).send({ message: "Failed to delete the additional document." });
+    res
+      .status(500)
+      .send({ message: "Failed to delete the additional document." });
   }
 });
 
@@ -483,35 +683,37 @@ const removeAdditionalDocument = asyncHandler(async (req, res) => {
 const deleteLoad = async (req, res) => {
   try {
     const loadId = req.params.id;
-    
+
     const load = await Marketplace.findByIdAndDelete(loadId);
 
     if (!load) {
-      return res.status(404).json({ message: 'Load not found' });
+      return res.status(404).json({ message: "Load not found" });
     }
 
-    res.status(200).json({ message: 'Load deleted successfully' });
+    res.status(200).json({ message: "Load deleted successfully" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 };
 
 export {
-  activeLoads,
+  getActiveLoads,
+  getPostLoad,
+  getHistory,
+  getShipperSettings,
+  getShipperContactDetails,
+  getShipperBusinessDetails,
+  getShipperSubmission,
+  shipperDasboard,
   postLoad,
-  shipperContactDetails,
-  shipperBusinessDetails,
-  proofBusiness,
-  proofInsurance,
+  updateLoad,
+  updateShipperContactDetails,
+  updateShipperBusinessDetails,
+  updateShipperSubmissionDetails,
+  updateShipperStatus,
   removeProofBusiness,
   removeProofInsurance,
-  updateLoad,
   removeAdditionalDocument,
   deleteLoad,
-  getPostLoad,
-  history,
-  shipperSettings,
-  shipperSubmission,
-  shipperDasboard,
 };

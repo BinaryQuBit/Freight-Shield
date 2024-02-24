@@ -1,4 +1,4 @@
-// Test to update name
+// Progress Bar
 import React from "react";
 import {
   Step,

@@ -1,4 +1,5 @@
-// Test to update name
+// Shipper Model
+
 import mongoose from "mongoose";
 import { hashPassword, comparePassword } from "../utils/hashPassword.js";
 
@@ -93,6 +94,18 @@ const shipperSchema = mongoose.Schema(
       type: String,
       required: false,
     },
+    areContactDetailsComplete: {
+      type: Boolean,
+      required: false,
+    },
+    areBusinessDetailsComplete: {
+      type: Boolean,
+      required: false,
+    },
+    isFormComplete: { 
+      type: Boolean,
+      required: false,
+    }
   },
   {
     timestamps: true,

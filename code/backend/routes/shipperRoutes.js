@@ -1,4 +1,5 @@
-// Test to update name
+// Shipper Routes
+
 import express from "express";
 import upload from "../middleware/upload.js";
 import deleteFile from "../middleware/delete.js";
@@ -6,50 +7,51 @@ import deleteFile from "../middleware/delete.js";
 import {
   protect,
   shipperOnly,
-  shipperDetailsComplete,
+  status,
 } from "../middleware/authMiddleware.js";
 
 import {
-  activeLoads,
+  getActiveLoads,
   getPostLoad,
-  history,
+  getHistory,
+  getShipperSettings,
+  getShipperContactDetails,
+  getShipperBusinessDetails,
+  getShipperSubmission,
+  shipperDasboard,
   postLoad,
-  shipperContactDetails,
-  shipperBusinessDetails,
-  proofBusiness,
-  proofInsurance,
+  updateLoad,
+  updateShipperContactDetails,
+  updateShipperBusinessDetails,
+  updateShipperSubmissionDetails,
+  updateShipperStatus,
   removeProofBusiness,
   removeProofInsurance,
-  updateLoad,
   removeAdditionalDocument,
   deleteLoad,
-  shipperSettings,
-  shipperSubmission,
-  shipperDasboard
 } from "../controllers/shipperController.js";
 
 const router = express.Router();
 
 /////////////////////////////////////////////////////// GETTERS ///////////////////////////////////////////////////////
-router.get("/activeloads", protect, shipperOnly, activeLoads);
-router.get("/history", protect, shipperOnly, history);
-router.get("/postload", protect, shipperOnly, getPostLoad);
-router.get("/shippersettings", protect, shipperOnly, shipperSettings);
-router.get("/shippersettings", protect, shipperOnly, shipperSettings);
-router.get("/shipperbusinessdetails", protect, shipperOnly, shipperBusinessDetails);
-router.get("/shippersubmission", protect, shipperOnly, shipperSubmission);
-router.get("/shippercontactdetails", protect, shipperOnly, shipperContactDetails);
+router.get("/activeloads", protect, shipperOnly, status, getActiveLoads);
+router.get("/postload", protect, shipperOnly, status, getPostLoad);
+router.get("/history", protect, shipperOnly, status, getHistory);
+router.get("/shippersettings", protect, shipperOnly, status, getShipperSettings);
+router.get("/shippercontactdetails", protect, shipperOnly, getShipperContactDetails);
+router.get("/shipperbusinessdetails", protect, shipperOnly, getShipperBusinessDetails);
+router.get("/shippersubmission", protect, shipperOnly, getShipperSubmission);
 router.get("/shipperDashboard", protect, shipperOnly, shipperDasboard);
 
 /////////////////////////////////////////////////////// POSTERS ///////////////////////////////////////////////////////
-router.post("/postload", upload.single("additionalDocument"), protect, shipperOnly, shipperDetailsComplete, postLoad);
+router.post("/postload", upload.single("additionalDocument"), protect, shipperOnly, status, postLoad);
 
 /////////////////////////////////////////////////////// PUTTERS ///////////////////////////////////////////////////////
-router.put("/shippercontactdetails", protect, shipperOnly, shipperContactDetails);
-router.put("/shipperbusinessdetails", protect, shipperOnly, upload.fields([{ name: "proofBusiness", maxCount: 1 }, { name: "proofInsurance", maxCount: 1 },]), shipperBusinessDetails);
-router.put("/proofBusiness", protect, shipperOnly, upload.fields([{ name: "proofBusiness", maxCount: 1 }]), proofBusiness);
-router.put("/proofInsurance", protect, shipperOnly, upload.fields([{ name: "proofInsurance", maxCount: 1 }]), proofInsurance);
-router.put("/postload/:id", protect, shipperOnly, upload.fields([{ name: "additionalDocument", maxCount: 1 }]), updateLoad);
+router.put("/postload/:id", protect, shipperOnly, status, upload.fields([{ name: "additionalDocument", maxCount: 1 }]), updateLoad);
+router.put("/shippercontactdetails", protect, shipperOnly, updateShipperContactDetails);
+router.put("/shipperbusinessdetails", protect, shipperOnly, upload.fields([{ name: "proofBusiness", maxCount: 1 }, { name: "proofInsurance", maxCount: 1 }]), updateShipperBusinessDetails);
+router.put("/shippersubmissiondetails", protect, shipperOnly, upload.fields([{ name: "proofBusiness", maxCount: 1 }, { name: "proofInsurance", maxCount: 1 }]), updateShipperSubmissionDetails);
+router.put("/shipperstatus", protect, shipperOnly, updateShipperStatus);
 
 /////////////////////////////////////////////////////// DELETERS ///////////////////////////////////////////////////////
 router.delete("/proofBusiness/:filename", protect, shipperOnly, deleteFile, removeProofBusiness);

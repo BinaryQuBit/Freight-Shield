@@ -1,307 +1,225 @@
-import Sidebar from "../../components/sidebar/carrierSideBar.js";
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+// Marketplace
+
+// React Imports
+import React, { useState } from 'react';
+
+// Chakra UI Imports
 import {
-  Flex,
-  Input,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  Card,
   Box,
   Text,
-  Stack,
-  Card,
-  AccordionIcon,
-  AccordionButton,
-  AccordionItem,
-  Accordion,
+  Input,
   Select,
-  ModalHeader,
-  ModalContent,
-  ModalOverlay,
-  Modal,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-  Button,
-} from "@chakra-ui/react";
-import UserHeader from "../../components/header/userHeader.js";
-import EmbeddedMap from "../../components/google/embeddedMap.js";
-import { useNavigate } from "react-router-dom";
-import EaseOut from "../../components/responsiveness/easeOut.js";
-// import GreenButton from "../../components/buttons/GreenButton";
-import CustomButton from "../../components/buttons/customButton.js";
-import Protector from "../../components/utils/methods/getters/protector.js";
+  Flex,
+  Badge,
+  Stack,
+  useColorMode,
+} from '@chakra-ui/react';
 
+// Custom Imports
+import CarrierSideBar from "../../components/sidebar/carrierSideBar.js";
+import UserHeader from '../../components/header/userHeader.js';
+import EaseOut from '../../components/responsiveness/easeOut.js';
+import { useData } from '../../components/utils/methods/getters/dataContext.js';
+import Protector from '../../components/utils/methods/getters/protector.js';
+import EmbeddedMap from '../../components/google/embeddedMap.js';
+
+// Start of Build
 export default function Marketplace() {
-  Protector("/marketplace");
-  const navigate = useNavigate();
-  const [loads, setLoads] = useState([]);
-  const [fromSearchTerm, setFromSearchTerm] = useState("");
-  const [toSearchTerm, setToSearchTerm] = useState("");
-  const [statusSearchTerm, setStatusSearchTerm] = useState("");
-  const [filteredLoads, setFilteredLoads] = useState([]);
-  const [selectedDetailIndex, setSelectedDetailIndex] = useState(null);
+  Protector("/api/marketplace");
 
+  // Hooks
+  const { colorMode } = useColorMode();
+  const { data } = useData();
+  const [filterOption, setFilterOption] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const loads = data.loads || [];
 
-
-  // get loads
-  // get loads
-useEffect(() => {
-  const filtered = loads.filter(
-    (load) =>
-      load?.pickUpLocation
-        ?.toLowerCase()
-        .includes(fromSearchTerm.toLowerCase()) &&
-      load?.dropOffLocation
-        ?.toLowerCase()
-        .includes(toSearchTerm.toLowerCase()) &&
-      !["assigned", "assigned"].includes(load?.status?.toLowerCase())
-  );
-  setFilteredLoads(filtered);
-}, [fromSearchTerm, toSearchTerm, statusSearchTerm, loads]);
-
-  const handleDetailsClick = (index) => {
-    setSelectedDetailIndex(index === selectedDetailIndex ? null : index);
-  };
-
-  // get units
-  const [units, setUnits] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/unitprofile", {
-          withCredentials: true,
-        });
-        setUnits(response.data.units);
-      } catch (error) {
-        console.error("Error Fetching Unit Profile: ", error);
-        if (
-          error.response &&
-          (error.response.status === 401 || error.response.status === 403)
-        ) {
-          navigate("/login");
-        }
-      }
-    };
-
-    fetchData();
-  }, [navigate]);
-
-  const [selectedLoadIndex, setSelectedLoadIndex] = useState(null);
-  const [isAssignCardOpen, setIsAssignCardOpen] = useState(false); 
-  const [selectedUnit, setSelectedUnit] = useState(null);
-  const [selectedLoadId, setSelectedLoadId] = useState(null);
-
-  const handleAcceptClick = (loadId) => {
-    setSelectedLoadId(loadId);
-    setIsAssignCardOpen(true);
-    setSelectedUnit(null);
-  };
-
-  const handleAssignCardClose = () => {
-    setIsAssignCardOpen(false);
-    setSelectedLoadIndex(null);
-    setSelectedUnit(null);
-  };
-
-  
-  const handleAssignUnit = async (unit) => {
-    if (!selectedLoadId) return;
-  
-    try {
-      const response = await axios.put(
-        `/marketplace/${selectedLoadId}`,
-        {
-          status: "Assigned",
-          assignedUnit: unit,
-        },
-        { withCredentials: true }
-      );
-  
-      console.log("Load status updated successfully", response.data);
-  
-      // Update the local state to reflect the changes
-      const updatedLoads = loads.map((load) =>
-        load._id === selectedLoadId ? { ...load, status: "Assigned", assignedUnit: unit } : load
-      );
-      setLoads(updatedLoads);
-  
-      // Close the modal and reset selection
-      handleAssignCardClose();
-    } catch (error) {
-      console.error("Error updating load status: ", error);
-    }
-  };
-  
-  
-
+  // Filter Handle
+  const filteredLoads = loads.filter(load => {
+    const fieldToFilter = load[filterOption] ? load[filterOption].toString().toLowerCase() : '';
+    return fieldToFilter.includes(searchTerm.toLowerCase());
+  });
 
   return (
     <>
-      <Sidebar activePage="marketplace" />
+      <CarrierSideBar activePage={"marketplace"}/>
       <EaseOut>
-        <UserHeader title="Loads" />
-        <Flex
-          pt={"10"}
-          direction={"column"}
-          alignItems={"center"}
-          padding={"10"}
-        >
-          <Stack spacing={4} direction={"row"} mb="4">
+        <UserHeader title={"Marketplace"}/>
+        <Flex pt="10" direction="column" alignItems="center" padding="10">
+          <Stack spacing={4} direction="row" mb="4">
+            <Select
+              placeholder="Select Filter"
+              value={filterOption}
+              onChange={(e) => setFilterOption(e.target.value)}
+              mr={2}
+            >
+              <option value="pickUpCity">Pick Up City</option>
+              <option value="dropOffCity">Drop Off City</option>
+              <option value="shipperCompanyName">Company Name</option>
+              <option value="typeLoad">Type of Load</option>
+              <option value="unitRequested">Unit Requested</option>
+            </Select>
             <Input
-              placeholder="From..."
-              onChange={(e) => setFromSearchTerm(e.target.value)}
-            />
-            <Input
-              placeholder="To..."
-              onChange={(e) => setToSearchTerm(e.target.value)}
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              flexGrow={1}
             />
           </Stack>
           <Card overflowX="auto" width="full" p="4">
-            <table>
-              <thead>
-                <tr>
-                  <th>From</th>
-                  <th>To</th>
-                  <th>Details</th>
-                  <th>Accept</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredLoads.map((load, index) => (
-                  <React.Fragment key={load.id}>
-                    <tr>
-                      <td style={{ textAlign: "center" }}>{load.pickUpCity}</td>
-                      <td style={{ textAlign: "center" }}>
-                        {load.dropOffCity}
-                      </td>
+            <Accordion allowToggle>
+              {filteredLoads.map((load) => (
+                <AccordionItem key={load._id}>
+                  <h2>
+                    <AccordionButton
+                      _expanded={{ bg: colorMode === 'dark' ? 'blue.700' : 'blue.100', color: colorMode === 'dark' ? 'white' : 'black' }}
+                    >
+                      <Box flex="1" textAlign="center">
+                        <Text fontSize="lg">
+                          {load.pickUpCity} to {load.dropOffCity}
+                          <Badge colorScheme="yellow" p={1} float={"right"}>{load.typeLoad}</Badge>
+                        </Text>
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                  <Flex
+                      direction={{ base: "column", md: "column", lg: "row" }}
+                      align={{ lg: "center" }}
+                    >
+                      <Box flex="1">
+                        <Text fontSize="md" mb="2">
+                          <strong>Pickup Location:</strong>{" "}
+                          {load.pickUpLocation}
+                        </Text>
+                        <Text fontSize="md" mb="2">
+                          <strong>Pick Up Date:</strong> {load.pickUpDate}
+                        </Text>
+                        <Text fontSize="md" mb="2">
+                          <strong>Pick Up Time:</strong> {load.pickUpTime}
+                        </Text>
+                        <Text fontSize="md" mb="2">
+                          <strong>Drop Off Location:</strong>{" "}
+                          {load.dropOffLocation}
+                        </Text>
+                        <Text fontSize="md" mb="2">
+                          <strong>Drop Off Date:</strong> {load.dropOffDate}
+                        </Text>
+                        <Text fontSize="md" mb="2">
+                          <strong>Drop Off Time:</strong> {load.dropOffTime}
+                        </Text>
+                        <Text fontSize="md" mb="2">
+                          <strong>Unit Requested:</strong> {load.unitRequested}
+                        </Text>
+                        <Text fontSize="md" mb="2">
+                          <strong>Type of Load:</strong> {load.typeLoad}
+                        </Text>
+                        {load.typeLoad === "LTL" ? (
+                          <Text fontSize="md" mb="2">
+                            <strong>Size of Load:</strong> {load.sizeLoad} feet
+                          </Text>
+                        ) : (
+                          <Text fontSize="md" mb="2">
+                            <strong>Size of Load:</strong> Full Load
+                          </Text>
+                        )}
 
-                      <td onClick={() => handleDetailsClick(index)} colSpan="1">
-                        <Accordion allowToggle>
-                          <AccordionItem border={"none"} key={load.id} my="2">
-                            <AccordionButton
-                              _expanded={{ bg: "gray.100", color: "black" }}
+                        <Text fontSize="md" mb="2">
+                          <strong>Additional Information:</strong>{" "}
+                          {load.additionalInformation}
+                        </Text>
+                        <Text fontSize="md" mb="2">
+                          <strong>Additional Document:</strong>{" "}
+                          {load.additionalDocument ? (
+                            <a
+                              href={`http://localhost:8080/uploads/${load.additionalDocument}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{ color: "blue" }}
                             >
-                              <Box flex={"1"}>
-                                <AccordionIcon />
-                              </Box>
-                            </AccordionButton>{" "}
-                          </AccordionItem>
-                        </Accordion>
-                      </td>
-                      <td style={{ textAlign: "center" }}>
-                      <CustomButton
-              variant={"blueForwardButton"}
-              w={"100px"}
-              onClick={() => handleAcceptClick(load._id)}
-              backgroundColor="#42B72A"
-              children={"Accept"}
-              // icon={}
-              mt={"7"}
-              
-            />
-                      {/* <GreenButton onClick={() => handleAcceptClick(load._id)}>Accept</GreenButton> */}
-                      </td>
-                    </tr>
-                    {selectedDetailIndex === index && (
-                      <tr>
-                        <td colSpan="2">
-                          <Card>
-                            <Flex
-                              direction={{
-                                base: "column",
-                                md: "column",
-                                lg: "row",
-                              }}
-                              align={{ lg: "center" }}
-                            >
-                              <Box flex="1">
-                                <Text fontSize="md" mb="2">
-                                  <strong>Pickup Location:</strong>{" "}
-                                  {load.pickUpLocation}
-                                </Text>
-                                <Text fontSize="md" mb="2">
-                                  <strong>Pick Up Date:</strong>{" "}
-                                  {load.pickUpDate}
-                                </Text>
-                                <Text fontSize="md" mb="2">
-                                  <strong>Pick Up Time:</strong>{" "}
-                                  {load.pickUpTime}
-                                </Text>
-                                <Text fontSize="md" mb="2">
-                                  <strong>Drop Off Location:</strong>{" "}
-                                  {load.dropOffLocation}
-                                </Text>
-                                <Text fontSize="md" mb="2">
-                                  <strong>Drop Off Date:</strong>{" "}
-                                  {load.dropOffDate}
-                                </Text>
-                                <Text fontSize="md" mb="2">
-                                  <strong>Drop Off Time:</strong>{" "}
-                                  {load.dropOffTime}
-                                </Text>
-                                <Text fontSize="md" mb="2">
-                                  <strong>Unit Requested:</strong>{" "}
-                                  {load.unitRequested}
-                                </Text>
-                                <Text fontSize="md" mb="2">
-                                  <strong>Additional Information:</strong>{" "}
-                                  {load.additionalInformation}
-                                </Text>
-                                <Text fontSize="md" mb="2">
-                                  <strong>Additional Documents:</strong>{" "}
-                                  {load.additionalDocument}
-                                </Text>
-                              </Box>
-                              <Box flex="1" ml="4">
-                                <EmbeddedMap
-                                  pickUpLAT={parseFloat(load.pickUpLAT)}
-                                  pickUpLNG={parseFloat(load.pickUpLNG)}
-                                  dropOffLAT={parseFloat(load.dropOffLAT)}
-                                  dropOffLNG={parseFloat(load.dropOffLNG)}
-                                />
-                              </Box>
-                            </Flex>
-                            <Flex justify={"space-between"}></Flex>
-                          </Card>
-                        </td>
-                      </tr>
-                    )}
-                  </React.Fragment>
-                ))}
-              </tbody>
-            </table>
+                              View Document
+                            </a>
+                          ) : (
+                            "None"
+                          )}
+                        </Text>
+                      </Box>
+                      <Box flex="1" ml="4">
+                        <EmbeddedMap
+                          pickUpLAT={parseFloat(load.pickUpLAT)}
+                          pickUpLNG={parseFloat(load.pickUpLNG)}
+                          dropOffLAT={parseFloat(load.dropOffLAT)}
+                          dropOffLNG={parseFloat(load.dropOffLNG)}
+                        />
+                      </Box>
+                    </Flex>
+                    <Flex
+                      direction={{ base: "column", md: "column", lg: "row" }}
+                      align={{ lg: "center" }}
+                    >
+                        <Box flex={"1"}>
+                          <Text
+                            textAlign={"center"}
+                            pt={"10"}
+                            fontWeight={"bold"}
+                            fontSize={"18"}
+                          >
+                            Shipper Information
+                          </Text>
+                          <Text fontSize="md" mb="2">
+                            <strong>Company Name:</strong>{" "}
+                            {load.shipperCompanyName}
+                          </Text>
+                          <Text fontSize="md" mb="2">
+                            <strong>Contact Name:</strong>{" "}
+                            {load.shipperFirstName}{" "}
+                            {load.shipperLastName}
+                          </Text>
+                          <Text fontSize="md" mb="2">
+                            <strong>Contact Phone Number:</strong>{" "}
+                            {load.shipperPhoneNumber}
+                          </Text>
+                          <Text fontSize={"md"} mb={"2"}>
+                            <strong>Contact Email:</strong>{" "}
+                            {load.shipperEmail}
+                          </Text>
+                        </Box>
+                      {(load.status.toLowerCase() === "in transit" ||
+                        load.status.toLowerCase() === "delayed") && (
+                        <Box flex={"1"}>
+                          <Text
+                            textAlign={"center"}
+                            pt={"10"}
+                            fontWeight={"bold"}
+                            fontSize={"18"}
+                          >
+                            Driver Information
+                          </Text>
+                          <Text fontSize={"md"} mb={"2"}>
+                            <strong>Name:</strong>
+                          </Text>
+                          <Text fontSize={"md"} mb={"2"}>
+                            <strong>Phone Number:</strong>
+                          </Text>
+                          <Text fontSize={"md"} mb={"2"}>
+                            <strong>Email:</strong>
+                          </Text>
+                        </Box>
+                      )}
+                    </Flex>
+                  </AccordionPanel>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </Card>
         </Flex>
-
-        <Modal isOpen={isAssignCardOpen} onClose={handleAssignCardClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Modal Title</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <Text>Select a unit to assign to this load:</Text>
-              <Select
-                value={selectedUnit}
-                onChange={(e) => setSelectedUnit(e.target.value)}
-              >
-                {units.map((unit) => (
-                  <option key={unit.unitNumber} value={unit.unitNumber}>
-                    {unit.unitNumber}
-                  </option>
-                ))}
-              </Select>
-            </ModalBody>
-
-            <ModalFooter>
-              <CustomButton
-                colorScheme="green"
-                onClick={() => handleAssignUnit(selectedUnit)}
-              >
-                Assign
-              </CustomButton>
-              <CustomButton onClick={handleAssignCardClose}>Cancel</CustomButton>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
       </EaseOut>
     </>
   );

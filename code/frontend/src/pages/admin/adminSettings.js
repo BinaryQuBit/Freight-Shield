@@ -1,3 +1,5 @@
+// Admin Settings Page
+
 import Sidebar from "../../components/sidebar/adminSideBar.js";
 import React from "react";
 import { Flex, Text } from "@chakra-ui/react";

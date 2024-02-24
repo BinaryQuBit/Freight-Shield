@@ -1,3 +1,5 @@
+// Shipper Submission Page
+
 import React from "react";
 import Header from "../../../components/header/header.js";
 import { RegistrationProgress } from '../../../components/progressBar/registrationProgess.js';
@@ -5,7 +7,7 @@ import ShipperSubmissionDetails from '../../../components/forms/shipperSubmissio
 import Protector from "../../../components/utils/methods/getters/protector.js";
 
 function ShipperSubmission() {
-Protector("/shippersubmission")
+Protector("/api/shippersubmission")
 
   return (
     <>

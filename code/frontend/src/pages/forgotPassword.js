@@ -1,3 +1,5 @@
+// Forgot Password Page
+
 import React from "react";
 import { Container, Flex, Box, Image, Text } from "@chakra-ui/react";
 import Logo from "../components/logo/logo.svg";

@@ -1,4 +1,5 @@
-// Test to update name
+// Forget Password (OTP) Model
+
 import mongoose from 'mongoose';
 
 const otpSchema = new mongoose.Schema({

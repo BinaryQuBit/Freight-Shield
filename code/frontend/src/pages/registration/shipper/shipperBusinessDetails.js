@@ -1,3 +1,5 @@
+// Shipper Business Details Page
+
 import React from 'react';
 import Header from "../../../components/header/header.js";
 import ShipperBusinessDetailsForm from '../../../components/forms/shipperBusinessDetailsForm.js';
@@ -5,7 +7,7 @@ import { RegistrationProgress } from '../../../components/progressBar/registrati
 import Protector from "../../../components/utils/methods/getters/protector.js"
 
 function ShipperBusinessDetails() {
-  Protector("/shipperbusinessdetails")
+  Protector("/api/shipperbusinessdetails")
   return (
     <>
       <Header />

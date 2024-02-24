@@ -1,10 +1,9 @@
-// Test to update name
-// generateToken.js
+// Generate Token
 
 import jwt from "jsonwebtoken";
 
-const generateToken = (res, userId, role) => {
-  const token = jwt.sign({ userId, role }, process.env.JWT_SECRET, {
+const generateToken = (res, userId, role, areContactDetailsComplete, areBusinessDetailsComplete, isFormComplete) => {
+  const token = jwt.sign({ userId, role, areContactDetailsComplete, areBusinessDetailsComplete, isFormComplete }, process.env.JWT_SECRET, {
     expiresIn: "1d",
   });
 

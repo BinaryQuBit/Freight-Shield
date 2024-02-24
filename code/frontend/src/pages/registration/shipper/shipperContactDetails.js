@@ -1,3 +1,5 @@
+// Shipper Contact Details Page
+
 import React from "react";
 import Header from "../../../components/header/header.js";
 import ShipperCompanyDetailsForm from "../../../components/forms/shipperContactDetailsForm.js";
@@ -5,7 +7,7 @@ import { RegistrationProgress } from "../../../components/progressBar/registrati
 import Protector from "../../../components/utils/methods/getters/protector.js";
 
 function ShipperContactDetails() {
-  Protector("/shippercontactdetails")
+  Protector("/api/shippercontactdetails")
   return (
     <>
       <Header />
@@ -15,5 +17,5 @@ function ShipperContactDetails() {
   );
 }
 
-export default ShipperContactDetails;
+export default ShipperContactDetails; 
 
