@@ -7,6 +7,20 @@ import deleteFiles from "../middleware/delete.js";
 
 ////////////////////////////// Getters //////////////////////////////
 
+// @desc    Getting Dashboard
+// route    GET /api/users/activeloads
+// @access  Private
+const shipperDasboard = asyncHandler(async (req, res) => {
+  try {
+    const userEmail = req.user.email;
+    const loads = await Marketplace.find({ email: userEmail });
+
+    res.status(200).json(loads);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // @desc    Getting Active Loads
 // route    GET /api/activeloads
 // @access  Private
@@ -691,6 +705,7 @@ export {
   getShipperContactDetails,
   getShipperBusinessDetails,
   getShipperSubmission,
+  shipperDasboard,
   postLoad,
   updateLoad,
   updateShipperContactDetails,
