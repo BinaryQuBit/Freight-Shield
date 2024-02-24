@@ -11,9 +11,9 @@ const screenHeight = Dimensions.get('window').height;
 
 export default function WelcomeScreen({ navigation}) {
   const [isModalVisible, setModalVisible] = useState(false);
-  const animation = useRef(new Animated.Value(screenHeight)).current; // starting at screenHeight
-  const [activeForm, setActiveForm] = useState('login'); // 'login' or 'forgotPassword'
-  const logoAnimation = useRef(new Animated.Value(0)).current; // New animated value for the logo
+  const animation = useRef(new Animated.Value(screenHeight)).current; 
+  const [activeForm, setActiveForm] = useState('login'); 
+  const logoAnimation = useRef(new Animated.Value(0)).current; 
   //const [prefilledEmail, setPrefilledEmail] = useState('');
   
   useFocusEffect(
@@ -31,7 +31,7 @@ export default function WelcomeScreen({ navigation}) {
 
   const showLoginForm = () => {
     setActiveForm('login');
-    //setPrefilledEmail(email); // Set the email to state
+    //setPrefilledEmail(email); 
   };
   
 
@@ -54,7 +54,7 @@ export default function WelcomeScreen({ navigation}) {
   };
 
   const handlePressOutside = () => {
-    // Call slideDown only if modal is visible
+    
     Animated.timing(logoAnimation, {
         toValue: 0,
         duration: 500,
@@ -68,15 +68,15 @@ export default function WelcomeScreen({ navigation}) {
 
   const logoMarginTop = logoAnimation.interpolate({
     inputRange: [0, 1],
-    outputRange: [screenHeight / 4, 90] // Adjust values as needed
+    outputRange: [screenHeight / 4, 90] 
   });
 
   const slideDown = () => {
-    // Will change translateY value back to screenHeight in 500ms
+    
     Animated.timing(animation, {
       toValue: screenHeight,
       duration: 500,
-      useNativeDriver: true // Set to true as we're only animating transforms and opacity
+      useNativeDriver: true 
     }).start(() => setModalVisible(false));
   };
 
@@ -91,7 +91,7 @@ export default function WelcomeScreen({ navigation}) {
         ]}
       >
         <Animated.Image 
-          source={require('../assets/Logo.png')} 
+          source={require('../assets/Logo2.png')} 
           style={styles.logo} 
         />
         <Animated.Text style={styles.welcomeText}>Welcome, driver!</Animated.Text>
@@ -145,29 +145,29 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff', // or any background color you prefer
       },
       logoContainer: {
-        width: 200,
-        height: 200,
+        width: 250,
+        height: 250,
         alignItems: 'center',
         justifyContent: 'center',
-        overflow: 'hidden', // Ensures nothing goes outside the container
+        overflow: 'hidden', 
       },
       logo: {
         width: '100%',
         height: '100%',
-        resizeMode: 'contain', // This ensures your logo maintains its aspect ratio
+        resizeMode: 'contain',
       },
       welcomeText: {
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 40,
-        color: '#333', // text color
+        color: '#333',
       },
       buttonContainer: {
         alignItems: 'center',
         marginTop: 20,
       },
       styledButton: {
-        backgroundColor: '#0866FF', // Nice blue color
+        backgroundColor: '#0866FF', 
         paddingVertical: 12,
         paddingHorizontal: 25,
         borderRadius: 30,
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         elevation: 3,
         marginVertical: 10,
-        width: 200, // Set a fixed width for buttons
+        width: 200, 
       },
       buttonText: {
         color: 'white',
