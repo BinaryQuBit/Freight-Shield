@@ -1,4 +1,5 @@
-// Test to update name
+// Forget Password Email Template
+
 export const getOtpEmailTemplate = (otp, logoURL) => {
   return `
   <!DOCTYPE html>

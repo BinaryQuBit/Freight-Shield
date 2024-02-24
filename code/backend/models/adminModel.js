@@ -1,4 +1,5 @@
-// Test to update name
+// Admin Model
+
 import mongoose from "mongoose";
 import { hashPassword, comparePassword } from "../utils/hashPassword.js";
 

@@ -1,9 +1,4 @@
-import CarrierSideBar from "../../components/sidebar/carrierSideBar.js";
 import React, { useState } from "react";
-import { useTheme } from "@chakra-ui/react";
-import CustomButton from "../../components/buttons/customButton.js";
-import { IoMdAddCircle } from "react-icons/io";
-import AddUnit from "../../components/editButton/unitAdd.js";
 import {
   Card,
   Accordion,
@@ -13,32 +8,42 @@ import {
   AccordionIcon,
   Box,
   Text,
-  HStack,
   VStack,
+  Flex,
+  Badge,
+  useColorMode,
 } from "@chakra-ui/react";
+import CustomButton from "../../components/buttons/customButton.js";
+import { IoMdAddCircle } from "react-icons/io";
+import AddUnit from "../../components/addButton/addUnit.js";
+import CarrierSideBar from "../../components/sidebar/carrierSideBar.js";
 import EaseOut from "../../components/responsiveness/easeOut.js";
 import UserHeader from "../../components/header/userHeader.js";
-import Protector from "../../components/utils/methods/getters/protector.js"
+import Protector from "../../components/utils/methods/getters/protector.js";
+import { useData } from '../../components/utils/methods/getters/dataContext.js';
 
 export default function UnitProfile() {
-Protector("/unitprofiles");
-  // Using Theme
-  const theme = useTheme();
-  const customBlue = theme.colors.customBlue;
-  const [units, setUnits] = useState([]);
+  Protector("/api/unitprofiles");
+  const { colorMode } = useColorMode();
+  const { data: { units } = {} } = useData();
+
+  // Sort units by unitNumber in ascending order
+  const sortedUnits = (units || []).sort((a, b) => {
+    return a.unitNumber.localeCompare(b.unitNumber, undefined, {numeric: true});
+  });
 
   const [isAddUnitModalOpen, setIsAddUnitModalOpen] = useState(false);
   const openAddUnitModal = () => setIsAddUnitModalOpen(true);
-const closeAddUnitModal = () => setIsAddUnitModalOpen(false);
+  const closeAddUnitModal = () => setIsAddUnitModalOpen(false);
 
   return (
     <>
-    <AddUnit isOpen={isAddUnitModalOpen} onClose={closeAddUnitModal} />
+      <AddUnit isOpen={isAddUnitModalOpen} onClose={closeAddUnitModal} />
       <CarrierSideBar activePage="unitProfile" />
       <EaseOut>
         <UserHeader title={"Unit Profiles"} />
         <CustomButton
-          color={customBlue}
+          backgroundColor="#0866FF"
           w="90px"
           children="Add"
           variant="blueForwardButton"
@@ -47,56 +52,41 @@ const closeAddUnitModal = () => setIsAddUnitModalOpen(false);
           m={"5"}
           onClick={openAddUnitModal}
         />
-          <Card
-            m={"5"}
-            rounded={"false"}
-            p={"5"}
-          >
-           <Accordion allowToggle>
-             {units.map((unit, index) => (
+        <Card m="5" rounded="lg" p="5">
+          <Accordion allowToggle>
+            {sortedUnits && sortedUnits.map((unit, index) => (
               <AccordionItem key={index}>
                 <h2>
-                  <AccordionButton>
+                  <AccordionButton _expanded={{ bg: colorMode === 'dark' ? 'blue.700' : 'blue.100', color: colorMode === 'dark' ? 'white' : 'black' }}>
                     <Box flex="1" textAlign="left">
-                      <HStack>
-                        <Text fontSize="lg" fontWeight="bold">
-                          {`Unit Number: ${unit.unitNumber}`}
-                        </Text>
-                        <Text fontSize="lg" as="em">
-                          {`(Status: ${unit.unitStatus})`}
-                        </Text>
-                      </HStack>
+                      <Text fontSize="lg" fontWeight="bold" textAlign={"center"}>
+                        Unit Number: {unit.unitNumber}
+                        <Badge float={"right"} mr={2} p={2} colorScheme={unit.unitStatus === 'active' ? 'green' : 'red'}>
+                          {unit.unitStatus.toUpperCase()}
+                        </Badge>
+                      </Text>
                     </Box>
                     <AccordionIcon />
                   </AccordionButton>
                 </h2>
                 <AccordionPanel pb={4}>
                   <VStack align="stretch">
-                    <Text fontSize="md">
-                      <strong>Type:</strong> {unit.unitType}
-                    </Text>
-                    <Text fontSize="md">
-                      <strong>Make:</strong> {unit.unitMake}
-                    </Text>
-                    <Text fontSize="md">
-                      <strong>Model:</strong> {unit.unitModel}
-                    </Text>
-                    <Text fontSize="md">
-                      <strong>Year:</strong> {unit.unitYear}
-                    </Text>
-                    <Text fontSize="md">
-                      <strong>VIN:</strong> {unit.unitVIN}
-                    </Text>
-                    <Text fontSize="md">
-                      <strong>Licence Plate:</strong> {unit.unitLicencePlate}
-                    </Text>
+                    <Text fontSize="md"><strong>Type:</strong> {unit.unitType}</Text>
+                    <Text fontSize="md"><strong>Make:</strong> {unit.unitMake}</Text>
+                    <Text fontSize="md"><strong>Model:</strong> {unit.unitModel}</Text>
+                    <Text fontSize="md"><strong>Year:</strong> {unit.unitYear}</Text>
+                    <Text fontSize="md"><strong>VIN:</strong> {unit.unitVIN}</Text>
+                    <Text fontSize="md"><strong>Licence Plate:</strong> {unit.unitLicensePlate}</Text>
+                    {/* Add more details as required */}
                   </VStack>
                 </AccordionPanel>
               </AccordionItem>
             ))}
           </Accordion>
-          </Card>
+        </Card>
       </EaseOut>
     </>
   );
 }
+
+

@@ -1,3 +1,5 @@
+// Ease out for the navbar
+
 import React, { useContext } from "react";
 import { Flex, Text } from '@chakra-ui/react';
 import { SidebarContext } from "./context.js";

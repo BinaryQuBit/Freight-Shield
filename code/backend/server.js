@@ -1,4 +1,5 @@
-// Test to update name
+// The whole Server
+
 import express from "express";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -21,33 +22,35 @@ const __dirname = dirname(__filename);
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT;
 
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    credentials: true,
-  })
-);
-
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use("/api/users", AdminRoutes);
-app.use("/api/users", CarrierRoutes);
-// app.use("/api/users", DriverRoutes);
-app.use("/api/users", NewUserRoutes);
-app.use("/api/users", ShipperRoutes);
-// app.use("/api/users", SuperUserRoutes);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.use(NewUserRoutes);
+app.use('/api', AdminRoutes);
+app.use('/api', CarrierRoutes);
+// app.use(DriverRoutes);
+app.use('/api', ShipperRoutes);
+// app.use(SuperUserRoutes);
+
+connectDB();
+
+const frontendPath = path.join(__dirname, 'public');
+app.use(express.static(frontendPath));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendPath, 'index.html'));
+});
 
 app.use(notFound);
 app.use(errorHandler);
 
-app.listen(port, () => console.log(`Server started on port ${port}`));
-
-connectDB();
-
-app.get("/", (req, res) => res.send("Server is ready"));
+app.listen(port, () => {
+  console.log(`Server started on port ${port}`);
+});

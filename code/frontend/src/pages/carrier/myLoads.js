@@ -1,3 +1,5 @@
+// My Loads Page
+
 import Sidebar from "../../components/sidebar/carrierSideBar.js";
 import React, { useState, useEffect } from "react";
 import { Flex, Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
