@@ -20,9 +20,10 @@ const CustomSelect = ({
     value2,
     children2,
     errorMessage,
+    ml,
 }) => {
   return (
-    <FormControl mt={mt} id={id} isRequired={isRequired} isInvalid={isError}>
+    <FormControl mt={mt} id={id} isRequired={isRequired} isInvalid={isError} ml={ml}>
       <Select
         placeholder={placeholder}
         value={value}

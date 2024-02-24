@@ -1,7 +1,6 @@
 // Shipper Controller
 
 import asyncHandler from "express-async-handler";
-import path from "path";
 import Shipper from "../models/shipperModel.js";
 import Marketplace from "../models/marketplaceModel.js";
 import deleteFiles from "../middleware/delete.js";
@@ -13,7 +12,7 @@ import deleteFiles from "../middleware/delete.js";
 // @access  Private
 const getActiveLoads = asyncHandler(async (req, res) => {
   try {
-    const userEmail = req.user.email;
+    const userEmail = req.user.shipperEmail;
     const loads = await Marketplace.find({ email: userEmail });
 
     res.status(200).json(loads);
@@ -150,64 +149,82 @@ const getShipperSubmission = asyncHandler(async (req, res) => {
 // route    POST /api/postload
 // @access  Private
 const postLoad = asyncHandler(async (req, res) => {
+  const shipperEmail = req.user.email;
+  const shipperExist = await Shipper.findOne({ email: shipperEmail });
+
+  if (!shipperExist) {
+    return res.status(404).json({ message: "Shipper not found" });
+  }
+
+  const shipperFirstName = shipperExist.firstName;
+  const shipperLastName = shipperExist.lastName;
+  const shipperPhoneNumber = shipperExist.companyPhoneNumber;
+  const shipperCompanyName = shipperExist.businessName;
+
+  const {
+    pickUpLocation,
+    pickUpDate,
+    pickUpTime,
+    dropOffDate,
+    dropOffTime,
+    dropOffLocation,
+    unitRequested,
+    typeLoad,
+    sizeLoad,
+    additionalInformation,
+    pickUpCity,
+    dropOffCity,
+    pickUpLAT,
+    pickUpLNG,
+    dropOffLAT,
+    dropOffLNG,
+  } = req.body;
+
+  const postLoad = {
+    pickUpLocation,
+    pickUpDate,
+    pickUpTime,
+    dropOffDate,
+    dropOffTime,
+    dropOffLocation,
+    unitRequested,
+    typeLoad,
+    sizeLoad,
+    additionalInformation,
+    pickUpCity,
+    dropOffCity,
+    pickUpLAT,
+    pickUpLNG,
+    dropOffLAT,
+    dropOffLNG,
+    status: "Pending",
+    shipperFirstName,
+    shipperLastName,
+    shipperPhoneNumber,
+    shipperCompanyName,
+    shipperEmail
+  };
+
+  console.log("Data", postLoad);
+
+  if (req.files && req.files.additionalDocument && req.files.additionalDocument.length > 0) {
+    postLoad.additionalDocument = req.files.additionalDocument[0].path;
+  }
+
   try {
-    const {
-      pickUpLocation,
-      pickUpDate,
-      pickUpTime,
-      dropOffDate,
-      dropOffTime,
-      dropOffLocation,
-      unitRequested,
-      typeLoad,
-      sizeLoad,
-      additionalInformation,
-      pickUpCity,
-      dropOffCity,
-      pickUpLAT,
-      pickUpLNG,
-      dropOffLAT,
-      dropOffLNG,
-    } = req.body;
+    const newLoad = await Marketplace.create(postLoad);
 
-    if (!pickUpLocation || !dropOffLocation || !pickUpDate || !dropOffDate) {
-      res.status(400).json({ message: "Missing required fields" });
-      return;
+    if (newLoad) {
+      res.status(200).json({ message: "Load posted successfully", load: newLoad });
+    } else {
+      res.status(400).json({ message: "Unable to post load" });
     }
-
-    let filename = null;
-    if (req.file && req.file.path) {
-      filename = path.basename(req.file.path);
-    }
-
-    const newLoad = await Marketplace.create({
-      email: req.user.email,
-      pickUpLocation,
-      pickUpDate,
-      pickUpTime,
-      dropOffDate,
-      dropOffTime,
-      dropOffLocation,
-      unitRequested,
-      typeLoad,
-      sizeLoad,
-      additionalInformation,
-      additionalDocument: filename,
-      pickUpCity,
-      dropOffCity,
-      pickUpLAT,
-      pickUpLNG,
-      dropOffLAT,
-      dropOffLNG,
-      status: "Pending",
-    });
-
-    res.status(200).json({ message: "Load posted successfully", newLoad });
   } catch (error) {
-    console.error("Error in postLoad:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+      res.status(500).json({ message: "Server error", error: error.message });
   }
 });
+
+
 
 ////////////////////////////// Putters //////////////////////////////
 

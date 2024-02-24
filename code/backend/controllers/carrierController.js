@@ -1,7 +1,6 @@
 // Carrier Controller 
 
 import asyncHandler from "express-async-handler";
-import path from "path";
 import Carrier from "../models/carrierModel.js";
 import Marketplace from "../models/marketplaceModel.js";
 import deleteFiles from "../middleware/delete.js";
@@ -49,13 +48,33 @@ const getDriverProfiles = asyncHandler(async (req, res) => {
 // route    GET /api/unitprofiles
 // @access  Private
 const getUnitProfiles = asyncHandler(async (req, res) => {
-  const user = {
-    _id: req.user._id,
-    email: req.user.email,
-  };
+  try {
+    const userEmail = req.user.email;
+    const carrier = await Carrier.findOne({ email: userEmail });
 
-  res.status(200).json({ user });
+    if (!carrier) {
+      return res.status(404).json({ message: "Carrier not found" });
+    }
+    const units = carrier.units.map(unit => {
+      return {
+        unitNumber: unit.unitNumber,
+        unitType: unit.unitType,
+        unitMake: unit.unitMake,
+        unitModel: unit.unitModel,
+        unitYear: unit.unitYear,
+        unitVIN: unit.unitVIN,
+        unitLicensePlate: unit.unitLicensePlate,
+        unitStatus: unit.unitStatus,
+
+      };
+    });
+
+    res.status(200).json({ units });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
+
 
 // @desc    Getting Carrier Settings
 // route    GET /api/carriersettings
@@ -161,30 +180,59 @@ const getCarrierSubmission = asyncHandler(async (req, res) => {
 ////////////////////////////// Posters //////////////////////////////
 
 // @desc    Adding Unit Profiles
-// route    POST /api/addunit
+// route    POST /api/postunit
 // @access  Private
 const postUnit = asyncHandler(async (req, res) => {
-  const email = req.user.email;
-  const unitData = req.body;
+  const carrierEmail = req.user.email;
+  const carrier = await Carrier.findOne({ email: carrierEmail });
 
-  if (!email || !unitData) {
-    res.status(400).json({ message: "Email and unit data are required." });
-    return;
-  }
-
-  const carrier = await Carrier.findOne({ email });
   if (!carrier) {
-    res.status(404).json({ message: "Carrier not found." });
-    return;
+    return res.status(404).json({ message: "Carrier not found" });
   }
+
+  const {
+    unitNumber,
+    unitType,
+    trailerType,
+    unitMake,
+    unitModel,
+    unitYear,
+    unitVIN,
+    unitLicencePlate,
+    unitStatus,
+  } = req.body;
+
+  const unitData = {
+    unitNumber,
+    unitType,
+    trailerType,
+    unitMake,
+    unitModel,
+    unitYear,
+    unitVIN,
+    unitLicencePlate,
+    unitStatus,
+  };
+
+  if (req.files && req.files.unitRegistration && req.files.unitRegistration.length > 0) {
+    unitData.unitRegistration = req.files.unitRegistration[0].path;
+  }
+  if (req.files && req.files.unitInsurance && req.files.unitInsurance.length > 0) {
+    unitData.unitInsurance = req.files.unitInsurance[0].path;
+  }
+  if (req.files && req.files.unitSafety && req.files.unitSafety.length > 0) {
+    unitData.unitSafety = req.files.unitSafety[0].path;
+  }
+  console.log("Unit Data", unitData);
 
   try {
     await carrier.addUnit(unitData);
-    res.status(200).json({ message: "Unit added successfully", carrier });
+    res.status(200).json({ message: "Unit added successfully", unit: unitData });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 });
+
 
 ////////////////////////////// Putters //////////////////////////////
 
