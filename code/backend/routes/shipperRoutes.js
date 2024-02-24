@@ -18,6 +18,7 @@ import {
   getShipperContactDetails,
   getShipperBusinessDetails,
   getShipperSubmission,
+  shipperDasboard,
   postLoad,
   updateLoad,
   updateShipperContactDetails,
@@ -40,6 +41,7 @@ router.get("/shippersettings", protect, shipperOnly, status, getShipperSettings)
 router.get("/shippercontactdetails", protect, shipperOnly, getShipperContactDetails);
 router.get("/shipperbusinessdetails", protect, shipperOnly, getShipperBusinessDetails);
 router.get("/shippersubmission", protect, shipperOnly, getShipperSubmission);
+router.get("/shipperDashboard", protect, shipperOnly, shipperDasboard);
 
 /////////////////////////////////////////////////////// POSTERS ///////////////////////////////////////////////////////
 router.post("/postload", upload.single("additionalDocument"), protect, shipperOnly, status, postLoad);
