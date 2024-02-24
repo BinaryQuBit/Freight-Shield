@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 
 const logBookSchema = mongoose.Schema(
     {
+    driverId: {
+        type: mongoose.Schema.Types.ObjectId, 
+        required: true,
+        ref: 'Driver' 
+    },
     startingOdometer: {
         type: Number,
         required: true

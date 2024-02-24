@@ -1,39 +1,131 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, Button, StyleSheet, ScrollView, TouchableOpacity, RefreshControl, Alert } from 'react-native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import { API_BASE_URL } from '../components/ipConfig';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Print from 'expo-print';
+import * as Sharing from 'expo-sharing';
+import * as FileSystem from 'expo-file-system';
+
+
 
 export default function LogBookScreen2() {
   const navigation = useNavigation();
   const [logBooks, setLogBooks] = useState([]);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    axios.get('http://142.3.84.67:8080/api/users/getlogbook')
-      .then(response => {
-        setLogBooks(response.data);
-      })
-      .catch(error => {
-        Alert.alert('Error', 'Failed to fetch logbooks');
-      });
-  }, []);
-  
-  const createHTML = (entry) => `
-    <h1>${entry.date}</h1>
-    <p>hello</p>
-    <!-- Add more fields as necessary -->
-  `;
-
-  const createPDF = async (entry) => {
-    let options = {
-      html: createHTML(entry),
-      fileName: 'logbook',
-      directory: 'Documents',
+    if (!isFocused) return;
+    const fetchLogBooks = async () => {
+      try {
+        const storedDriverId = await AsyncStorage.getItem('driverId');
+        if (storedDriverId !== null) {
+          const driverId = JSON.parse(storedDriverId);
+          
+          axios.get(`${API_BASE_URL}/getlogbook`, {
+            params: {
+              driverId: driverId, 
+            }
+          })
+          .then(response => {
+            setLogBooks(response.data);
+          })
+          .catch(error => {
+            console.error('Failed to fetch logbooks', error);
+            Alert.alert('Error', 'Failed to fetch logbooks');
+          });
+        }
+      } catch (error) {
+        console.error('Failed to fetch driver ID from storage', error);
+      }
     };
+  
+    fetchLogBooks();
+  }, [isFocused]);
 
-    let file = await RNHTMLtoPDF.convert(options);
-    // file.filePath contains the path to the created PDF
+  const generateAndSharePDF = async () => {
+    // Define logbook data directly in the template for simplicity
+    const html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+          <title>Driver Logbook</title>
+          <style>
+              body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+              .logbook { padding: 20px; }
+              .logbook-header {
+                  text-align: center;
+                  margin-bottom: 20px;
+              }
+              .logbook-logo {
+                  max-width: 100px; /* Adjust based on your logo size */
+                  margin-bottom: 20px;
+              }
+              table { width: 100%; border-collapse: collapse; }
+              th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+              th { background-color: #f2f2f2; }
+          </style>
+      </head>
+      <body>
+          <div class="logbook">
+              <div class="logbook-header">
+                  <img src="https://yourwebsite.com/logo.png" alt="FreightShieldLogo" class="logbook-logo">
+                  <h2>Driver's Daily Logbook</h2>
+              </div>
+              <table>
+                  <tr><th>Date</th><td>2023-01-30</td></tr>
+                  <tr><th>Truck Number</th><td>ABC123</td></tr>
+                  <tr><th>Trailer Number</th><td>XYZ789</td></tr>
+                  <tr><th>Driver Name</th><td>John Doe</td></tr>
+                  <tr><th>Co-Driver Name</th><td>Mohammad Alharbi</td></tr>
+                  <tr><th>Starting Odometer</th><td>10000</td></tr>
+                  <tr><th>Ending Odometer</th><td>10500</td></tr>
+                  <tr><th>Total Distance Driven</th><td>500</td></tr>
+                  <tr><th>Off Duty Hours</th><td>8</td></tr>
+                  <tr><th>Sleeper Hours</th><td>6</td></tr>
+                  <tr><th>Driving Hours</th><td>8</td></tr>
+                  <tr><th>On Duty Not Driving Hours</th><td>2</td></tr>
+              </table>
+          </div>
+      </body>
+      </html>
+    `;
+
+    try {
+       
+      const { uri: tempUri } = await Print.printToFileAsync({ html });
+
+      
+      const customFileName = `DriversLogbook_${"2023-01-30"}.pdf`;
+      const customFileUri = `${FileSystem.cacheDirectory}${customFileName}`;
+
+      await FileSystem.copyAsync({
+          from: tempUri,
+          to: customFileUri,
+      });
+
+      await Sharing.shareAsync(customFileUri);
+  } catch (error) {
+      console.error(error);
+  }
   };
+
+
+  // const createPDF = async (entry) => {
+  //   const html = createHTML(entry);
+  //   const canvas = await html2canvas(document.body);
+  //   const imgData = canvas.toDataURL('image/png');
+  //   const pdf = new jsPDF();
+  //   pdf.addImage(imgData, 'PNG', 0, 0);
+  //   pdf.save('logbook.pdf');
+  // };
+
+  // const createHTML = (entry) => `
+  //   <h1>${entry.date}</h1>
+  //   <p>hello</p>
+  // `;
 
   return (
     <View style={styles.container}>
@@ -64,7 +156,7 @@ export default function LogBookScreen2() {
                 </TouchableOpacity>
                 <TouchableOpacity 
                   style={styles.button2}
-                  onPress={() => createPDF(entry)}
+                  onPress={() => generateAndSharePDF(entry)}
                 >
                   <Text style={styles.buttonText2}>Create PDF</Text>
                 </TouchableOpacity>
@@ -148,7 +240,7 @@ const styles = StyleSheet.create({
     color: '#7f8c8d', // A softer color for details
   },
   button: {
-    backgroundColor: '#1E90FF',
+    backgroundColor: '#0866FF',
     paddingVertical: 12,
     paddingHorizontal: 25,
     borderRadius: 25,

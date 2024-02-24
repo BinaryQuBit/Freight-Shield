@@ -12,6 +12,8 @@ import WelcomeScreen from './screens/WelcomeScreen';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DrawerRoutes from './components/DrawerRoutes';
 import LogBookForm from './forms/LogBookForm';
+import BottomTabs from './components/BottomTabs';
+
 
 
 
@@ -25,38 +27,28 @@ export default function App() {
   const [isAppReady, setIsAppReady] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    setTimeout(() => {
       setIsAppReady(true);
-    }, 3000); // Show SplashScreen for 3 seconds
-
-    return () => clearTimeout(timer);
+    }, 3000);
   }, []);
 
-  if (!isAppReady) {
-    return <SplashScreen />;
-  }
+  if (!isAppReady) return <SplashScreen />;
 
   return (
-    
     <Provider store={store}>
-
-      
-        <NavigationContainer>
-          <SafeAreaView style={{flex: 1}}>
-            <Stack.Navigator initialRouteName="Welcome">
-              <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false, gestureEnabled: false }} />
-              <Stack.Screen name="Drawer" component={DrawerRoutes} options={{ headerShown: false, gestureEnabled: false }} />
-              <Stack.Screen name="LogBookForm" component={LogBookForm} />
-              
-            </Stack.Navigator>
-          </SafeAreaView>
-        </NavigationContainer>
-        
-      
+      <NavigationContainer>
+        <SafeAreaView style={{ flex: 1 }}>
+          <Stack.Navigator>
+            <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
+            {/* This is your Bottom Tab Navigator as a single stack screen */}
+            <Stack.Screen name="MainApp" component={BottomTabs} options={{ headerShown: false }} />
+            <Stack.Screen name="LogBookForm" component={LogBookForm} />
+          </Stack.Navigator>
+        </SafeAreaView>
+      </NavigationContainer>
     </Provider>
-    
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
