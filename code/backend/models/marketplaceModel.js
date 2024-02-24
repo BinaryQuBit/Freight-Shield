@@ -4,12 +4,6 @@ import mongoose from "mongoose";
 
 const marketplaceSchema = mongoose.Schema(
   {
-    email: {
-      type: String,
-    },
-    loadNumber: {
-      type: String,
-    },
     pickUpLocation: {
       type: String,
       required: true,
@@ -72,7 +66,40 @@ const marketplaceSchema = mongoose.Schema(
     status:{
       type: String,
     },
-    carrierEmail:{
+    shipperFirstName: {
+      type: String,
+    },
+    shipperLastName: {
+      type: String,
+    },
+    shipperPhoneNumber: {
+      type: String,
+    },
+    shipperCompanyName: {
+      type: String,
+    },
+    shipperEmail:{
+      type: String,
+    },
+    shipperBusinessName: {
+      type: String,
+    },
+    carrierFirstName: {
+      type: String,
+    },
+    carrierLastName: {
+      type: String,
+    },
+    carrierEmail: {
+      type: String,
+    },
+    carrierPhoneNumber: {
+      type: String,
+    },
+    carrierBusinessName: {
+      type: String,
+    },
+    carrierDoingBusinessAs: {
       type: String,
     },
   },

@@ -35,7 +35,7 @@ router.get("/carrierbusinessdetails", protect, carrierOnly, getCarrierBusinessDe
 router.get("/carriersubmission", protect, carrierOnly, getCarrierSubmission);
 
 /////////////////////////////////////////////////////// POSTERS ///////////////////////////////////////////////////////
-router.post("/addunit", protect, carrierOnly, status, postUnit);
+router.post("/postunit", upload.fields([{ name: "unitRegistration", maxCount: 1 }, { name: "unitInsurance", maxCount: 1 }, { name: "unitSafety", maxCount: 1 }]), protect, carrierOnly, status, postUnit);
 
 /////////////////////////////////////////////////////// PUTTERS ///////////////////////////////////////////////////////
 router.put("/marketplace/:id", protect, carrierOnly, status, updateAssignUnit);
