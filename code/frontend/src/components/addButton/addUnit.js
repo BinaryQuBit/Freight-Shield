@@ -25,9 +25,12 @@ import {
 // Custom Imports
 import CustomButton from "../buttons/customButton";
 import { EmptyValidation } from "../utils/validation/emptyValidation";
+import { YearValidation } from "../utils/validation/yearCalidation";
+import { VinValidation } from "../utils/validation/vinValidation";
 import CustomInput from "../utils/forms/customInput";
 import CustomSelect from "../utils/forms/customSelect";
 import CustomUpload from "../buttons/customUpload";
+import { DocumentValidation } from "../utils/validation/documentValidation";
 
 export default function AddUnit({ isOpen, onClose }) {
   axios.defaults.withCredentials = true;
@@ -81,7 +84,7 @@ export default function AddUnit({ isOpen, onClose }) {
     setTrailerTypeError("");
     setUnitMakeError("");
     setUnitModelError("");
-    setUnitYearError("");
+    setUnitYearError();
     setUnitVINError("");
     setUnitLicencePlateError("");
     setUnitStatusError("");
@@ -112,22 +115,24 @@ export default function AddUnit({ isOpen, onClose }) {
     // Validation Checks
     const unitNumberError = EmptyValidation("Unit Number", unitNumber);
     const unitTypeError = EmptyValidation("Unit Type", unitType);
-    const trailerTypeError = EmptyValidation("Trailer Type", trailerType);
     const unitMakeError = EmptyValidation("Make", unitMake);
     const unitModelError = EmptyValidation("Model", unitModel);
-    const unitYearError = EmptyValidation("Year", unitYear);
-    const unitVINError = EmptyValidation("VIN", unitVIN);
-    const unitLicencePlateError = EmptyValidation(
-      "Licence Plate",
+    const unitYearError = YearValidation(unitYear);
+    const unitVINError = VinValidation(unitVIN);
+    const unitLicencePlateError = EmptyValidation("Licence Plate",
       unitLicencePlate
     );
     const unitStatusError = EmptyValidation("Status", unitStatus);
-    const unitRegistrationError = EmptyValidation(
+    const unitRegistrationError = DocumentValidation(
       "Registration",
       unitRegistration
     );
-    const unitInsuranceError = EmptyValidation("Insurance", unitInsurance);
-    const unitSafetyError = EmptyValidation("Safety", unitSafety);
+    const unitInsuranceError = DocumentValidation("Insurance", unitInsurance);
+    const unitSafetyError = DocumentValidation("Safety", unitSafety);
+    let trailerTypeError = "";
+    if (unitType === "Trailer") {
+        trailerTypeError = EmptyValidation("Trailer Type", trailerType);
+    }
 
     // Set Errors
     setUnitNumberError(unitNumberError);
@@ -164,7 +169,9 @@ export default function AddUnit({ isOpen, onClose }) {
     const formData = new FormData();
     formData.append("unitNumber", unitNumber);
     formData.append("unitType", unitType);
-    formData.append("trailerType", trailerType);
+    if (unitType === "Trailer") {
+      formData.append("trailerType", trailerType);
+  }
     formData.append("unitMake", unitMake);
     formData.append("unitModel", unitModel);
     formData.append("unitYear", unitYear);
@@ -360,7 +367,7 @@ export default function AddUnit({ isOpen, onClose }) {
                 isError={!!unitYearError}
                 errorMessage={unitYearError}
                 isRequired={true}
-                type={"number"}
+                type={"text"}
                 mr={2}
                 mt={8}
               />

@@ -8,7 +8,7 @@ import deleteFiles from "../middleware/delete.js";
 ////////////////////////////// Getters //////////////////////////////
 
 // @desc    Getting Dashboard
-// route    GET /api/users/activeloads
+// route    GET /api/shipperdashboard
 // @access  Private
 const shipperDasboard = asyncHandler(async (req, res) => {
   try {
