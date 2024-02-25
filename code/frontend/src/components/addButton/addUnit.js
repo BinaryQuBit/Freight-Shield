@@ -64,6 +64,18 @@ export default function AddUnit({ isOpen, onClose }) {
 
   // Functions
   const handleCloseClick = () => {
+    setUnitNumber("");
+    setUnitType("");
+    setTrailerType("Dry Van");
+    setUnitMake("");
+    setUnitModel("");
+    setUnitYear("");
+    setUnitVIN("");
+    setUnitLicencePlate("");
+    setUnitStatus("");
+    setUnitRegistration("");
+    setUnitInsurance("");
+    setUnitSafety("");
     setUnitNumberError("");
     setUnitTypeError("");
     setTrailerTypeError("");
@@ -233,8 +245,8 @@ export default function AddUnit({ isOpen, onClose }) {
                 mt={2}
               />
             </Flex>
-            {unitType === "trailer" && (
-              <div className={unitType === "trailer" ? "fade-in" : "fade-out"}>
+            {unitType === "Trailer" && (
+              <div className={unitType === "Trailer" ? "fade-in" : "fade-out"}>
                 <RadioGroup
                   onChange={setTrailerType}
                   value={trailerType}
