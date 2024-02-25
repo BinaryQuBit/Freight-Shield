@@ -59,13 +59,16 @@ const getUnitProfiles = asyncHandler(async (req, res) => {
       return {
         unitNumber: unit.unitNumber,
         unitType: unit.unitType,
+        trailerType: unit.trailerType,
         unitMake: unit.unitMake,
         unitModel: unit.unitModel,
         unitYear: unit.unitYear,
         unitVIN: unit.unitVIN,
         unitLicencePlate: unit.unitLicencePlate,
         unitStatus: unit.unitStatus,
-
+        unitRegistration: unit.unitRegistration,
+        unitInsurance: unit.unitInsurance,
+        unitSafety: unit.unitSafety,
       };
     });
 

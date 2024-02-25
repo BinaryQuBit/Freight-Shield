@@ -1,12 +1,16 @@
 // Phone Number Validation
 
 export const PhoneNumberValidation = (phone) => {
-  const phonePattern = /^\+?[1-9]\d{9,14}$/;
-  if (!phone) {
+  const trimmedPhone = phone.trim();
+
+  if (!trimmedPhone) {
     return "Phone number is required";
   }
-  if (!phonePattern.test(phone)) {
+
+  const phonePattern = /^\+?[1-9]\d{9}$/;
+  if (!phonePattern.test(trimmedPhone)) {
     return "Phone number is invalid";
   }
+
   return "";
 };
