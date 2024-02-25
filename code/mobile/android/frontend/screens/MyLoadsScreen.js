@@ -13,7 +13,7 @@ export default function MyLoadsScreen() {
   const currentLoad = {
     pickupLocation: 'Regina, SK',
     dropLocation: 'Calgary, AB',
-    shipperName: 'Real Canadian Superstore',  // Adding shipper's name
+    shipperName: 'Real Canadian Superstore',  
   };
 
   const pastLoads = [
@@ -38,7 +38,7 @@ export default function MyLoadsScreen() {
   }, []);
 
   const onCurrentLoadPress = () => {
-    // Handle the press action, navigate to details or perform another action
+   
     console.log('Current load pressed');
   };
 
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#ffffff', // Optional: change the background color of the entire screen
+    backgroundColor: '#ffffff',
   },
   sectionTitle: {
     fontSize: 20,
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   infoIcon: {
-    color: '#3949ab', // Use a color that stands out
+    color: '#3949ab', 
     alignSelf: 'flex-end',
   },
   currentLoadContainer: {
@@ -126,20 +126,20 @@ const styles = StyleSheet.create({
   currentLoadTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#ffffff', // White color for title text for contrast
-    textAlign: 'center', // Center the title
+    color: '#ffffff',
+    textAlign: 'center', 
   },
   currentLoadHeader: {
-    backgroundColor: '#3949ab', // Dark theme color for header
-    borderTopLeftRadius: 15, // Match the card's border radius
-    borderTopRightRadius: 15, // Match the card's border radius
-    padding: 10, // Padding for the header
+    backgroundColor: '#3949ab', 
+    borderTopLeftRadius: 15, 
+    borderTopRightRadius: 15,
+    padding: 10,
   },
   currentLoadTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#ffffff', // White color for title text for contrast
-    textAlign: 'center', // Center the title
+    color: '#ffffff', 
+    textAlign: 'center', 
   },
   locationText: {
     fontSize: 20,
@@ -150,21 +150,21 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#3949ab', // Consistent color for titles
+    color: '#3949ab', 
   },
   card: {
-    backgroundColor: '#ffffff', // Use a white or light color for the card background
-    borderRadius: 15, // Rounded corners
-    padding: 20, // Spacious padding inside the card
-    marginBottom: 15, // Space between cards
-    shadowColor: '#000', // Shadow color
+    backgroundColor: '#ffffff', 
+    borderRadius: 15, 
+    padding: 20, 
+    marginBottom: 15, 
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
     },
     shadowOpacity: 0.1,
     shadowRadius: 3.84,
-    elevation: 5, // Elevation for Android - creates a shadow effect
+    elevation: 5, 
   },
   cardTitle: {
     fontSize: 18,
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
   },
   cardContent: {
     fontSize: 16,
-    color: '#333', // Darker font color for contrast
+    color: '#333', 
   },
   icon: {
     marginRight: 10,
@@ -183,19 +183,18 @@ const styles = StyleSheet.create({
   },
   cardIcon: {
     marginRight: 10,
-    color: '#6200ee', // Color for icons
+    color: '#6200ee', 
   },
   cardRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10, // Separate the title and content visually
+    marginBottom: 10,
   },
   currentLoadHeader: {
-    backgroundColor: '#3949ab', // Dark theme color for header
-    borderTopLeftRadius: 15, // Match the card's border radius
-    borderTopRightRadius: 15, // Match the card's border radius
-    padding: 10, // Padding for the header
+    backgroundColor: '#3949ab',
+    borderTopLeftRadius: 15, 
+    borderTopRightRadius: 15, 
+    padding: 10, 
   },
 
-  // ... other styles ...
 });

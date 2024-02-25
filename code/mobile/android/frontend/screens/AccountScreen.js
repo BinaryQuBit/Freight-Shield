@@ -107,7 +107,7 @@ export default function AccountScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    justifyContent: 'flex-start', // This will now work correctly
+    justifyContent: 'flex-start', 
     padding: 20,
     backgroundColor: '#fff',
   },

@@ -10,7 +10,7 @@ import {
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { EXPO_SERVER_IP } from "@env";
+import { API_BASE_URL } from "../components/ipConfig";
 
 
 const LoginForm = ({ onForgotPassword }) => {
@@ -21,7 +21,7 @@ const LoginForm = ({ onForgotPassword }) => {
   useFocusEffect(
     React.useCallback(() => {
       // Reset form fields when screen is focused
-      setEmail('drivertest1@driver.com');
+      setEmail('driver@driver.com');
       setPassword('12345');
       //setActiveForm('login'); // Set the default active form
       // Add any other states that need to be reset
@@ -33,18 +33,27 @@ const LoginForm = ({ onForgotPassword }) => {
     console.log(`Email: ${email}, Password: ${password}`);
     
     try {
-      const response = await axios.post("http://142.3.84.67:8080/api/users/login", { email, password });
+      const response = await axios.post(`${API_BASE_URL}/login`, { email: email.toLowerCase() , password });
     
       if (response.status === 200) {
         // Save the token
-        const { token } = response.data;
+        const { token, driverId } = response.data;
         AsyncStorage.setItem('token', token);
+        //AsyncStorage.setItem('driverId', driverId);
         await AsyncStorage.setItem('token', token);
+        //await AsyncStorage.setItem('driverId', driverId);
+        await AsyncStorage.setItem('driverId', JSON.stringify(driverId));
         const storedToken = await AsyncStorage.getItem('token');
+        //const storedDriverId = await AsyncStorage.getItem('driverId');
         console.log('Stored token:', storedToken);
+        //console.log('Stored driverId:', storedDriverId);
+        console.log('Stored driverId:', driverId);
+        
+
   
         // Navigate to the home screen
-        navigation.navigate('Drawer', { screen: 'Home', params: { email: email } });
+        //navigation.navigate('Drawer', { screen: 'Home', params: { email: email } });
+        navigation.navigate('MainApp');
       }
     } catch (error) {
       console.error("Login error:", error);
