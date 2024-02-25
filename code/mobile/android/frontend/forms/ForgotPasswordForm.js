@@ -8,7 +8,6 @@ const ForgotPasswordForm = ({ onBackToLogin }) => {
       <TextInput
         style={styles.input}
         placeholder="Enter your email"
-        // other TextInput props
       />
       <TouchableOpacity style={styles.button} onPress={() => {/* handle password reset */}}>
         <Text style={styles.buttonText}>Reset Password</Text>

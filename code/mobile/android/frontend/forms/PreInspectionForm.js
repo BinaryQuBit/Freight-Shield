@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 10,
-        textAlign: 'center', // Center text horizontally
+        textAlign: 'center', 
     },
     checkbox: {
         borderWidth: 0,
