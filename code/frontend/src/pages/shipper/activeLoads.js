@@ -140,7 +140,7 @@ export default function ActiveLoads() {
               <option value="Delayed">Delayed</option>
             </Select>
           </Stack>
-          <Card overflowX="auto" width="full" p="4">
+          <Card overflowX="auto" width="full" p="4" rounded={"no"}>
             <Accordion allowToggle>
               {filteredLoads.map((load) => (
                 <AccordionItem key={load.id} my="2">

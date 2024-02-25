@@ -41,7 +41,7 @@ export default function MapScreen() {
       <View style={styles.autocompleteContainer}>
         <GooglePlacesAutocomplete
           placeholder='Pickup Location'
-          // ... existing props ...
+         
           styles={autocompleteStyles}
         />
       </View>
@@ -49,7 +49,7 @@ export default function MapScreen() {
       <View style={styles.autocompleteContainer}>
         <GooglePlacesAutocomplete
           placeholder='Drop-off Location'
-          // ... existing props ...
+      
           styles={autocompleteStyles}
         />
       </View>
@@ -61,7 +61,7 @@ export default function MapScreen() {
       <MapView
         ref={mapRef}
         style={styles.mapContainer}
-        // ... existing props ...
+       
       >
         {points.length > 0 && (
           <Polyline coordinates={points} strokeWidth={2} strokeColor="blue" />
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     flex: 1,
     zIndex: 1,
   },
-  // ... existing autocompleteStyles ...
+  
 });
 
 
@@ -110,7 +110,7 @@ const autocompleteStyles = {
     },
     container: {
         backgroundColor: 'white',
-        // Remove paddingTop and flex to allow the container to expand naturally
+       
     },
     listView: {
         position: 'absolute',

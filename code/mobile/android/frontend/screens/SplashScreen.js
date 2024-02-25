@@ -16,7 +16,7 @@ export default function SplashScreen() {
   return (
     <View style={styles.container}>
       <Animated.View style={[styles.logoContainer, { opacity: fadeAnim }]}>
-        <Image source={require('../assets/WhiteLogo.png')} style={styles.logo} />
+        <Image source={require('../assets/WhiteLogo2.png')} style={styles.logo} />
       </Animated.View>
     </View>
   );
@@ -27,15 +27,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#0866FF', // A dark background for contrast
+    backgroundColor: '#0866FF', 
   },
   logoContainer: {
     alignItems: 'center',
     justifyContent: 'center',
   },
   logo: {
-    width: 300, // Adjust as needed
-    height: 300, // Adjust as needed
+    width: 300,
+    height: 300, 
     resizeMode: 'contain',
   },
 });

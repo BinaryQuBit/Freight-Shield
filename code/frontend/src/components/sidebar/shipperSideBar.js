@@ -89,6 +89,13 @@ export default function ShipperSideBar({ activePage }) {
             }}
           />
 
+<NavItem
+            navSize={navSize}
+            icon={FiHome}
+            title="Dashboard"
+            active={activePage === "dashboard"}
+            onClick={() => navigate("/shipperDashboard")}
+          />
           <NavItem
             navSize={navSize}
             icon={FiHome}

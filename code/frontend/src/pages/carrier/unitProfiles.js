@@ -9,9 +9,11 @@ import {
   Box,
   Text,
   VStack,
-  Flex,
   Badge,
   useColorMode,
+  Select,
+  Input,
+  Flex
 } from "@chakra-ui/react";
 import CustomButton from "../../components/buttons/customButton.js";
 import { IoMdAddCircle } from "react-icons/io";
@@ -27,7 +29,6 @@ export default function UnitProfile() {
   const { colorMode } = useColorMode();
   const { data: { units } = {} } = useData();
 
-  // Sort units by unitNumber in ascending order
   const sortedUnits = (units || []).sort((a, b) => {
     return a.unitNumber.localeCompare(b.unitNumber, undefined, {numeric: true});
   });
@@ -35,6 +36,13 @@ export default function UnitProfile() {
   const [isAddUnitModalOpen, setIsAddUnitModalOpen] = useState(false);
   const openAddUnitModal = () => setIsAddUnitModalOpen(true);
   const closeAddUnitModal = () => setIsAddUnitModalOpen(false);
+  const [searchField, setSearchField] = useState('unitType');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredUnits = sortedUnits.filter(unit => {
+    const fieldValue = unit[searchField] ? unit[searchField].toString().toLowerCase() : '';
+    return fieldValue.includes(searchQuery.toLowerCase());
+  });
 
   return (
     <>
@@ -52,9 +60,28 @@ export default function UnitProfile() {
           m={"5"}
           onClick={openAddUnitModal}
         />
+        <Flex m="5" justifyContent="space-between" alignItems="center">
+          <Select
+            w="200px"
+            value={searchField}
+            onChange={(e) => setSearchField(e.target.value)}
+          >
+            <option value="unitType">Type</option>
+            <option value="unitMake">Make</option>
+            <option value="unitModel">Model</option>
+            <option value="unitYear">Year</option>
+            <option value="unitVIN">VIN</option>
+            <option value="unitLicencePlate">Licence Plate</option>
+          </Select>
+          <Input
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </Flex>
         <Card m="5" rounded="lg" p="5">
           <Accordion allowToggle>
-            {sortedUnits && sortedUnits.map((unit, index) => (
+            {filteredUnits && filteredUnits.map((unit, index) => (
               <AccordionItem key={index}>
                 <h2>
                   <AccordionButton _expanded={{ bg: colorMode === 'dark' ? 'blue.700' : 'blue.100', color: colorMode === 'dark' ? 'white' : 'black' }}>
@@ -76,8 +103,7 @@ export default function UnitProfile() {
                     <Text fontSize="md"><strong>Model:</strong> {unit.unitModel}</Text>
                     <Text fontSize="md"><strong>Year:</strong> {unit.unitYear}</Text>
                     <Text fontSize="md"><strong>VIN:</strong> {unit.unitVIN}</Text>
-                    <Text fontSize="md"><strong>Licence Plate:</strong> {unit.unitLicensePlate}</Text>
-                    {/* Add more details as required */}
+                    <Text fontSize="md"><strong>Licence Plate:</strong> {unit.unitLicencePlate}</Text>
                   </VStack>
                 </AccordionPanel>
               </AccordionItem>
@@ -88,5 +114,6 @@ export default function UnitProfile() {
     </>
   );
 }
+
 
 
