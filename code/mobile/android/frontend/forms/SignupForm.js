@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
+import { API_BASE_URL } from "../components/ipConfig";
 
 const SignupForm = (props) => {
     //const [firstName, setFirstName] = useState("");
@@ -19,16 +20,27 @@ const SignupForm = (props) => {
     const [dotNumber, setDotNumber] = useState("");
     const navigation = useNavigation();
 
-    
+    const isValidEmail = email => {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailPattern.test(email);
+    };
+
+
     const handleSignup = async () => {
         if (password !== confirmPassword) {
             Alert.alert("Signup Failed", "Passwords do not match.");
             return;
         }
+
+        if (!isValidEmail(email)) {
+            Alert.alert("Signup Failed", "Please enter a valid email address.");
+            return;
+        }
         /*firstName, lastName */
         try {
-            const response = await axios.post("http://142.3.84.67:8080/api/users/register", { 
-        email, password, dotNumber });
+            const lowerCaseEmail = email.toLowerCase();
+            const response = await axios.post(`${API_BASE_URL}/register`, { 
+            email:lowerCaseEmail, password, dotNumber });
 
             if (response.status === 201) {
                 Alert.alert("Signup Successful", "You can now login with your new account.");
@@ -37,6 +49,8 @@ const SignupForm = (props) => {
                 // this.props.navigation.navigate('WelcomeScreen', {
                 //     onGoBack: () => this.slideUp(),
                 // });
+            } else{
+                Alert.alert("Signup Failed", "Email already exists. Please use a different email.");
             }
         } catch (error) {
             Alert.alert("Signup Failed", "Please check your details and try again.");

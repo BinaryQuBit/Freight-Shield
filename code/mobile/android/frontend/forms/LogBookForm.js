@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert ,View, Text, TextInput, Button, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-//import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import { API_BASE_URL } from '../components/ipConfig';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const activities = ["OFF-DUTY", "SLEEPER BERTH", "DRIVING", "ON-DUTY NOT DRIVING"];
 
@@ -17,7 +19,23 @@ const CheckBox = ({ isSelected, onPress }) => (
 const LogBookForm = () => {
     const currentDate = new Date();
     const navigation = useNavigation();
+    const [driverId, setDriverId] = useState('');
     
+    useEffect(() => {
+        const getDriverId = async () => {
+            try {
+                const storedDriverId = await AsyncStorage.getItem('driverId');
+                if (storedDriverId !== null) {
+                    setDriverId(JSON.parse(storedDriverId));
+                }
+            } catch (error) {
+                console.error("Failed to fetch driver ID from storage", error);
+            }
+        };
+
+        getDriverId();
+    }, []);
+
     const [logBook, setLogBook] = useState(Array.from({ length: 24 }, () => 'OFF-DUTY'));
     const [totals, setTotals] = useState({
         "OFF-DUTY": 24,
@@ -48,6 +66,7 @@ const LogBookForm = () => {
             };
 
             const submissionData = {
+                driverId,
                 startingOdometer: parseInt(formValues.startOdometer),
                 endingOdometer: parseInt(formValues.endOdometer),
                 totalDistanceDrivenToday: parseInt(formValues.totalDistance),
@@ -60,12 +79,13 @@ const LogBookForm = () => {
                 ...activityHours,
             };
 
-            const response = await axios.post("http://142.3.84.67:8080/api/users/createlogbook", submissionData);
+            const response = await axios.post(`${API_BASE_URL}/createlogbook`, submissionData);
 
             if (response.status === 201) {
                 Alert.alert("LogBook Submission Successful", "Your logbook has been saved.");
-                navigation.navigate('Drawer', { screen: 'LogBook' });
-                //navigation.navigate('Drawer', { screen: 'Home'
+                
+                navigation.navigate('MainApp');
+                
             }
         } catch (error) {
             console.error("LogBook Submission Failed", error);
@@ -78,7 +98,7 @@ const LogBookForm = () => {
         const oldActivity = updatedLogBook[hour];
         updatedLogBook[hour] = activity;
 
-        // Update the totals
+        
         const updatedTotals = { ...totals };
         updatedTotals[oldActivity]--;
         updatedTotals[activity]++;
@@ -88,20 +108,32 @@ const LogBookForm = () => {
     };
 
     const handleInputChange = (name, value) => {
-        setFormValues({ ...formValues, [name]: value });
+
+        const updatedFormValues = { ...formValues, [name]: value };
+
+        if (name === 'startOdometer' || name === 'endOdometer') {
+            const startOdometer = parseInt(updatedFormValues.startOdometer, 10) || 0;
+            const endOdometer = parseInt(updatedFormValues.endOdometer, 10) || 0;
+            const totalDistance = Math.max(endOdometer - startOdometer, 0); // Ensure totalDistance is not negative
+
+            updatedFormValues.totalDistance = totalDistance.toString();
+        }
+
+        setFormValues(updatedFormValues);
     };
 
 
     return (
         <ScrollView style={styles.formContainer}>
-            {/* Date Display */}
+            
             <View style={styles.dateDisplay}>
                 <Text style={styles.dateText}>Date: {formValues.date.toDateString()}</Text>
             </View>
             
-            {/* Odometer Inputs and Total Distance */}
+            
             <View style={styles.inputRow}>
                 <View style={styles.odometerContainer}>
+                <Text style={styles.label}>Starting Odometer:</Text>
                 <TextInput
                     style={[styles.input, styles.odometerInput]}
                     placeholder="Starting Odometer"
@@ -109,6 +141,7 @@ const LogBookForm = () => {
                     value={formValues.startOdometer}
                     onChangeText={(text) => handleInputChange('startOdometer', text)}
                 />
+                <Text style={styles.label}>Ending Odometer:</Text>
                 <TextInput
                     style={[styles.input, styles.odometerInput]}
                     placeholder="Ending Odometer"
@@ -117,40 +150,49 @@ const LogBookForm = () => {
                     onChangeText={(text) => handleInputChange('endOdometer', text)}
                 />
                 </View>
-                <TextInput
-                style={[styles.input, styles.totalDistanceInput]}
-                placeholder="Total Distance"
-                keyboardType="numeric"
-                value={formValues.totalDistance}
-                onChangeText={(text) => handleInputChange('totalDistance', text)}
-                />
+                <View>
+                    <Text style={styles.label}>Total Distance:</Text>
+                    <TextInput
+                    style={[styles.input, styles.totalDistanceInput]}
+                    placeholder="Total Distance"
+                    keyboardType="numeric"
+                    value={formValues.totalDistance}
+                    onChangeText={(text) => handleInputChange('totalDistance', text)}
+                    />
+                </View>
+                
             </View>
 
-            {/* Truck and Driver Details */}
+            
+            <Text style={styles.label}>Truck Number:</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Truck Number"
                 value={formValues.truckNumber}
                 onChangeText={(text) => handleInputChange('truckNumber', text)}
             />
+            <Text style={styles.label}>Trailer Number:</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Trailer Number"
                 value={formValues.trailerNumber}
                 onChangeText={(text) => handleInputChange('trailerNumber', text)}
             />
+            <Text style={styles.label}>Driver's First Name:</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Driver's First Name"
                 value={formValues.driverFirstName}
                 onChangeText={(text) => handleInputChange('driverFirstName', text)}
             />
+            <Text style={styles.label}>Driver's Last Name:</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Driver's Last Name"
                 value={formValues.driverLastName}
                 onChangeText={(text) => handleInputChange('driverLastName', text)}
             />
+            <Text style={styles.label}>Co-Driver's Full Name:</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Co-Driver's Full Name"
@@ -160,14 +202,14 @@ const LogBookForm = () => {
 
             
 
-            {/* Heading for Hours and Activity Selection */}
+            
             <View style={styles.sectionHeader}>
                 <Text style={styles.sectionHeaderText}>Time Schedule</Text>
             </View>
 
-            {/* Hourly Activities Table */}
+            
             <View style={styles.activitiesTable}>
-                {/* Table Header */}
+                
                 <View style={styles.tableHeader}>
                 <Text style={styles.tableHeaderText}>Hours</Text>
                 {activities.map((activity) => (
@@ -175,7 +217,7 @@ const LogBookForm = () => {
                 ))}
                 </View>
 
-                {/* Rows of Activities */}
+                
                 {logBook.map((currentActivity, hour) => (
                 <View key={hour} style={styles.activityRow}>
                     <Text style={styles.hourText}>{`${hour}:00`}</Text>
@@ -191,7 +233,7 @@ const LogBookForm = () => {
                 ))}
             </View>
 
-            {/* Totals Display */}
+            
             <View style={styles.totalsDisplay}>
                 {Object.entries(totals).map(([activity, totalHours]) => (
                     <Text key={activity} style={styles.totalHoursText}>
@@ -214,7 +256,7 @@ const styles = StyleSheet.create({
     formContainer: {
         flex: 1,
         padding: 10,
-        backgroundColor: '#fff', // Consider using your brand's color
+        backgroundColor: '#fff', 
         
     },
     inputContainer: {
@@ -227,8 +269,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         paddingHorizontal: 10,
         borderRadius: 5,
-        backgroundColor: '#f7f7f7', // Light gray for input background
-        fontSize: 16, // Increase font size for better readability
+        backgroundColor: '#f7f7f7',
+        fontSize: 16, 
     },
     dateDisplay: {
         paddingVertical: 15,
@@ -240,11 +282,11 @@ const styles = StyleSheet.create({
     dateText: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#333', // Dark gray for text for better contrast
+        color: '#333',
     },
     timeline: {
         marginBottom: 20,
-        backgroundColor: '#f2f2f2', // Light background for the timeline area
+        backgroundColor: '#f2f2f2', 
         borderRadius: 5,
         padding: 10,
     },
@@ -276,7 +318,7 @@ const styles = StyleSheet.create({
         paddingVertical: 4,
     },
     submitButton: {
-        backgroundColor: '#1E90FF', // Use a color that stands out for the submit button
+        backgroundColor: '#1E90FF', 
         borderRadius: 5,
         padding: 10,
         marginTop: 20,
@@ -289,20 +331,17 @@ const styles = StyleSheet.create({
         marginBottom: 5,
       },
       odometerContainer: {
-        // Assuming you want the starting and ending odometer inputs to take up
-        // half the width of the screen minus some margin/padding
         flex: 1,
-        marginRight: 10, // Add some space between this container and the total distance input
+        marginRight: 10,
       },
       odometerInput: {
-        // Style for each odometer input
         borderColor: '#ccc',
         borderWidth: 1,
         padding: 10,
-        marginBottom: 10, // Space between starting and ending odometer inputs
+        marginBottom: 10,
         borderRadius: 5,
-        backgroundColor: '#f7f7f7', // Light gray background for input
-        fontSize: 16, // Increase font size for better readability
+        backgroundColor: '#f7f7f7', 
+        fontSize: 16, 
       },
       totalDistanceInput: {
         flex: 1,
@@ -310,22 +349,22 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         borderRadius: 5,
-        backgroundColor: '#f7f7f7', // Light gray background for input
-        fontSize: 16, // Increase font size for better readability
-        height: (22 * 2)+ 40, // Match the height of the odometer inputs
+        backgroundColor: '#f7f7f7', 
+        fontSize: 16, 
+        height: (22 * 2)+ 40, 
       },
     submitButtonText: {
         fontSize: 18,
-        color: '#fff', // White text for the button
+        color: '#fff',
         fontWeight: 'bold',
     },
 
     sectionHeader: {
         flexDirection: 'row',
-        justifyContent: 'space-around', // This will distribute space evenly around the items
+        justifyContent: 'space-around', 
         paddingVertical: 10,
         paddingHorizontal: 5,
-        backgroundColor: '#f7f7f7', // Light gray background for the header
+        backgroundColor: '#f7f7f7', 
         borderTopWidth: 1,
         borderTopColor: '#e1e1e1',
         borderBottomWidth: 1,
@@ -334,7 +373,7 @@ const styles = StyleSheet.create({
     sectionHeaderText: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#333', // Dark text for better readability
+        color: '#333', 
     },
     activitiesTable: {
         marginTop: 10,
@@ -344,12 +383,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingHorizontal: 10,
         paddingTop: 10,
-        backgroundColor: '#f8f9fa', // Light background color for the header
+        backgroundColor: '#f8f9fa', 
         borderBottomWidth: 1,
-        borderBottomColor: '#dee2e6', // Border color for separation
+        borderBottomColor: '#dee2e6',
       },
       tableHeaderText: {
-        width: 50, // Ensure this matches the hourText width for alignment
+        width: 50, 
         fontWeight: 'bold',
         textAlign: 'center',
       },
@@ -359,7 +398,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
       },
       activityHeaderText: {
-        flex: 3, // This flex value should match with activityColumn to ensure alignment
+        flex: 3,
         fontWeight: 'bold',
         textAlign: 'center',
       },
@@ -375,9 +414,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
       },
       activityColumn: {
-        flex: 1, // This ensures that the checkbox aligns under the activity header
-        alignItems: 'center', // Center the checkbox horizontally
-        // ... (add any other style properties you wish for activityColumn)
+        flex: 1, 
+        alignItems: 'center', 
       },
       activityButtonsContainer: {
         flex: 3,
@@ -409,14 +447,14 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
       },
       hourText: {
-        width: 50, // Set a fixed width for the hour label for alignment
+        width: 50, 
         textAlign: 'center',
-        marginRight: 8, // Add some margin between the hour label and checkboxes
+        marginRight: 8,
       },
       checkBoxContainer: {
-        flexDirection: 'row', // This will lay out the checkboxes horizontally
+        flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'flex-start', // Align checkboxes to the start of the row
+        justifyContent: 'flex-start',
       },
       checkBox: {
         width: 24,
@@ -425,11 +463,17 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
         alignItems: 'center',
         justifyContent: 'center',
-        marginHorizontal: 4, // Add horizontal margin between checkboxes
-        backgroundColor: '#fff', // Set the default background color
+        marginHorizontal: 4,
+        backgroundColor: '#fff', 
       },
       checkBoxSelected: {
-        backgroundColor: '#007bff', // A nice blue color for when the checkbox is selected
+        backgroundColor: '#007bff', 
+      },
+      label: {
+        fontSize: 14,
+        color: '#007bff',
+        marginBottom: 5,
+        fontWeight: 'bold',
       },
       
 

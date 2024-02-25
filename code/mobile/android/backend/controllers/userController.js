@@ -3,20 +3,22 @@ const LogBook = require("../models/logBookModel");
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-
 const registerDriver = async (req, res) => {
-   
-    const newDriver = new Driver(req.body);
+    const { email } = req.body;
 
     try {
+       
+        const existingDriver = await Driver.findOne({ email });
+        if (existingDriver) {
+            return res.status(400).send('Email already exists');
+        }
+
+        const newDriver = new Driver(req.body);
         await newDriver.save();
         res.status(201).send(newDriver);
     } catch (error) {
-        res.status(400).send(error);
+        res.status(500).send(error);
     }
-
-    //res.json(newDriver);
-    //res.send('register driver');
 };
 
 
@@ -37,9 +39,9 @@ const loginDriver = async (req, res) => {
       return res.status(401).send('Invalid email or password');
     }
 
-    const token = jwt.sign({ id: driver._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: driver._id.toString() }, process.env.JWT_SECRET);
 
-    res.status(200).json({ token });
+    res.status(200).json({ token, driverId: driver._id.toString() });
   } catch (error) {
     console.error(error);
     res.status(500).send(error);
@@ -56,12 +58,41 @@ const createLogBook = async (req, res) => {
         res.status(400).send(error);
     }
 };
+// const createLogBook = async (req, res) => {
+//     try {
+//         // Use req.driverId set by the protect middleware
+//         const driverId = req.driverId;
+
+//         const logBookData = {
+//             ...req.body,
+//             driver: driverId
+//         };
+//         const logBook = new LogBook(logBookData);
+
+//         await logBook.save();
+//         res.status(201).send(logBook);
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).send(error);
+//     }
+// };
+
 
 const getLogBooks = async (req, res) => {
+    
+    const { driverId } = req.query;
+
     try {
-        const logBooks = await LogBook.find();
+        
+        let query = {};
+        if (driverId) {
+            query.driverId = driverId;
+        }
+
+        const logBooks = await LogBook.find(query);
         res.status(200).send(logBooks);
     } catch (error) {
+        console.error("Error fetching logbooks:", error);
         res.status(500).send(error);
     }
 }

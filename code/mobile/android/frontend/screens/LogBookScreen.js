@@ -4,7 +4,7 @@ import LoadDetails from './LoadDetails';
 import DriverManual from './DriverManual';
 import PreInspectionForm from '../forms/PreInspectionForm';
 import MapView, { Polyline } from 'react-native-maps';
-import { GOOGLE_MAPS_API_KEY } from '@env'; // Make sure to replace with your actual API key
+import { GOOGLE_MAPS_API_KEY } from '@env';
 import polyline from '@mapbox/polyline';
 import ResultLogBook from './ResultLogBook';
 
@@ -13,15 +13,15 @@ export default function LogBookScreen() {
   const [route, setRoute] = useState([]);
   const mapRef = useRef(null);
   const [timeLogs, setTimeLogs] = useState({
-    wakeUpTime: new Date(), // Example, set the actual time as needed
+    wakeUpTime: new Date(), 
     startInspection: null,
     endInspection: null,
     startDrive: null,
     endDrive: null,
-    // Add more time-related states as needed
+    
   });
 
-  // Hardcoded for example purposes. Replace with actual geocoded locations.
+ 
   const pickupCoords = { latitude: 50.4452, longitude: -104.6189 }; // Regina, SK
   const dropOffCoords = { latitude: 51.0447, longitude: -114.0719 }; // Calgary, AB
 
@@ -40,7 +40,7 @@ export default function LogBookScreen() {
   const handleCompleteInspection = () => {
     setTimeLogs({ ...timeLogs, endInspection: new Date() });
     setStage('mapView');
-    // Any additional logic for completing the inspection
+    
   };
 
   const handleDropComplete = () => {
@@ -49,8 +49,7 @@ export default function LogBookScreen() {
   };
 
   const handleStartDrive = () => {
-    // Logic for handling start drive action
-    //Alert.alert('Drive Started', 'Your journey has begun.');
+    
     setTimeLogs({ ...timeLogs, startDrive: new Date() });
     setStage('driving');
   };
