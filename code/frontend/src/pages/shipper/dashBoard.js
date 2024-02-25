@@ -9,15 +9,13 @@ import {
 import ShipperSideBar from "../../components/sidebar/shipperSideBar.js";
 import UserHeader from "../../components/header/userHeader.js";
 import Easeout from "../../components/responsiveness/easeOut.js";
-import { useTheme } from "@chakra-ui/react";
 import Protector from "../../components/utils/methods/getters/protector.js";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
 export default function ShipperDashboard() {
-  Protector("/shipperDashboard");
+  Protector("/api/shipperDashboard");
 
-  const theme = useTheme();
   const [latestNews, setLatestNews] = useState([]);
 
   useEffect(() => {
@@ -78,7 +76,7 @@ export default function ShipperDashboard() {
   <GridItem colSpan={1} style={slideInLeft}>
     <Grid templateRows="auto 1fr" gap={4}>
       {/* Messages */}
-      <GridItem rowSpan={1} bg="gray.100" p={4} borderRadius="md" boxShadow="md">
+      <GridItem rowSpan={1} bg="gray.100" p={4}  boxShadow="md">
         <Text fontWeight="bold" mb={2}>
           Messages
           <Text> 1</Text>
@@ -88,7 +86,7 @@ export default function ShipperDashboard() {
       </GridItem>
 
       {/* Calendar */}
-      <GridItem rowSpan={1} bg="gray.100" p={4} borderRadius="md" boxShadow="md">
+      <GridItem rowSpan={1} bg="gray.100" p={4} boxShadow="md">
         <Text fontWeight="bold" mb={2}>
           Calendar
         </Text>
@@ -100,7 +98,7 @@ export default function ShipperDashboard() {
   {/* Second Column - News */}
   <GridItem colSpan={1} style={slideInRight}>
     {/* Announcement Row Card */}
-    <Box bg="gray.100" p={10} borderRadius="md" boxShadow="md" minHeight="100%" display="flex" flexDirection="column">
+    <Box bg="gray.100" p={10} boxShadow="md" minHeight="100%" display="flex" flexDirection="column">
       <Text fontWeight="bold" mb={2}>
         Latest News
       </Text>

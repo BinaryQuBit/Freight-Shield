@@ -15,7 +15,7 @@ const unitSchema = new mongoose.Schema(
     unitModel: { type: String },
     unitYear: { type: Number },
     unitVIN: { type: String },
-    unitLicensePlate: { type: String },
+    unitLicencePlate: { type: String },
     unitStatus: { type: String },
     unitRegistration: { type: String },
     unitInsurance: { type: String },
@@ -166,11 +166,14 @@ carrierSchema.methods.addUnit = async function (unitData) {
   console.log("Existing units:", this.units.map(unit => unit.unitNumber));
   console.log("Trying to add unit number:", unitData.unitNumber);
   if (unitExists) {
-      throw new Error('Unit number must be unique within the carrier.');
+    const error = new Error('Unit number must be unique within the carrier.');
+    error.statusCode = 405;
+    throw error;
   }
   this.units.push(unitData);
   await this.save();
 };
+
 
 
 const Carrier = mongoose.model("Carrier", carrierSchema);
