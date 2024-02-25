@@ -12,9 +12,9 @@ import CustomDrawerContent from './CustomDrawerContent';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import MyLoadScreen from '../screens/MyLoadsScreen';
 import { faClock, faBook, faTruckLoading, faMapMarked, faUser, faGear, faHome, faMessage } from '@fortawesome/free-solid-svg-icons';
-import LogBookScreen from '../screens/LogBookScreen';
+
 import SettingsScreen from '../screens/SettingsScreen';
-import MessageScreen from '../screens/MessageScreen';
+
 import LogBookScreen2 from '../screens/LogBookScreen2';
 
 
