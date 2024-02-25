@@ -169,7 +169,6 @@ export default function AddUnit({ isOpen, onClose }) {
     if (unitSafety) {
       formData.append("unitSafety", unitSafety);
     }
-
     // Start of POST Method
     try {
       const addUnitResponse = await axios.post("/api/postunit", formData, {
@@ -179,11 +178,14 @@ export default function AddUnit({ isOpen, onClose }) {
         },
       });
       if (addUnitResponse.status === 200) {
-        // window.location.reload();
+        window.location.reload();
       }
-    } catch (error) {
-      if (error.response && error.response.status === 400) {
+    }  catch (error) {
+      if (error.response && error.response.status === 405) {
         console.error("Error: ", error.response.data.message);
+        if (error.response.data.message.includes("Unit number must be unique within the carrier.")) {
+          setUnitNumberError("Unit Number Already Exists");
+        }
       } else {
         console.error("Error submitting form:", error);
       }
@@ -223,9 +225,9 @@ export default function AddUnit({ isOpen, onClose }) {
                   setUnitType(e.target.value);
                   setUnitTypeError("");
                 }}
-                value1={"truck"}
+                value1={"Truck"}
                 children1={"Truck"}
-                value2={"trailer"}
+                value2={"Trailer"}
                 children2={"Trailer"}
                 ml={2}
                 mt={2}

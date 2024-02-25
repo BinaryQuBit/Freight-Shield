@@ -29,7 +29,7 @@ import { PostalCodeValidation } from "../utils/validation/postalCodeValidation.j
 import { WebsiteValidation } from "../utils/validation/websiteValidation.js";
 
 // Start of the Build
-export default function EditShipperDetails({ isOpen, onClose, data, onSave }) {
+export default function EditShipperDetails({ isOpen, onClose, data }) {
   axios.defaults.withCredentials = true;
   const navigate = useNavigate();
   const backendUrl = "http://localhost:8080";
@@ -247,7 +247,6 @@ export default function EditShipperDetails({ isOpen, onClose, data, onSave }) {
       );
 
       if (shipperSubmissionDetailsResponse.status === 200) {
-        navigate("/shippersubmission");
         window.location.reload();
       }
     } catch (error) {

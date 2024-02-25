@@ -63,7 +63,7 @@ const getUnitProfiles = asyncHandler(async (req, res) => {
         unitModel: unit.unitModel,
         unitYear: unit.unitYear,
         unitVIN: unit.unitVIN,
-        unitLicensePlate: unit.unitLicensePlate,
+        unitLicencePlate: unit.unitLicencePlate,
         unitStatus: unit.unitStatus,
 
       };
@@ -201,6 +201,7 @@ const postUnit = asyncHandler(async (req, res) => {
     unitLicencePlate,
     unitStatus,
   } = req.body;
+  console.log("Licence", unitLicencePlate);
 
   const unitData = {
     unitNumber,
@@ -229,7 +230,8 @@ const postUnit = asyncHandler(async (req, res) => {
     await carrier.addUnit(unitData);
     res.status(200).json({ message: "Unit added successfully", unit: unitData });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    const statusCode = error.statusCode || 500;
+    res.status(statusCode).json({ message: error.message || "Server error" });
   }
 });
 
