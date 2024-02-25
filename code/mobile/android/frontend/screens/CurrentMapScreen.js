@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
-import * as Location from 'expo-location';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { faTruck } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-
+import React, { useEffect, useState } from "react";
+import { View, Text } from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import * as Location from "expo-location";
+import { faTruck } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 const CurrentMapScreen = () => {
   const [region, setRegion] = useState(null);
@@ -14,8 +12,8 @@ const CurrentMapScreen = () => {
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
         return;
       }
 
@@ -39,8 +37,8 @@ const CurrentMapScreen = () => {
       ) : region ? (
         <MapView style={{ flex: 1 }} initialRegion={region}>
           <Marker coordinate={region}>
-            <FontAwesomeIcon icon={faTruck} size={30} color='red'/>
-            </Marker>
+            <FontAwesomeIcon icon={faTruck} size={30} color="red" />
+          </Marker>
         </MapView>
       ) : null}
     </View>

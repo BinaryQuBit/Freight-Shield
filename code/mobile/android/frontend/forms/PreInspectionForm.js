@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { CheckBox } from 'react-native-elements';
+import React, { useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { CheckBox } from "react-native-elements";
 
 export default function PreInspectionForm() {
   const [checkedItems, setCheckedItems] = useState([
-    { label: 'Engine Check', checked: false },
-    { label: 'Tire Pressure', checked: false },
-    { label: 'Brake Inspection', checked: false },
-    { label: 'Lighting Test', checked: false },
+    { label: "Engine Check", checked: false },
+    { label: "Tire Pressure", checked: false },
+    { label: "Brake Inspection", checked: false },
+    { label: "Lighting Test", checked: false },
   ]);
 
   const toggleCheckbox = (index) => {
-    setCheckedItems(checkedItems.map((item, i) => 
-      i === index ? { ...item, checked: !item.checked } : item
-    ));
+    setCheckedItems(
+      checkedItems.map((item, i) =>
+        i === index ? { ...item, checked: !item.checked } : item
+      )
+    );
   };
 
   return (
@@ -30,20 +32,20 @@ export default function PreInspectionForm() {
       ))}
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 10,
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginBottom: 10,
-        textAlign: 'center', 
-    },
-    checkbox: {
-        borderWidth: 0,
-        backgroundColor: 'transparent',
-    },
+  container: {
+    padding: 10,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  checkbox: {
+    borderWidth: 0,
+    backgroundColor: "transparent",
+  },
 });
