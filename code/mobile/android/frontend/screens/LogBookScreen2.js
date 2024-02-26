@@ -28,27 +28,31 @@ export default function LogBookScreen2() {
         if (storedDriverId !== null) {
           const driverId = JSON.parse(storedDriverId);
 
-          axios
-            .get(`${API_BASE_URL}/getlogbook`, {
-              params: {
-                driverId: driverId,
-              },
-            })
-            .then((response) => {
-              setLogBooks(response.data);
-            })
-            .catch((error) => {
-              console.error("Failed to fetch logbooks", error);
-              Alert.alert("Error", "Failed to fetch logbooks");
-            });
+          const response = await axios.get(`${API_BASE_URL}/getlogbook`, {
+            params: {
+              driverId: driverId,
+            },
+          });
+
+          // Check if response.data is an array before setting it
+          if (Array.isArray(response.data)) {
+            setLogBooks(response.data);
+          } else {
+            // Handle the case where data is not an array
+            console.error("API response is not an array");
+            setLogBooks([]); // Set to empty array to avoid further errors
+          }
         }
       } catch (error) {
-        console.error("Failed to fetch driver ID from storage", error);
+        console.error("Error fetching logbooks or driver ID from storage", error);
+        Alert.alert("Error", "Failed to fetch logbooks");
+        setLogBooks([]); // Ensure logBooks is always an array
       }
     };
 
     fetchLogBooks();
   }, [isFocused]);
+
 
   const generateAndSharePDF = async () => {
     const html = `
@@ -136,9 +140,7 @@ export default function LogBookScreen2() {
       <View style={styles.historySection}>
         <Text style={styles.historyTitle}>History</Text>
         <ScrollView>
-          {logBooks
-            .sort((a, b) => new Date(b.date) - new Date(a.date))
-            .map((entry, index) => (
+          {logBooks.sort((a, b) => new Date(b.date) - new Date(a.date)).map((entry, index) => (
               <View key={index} style={styles.entryContainer}>
                 <Text style={styles.entryDate}>
                   {new Date(entry.date).toLocaleDateString()}
