@@ -27,6 +27,7 @@ import { EmptyValidation } from "../utils/validation/emptyValidation.js";
 import { PhoneNumberValidation } from "../utils/validation/phoneNumberValidation.js";
 import { PostalCodeValidation } from "../utils/validation/postalCodeValidation.js";
 import { WebsiteValidation } from "../utils/validation/websiteValidation.js";
+import { DocumentValidation } from "../utils/validation/documentValidation.js";
 
 // Start of the Build
 export default function EditShipperDetails({ isOpen, onClose, data }) {
@@ -152,11 +153,11 @@ export default function EditShipperDetails({ isOpen, onClose, data }) {
       "Business Number",
       businessNumber
     );
-    const proofBusinessError = EmptyValidation(
+    const proofBusinessError = DocumentValidation(
       "Proof of Business",
       proofBusiness
     );
-    const proofInsuranceError = EmptyValidation(
+    const proofInsuranceError = DocumentValidation(
       "Proof of Insurance",
       proofInsurance
     );

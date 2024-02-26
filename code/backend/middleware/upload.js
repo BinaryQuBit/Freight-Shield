@@ -21,6 +21,7 @@ var upload = multer({
       [
         "image/png",
         "image/jpg",
+        "image/jpeg",
         "application/pdf",
         "application/msword",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
