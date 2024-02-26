@@ -10,107 +10,87 @@ import {
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { API_BASE_URL } from "../components/ipConfig";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
 import * as FileSystem from "expo-file-system";
 
 export default function LogBookScreen2() {
   const navigation = useNavigation();
-  const [logBooks, setLogBooks] = useState([]);
   const isFocused = useIsFocused();
+  const [logBooks, setLogBooks] = useState([]);
 
   useEffect(() => {
     if (!isFocused) return;
     const fetchLogBooks = async () => {
       try {
-        const storedDriverId = await AsyncStorage.getItem("driverId");
-        if (storedDriverId !== null) {
-          const driverId = JSON.parse(storedDriverId);
-
-          axios
-            .get(`${API_BASE_URL}/getlogbook`, {
-              params: {
-                driverId: driverId,
-              },
-            })
-            .then((response) => {
-              setLogBooks(response.data);
-            })
-            .catch((error) => {
-              console.error("Failed to fetch logbooks", error);
-              Alert.alert("Error", "Failed to fetch logbooks");
-            });
-        }
+        const response = await axios.get(`${API_BASE_URL}/api/getlogbook`, {});
+        setLogBooks(response.data);
       } catch (error) {
-        console.error("Failed to fetch driver ID from storage", error);
+        console.error("Error fetching logbooks:", error);
+        Alert.alert("Error", "Failed to fetch logbooks");
       }
     };
-
     fetchLogBooks();
   }, [isFocused]);
 
-  const generateAndSharePDF = async () => {
+  const generateAndSharePDF = async (entry) => {
     const html = `
       <!DOCTYPE html>
       <html>
       <head>
-          <title>Driver Logbook</title>
-          <style>
-              body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-              .logbook { padding: 20px; }
-              .logbook-header {
-                  text-align: center;
-                  margin-bottom: 20px;
-              }
-              .logbook-logo {
-                  max-width: 100px; /* Adjust based on your logo size */
-                  margin-bottom: 20px;
-              }
-              table { width: 100%; border-collapse: collapse; }
-              th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-              th { background-color: #f2f2f2; }
-          </style>
+        <title>Driver Logbook</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+          .logbook { padding: 20px; }
+          .logbook-header { text-align: center; margin-bottom: 20px; }
+          table { width: 100%; border-collapse: collapse; }
+          th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+          th { background-color: #f2f2f2; }
+        </style>
       </head>
       <body>
-          <div class="logbook">
-              <div class="logbook-header">
-                  <img src="https://yourwebsite.com/logo.png" alt="FreightShieldLogo" class="logbook-logo">
-                  <h2>Driver's Daily Logbook</h2>
-              </div>
-              <table>
-                  <tr><th>Date</th><td>2023-01-30</td></tr>
-                  <tr><th>Truck Number</th><td>ABC123</td></tr>
-                  <tr><th>Trailer Number</th><td>XYZ789</td></tr>
-                  <tr><th>Driver Name</th><td>John Doe</td></tr>
-                  <tr><th>Co-Driver Name</th><td>Mohammad Alharbi</td></tr>
-                  <tr><th>Starting Odometer</th><td>10000</td></tr>
-                  <tr><th>Ending Odometer</th><td>10500</td></tr>
-                  <tr><th>Total Distance Driven</th><td>500</td></tr>
-                  <tr><th>Off Duty Hours</th><td>8</td></tr>
-                  <tr><th>Sleeper Hours</th><td>6</td></tr>
-                  <tr><th>Driving Hours</th><td>8</td></tr>
-                  <tr><th>On Duty Not Driving Hours</th><td>2</td></tr>
-              </table>
+        <div class="logbook">
+          <div class="logbook-header">
+            <h2>Driver's Daily Logbook</h2>
           </div>
+          <table>
+            <tr><th>Date</th><td>${new Date(
+              entry.date
+            ).toLocaleDateString()}</td></tr>
+            <tr><th>Truck Number</th><td>${entry.truckNumber}</td></tr>
+            <tr><th>Trailer Number</th><td>${entry.trailerNumber}</td></tr>
+            <tr><th>Driver Name</th><td>${entry.driverFirstName} ${
+      entry.driverLastName
+    }</td></tr>
+            <tr><th>Co-Driver Name</th><td>${entry.coDriverFullName}</td></tr>
+            <tr><th>Starting Odometer</th><td>${
+              entry.startingOdometer
+            }</td></tr>
+            <tr><th>Ending Odometer</th><td>${entry.endingOdometer}</td></tr>
+            <tr><th>Total Distance Driven</th><td>${
+              entry.totalDistanceDrivenToday
+            }</td></tr>
+            <tr><th>Off Duty Hours</th><td>${entry.offDutyHours}</td></tr>
+            <tr><th>Sleeper Hours</th><td>${entry.sleeperHours}</td></tr>
+            <tr><th>Driving Hours</th><td>${entry.drivingHours}</td></tr>
+            <tr><th>On Duty Not Driving Hours</th><td>${
+              entry.onDutyNotDrivingHours
+            }</td></tr>
+          </table>
+        </div>
       </body>
       </html>
     `;
 
     try {
       const { uri: tempUri } = await Print.printToFileAsync({ html });
-
-      const customFileName = `DriversLogbook_${"2023-01-30"}.pdf`;
+      const customFileName = `DriversLogbook_${entry._id}.pdf`;
       const customFileUri = `${FileSystem.cacheDirectory}${customFileName}`;
 
-      await FileSystem.copyAsync({
-        from: tempUri,
-        to: customFileUri,
-      });
-
+      await FileSystem.copyAsync({ from: tempUri, to: customFileUri });
       await Sharing.shareAsync(customFileUri);
     } catch (error) {
-      console.error(error);
+      console.error("Failed to create or share PDF", error);
     }
   };
 
