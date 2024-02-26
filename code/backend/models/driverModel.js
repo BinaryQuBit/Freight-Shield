@@ -4,24 +4,37 @@ import mongoose from "mongoose";
 import { hashPassword, comparePassword } from "../utils/hashPassword.js";
 
 const driverSchema = mongoose.Schema(
-    {
-        email: {
-            type: String,
-            required: true,
-            unique: true,
-        },
-        canadianCarrierCode: {
-            type: String,
-            required: true,
-        },
-        password: {
-            type: String,
-            required: true,
-        },
+  {
+    firstName: {
+      type: String,
     },
-    {
-        timestamps: true,
+    lastName: {
+      type: String,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+    },
+    canadianCarrierCode: {
+      type: String,
+    },
+    phoneNumber: {
+      type: String,
+    },
+    driverLicence: {
+      type: String,
+    },
+    driverAbstract: {
+      type: String,
     }
+  },
+  {
+    timestamps: true,
+  }
 );
 
 driverSchema.pre("save", async function (next) {

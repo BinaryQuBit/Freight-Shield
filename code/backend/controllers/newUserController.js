@@ -126,25 +126,31 @@ const loginUser = asyncHandler(async (req, res) => {
 // route    POST /register
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-  let { role, email, password, confirmPassword, canadianCarrierCode } = req.body;
+  let { role, email, password, confirmPassword, firstName, lastName, phoneNumber  } = req.body;
   email = email.toLowerCase();
   const shipperExist = await Shipper.findOne({ email }).collation({
     locale: "en",
     strength: 2,
   });
-  const carrierExist = await Carrier.findOne({ email }).collation({
-    locale: "en",
-    strength: 2,
-  });
-
   if (shipperExist) {
     res.status(400);
     throw new Error("Shipper already exists");
   }
-
+  const carrierExist = await Carrier.findOne({ email }).collation({
+    locale: "en",
+    strength: 2,
+  });
   if (carrierExist) {
     res.status(400);
     throw new Error("Carrier already exists");
+  }
+  const driverExist = await Driver.findOne({ email }).collation({
+    locale: "en",
+    strength: 2,
+  });
+  if (driverExist) {
+    res.status(400);
+    throw new Error("Driver already exists");
   }
 
   if (password !== confirmPassword) {
@@ -242,12 +248,17 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (role == "driver") {
     const driver = await Driver.create({
-      canadianCarrierCode,
+      firstName,
+      lastName,
+      phoneNumber,
       email,
       password,
+      canadianCarrierCode: "",
+      driverLicence: "",
+      driverAbstract: ""
     });
     if (driver) {
-      generateToken(res, driver._id);
+      generateToken(res, driver._id, "driver");
       res.status(201).json({
         _id: driver._id,
         email: driver.email,

@@ -10,7 +10,7 @@ import {
   verifyOTP,
 } from "../controllers/newUserController.js";
 
-const router = express.Router();
+const router = express.Router(); 
 
 /////////////////////////////////////////////////////// GETTERS ///////////////////////////////////////////////////////
 router.get("/logout", logoutUser);

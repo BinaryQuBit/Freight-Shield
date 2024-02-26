@@ -400,6 +400,7 @@ const updateCarrierBusinessDetails = asyncHandler(async (req, res) => {
     return res.status(404).json({ message: "Carrier not found" });
   }
 
+  console.log("Request Body", req.body);
   const { businessName, doingBusinessAs, businessNumber, canadianCarrierCode, nationalSafetyCode, wcb, website } = req.body;
 
   const updateData = {
@@ -427,6 +428,7 @@ const updateCarrierBusinessDetails = asyncHandler(async (req, res) => {
   ) {
     updateData.safetyFitnessCertificate = req.files.safetyFitnessCertificate[0].path;
   }
+  console.log("Updated Data", updateData);
 
   try {
     const updatedCarrier = await Carrier.findOneAndUpdate(

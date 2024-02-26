@@ -127,6 +127,7 @@ export default function CarrierCompanyDetailsForm() {
     }
     // Start of PUT Method
     try {
+      console.log("Form Data", formData)
       const carrierBusinessDetailsResponse = await axios.put(
         "/api/carrierbusinessdetails",
         formData,
