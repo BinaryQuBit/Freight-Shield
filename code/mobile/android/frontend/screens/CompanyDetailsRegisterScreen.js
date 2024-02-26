@@ -41,7 +41,7 @@ const PersonalDetailsRegisterScreen = ({ navigation }) => {
   };
 
   const handleSubmit = async () => {
-    const url = `http://142.3.84.37:8080/api/companydetailsregister`;
+    const url = `${API_BASE_URL}/api/companydetailsregister`;
     const data = new FormData();
     data.append('canadianCarrierCode', formData.canadianCarrierCode);
 
@@ -69,11 +69,9 @@ const PersonalDetailsRegisterScreen = ({ navigation }) => {
         const response = await axios.put(url, data, {
             headers: {
                 'Content-Type': 'multipart/form-data',
-                // 'Accept': 'application/json, text/plain, */*',
             },
         });
         console.log('Submission success:', response.data);
-        // Navigate or perform other actions upon success
     } catch (error) {
         console.error('Submission error:', error);
     }
