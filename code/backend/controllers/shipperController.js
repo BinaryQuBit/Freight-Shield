@@ -8,7 +8,7 @@ import deleteFiles from "../middleware/delete.js";
 ////////////////////////////// Getters //////////////////////////////
 
 // @desc    Getting Dashboard
-// route    GET /api/users/activeloads
+// route    GET /api/shipperdashboard
 // @access  Private
 const shipperDasboard = asyncHandler(async (req, res) => {
   try {
@@ -26,25 +26,12 @@ const shipperDasboard = asyncHandler(async (req, res) => {
 // @access  Private
 const getActiveLoads = asyncHandler(async (req, res) => {
   try {
-    const userEmail = req.user.shipperEmail;
-    const loads = await Marketplace.find({ email: userEmail });
-
+    const userEmail = req.user.email;
+    const loads = await Marketplace.find({ shipperEmail: userEmail });
     res.status(200).json(loads);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-});
-
-// @desc    Getting PostLoad
-// route    GET /api/postload
-// @access  Private
-const getPostLoad = asyncHandler(async (req, res) => {
-  const user = {
-    _id: req.user._id,
-    email: req.user.email,
-  };
-
-  res.status(200).json({ user });
 });
 
 // @desc    Getting History
@@ -216,7 +203,17 @@ const postLoad = asyncHandler(async (req, res) => {
     shipperLastName,
     shipperPhoneNumber,
     shipperCompanyName,
-    shipperEmail
+    shipperEmail,
+    carrierFirstName: "",
+    carrierLastName: "",
+    carrierEmail: "",
+    carrierPhoneNumber:"",
+    carrierBusinessName: "",
+    carrierDoingBusinessAs: "",
+    driverFirstName: "",
+    driverLastName: "",
+    driverPhoneNumber: "",
+    driverEmail: "",
   };
 
   console.log("Data", postLoad);
@@ -699,7 +696,6 @@ const deleteLoad = async (req, res) => {
 
 export {
   getActiveLoads,
-  getPostLoad,
   getHistory,
   getShipperSettings,
   getShipperContactDetails,

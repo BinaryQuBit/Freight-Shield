@@ -6,6 +6,7 @@ import Admin from "../models/adminModel.js";
 import Carrier from "../models/carrierModel.js";
 import Shipper from "../models/shipperModel.js";
 import SuperUser from "../models/superUser.js";
+import Driver from "../models/driverModel.js"
 
 const protect = asyncHandler(async (req, res, next) => {
   let token = req.cookies.jwt;
@@ -16,7 +17,6 @@ const protect = asyncHandler(async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("Decoded", decoded);
 
     let user;
     switch (decoded.role) {
@@ -32,6 +32,10 @@ const protect = asyncHandler(async (req, res, next) => {
       case "superUser":
         user = await SuperUser.findById(decoded.userId).select("-password");
         break;
+        case "driver":
+          user = await Driver.findById(decoded.userId).select("-password");
+          console.log("Driver", user)
+          break;
       default:
         throw new Error("Role not recognized");
     }
@@ -59,6 +63,14 @@ const protect = asyncHandler(async (req, res, next) => {
     }
   }
 });
+
+const driverOnly = (req, res, next) => {
+  if (req.role == "driver") {
+    return next();
+  }
+  res.status(403);
+  throw new Error("Access denied");
+};
 
 const adminOnly = (req, res, next) => {
   if (req.role == "admin") {
@@ -94,4 +106,4 @@ const status = (req, res, next) => {
   }
 };
 
-export { protect, adminOnly, carrierOnly, shipperOnly, status };
+export { protect, adminOnly, carrierOnly, shipperOnly, driverOnly, status };

@@ -7,6 +7,7 @@ import Admin from "../models/adminModel.js";
 import Carrier from "../models/carrierModel.js";
 import Shipper from "../models/shipperModel.js";
 import SuperUser from "../models/superUser.js";
+import Driver from "../models/driverModel.js";
 import OTP from "../models/forgotPasswordModel.js";
 import { getOtpEmailTemplate } from "../utils/emailTemplates/forgotPasswordTemplate.js";
 
@@ -35,6 +36,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const carrier = await Carrier.findOne({ email });
   const shipper = await Shipper.findOne({ email });
   const superUser = await SuperUser.findOne({ email });
+  const driver = await Driver.findOne({email});
 
   if (admin && (await admin.matchPassword(password))) {
     generateToken(res, admin._id, "admin");
@@ -42,6 +44,15 @@ const loginUser = asyncHandler(async (req, res) => {
       _id: admin._id,
       email: admin.email,
       role: "admin",
+    });
+  }
+
+  if (driver && (await driver.matchPassword(password))) {
+    generateToken(res, driver._id, "driver");
+    return res.status(201).json({
+      _id: driver._id,
+      email: driver.email,
+      role: "driver",
     });
   }
 
@@ -89,6 +100,15 @@ const loginUser = asyncHandler(async (req, res) => {
     });
   }
 
+  if (driver && (await driver.matchPassword(password))) {
+    generateToken(res, driver._id, "driver");
+    return res.status(201).json({
+      _id: driver._id,
+      email: driver.email,
+      role: "driver",
+    });
+  }
+
   if (superUser && (await superUser.matchPassword(password))) {
     generateToken(res, superUser._id, "superUser");
     return res.status(201).json({
@@ -106,25 +126,31 @@ const loginUser = asyncHandler(async (req, res) => {
 // route    POST /register
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-  let { role, email, password, confirmPassword } = req.body;
+  let { role, email, password, confirmPassword, firstName, lastName, phoneNumber  } = req.body;
   email = email.toLowerCase();
   const shipperExist = await Shipper.findOne({ email }).collation({
     locale: "en",
     strength: 2,
   });
-  const carrierExist = await Carrier.findOne({ email }).collation({
-    locale: "en",
-    strength: 2,
-  });
-
   if (shipperExist) {
     res.status(400);
     throw new Error("Shipper already exists");
   }
-
+  const carrierExist = await Carrier.findOne({ email }).collation({
+    locale: "en",
+    strength: 2,
+  });
   if (carrierExist) {
     res.status(400);
     throw new Error("Carrier already exists");
+  }
+  const driverExist = await Driver.findOne({ email }).collation({
+    locale: "en",
+    strength: 2,
+  });
+  if (driverExist) {
+    res.status(400);
+    throw new Error("Driver already exists");
   }
 
   if (password !== confirmPassword) {
@@ -222,11 +248,17 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (role == "driver") {
     const driver = await Driver.create({
+      firstName,
+      lastName,
+      phoneNumber,
       email,
       password,
+      canadianCarrierCode: "",
+      driverLicence: "",
+      driverAbstract: ""
     });
     if (driver) {
-      generateToken(res, driver._id);
+      generateToken(res, driver._id, "driver");
       res.status(201).json({
         _id: driver._id,
         email: driver.email,
@@ -236,8 +268,6 @@ const registerUser = asyncHandler(async (req, res) => {
       throw new Error("Invalid Driver Data");
     }
   }
-
-  res.status(200).json({ message: "Register User" });
 });
 
 // @desc    Forget Password

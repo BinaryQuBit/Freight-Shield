@@ -1,12 +1,16 @@
 // Postal Code Validation
 
 export const PostalCodeValidation = (postalCode) => {
-  const postalCodePattern = /^[A-Z0-9]{2,8}(?:-[A-Z0-9]{2,5})?$/i;
-  if (!postalCode) {
+  const trimmedPostalCode = postalCode.trim();
+
+  if (!trimmedPostalCode) {
     return "Postal code is required";
   }
-  if (!postalCodePattern.test(postalCode)) {
+
+  const postalCodePattern = /^[A-Z0-9]{6}(?:-[A-Z0-9]{2,5})?$/i;
+  if (!postalCodePattern.test(trimmedPostalCode)) {
     return "Postal code is invalid";
   }
+
   return "";
 };
