@@ -95,7 +95,7 @@ const LogBookForm = () => {
       };
 
       const response = await axios.post(
-        `${API_BASE_URL}/createlogbook`,
+        `${API_BASE_URL}/api/createlogbook`,
         submissionData
       );
 

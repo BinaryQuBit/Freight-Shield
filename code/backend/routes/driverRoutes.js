@@ -10,7 +10,7 @@ const router = express.Router();
 /////////////////////////////////////////////////////// PUTTERS ///////////////////////////////////////////////////////
 router.put("/companydetailsregister", protect, upload.fields([{ name: "driverLicence", maxCount: 1 }, { name: "driverAbstract", maxCount: 1 }]), updateCompanyDetailsRegister);
 
-router.post('/createlogbook', createLogBook);
+router.post('/createlogbook',protect ,createLogBook);
 router.get('/getlogbook', getLogBooks);
 
 
