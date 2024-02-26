@@ -3,6 +3,7 @@
 import asyncHandler from "express-async-handler";
 import Driver from "../models/driverModel.js"
 import LogBook from "../models/logbookModel.js"
+import Marketplace from "../models/marketplaceModel.js"
 
 ////////////////////////////// Putters //////////////////////////////
 // @desc    Update Carrier Contact Details
@@ -22,7 +23,8 @@ const updateCompanyDetailsRegister = asyncHandler(async (req, res) => {
   } = req.body;
 
   const updateData = {
-    canadianCarrierCode
+    canadianCarrierCode,
+    currentLoad: "",
   }
  
   console.log("File", req.files.driverLicence[0]);
@@ -81,10 +83,8 @@ const getLogBooks = async (req, res) => {
 const createLogBook = async (req, res) => {
   const driverId = req.user._id;
   console.log(driverId);
-  
   const logBookData = { ...req.body, driverId: driverId };
   const logBook = new LogBook(logBookData);
-
   try {
       await logBook.save();
       res.status(201).send(logBook);
@@ -95,10 +95,57 @@ const createLogBook = async (req, res) => {
 
 
 
+const getFirstName = async (req, res) => {
+  try {
+    const driverId = req.user._id;
+    const driverInfo = await Driver.findById(driverId);
+    if (!driverInfo) {
+      return res.status(404).send({ message: 'Driver not found' });
+    }
+    const driverEmail = driverInfo.email;
+    const loads = await Marketplace.find({ driverEmail: driverEmail });
+    console.log("Load",loads);
+    if (loads.length === 0) {
+      return res.status(404).send({ message: 'No loads found for this driver' });
+    }
+    const firstName = driverInfo.firstName;
+    res.status(200).send({ firstName: firstName, loads: loads });
+  } catch (error) {
+    res.status(500).send({ message: 'Server error' });
+  }
+};
+
+const acceptLoad = async (req, res) => {
+  const driverEmail = req.user.email;
+  try {
+    console.log("Hello")
+    const updatedLoad = await Marketplace.findOneAndUpdate(
+      { driverEmail: driverEmail },
+      { $set: { status: 'In Transit' } },
+      { new: true }
+    );
+
+    if (updatedLoad) {
+      res.json({ message: 'Load status updated to In Transit successfully', updatedLoad });
+    } else {
+      res.status(404).json({ message: 'Load not found' });
+    }
+  } catch (error) {
+    console.error('Error updating load status:', error);
+    res.status(500).json({ message: 'Error updating load status' });
+  }
+};
+
+
+
+
+
+
 
 export {
   updateCompanyDetailsRegister,
   createLogBook,
   getLogBooks,
-  
+  getFirstName,
+  acceptLoad,
 }

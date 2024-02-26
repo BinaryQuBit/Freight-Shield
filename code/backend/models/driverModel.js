@@ -34,7 +34,10 @@ const driverSchema = mongoose.Schema(
     driverStatus: {
       type: String,
       default: "pending"
-    }
+    },
+    currentLoad: {
+      type: String,
+    },
   },
   {
     timestamps: true,

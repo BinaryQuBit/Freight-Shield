@@ -203,7 +203,17 @@ const postLoad = asyncHandler(async (req, res) => {
     shipperLastName,
     shipperPhoneNumber,
     shipperCompanyName,
-    shipperEmail
+    shipperEmail,
+    carrierFirstName: "",
+    carrierLastName: "",
+    carrierEmail: "",
+    carrierPhoneNumber:"",
+    carrierBusinessName: "",
+    carrierDoingBusinessAs: "",
+    driverFirstName: "",
+    driverLastName: "",
+    driverPhoneNumber: "",
+    driverEmail: "",
   };
 
   console.log("Data", postLoad);
