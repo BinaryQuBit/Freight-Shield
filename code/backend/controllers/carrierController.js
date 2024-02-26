@@ -12,14 +12,41 @@ import deleteFiles from "../middleware/delete.js";
 // route    GET /api/marketplace
 // @access  Private
 const getMarketplace = asyncHandler(async (req, res) => {
-  const pendingLoads = await Marketplace.find({ status: "Pending" });
+  try {
+    const pendingLoads = await Marketplace.find({ status: "Pending" });
+    const userEmail = req.user.email;
+    const carrier = await Carrier.findOne({ email: userEmail });
 
-  const response = {
-    loads: pendingLoads,
-  };
+    let units = [];
+    let driverData = [];
 
-  res.status(200).json(response);
+    if (carrier) {
+      units = carrier.units.map(unit => ({
+        unitNumber: unit.unitNumber,
+      }));
+
+      const canadianCarrierCode = carrier.canadianCarrierCode;
+      const drivers = await Driver.find({ canadianCarrierCode: canadianCarrierCode });
+      const filteredDrivers = drivers.filter(driver => driver.driverStatus !== 'declined' && driver.driverStatus !== 'pending');
+      driverData = filteredDrivers.map(driver => ({
+        driverId: driver._id,
+        firstName: driver.firstName,
+        lastName: driver.lastName,
+      }));
+    }
+
+    const response = {
+      loads: pendingLoads,
+      units,
+      driverData
+    };
+
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
+
 
 // @desc    Getting My Loads
 // route    GET /api/myloads
@@ -207,6 +234,38 @@ const getCarrierSubmission = asyncHandler(async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+// @desc    Getting Drivers and Units
+// route    GET /api/getunitdriver
+// @access  Private
+const getUnitDriver = asyncHandler(async (req, res) => {
+  try {
+    const userEmail = req.user.email;
+    const carrier = await Carrier.findOne({ email: userEmail });
+
+    if (!carrier) {
+      return res.status(404).json({ message: "Carrier not found" });
+    }
+
+    const units = carrier.units.map(unit => ({
+      unitNumber: unit.unitNumber,
+    }));
+
+    const canadianCarrierCode = carrier.canadianCarrierCode;
+    const drivers = await Driver.find({ canadianCarrierCode: canadianCarrierCode });
+    const filteredDrivers = drivers.filter(driver => (driver.driverStatus !== 'declined') && (driver.driverStatus !== 'pending'));
+    const driverData = filteredDrivers.map(driver => ({
+      firstName: driver.firstName,
+      lastName: driver.lastName,
+    }));
+
+    res.status(200).json({ units, driverData });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
 
 ////////////////////////////// Posters //////////////////////////////
 
@@ -632,6 +691,63 @@ const updateDriverStatus = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Update Driver Status on load
+// route    PUT /api/updatedriverstatusload
+// @access  Private
+const updateDriverStatusLoad = asyncHandler(async (req, res) => {
+  const { unitNumber, driverId, loadId } = req.body;
+  const userEmail = req.user.email;
+  
+  try {
+    const carrier = await Carrier.findOne({ email: userEmail });
+    if (!carrier) {
+      return res.status(404).json({ message: 'Carrier not found' });
+    }
+
+    const unitProfile = carrier.units.find(u => u.unitNumber === unitNumber);
+    if (!unitProfile) {
+      return res.status(404).json({ message: 'Unit not found within the carrier\'s fleet' });
+    }
+
+    const load = await Marketplace.findById(loadId);
+    if (!load) {
+      return res.status(404).json({ message: 'Load not found' });
+    }
+    const driver = await Driver.findById(driverId);
+    if (!driver) {
+      return res.status(404).json({ message: 'Driver not found' });
+    }
+    load.status = 'Assigned';
+    load.carrierFirstName = carrier.firstName;
+    load.carrierLastName = carrier.lastName;
+    load.carrierEmail = carrier.email,
+    load.carrierPhoneNumber = carrier.companyPhoneNumber;
+    load.carrierBusinessName = carrier.businessName;
+    load.carrierDoingBusinessAs = carrier.doingBusinessAs;
+    load.driverFirstName = driver.firstName;
+    load.driverLastName = driver.lastName;
+    load.driverPhoneNumber = driver.phoneNumber;
+    load.driverEmail = driver.email;
+    await load.save();
+
+
+    driver.driverStatus = 'Assigned';
+    driver.currentLoad = loadId;
+    await driver.save();
+
+    unitProfile.unitStatus = 'In Use';
+    await carrier.save();
+
+    res.status(200).json({
+      message: 'Load, driver, and unit status updated successfully',
+      load: load,
+      driver: driver,
+      unit: unitProfile
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 export {
   getMarketplace,
@@ -649,4 +765,6 @@ export {
   updateCarrierSubmissionDetails,
   updateCarrierStatus,
   updateDriverStatus,
+  getUnitDriver,
+  updateDriverStatusLoad,
 };
