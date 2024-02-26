@@ -46,9 +46,14 @@ const getDriverProfiles = asyncHandler(async (req, res) => {
     }
 
     const canadianCarrierCode = carrier.canadianCarrierCode;
+    // Fetch all drivers associated with this carrier code
     const drivers = await Driver.find({ canadianCarrierCode: canadianCarrierCode });
 
-    const driverData = drivers.map(driver => ({
+    // Filter out drivers whose status is 'declined'
+    const filteredDrivers = drivers.filter(driver => driver.driverStatus !== 'declined');
+
+    // Now map over the filtered list to create driverData
+    const driverData = filteredDrivers.map(driver => ({
       driver_id: driver._id,
       driverAbstract: driver.driverAbstract,
       driverLicence: driver.driverLicence,
@@ -64,6 +69,7 @@ const getDriverProfiles = asyncHandler(async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
 
 
 // @desc    Getting Unit Profiles
@@ -603,10 +609,17 @@ const updateCarrierStatus = asyncHandler(async (req, res) => {
 // @access  Private
 const updateDriverStatus = asyncHandler(async (req, res) => {
   const driverId = req.params.driverId;
+  const newStatus = req.body.status;
+  if (!['decline', 'accepted'].includes(newStatus)) {
+    return res.status(400).json({ message: 'Invalid status update' });
+  }
+
+  const statusToUpdate = newStatus === 'decline' ? 'declined' : newStatus;
+
   try {
       const result = await Driver.updateOne(
           { _id: driverId },
-          { $set: { driverStatus: 'declined' } }
+          { $set: { driverStatus: statusToUpdate } }
       );
 
       if (result.modifiedCount === 1) {
@@ -618,6 +631,7 @@ const updateDriverStatus = asyncHandler(async (req, res) => {
       res.status(500).json({ message: 'Error updating driver status', error: error });
   }
 });
+
 
 export {
   getMarketplace,
