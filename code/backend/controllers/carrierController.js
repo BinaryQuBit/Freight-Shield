@@ -59,13 +59,16 @@ const getUnitProfiles = asyncHandler(async (req, res) => {
       return {
         unitNumber: unit.unitNumber,
         unitType: unit.unitType,
+        trailerType: unit.trailerType,
         unitMake: unit.unitMake,
         unitModel: unit.unitModel,
         unitYear: unit.unitYear,
         unitVIN: unit.unitVIN,
         unitLicencePlate: unit.unitLicencePlate,
         unitStatus: unit.unitStatus,
-
+        unitRegistration: unit.unitRegistration,
+        unitInsurance: unit.unitInsurance,
+        unitSafety: unit.unitSafety,
       };
     });
 
@@ -397,6 +400,7 @@ const updateCarrierBusinessDetails = asyncHandler(async (req, res) => {
     return res.status(404).json({ message: "Carrier not found" });
   }
 
+  console.log("Request Body", req.body);
   const { businessName, doingBusinessAs, businessNumber, canadianCarrierCode, nationalSafetyCode, wcb, website } = req.body;
 
   const updateData = {
@@ -424,6 +428,7 @@ const updateCarrierBusinessDetails = asyncHandler(async (req, res) => {
   ) {
     updateData.safetyFitnessCertificate = req.files.safetyFitnessCertificate[0].path;
   }
+  console.log("Updated Data", updateData);
 
   try {
     const updatedCarrier = await Carrier.findOneAndUpdate(

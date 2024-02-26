@@ -18,6 +18,7 @@ import CustomInput from "../utils/forms/customInput.js";
 import CustomButton from "../buttons/customButton";
 import logout from "../methods/logout";
 import CustomUpload from "../buttons/customUpload.js";
+import { DocumentValidation } from "../utils/validation/documentValidation.js";
 
 // Start of the Build
 export default function CarrierCompanyDetailsForm() {
@@ -65,11 +66,11 @@ export default function CarrierCompanyDetailsForm() {
       "Business Number",
       businessNumber
     );
-    const carrierProfileError = EmptyValidation(
+    const carrierProfileError = DocumentValidation(
       "Carrier Profile",
       carrierProfile
     );
-    const safetyFitnessCertificateError = EmptyValidation(
+    const safetyFitnessCertificateError = DocumentValidation(
       "Safety Fitness Certificate",
       safetyFitnessCertificate
     );
@@ -126,6 +127,7 @@ export default function CarrierCompanyDetailsForm() {
     }
     // Start of PUT Method
     try {
+      console.log("Form Data", formData)
       const carrierBusinessDetailsResponse = await axios.put(
         "/api/carrierbusinessdetails",
         formData,

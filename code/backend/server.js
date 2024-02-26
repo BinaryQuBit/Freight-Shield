@@ -1,4 +1,4 @@
-// The whole Server
+// The whole Server 
 
 import express from "express";
 import { fileURLToPath } from "url";
@@ -10,12 +10,11 @@ import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import connectDB from "./config/db.js";
 import AdminRoutes from "./routes/adminRoutes.js";
 import CarrierRoutes from "./routes/carrierRoutes.js";
-// import DriverRoutes from "./routes/driverRoutes.js";
+import DriverRoutes from "./routes/driverRoutes.js";
 import NewUserRoutes from "./routes/newUserRoutes.js";
 import ShipperRoutes from "./routes/shipperRoutes.js";
 // import SuperUserRoutes from "./routes/superUserRoutes.js.js";
 import cors from "cors";
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -35,7 +34,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(NewUserRoutes);
 app.use('/api', AdminRoutes);
 app.use('/api', CarrierRoutes);
-// app.use(DriverRoutes);
+app.use('/api', DriverRoutes);
 app.use('/api', ShipperRoutes);
 // app.use(SuperUserRoutes);
 
