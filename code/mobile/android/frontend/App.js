@@ -10,7 +10,9 @@ import WelcomeScreen from "./screens/WelcomeScreen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LogBookForm from "./forms/LogBookForm";
 import BottomTabs from "./components/BottomTabs";
-import SignUpScreen from "./screens/SignUpScreen";
+import CompanyDetailsRegisterScreen from "./screens/CompanyDetailsRegisterScreen";
+import PersonalDetailsRegisterScreen from "./screens/PersonalDetailsRegisterScreen";
+
 
 const Stack = createStackNavigator();
 
@@ -40,7 +42,8 @@ export default function App() {
               component={BottomTabs}
               options={{ headerShown: false }}
             />
-            <Stack.Screen name="SignupScreen" component={SignUpScreen} options={{ headerShown: false }}/>
+            <Stack.Screen name="PersonalDetailsRegisterScreen" component={PersonalDetailsRegisterScreen} options={{ headerShown: false }}/>
+            <Stack.Screen name="CompanyDetailsRegisterScreen" component={CompanyDetailsRegisterScreen} options={{ headerShown: false }}/>
             <Stack.Screen name="LogBookForm" component={LogBookForm} />
           </Stack.Navigator>
         </SafeAreaView>

@@ -115,7 +115,7 @@ export default function WelcomeScreen({ navigation }) {
             style={styles.styledButton}
             onPress={() => {
               setModalVisible(false);
-              navigation.navigate("SignupScreen");
+              navigation.navigate("PersonalDetailsRegisterScreen");
             }}
           >
             <Text style={styles.buttonText}>Sign Up</Text>
