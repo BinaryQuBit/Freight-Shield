@@ -24,14 +24,12 @@ export default function LogBookScreen2() {
     if (!isFocused) return;
     const fetchLogBooks = async () => {
       try {
-        const storedDriverId = await AsyncStorage.getItem("driverId");
+        // const storedDriverId = await AsyncStorage.getItem("driverId");
         if (storedDriverId !== null) {
           const driverId = JSON.parse(storedDriverId);
 
-          const response = await axios.get(`${API_BASE_URL}/getlogbook`, {
-            params: {
-              driverId: driverId,
-            },
+          const response = await axios.get(`${API_BASE_URL}/api/getlogbook/${driver_id}`, {
+            
           });
 
           // Check if response.data is an array before setting it
