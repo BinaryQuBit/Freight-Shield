@@ -12,7 +12,6 @@ import {
 
 import {
   getActiveLoads,
-  getPostLoad,
   getHistory,
   getShipperSettings,
   getShipperContactDetails,
@@ -35,7 +34,7 @@ const router = express.Router();
 
 /////////////////////////////////////////////////////// GETTERS ///////////////////////////////////////////////////////
 router.get("/activeloads", protect, shipperOnly, status, getActiveLoads);
-router.get("/postload", protect, shipperOnly, status, getPostLoad);
+router.get("/postload", protect, shipperOnly, status);
 router.get("/history", protect, shipperOnly, status, getHistory);
 router.get("/shippersettings", protect, shipperOnly, status, getShipperSettings);
 router.get("/shippercontactdetails", protect, shipperOnly, getShipperContactDetails);

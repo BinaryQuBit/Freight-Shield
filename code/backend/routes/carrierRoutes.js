@@ -20,6 +20,7 @@ import {
   updateCarrierBusinessDetails,
   updateCarrierSubmissionDetails,
   updateCarrierStatus,
+  updateDriverStatus,
 } from "../controllers/carrierController.js"; 
 
 const router = express.Router();
@@ -43,5 +44,6 @@ router.put("/carriercontactdetails", protect, carrierOnly, updateCarrierContactD
 router.put("/carrierbusinessdetails", protect, carrierOnly, upload.fields([{ name: "carrierProfile", maxCount: 1 }, { name: "safetyFitnessCertificate", maxCount: 1 }]), updateCarrierBusinessDetails);
 router.put("/carriersubmissiondetails", protect, carrierOnly, upload.fields([{ name: "carrierProfile", maxCount: 1 }, { name: "safetyFitnessCertificate", maxCount: 1 }]), updateCarrierSubmissionDetails);
 router.put("/carrierstatus", protect, carrierOnly, updateCarrierStatus);
+router.put("/updatedriverstatus/:driverId", protect, carrierOnly, status, updateDriverStatus);
 
 export default router;

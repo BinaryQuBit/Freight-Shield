@@ -28,23 +28,10 @@ const getActiveLoads = asyncHandler(async (req, res) => {
   try {
     const userEmail = req.user.email;
     const loads = await Marketplace.find({ shipperEmail: userEmail });
-    console.log("This is my Email", userEmail)
     res.status(200).json(loads);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-});
-
-// @desc    Getting PostLoad
-// route    GET /api/postload
-// @access  Private
-const getPostLoad = asyncHandler(async (req, res) => {
-  const user = {
-    _id: req.user._id,
-    email: req.user.email,
-  };
-
-  res.status(200).json({ user });
 });
 
 // @desc    Getting History
@@ -699,7 +686,6 @@ const deleteLoad = async (req, res) => {
 
 export {
   getActiveLoads,
-  getPostLoad,
   getHistory,
   getShipperSettings,
   getShipperContactDetails,
