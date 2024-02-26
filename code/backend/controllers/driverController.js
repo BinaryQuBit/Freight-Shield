@@ -2,7 +2,7 @@
 
 import asyncHandler from "express-async-handler";
 import Driver from "../models/driverModel.js"
-// import LogBook from "../models/logbookModel.js"
+import LogBook from "../models/logbookModel.js"
 
 ////////////////////////////// Putters //////////////////////////////
 // @desc    Update Carrier Contact Details
@@ -59,7 +59,43 @@ const updateCompanyDetailsRegister = asyncHandler(async (req, res) => {
   }
 });
 
+
+const getLogBooks = async (req, res) => {
+    
+  const { driverId } = req.query;
+
+  try {
+      
+      let query = {};
+      if (driverId) {
+          query.driverId = driverId;
+      }
+
+      const logBooks = await LogBook.find(query);
+      res.status(200).send(logBooks);
+  } catch (error) {
+      console.error("Error fetching logbooks:", error);
+      res.status(500).send(error);
+  }
+}
+
+
+const createLogBook = async (req, res) => {
+  const logBook = new LogBook(req.body);
+
+  try {
+      await logBook.save();
+      res.status(201).send(logBook);
+  } catch (error) {
+      res.status(400).send(error);
+  }
+};
+
+
+
 export {
   updateCompanyDetailsRegister,
+  createLogBook,
+  getLogBooks,
   
 }
