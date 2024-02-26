@@ -1,22 +1,54 @@
-import React from "react";
-import { StyleSheet, View, Text } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Text, Alert, TouchableOpacity } from 'react-native';
+import axios from 'axios';
+import { useIsFocused } from '@react-navigation/native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {
   faInfoCircle,
   faUser,
   faMapMarkedAlt,
   faTruckLoading,
   faClock,
-} from "@fortawesome/free-solid-svg-icons";
+} from '@fortawesome/free-solid-svg-icons';
 
 const ICON_SIZE = 20;
 
 export default function HomeScreen() {
+  const [firstName, setFirstName] = useState('');
+  const isFocused = useIsFocused();
+  const [pickUpCity, setPickUpCity] = useState('');
+  const [dropOffCity, setDropOffCity] = useState('');
+  const [shipperCompanyName, setShipperCompanyName] = useState('');
+  const [loadAccepted, setLoadAccepted] = useState(false);
+
+
+  useEffect(() => {
+    if (!isFocused) return;
+    const fetchData = async () => {
+      try {
+        const API_BASE_URL = 'http://142.3.84.37:8080';
+        const nameResponse = await axios.get(`${API_BASE_URL}/api/getFirstName`);
+        setFirstName(nameResponse.data.firstName);
+
+        if (nameResponse.data.loads && nameResponse.data.loads.length > 0) {
+          setPickUpCity(nameResponse.data.loads[0].pickUpCity);
+          setDropOffCity(nameResponse.data.loads[0].dropOffCity);
+          setShipperCompanyName(nameResponse.data.loads[0].shipperCompanyName);
+        } else {
+          console.log("No loads found");
+          setPickUpCity('');
+          setDropOffCity("");
+          setShipperCompanyName("");
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        Alert.alert('Error', 'Failed to fetch data');
+      }
+    };
+    fetchData();
+  }, [isFocused]);
+
   const currentLoad = {
-    pickupLocation: "Regina, SK",
-    dropLocation: "Calgary, AB",
-    shipperName: "Real Canadian Superstore",
     workingDayHours: "8 hours",
     workingWeekHours: "40 hours",
   };
@@ -25,12 +57,29 @@ export default function HomeScreen() {
     console.log("Current load pressed");
   };
 
+  const acceptLoad = async () => {
+    try {
+      const API_BASE_URL = 'http://142.3.84.37:8080';
+      // Add the appropriate endpoint and data for your PUT request
+      const response = await axios.put(`${API_BASE_URL}/api/acceptload`, {
+        // Your request payload here, if needed
+      });
+      Alert.alert('Success', 'Load accepted successfully');
+      setLoadAccepted(true); // Update state to reflect that the load has been accepted
+    } catch (error) {
+      console.error('Error accepting load:', error);
+      Alert.alert('Error', 'Failed to accept load');
+    }
+  };
+  
+  
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome Ali</Text>
+      <Text style={styles.title}>Welcome {firstName}</Text>
 
       <View style={styles.sectionContainer}>
-        <Text style={styles.subtitle}>Current Load</Text>
+        <Text style={styles.subtitle}>New Load</Text>
         <TouchableOpacity
           style={styles.currentLoadContainer}
           onPress={onCurrentLoadPress}
@@ -48,7 +97,7 @@ export default function HomeScreen() {
               style={styles.icon}
             />
             <Text style={styles.locationText}>
-              Shipper: {currentLoad.shipperName}
+              Shipper: {shipperCompanyName}
             </Text>
           </View>
           <View style={styles.loadDetailRow}>
@@ -58,7 +107,7 @@ export default function HomeScreen() {
               style={styles.icon}
             />
             <Text style={styles.locationText}>
-              Pickup: {currentLoad.pickupLocation}
+              Pickup: {pickUpCity}
             </Text>
           </View>
           <View style={styles.loadDetailRow}>
@@ -68,7 +117,7 @@ export default function HomeScreen() {
               style={styles.icon}
             />
             <Text style={styles.locationText}>
-              Drop: {currentLoad.dropLocation}
+              Drop: {dropOffCity}
             </Text>
           </View>
         </TouchableOpacity>
@@ -99,6 +148,18 @@ export default function HomeScreen() {
           </View>
         </View>
       </View>
+
+      <View style={styles.acceptButtonContainer}>
+  {!loadAccepted && ( // This line checks if loadAccepted is false
+    <TouchableOpacity
+      style={styles.acceptButton}
+      onPress={acceptLoad}
+      activeOpacity={0.7}
+    >
+      <Text style={styles.acceptButtonText}>Accept</Text>
+    </TouchableOpacity>
+  )}
+</View>
     </View>
   );
 }
@@ -170,4 +231,23 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginLeft: 5,
   },
+  acceptButtonContainer: {
+    width: "100%",
+    alignItems: "center",
+    marginTop: 20,
+  },
+  acceptButton: {
+    backgroundColor: "#4CAF50", // Green background
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    width: "90%", // Match the width of other containers for consistency
+  },
+  acceptButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 18,
+  },
 });
+

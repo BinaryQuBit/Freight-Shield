@@ -21,6 +21,8 @@ import {
   updateCarrierSubmissionDetails,
   updateCarrierStatus,
   updateDriverStatus,
+  updateDriverStatusLoad,
+  // getUnitDriver,
 } from "../controllers/carrierController.js"; 
 
 const router = express.Router();
@@ -34,6 +36,8 @@ router.get("/carriersettings", protect, carrierOnly, getCarrierSettings);
 router.get("/carriercontactdetails", protect, carrierOnly, getCarrierContactDetails);
 router.get("/carrierbusinessdetails", protect, carrierOnly, getCarrierBusinessDetails);
 router.get("/carriersubmission", protect, carrierOnly, getCarrierSubmission);
+// router.get("/getunitdriver", protect, carrierOnly, getUnitDriver);
+
 
 /////////////////////////////////////////////////////// POSTERS ///////////////////////////////////////////////////////
 router.post("/postunit", upload.fields([{ name: "unitRegistration", maxCount: 1 }, { name: "unitInsurance", maxCount: 1 }, { name: "unitSafety", maxCount: 1 }]), protect, carrierOnly, status, postUnit);
@@ -45,5 +49,6 @@ router.put("/carrierbusinessdetails", protect, carrierOnly, upload.fields([{ nam
 router.put("/carriersubmissiondetails", protect, carrierOnly, upload.fields([{ name: "carrierProfile", maxCount: 1 }, { name: "safetyFitnessCertificate", maxCount: 1 }]), updateCarrierSubmissionDetails);
 router.put("/carrierstatus", protect, carrierOnly, updateCarrierStatus);
 router.put("/updatedriverstatus/:driverId", protect, carrierOnly, status, updateDriverStatus);
+router.put("/updatedriverstatusload", protect, carrierOnly, status, updateDriverStatusLoad);
 
 export default router;
