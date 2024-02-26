@@ -3,6 +3,7 @@
 import asyncHandler from "express-async-handler";
 import Carrier from "../models/carrierModel.js";
 import Marketplace from "../models/marketplaceModel.js";
+import Driver from "../models/driverModel.js"
 import deleteFiles from "../middleware/delete.js";
 
 ////////////////////////////// Getters //////////////////////////////
@@ -36,13 +37,34 @@ const getMyLoads = asyncHandler(async (req, res) => {
 // route    GET /api/driverprofiles
 // @access  Private
 const getDriverProfiles = asyncHandler(async (req, res) => {
-  const user = {
-    _id: req.user._id,
-    email: req.user.email,
-  };
+  try {
+    const userEmail = req.user.email;
+    const carrier = await Carrier.findOne({ email: userEmail });
 
-  res.status(200).json({ user });
+    if (!carrier) {
+      return res.status(404).json({ message: "Carrier not found" });
+    }
+
+    const canadianCarrierCode = carrier.canadianCarrierCode;
+    const drivers = await Driver.find({ canadianCarrierCode: canadianCarrierCode });
+
+    const driverData = drivers.map(driver => ({
+      driver_id: driver._id,
+      driverAbstract: driver.driverAbstract,
+      driverLicence: driver.driverLicence,
+      email: driver.email,
+      firstName: driver.firstName,
+      lastName: driver.lastName,
+      phoneNumber: driver.phoneNumber,
+      driverStatus: driver.driverStatus
+    }));
+
+    res.status(200).json({ driverData });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
+
 
 // @desc    Getting Unit Profiles
 // route    GET /api/unitprofiles
@@ -576,6 +598,27 @@ const updateCarrierStatus = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Update Driver Status
+// route    PUT /api/updatedriverstatus
+// @access  Private
+const updateDriverStatus = asyncHandler(async (req, res) => {
+  const driverId = req.params.driverId;
+  try {
+      const result = await Driver.updateOne(
+          { _id: driverId },
+          { $set: { driverStatus: 'declined' } }
+      );
+
+      if (result.modifiedCount === 1) {
+          res.json({ message: 'Driver status updated successfully.' });
+      } else {
+          res.status(404).json({ message: 'Driver not found.' });
+      }
+  } catch (error) {
+      res.status(500).json({ message: 'Error updating driver status', error: error });
+  }
+});
+
 export {
   getMarketplace,
   getMyLoads,
@@ -591,4 +634,5 @@ export {
   updateCarrierBusinessDetails,
   updateCarrierSubmissionDetails,
   updateCarrierStatus,
+  updateDriverStatus,
 };
