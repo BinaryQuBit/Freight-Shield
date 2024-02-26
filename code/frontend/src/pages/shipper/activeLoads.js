@@ -107,7 +107,7 @@ export default function ActiveLoads() {
       .then(() => {
         console.log(`Load with id ${loadId} deleted successfully.`);
         setFilteredLoads((currentLoads) =>
-          currentLoads.filter((load) => load.id !== loadId)
+          currentLoads.filter((load) => load._id !== loadId)
         );
       })
       .catch((error) => {
@@ -143,7 +143,7 @@ export default function ActiveLoads() {
           <Card overflowX="auto" width="full" p="4" rounded={"no"}>
             <Accordion allowToggle>
               {filteredLoads.map((load) => (
-                <AccordionItem key={load.id} my="2">
+                <AccordionItem key={load._id} my="2">
                   <h2>
                     <AccordionButton
                       _expanded={{ bg: "gray.100", color: "black" }}

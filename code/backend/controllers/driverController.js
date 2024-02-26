@@ -4,6 +4,7 @@ import asyncHandler from "express-async-handler";
 import Driver from "../models/driverModel.js"
 // import LogBook from "../models/logbookModel.js"
 
+////////////////////////////// Putters //////////////////////////////
 // @desc    Update Carrier Contact Details
 // route    PUT /api/companydetailsregister
 // @access  Private
@@ -23,7 +24,7 @@ const updateCompanyDetailsRegister = asyncHandler(async (req, res) => {
   const updateData = {
     canadianCarrierCode
   }
-
+ 
   console.log("File", req.files.driverLicence[0]);
   if (
     req.files &&
@@ -60,4 +61,5 @@ const updateCompanyDetailsRegister = asyncHandler(async (req, res) => {
 
 export {
   updateCompanyDetailsRegister,
+  
 }
