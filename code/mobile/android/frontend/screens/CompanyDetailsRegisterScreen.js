@@ -72,6 +72,7 @@ const PersonalDetailsRegisterScreen = ({ navigation }) => {
             },
         });
         console.log('Submission success:', response.data);
+        navigation.navigate("Welcome");
     } catch (error) {
         console.error('Submission error:', error);
     }
