@@ -11,7 +11,7 @@ const router = express.Router();
 router.put("/companydetailsregister", protect, upload.fields([{ name: "driverLicence", maxCount: 1 }, { name: "driverAbstract", maxCount: 1 }]), updateCompanyDetailsRegister);
 
 router.post('/createlogbook',protect ,createLogBook);
-router.get('/getlogbook', getLogBooks);
+router.get('/getlogbook', protect, getLogBooks);
 
 
 export default router;
