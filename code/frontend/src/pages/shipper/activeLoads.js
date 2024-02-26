@@ -253,13 +253,20 @@ export default function ActiveLoads() {
                             Carrier Information
                           </Text>
                           <Text fontSize="md" mb="2">
-                            <strong>Name:</strong>
+                            <strong>Business Name:</strong>{" "}
+                            {load.carrierBusinessName}{" "}{"("}{load.carrierDoingBusinessAs}{")"}
                           </Text>
                           <Text fontSize="md" mb="2">
-                            <strong>Phone Number:</strong>
+                            <strong>Contact Name:</strong>{" "}
+                            {load.carrierFirstName}{" "}{load.carrierLastName}
+                          </Text>
+                          <Text fontSize="md" mb="2">
+                            <strong>Phone Number:</strong>{" "}
+                            {load.carrierPhoneNumber}
                           </Text>
                           <Text fontSize={"md"} mb={"2"}>
-                            <strong>Email:</strong>
+                            <strong>Email:</strong>{" "}
+                            {load.carrierEmail}
                           </Text>
                         </Box>
                       )}
