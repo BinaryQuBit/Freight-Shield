@@ -61,9 +61,7 @@ const updateCompanyDetailsRegister = asyncHandler(async (req, res) => {
 
 
 const getLogBooks = async (req, res) => {
-    
-  const { driverId } = req.query;
-
+  const driverId = req.user._id;
   try {
       
       let query = {};
@@ -81,7 +79,11 @@ const getLogBooks = async (req, res) => {
 
 
 const createLogBook = async (req, res) => {
-  const logBook = new LogBook(req.body);
+  const driverId = req.user._id;
+  console.log(driverId);
+  
+  const logBookData = { ...req.body, driverId: driverId };
+  const logBook = new LogBook(logBookData);
 
   try {
       await logBook.save();
@@ -90,6 +92,7 @@ const createLogBook = async (req, res) => {
       res.status(400).send(error);
   }
 };
+
 
 
 

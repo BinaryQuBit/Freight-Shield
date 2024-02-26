@@ -34,21 +34,6 @@ const LogBookForm = () => {
   const navigation = useNavigation();
   const [driverId, setDriverId] = useState("");
 
-  useEffect(() => {
-    const getDriverId = async () => {
-      try {
-        const storedDriverId = await AsyncStorage.getItem("driverId");
-        if (storedDriverId !== null) {
-          setDriverId(JSON.parse(storedDriverId));
-        }
-      } catch (error) {
-        console.error("Failed to fetch driver ID from storage", error);
-      }
-    };
-
-    getDriverId();
-  }, []);
-
   const [logBook, setLogBook] = useState(
     Array.from({ length: 24 }, () => "OFF-DUTY")
   );
@@ -81,7 +66,6 @@ const LogBookForm = () => {
       };
 
       const submissionData = {
-        driverId,
         startingOdometer: parseInt(formValues.startOdometer),
         endingOdometer: parseInt(formValues.endOdometer),
         totalDistanceDrivenToday: parseInt(formValues.totalDistance),
@@ -485,4 +469,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LogBookForm;
+export default LogBookForm; 
