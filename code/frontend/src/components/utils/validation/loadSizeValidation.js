@@ -1,15 +1,18 @@
 export const LoadSizeValidation = (number) => {
-    const numberPattern = /^\d+$/;
-  
-    if (number === null || number === undefined || number === '') {
+  if (number === null || number === undefined || number.trim() === '') {
       return "Number is required";
-    }
-    if (!numberPattern.test(number)) {
+  }
+
+  const trimmedNumber = number.trim();
+
+  const numberPattern = /^\d+$/;
+  if (!numberPattern.test(trimmedNumber)) {
       return "Please enter a whole number";
-    }
-    if (parseInt(number, 10) < 1) {
+  }
+
+  if (parseInt(trimmedNumber, 10) < 1) {
       return "Load cannot be less than 1 foot";
-    }
-    return "";
-  };
-  
+  }
+
+  return "";
+};

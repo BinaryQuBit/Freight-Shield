@@ -27,6 +27,7 @@ import { EmptyValidation } from "../utils/validation/emptyValidation.js";
 import { PhoneNumberValidation } from "../utils/validation/phoneNumberValidation.js";
 import { PostalCodeValidation } from "../utils/validation/postalCodeValidation.js";
 import { WebsiteValidation } from "../utils/validation/websiteValidation.js";
+import { DocumentValidation } from "../utils/validation/documentValidation.js";
 
 // Start of the Build
 export default function EditCarrierDetails({ isOpen, onClose, data }) {
@@ -167,11 +168,11 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
       "Business Number",
       businessNumber
     );
-    const carrierProfileError = EmptyValidation(
+    const carrierProfileError = DocumentValidation(
       "Carrier Profile",
       carrierProfile
     );
-    const safetyFitnessCertificateError = EmptyValidation(
+    const safetyFitnessCertificateError = DocumentValidation(
       "Safety Fitness Certificate",
       safetyFitnessCertificate
     );

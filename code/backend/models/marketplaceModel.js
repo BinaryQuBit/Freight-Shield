@@ -102,6 +102,18 @@ const marketplaceSchema = mongoose.Schema(
     carrierDoingBusinessAs: {
       type: String,
     },
+    driverFirstName: {
+      type: String,
+    },
+    driverLastName: {
+      type:String,
+    },
+    driverPhoneNumber: {
+      type: String,
+    },
+    driverEmail: {
+      type: String,
+    }
   },
   {
     timestamps: true,

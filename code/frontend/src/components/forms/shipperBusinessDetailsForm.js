@@ -18,6 +18,7 @@ import CustomInput from "../utils/forms/customInput.js";
 import CustomButton from "../buttons/customButton";
 import logout from "../methods/logout";
 import CustomUpload from "../buttons/customUpload.js";
+import { DocumentValidation } from "../utils/validation/documentValidation.js";
 
 // Start of the Build
 export default function ShipperCompanyDetailsForm() {
@@ -54,11 +55,11 @@ export default function ShipperCompanyDetailsForm() {
       "Business Number",
       businessNumber
     );
-    const proofBusinessError = EmptyValidation(
+    const proofBusinessError = DocumentValidation(
       "Proof of Business",
       proofBusiness
     );
-    const proofInsuranceError = EmptyValidation(
+    const proofInsuranceError = DocumentValidation(
       "Proof of Insurance",
       proofInsurance
     );
