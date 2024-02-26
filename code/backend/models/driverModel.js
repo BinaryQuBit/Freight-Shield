@@ -30,6 +30,9 @@ const driverSchema = mongoose.Schema(
     },
     driverAbstract: {
       type: String,
+    },
+    driverStatus: {
+      type: String,
     }
   },
   {
