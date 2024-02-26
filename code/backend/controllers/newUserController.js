@@ -268,8 +268,6 @@ const registerUser = asyncHandler(async (req, res) => {
       throw new Error("Invalid Driver Data");
     }
   }
-
-  res.status(200).json({ message: "Register User" });
 });
 
 // @desc    Forget Password
