@@ -111,7 +111,7 @@ export default function UnitProfile() {
                               unit.unitStatus === "active" ? "green" : "red"
                             }
                           >
-                            {unit.unitStatus.toUpperCase()}
+                            {unit.unitStatus}
                           </Badge>
                         </Text>
                       </Box>

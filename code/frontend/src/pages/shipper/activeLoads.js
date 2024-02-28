@@ -282,13 +282,16 @@ export default function ActiveLoads() {
                             Driver Information
                           </Text>
                           <Text fontSize={"md"} mb={"2"}>
-                            <strong>Name:</strong>
+                            <strong>Name:</strong>{" "}
+                            {load.driverFirstName}{" "}{load.driverLastName}
                           </Text>
                           <Text fontSize={"md"} mb={"2"}>
-                            <strong>Phone Number:</strong>
+                            <strong>Phone Number:</strong>{" "}
+                            {load.driverPhoneNumber}
                           </Text>
                           <Text fontSize={"md"} mb={"2"}>
-                            <strong>Email:</strong>
+                            <strong>Email:</strong>{" "}
+                            {load.driverEmail}
                           </Text>
                         </Box>
                       )}

@@ -6,3 +6,9 @@ node_modules/
 
 # macOS
 .DS_Store
+
+# expo
+.expo/
+
+# Debugger
+%ProgramData%/
