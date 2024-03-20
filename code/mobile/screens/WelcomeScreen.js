@@ -1,149 +1,77 @@
-// React Import
-import React, { useState, useRef, useEffect } from "react";
-
-// React Native Imports
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Animated,
-  TouchableWithoutFeedback,
-  Dimensions,
-} from "react-native";
+// React Imports
+import React, { useState } from "react";
+import { StyleSheet, KeyboardAvoidingView, Platform, View } from "react-native";
 
 // Custom Imports
-import LoginForm from "../forms/LoginForm";
-import ForgotPasswordForm from "../forms/ForgotPasswordForm";
+import Logo from "../components/logo.js";
+import CustomButton from "../components/customs/customButton.js";
+import CustomModal from "../components/customs/customModal.js";
+import LoginForm from "../components/forms/loginForm.js";
+import RegisterFormStep1 from "../components/forms/registerFormStep1.js";
+import { DynamicLogo } from "../components/responsiveness/dynamicLogo.js";
+import KeyboardVisibility from "../components/responsiveness/keyboardVisibility";
 
-// Screen Height
-const screenHeight = Dimensions.get("window").height;
-
-// Start of Build
-export default function WelcomeScreen({ navigation }) {
-  const navigate = useNavigation();
-
-  // References
-  const animation = useRef(new Animated.Value(screenHeight)).current;
-  const logoAnimation = useRef(new Animated.Value(0)).current;
-
+// Start of the Build
+export default function WelcomeScreen() {
   // Hooks
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [activeForm, setActiveForm] = useState("login");
+  const [loginModalVisible, setLoginModalVisible] = useState(false);
+  const [registerModalVisible, setRegisterModalVisible] = useState(false);
+  const keyboardVisible = KeyboardVisibility();
 
-  // Focus Effect
-  useFocusEffect(
-    React.useCallback(() => {
-      setModalVisible(false);
-      handlePressOutside();
-    }, [])
+  const isLoginModalVisible = loginModalVisible;
+  const isRegisterModalVisible = registerModalVisible;
+  const modalVisibility = isLoginModalVisible
+    ? { visible: isLoginModalVisible, multiplier: 0 }
+    : { visible: isRegisterModalVisible, multiplier: 0.45 };
+  const marginTopValue = DynamicLogo(
+    modalVisibility.visible,
+    modalVisibility.multiplier
   );
 
-  // Functions
-  const showForgotPassword = () => {
-    setActiveForm("forgotPassword");
-  };
-
-  const showLoginForm = () => {
-    setActiveForm("login");
-  };
-
-  const slideUp = (formType) => {
-    setActiveForm(formType);
-    Animated.timing(logoAnimation, {
-      toValue: 1,
-      duration: 500,
-      useNativeDriver: false,
-    }).start();
-    Animated.timing(animation, {
-      toValue: 0,
-      duration: 500,
-      useNativeDriver: true,
-    }).start();
-    setModalVisible(true);
-  };
-
-  const handlePressOutside = () => {
-    Animated.timing(logoAnimation, {
-      toValue: 0,
-      duration: 500,
-      useNativeDriver: false,
-    }).start();
-
-    if (isModalVisible) {
-      slideDown();
-    }
-  };
-
-  const logoMarginTop = logoAnimation.interpolate({
-    inputRange: [0, 1],
-    outputRange: [screenHeight / 4, 90],
-  });
-
-  const slideDown = () => {
-    Animated.timing(animation, {
-      toValue: screenHeight,
-      duration: 500,
-      useNativeDriver: true,
-    }).start(() => setModalVisible(false));
-  };
-
   return (
-    <View style={styles.container}>
-      <Animated.View
-        style={[styles.logoContainer, { marginTop: logoMarginTop }]}
-      >
-        <Animated.Image
-          source={require("../assets/Logo2.png")}
-          style={styles.logo}
+    <KeyboardAvoidingView
+      behavior="padding"
+      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+      style={styles.container}
+    >
+      <View style={[{ marginTop: marginTopValue }]}>
+        {!keyboardVisible && <Logo color="#0866FF" />}
+      </View>
+      <View>
+        {!keyboardVisible && (
+          <>
+            <CustomButton
+              onPress={() => setLoginModalVisible(true)}
+              children={"Login"}
+              mt={100}
+              br={25}
+              pH={30}
+              fs={16}
+            />
+            <CustomButton
+              onPress={() => setRegisterModalVisible(true)}
+              children={"Register"}
+              mt={30}
+              br={25}
+              pH={30}
+              fs={16}
+            />
+          </>
+        )}
+        <CustomModal
+          modalVisible={loginModalVisible}
+          setModalVisible={setLoginModalVisible}
+          children={<LoginForm />}
+          animationType={"slide"}
         />
-        <Animated.Text style={styles.welcomeText}>
-          Welcome Driver!
-        </Animated.Text>
-      </Animated.View>
-
-      {!isModalVisible && (
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.styledButton}
-            onPress={() => slideUp("login")}
-          >
-            <Text style={styles.buttonText}>Login</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.styledButton}
-            onPress={() => {
-              setModalVisible(false);
-              navigation.navigate("PersonalDetailsRegisterScreen");
-            }}
-          >
-            <Text style={styles.buttonText}>Sign Up</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-      {isModalVisible && (
-        <TouchableWithoutFeedback onPress={handlePressOutside}>
-          <View style={styles.overlayStyle}>
-            <Animated.View
-              style={[
-                styles.loginFormContainer,
-                {
-                  transform: [{ translateY: animation }],
-                },
-              ]}
-            >
-              {activeForm === "login" && (
-                <LoginForm onForgotPassword={showForgotPassword} />
-              )}
-              {activeForm === "forgotPassword" && (
-                <ForgotPasswordForm onBackToLogin={showLoginForm} />
-              )}
-            </Animated.View>
-          </View>
-        </TouchableWithoutFeedback>
-      )}
-    </View>
+        <CustomModal
+          modalVisible={registerModalVisible}
+          setModalVisible={setRegisterModalVisible}
+          children={<RegisterFormStep1 closeRegister1={() => setRegisterModalVisible(false)} />}
+          animationType={"slide"}
+        />
+      </View>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -151,72 +79,8 @@ export default function WelcomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    backgroundColor: "#fff",
-  },
-
-  logoContainer: {
-    width: 250,
-    height: 250,
-    alignItems: "center",
     justifyContent: "center",
-    overflow: "hidden",
-  },
-  logo: {
-    width: "100%",
-    height: "100%",
-    resizeMode: "contain",
-  },
-
-  welcomeText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 40,
-    color: "#333",
-  },
-
-  buttonContainer: {
     alignItems: "center",
-    marginTop: 20,
-  },
-
-  styledButton: {
-    backgroundColor: "#0866FF",
-    paddingVertical: 12,
-    paddingHorizontal: 25,
-    borderRadius: 30,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 3,
-    marginVertical: 10,
-    width: 200,
-  },
-
-  buttonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-
-  loginFormContainer: {
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
-    backgroundColor: "#fff",
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
-
-  overlayStyle: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    justifyContent: "flex-end",
+    backgroundColor: "#FFFFFF",
   },
 });

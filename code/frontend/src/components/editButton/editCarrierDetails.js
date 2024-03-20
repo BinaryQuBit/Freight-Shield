@@ -33,7 +33,7 @@ import { DocumentValidation } from "../utils/validation/documentValidation.js";
 export default function EditCarrierDetails({ isOpen, onClose, data }) {
   axios.defaults.withCredentials = true;
   const navigate = useNavigate();
-  const backendUrl = "http://localhost:8080";
+  const backendUrl = process.env.REACT_APP_BACKEND_PORT; 
 
   // Hooks
   const [streetAddress, setStreetAddress] = useState("");
@@ -629,7 +629,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
               mt={8}
               setError={setCarrierProfileError}
               setFileState={setCarrierProfile}
-              fileUrl={`${backendUrl}/${data.carrierProfile}`}
+              fileUrl={`http://${backendUrl}${data.carrierProfile}`}
             />
 
             <CustomUpload
@@ -641,7 +641,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
               mt={8}
               setError={setSafetyFitnessCertificateError}
               setFileState={setSafetyFitnessCertificate}
-              fileUrl={`${backendUrl}/${data.safetyFitnessCertificate}`}
+              fileUrl={`http://${backendUrl}${data.safetyFitnessCertificate}`}
             />
 
             <CustomInput

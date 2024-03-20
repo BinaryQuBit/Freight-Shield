@@ -1,0 +1,18 @@
+This is Log {
+    "logEntry": {
+        "_id": "65ed193296b3fb2ab5372616",
+        "date": "2024-03-06",
+        "day": "WEDNESDAY",
+        "status": {
+            "D": [Array
+            ],
+            "OFF": [Array
+            ],
+            "ON": [Array
+            ],
+            "SB": [Array
+            ],
+            "_id": "65ed193296b3fb2ab5372617"
+        }
+    }
+}

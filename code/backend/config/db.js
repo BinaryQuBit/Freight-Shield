@@ -1,15 +1,14 @@
-// Connection to Mongo Database
-
+// Mongoose Import
 import mongoose from "mongoose";
 
-export const connectDB = async () => {
+// Start of the Build
+export default async function connectDB() {
   try {
     const conn = await mongoose.connect(process.env.MDB_URL);
     console.log("Database Connected");
+    return { mongooseConn: conn, nativeClient: conn.connection.getClient() };
   } catch (error) {
     console.error(`Error: ${error.message}`);
     process.exit(1);
   }
-};
-
-export default connectDB;
+}

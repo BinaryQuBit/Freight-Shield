@@ -81,7 +81,6 @@ export default function ForgotPasswordForm() {
     setConfirmPasswordError(confirmPasswordError);
 
     if (emailError || passwordError || confirmPasswordError) {
-      console.log(emailError, passwordError, confirmPasswordError);
       return;
     }
 
@@ -89,7 +88,6 @@ export default function ForgotPasswordForm() {
       const response = await axios.post("/forgotpassword", { email });
 
       if (response.status === 200) {
-        console.log(response.data.message);
         onOpenOTP();
       }
     } catch (error) {

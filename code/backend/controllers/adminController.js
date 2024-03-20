@@ -1,11 +1,12 @@
-// Admin Controller
-
+// Async Handler Import
 import asyncHandler from "express-async-handler";
 
+////////////////////////////// Getters //////////////////////////////
+
 // @desc    Getting Administrators
-// route    GET /administartors
+// route    GET /api/administrators
 // @access  Private
-const administrators = asyncHandler(async (req, res) => {
+export const administrators = asyncHandler(async (req, res) => {
   const user = {
     _id: req.user._id,
     email: req.user.email,
@@ -15,63 +16,61 @@ const administrators = asyncHandler(async (req, res) => {
 });
 
 // @desc    Getting Pending
-// route    GET /pending
+// route    GET /api/pending
 // @access  Private
-const pending = asyncHandler(async (req, res) => {
-    const user = {
-      _id: req.user._id,
-      email: req.user.email,
-    };
-  
-    res.status(200).json({ user });
-  });
+export const pending = asyncHandler(async (req, res) => {
+  const user = {
+    _id: req.user._id,
+    email: req.user.email,
+  };
+
+  res.status(200).json({ user });
+});
 
 // @desc    Getting Approved
-// route    GET /approved
+// route    GET /api/approved
 // @access  Private
-const approved = asyncHandler(async (req, res) => {
-    const user = {
-      _id: req.user._id,
-      email: req.user.email,
-    };
-  
-    res.status(200).json({ user });
-  });
+export const approved = asyncHandler(async (req, res) => {
+  const user = {
+    _id: req.user._id,
+    email: req.user.email,
+  };
+
+  res.status(200).json({ user });
+});
 
 // @desc    Getting Shippers
-// route    GET /shippers
+// route    GET /api/shippers
 // @access  Private
-const shippers = asyncHandler(async (req, res) => {
-    const user = {
-      _id: req.user._id,
-      email: req.user.email,
-    };
-  
-    res.status(200).json({ user });
-  });
+export const shippers = asyncHandler(async (req, res) => {
+  const user = {
+    _id: req.user._id,
+    email: req.user.email,
+  };
+
+  res.status(200).json({ user });
+});
 
 // @desc    Getting Carriers
-// route    GET /carriers
+// route    GET /api/carriers
 // @access  Private
-const carriers = asyncHandler(async (req, res) => {
-    const user = {
-      _id: req.user._id,
-      email: req.user.email,
-    };
-  
-    res.status(200).json({ user });
-  });
+export const carriers = asyncHandler(async (req, res) => {
+  const user = {
+    _id: req.user._id,
+    email: req.user.email,
+  };
+
+  res.status(200).json({ user });
+});
 
 // @desc    Getting Admin Settings
-// route    GET /adminsettings
+// route    GET /api/adminsettings
 // @access  Private
-const adminsettings = asyncHandler(async (req, res) => {
-    const user = {
-      _id: req.user._id,
-      email: req.user.email,
-    };
-  
-    res.status(200).json({ user });
-  });
+export const adminsettings = asyncHandler(async (req, res) => {
+  const user = {
+    _id: req.user._id,
+    email: req.user.email,
+  };
 
-export { administrators, pending, approved, shippers, carriers, adminsettings }
+  res.status(200).json({ user });
+});

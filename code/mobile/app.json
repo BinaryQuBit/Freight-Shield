@@ -1,21 +1,13 @@
 {
   "expo": {
-    "name": "FreightShield",
-    "slug": "FreightShield",
+    "name": "Freight-Shield",
+    "slug": "Freight-Shield",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo/icon.png",
     "userInterfaceStyle": "light",
-    "plugins": [
-      [
-        "expo-document-picker",
-        {
-          "iCloudContainerEnvironment": "Production"
-        }
-      ]
-    ],
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/logo/paddedOriginalLogo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -27,18 +19,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logo/paddedOriginalLogo.png",
         "backgroundColor": "#ffffff"
-      },
-      "package": "freight.sheild"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "f02a6ac3-a4f0-4f0e-b697-5ad1df32db7e"
       }
-    }
+    },
+    "plugins": [
+      "expo-font"
+    ]
   }
 }

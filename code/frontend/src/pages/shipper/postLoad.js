@@ -1,9 +1,9 @@
 // Post Load Form
 
 // React Imports
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FiTruck, FiUpload, FiXCircle } from "react-icons/fi";
+import { FiTruck } from "react-icons/fi";
 import { GrPowerReset } from "react-icons/gr";
 
 // Axios Import
@@ -36,6 +36,8 @@ import { EmptyValidation } from "../../components/utils/validation/emptyValidati
 import { LoadSizeValidation } from "../../components/utils/validation/loadSizeValidation.js";
 import CustomInput from "../../components/utils/forms/customInput";
 import CustomUpload from "../../components/buttons/customUpload.js";
+import DistanceCalculator from "../../components/google/distanceCalculator.js";
+import { useData } from "../../components/utils/methods/getters/dataContext.js";
 
 // Start of the Build
 export default function PostLoad() {
@@ -45,6 +47,9 @@ export default function PostLoad() {
   const theme = useTheme();
   const customBlue = theme.colors.customBlue;
   const today = new Date().toISOString().split("T")[0];
+  const { data } = useData();
+  const firstName = data && data.user ? data.user.firstName : "";
+  const lastName = data && data.user ? data.user.lastName : "";
 
   // Hooks
   const [pickUpLocation, setPickUpLocation] = useState("");
@@ -64,6 +69,7 @@ export default function PostLoad() {
   const [pickUpLNG, setPickUpLNG] = useState("");
   const [dropOffLAT, setDropOffLAT] = useState("");
   const [dropOffLNG, setDropOffLNG] = useState("");
+  const [price, setPrice] = useState("");
 
   // Error Hooks
   const [pickUpLocationError, setPickUpLocationError] = useState("");
@@ -73,6 +79,7 @@ export default function PostLoad() {
   const [dropOffTimeError, setDropOffTimeError] = useState("");
   const [dropOffLocationError, setDropOffLocationError] = useState("");
   const [sizeLoadError, setSizeLoadError] = useState("");
+  const [priceError, setPriceError] = useState("");
 
   // Functions
   const handlePickUpDateChange = (event) => {
@@ -91,6 +98,7 @@ export default function PostLoad() {
     setDropOffTimeError("");
     setDropOffLocationError("");
     setSizeLoadError("");
+    setPriceError("");
 
     // Validation Checks
     const pickUpLocationError = EmptyValidation(
@@ -106,15 +114,21 @@ export default function PostLoad() {
       dropOffLocation
     );
     const sizeLoadError = LoadSizeValidation(sizeLoad);
+    const pickUpCityError = EmptyValidation("Proper Address", pickUpCity);
+    const dropoffCityError = EmptyValidation("Proper Address", dropOffCity);
+    const priceError = LoadSizeValidation(price);
 
     // Set Error
     setPickUpLocationError(pickUpLocationError);
+    setPickUpLocationError(pickUpCityError);
     setPickUpDateError(pickUpDateError);
     setPickUpTimeError(pickUpTimeError);
     setDropOffDateError(dropOffDateError);
     setDropOffTimeError(dropOffTimeError);
     setDropOffLocationError(dropOffLocationError);
+    setDropOffLocationError(dropoffCityError);
     setSizeLoadError(sizeLoadError);
+    setPriceError(priceError);
 
     // Produce Error
     if (
@@ -124,7 +138,10 @@ export default function PostLoad() {
       dropOffDateError ||
       dropOffTimeError ||
       dropOffLocationError ||
-      sizeLoadError
+      sizeLoadError ||
+      priceError ||
+      pickUpCityError ||
+      dropoffCityError
     ) {
       return;
     }
@@ -147,13 +164,14 @@ export default function PostLoad() {
     formData.append("pickUpLNG", pickUpLNG);
     formData.append("dropOffLAT", dropOffLAT);
     formData.append("dropOffLNG", dropOffLNG);
+    formData.append("price", price);
     if (additionalDocument) {
       formData.append("additionalDocument", additionalDocument);
     }
 
     // Start of POST Method
     try {
-      const response = await axios.post("/api/postload", formData, {});
+      const response = await axios.post("/api/postload", formData);
       navigate("/activeloads");
     } catch (error) {
       console.error("Error posting load:", error);
@@ -182,13 +200,14 @@ export default function PostLoad() {
     setPickUpLocationError("");
     setDropOffLocationError("");
     setSizeLoadError("");
+    setPrice("");
   };
 
   return (
     <>
       <Sidebar activePage="postLoad" />
       <EaseOut>
-        <UserHeader title="Post Load" />
+      <UserHeader title="Post Load" userInfo={{ firstName, lastName }} />
         <Box w="100%" p={5}>
           <Card p={5} rounded={"no"}>
             <form onSubmit={handlePost} noValidate>
@@ -377,8 +396,8 @@ export default function PostLoad() {
                       <Radio color={customBlue} value="LHV">
                         LHV
                       </Radio>
-                      <Radio color={customBlue} value="Super V">
-                        Super V
+                      <Radio color={customBlue} value="Super B">
+                        Super B
                       </Radio>
                     </SimpleGrid>
                   </RadioGroup>
@@ -405,8 +424,8 @@ export default function PostLoad() {
                   </RadioGroup>
                 </FormControl>
 
-                {typeLoad === "LTL" && (
-                  <div className={typeLoad === "LTL" ? "fade-in" : "fade-out"}>
+                {typeLoad === "LTL" ? (
+                  <div className="fade-in">
                     <CustomInput
                       mr={{ lg: 2 }}
                       mt={8}
@@ -419,10 +438,34 @@ export default function PostLoad() {
                       label={"Load Size (ft)"}
                     />
                   </div>
+                ) : (
+                  <>
+                    <Divider />
+                    <DistanceCalculator
+                      origin={{ lat: pickUpLAT, lng: pickUpLNG }}
+                      destination={{ lat: dropOffLAT, lng: dropOffLNG }}
+                      typeLoad={typeLoad}
+                      unitRequested={unitRequested}
+                      sizeLoad={sizeLoad}
+                    />
+                  </>
                 )}
-
+                <CustomInput
+                  label="Price"
+                  id="price"
+                  value={price}
+                  isRequired={true}
+                  type={"number"}
+                  onChange={(e) => {
+                    setPrice(e.target.value);
+                    setPriceError("");
+                  }}
+                  isError={!!priceError}
+                  errorMessage={priceError}
+                  mt={{ base: 4, md: 4, lg: 4 }}
+                  mb={{ base: 4, md: 4, lg: 0 }}
+                />
                 <Divider />
-
                 <CustomInput
                   mb={{ base: 4, md: 4, lg: 4 }}
                   mr={{ lg: 2 }}
@@ -438,7 +481,6 @@ export default function PostLoad() {
                   mt={8}
                   setFileState={setAdditionalDocument}
                 />
-
                 <Flex justifyContent="space-between">
                   <CustomButton
                     color={customBlue}

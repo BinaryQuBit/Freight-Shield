@@ -26,7 +26,7 @@ export default function ShipperSubmissionDetails() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const { data } = useData();
-  const backendUrl = "http://localhost:8080";
+  const backendUrl = process.env.REACT_APP_BACKEND_PORT
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -37,7 +37,7 @@ export default function ShipperSubmissionDetails() {
       });
 
       if (shipperStatusResponse.status === 200) {
-        navigate("/activeloads");
+        navigate("/shipperdashboard");
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
@@ -119,13 +119,13 @@ export default function ShipperSubmissionDetails() {
 
           {data.proofBusiness && (
             <CustomLink
-              href={`${backendUrl}/${data.proofBusiness}`}
+              href={`http://${backendUrl}${data.proofBusiness}`}
               children="View Proof of Business"
             />
           )}
           {data.proofInsurance && (
             <CustomLink
-              href={`${backendUrl}/${data.proofInsurance}`}
+              href={`http://${backendUrl}${data.proofInsurance}`}
               children="View Proof of Insurance"
             />
           )}

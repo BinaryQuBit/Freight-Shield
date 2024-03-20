@@ -34,14 +34,18 @@ import { useData } from "../../components/utils/methods/getters/dataContext.js";
 import CustomButton from "../../components/buttons/customButton.js";
 
 // Start of Build
-// Start of Build
 export default function DriverProfiles() {
   const { data } = useData();
   Protector("/api/driverprofiles");
   const driverData = data.driverData || [];
 
-  const pendingDrivers = driverData.filter(driver => driver.driverStatus === 'pending');
-  const acceptedDrivers = driverData.filter(driver => driver.driverStatus === 'accepted');
+  const pendingDrivers = driverData.filter(
+    (driver) => driver.driverStatus === "Pending"
+  );
+  const approvedDrivers = driverData.filter(
+    (driver) => driver.driverStatus === "Approved"
+  );
+  const backendUrl = process.env.REACT_APP_BACKEND_PORT;
 
   // Hooks
   const { colorMode } = useColorMode();
@@ -49,11 +53,15 @@ export default function DriverProfiles() {
   const handleDecline = async (driverId, event) => {
     event.preventDefault();
     try {
-      const driverStatusResponse = await axios.put(`/api/updatedriverstatus/${driverId}`, {
-        status: 'decline'
-      }, {
-        withCredentials: true,
-      });
+      const driverStatusResponse = await axios.put(
+        `/api/updatedriverstatus/${driverId}`,
+        {
+          status: "decline",
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
       if (driverStatusResponse.status === 200) {
         window.location.reload();
@@ -70,11 +78,15 @@ export default function DriverProfiles() {
   const handleAccept = async (driverId, event) => {
     event.preventDefault();
     try {
-      const driverStatusResponse = await axios.put(`/api/updatedriverstatus/${driverId}`, {
-        status: 'accepted'
-      }, {
-        withCredentials: true,
-      });
+      const driverStatusResponse = await axios.put(
+        `/api/updatedriverstatus/${driverId}`,
+        {
+          status: "Approved",
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
       if (driverStatusResponse.status === 200) {
         window.location.reload();
@@ -88,8 +100,8 @@ export default function DriverProfiles() {
     }
   };
 
-    // Check for no drivers
-    const noDrivers = driverData.length === 0;
+  // Check for no drivers
+  const noDrivers = driverData.length === 0;
 
   // Component rendering
   return (
@@ -99,25 +111,40 @@ export default function DriverProfiles() {
         <UserHeader title={"Driver Profiles"} />
         <Flex pt="10" direction="column" padding="10">
           {noDrivers ? (
-            <Text fontSize="20" textAlign={"center"}>Chirp Chirp, No Drivers Here</Text>
+            <Text fontSize="20" textAlign={"center"}>
+              Chirp Chirp, No Drivers Here
+            </Text>
           ) : (
             <Card overflowX="auto" width="full" p="4">
               {pendingDrivers.length > 0 && (
                 <>
-                  <Text fontSize="20" mb="4" textAlign={"center"}><strong>Pending</strong></Text>
+                  <Text fontSize="20" mb="4" textAlign={"center"}>
+                    <strong>Pending</strong>
+                  </Text>
                   <Accordion allowToggle>
                     {pendingDrivers.map((driver) => (
-                      <DriverProfileItem driver={driver} colorMode={colorMode} handleDecline={handleDecline} handleAccept={handleAccept} />
+                      <DriverProfileItem
+                        driver={driver}
+                        colorMode={colorMode}
+                        handleDecline={handleDecline}
+                        handleAccept={handleAccept}
+                        backendUrl={backendUrl}
+                      />
                     ))}
                   </Accordion>
                 </>
               )}
-              {acceptedDrivers.length > 0 && (
+              {approvedDrivers.length > 0 && (
                 <>
-                  <Text fontSize="20" textAlign={"center"} mb="4" mt="5"><strong>Accepted</strong></Text>
+                  <Text fontSize="20" textAlign={"center"} mb="4" mt="5">
+                    <strong>Approved</strong>
+                  </Text>
                   <Accordion allowToggle>
-                    {acceptedDrivers.map((driver) => (
-                      <DriverProfileItem driver={driver} colorMode={colorMode} />
+                    {approvedDrivers.map((driver) => (
+                      <DriverProfileItem
+                        driver={driver}
+                        colorMode={colorMode}
+                      />
                     ))}
                   </Accordion>
                 </>
@@ -130,7 +157,7 @@ export default function DriverProfiles() {
   );
 }
 
-function DriverProfileItem({ driver, colorMode, handleDecline, handleAccept }) {
+function DriverProfileItem({ driver, colorMode, handleDecline, handleAccept, backendUrl }) {
   return (
     <AccordionItem key={driver.email}>
       <h2>
@@ -150,7 +177,7 @@ function DriverProfileItem({ driver, colorMode, handleDecline, handleAccept }) {
       </h2>
       <AccordionPanel pb={4}>
         <Stack>
-          <Flex justifyContent="space-between">
+          <Flex justifyContent="space-between" align={"center"}>
             <Box>
               <Text fontSize="md" mb="2">
                 <strong>Email:</strong> {driver.email}
@@ -161,24 +188,33 @@ function DriverProfileItem({ driver, colorMode, handleDecline, handleAccept }) {
             </Box>
             <VStack>
               <Link
-                href={`http://localhost:8080/${driver.driverAbstract}`}
+                href={`http://${backendUrl}${driver.driverAbstract}`}
                 isExternal
                 color="blue.500"
               >
                 View Driver Abstract
               </Link>
               <Link
-                href={`http://localhost:8080/${driver.driverLicence}`}
+                href={`http://${backendUrl}${driver.driverLicenceFront}`}
                 isExternal
                 color="blue.500"
                 mt={2}
               >
-                View Driver Licence
+                View Driver Licence (Front)
+              </Link>
+
+              <Link
+                href={`http://${backendUrl}${driver.driverLicenceBack}`}
+                isExternal
+                color="blue.500"
+                mt={2}
+              >
+                View Driver Licence (Back)
               </Link>
             </VStack>
           </Flex>
         </Stack>
-        {driver.driverStatus === 'pending' && (
+        {driver.driverStatus === "Pending" && (
           <Flex justifyContent={"space-between"} mt={"7"}>
             <CustomButton
               backgroundColor="#D22B2B"
@@ -204,4 +240,3 @@ function DriverProfileItem({ driver, colorMode, handleDecline, handleAccept }) {
     </AccordionItem>
   );
 }
-

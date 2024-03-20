@@ -1,8 +1,10 @@
-// Driver Model
-
+// Mongoose Import
 import mongoose from "mongoose";
+
+// Custom Imports
 import { hashPassword, comparePassword } from "../utils/hashPassword.js";
 
+// Defination and Declaration of Driver Schema
 const driverSchema = mongoose.Schema(
   {
     firstName: {
@@ -25,7 +27,10 @@ const driverSchema = mongoose.Schema(
     phoneNumber: {
       type: String,
     },
-    driverLicence: {
+    driverLicenceFront: {
+      type: String,
+    },
+    driverLicenceBack: {
       type: String,
     },
     driverAbstract: {
@@ -33,7 +38,11 @@ const driverSchema = mongoose.Schema(
     },
     driverStatus: {
       type: String,
-      default: "pending"
+      default: "Pending",
+    },
+    driverLoadStatus: {
+      type: String,
+      default: "Available",
     },
     currentLoad: {
       type: String,
@@ -44,6 +53,7 @@ const driverSchema = mongoose.Schema(
   }
 );
 
+// Pre method to save password in Hash
 driverSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
     this.password = await hashPassword(this.password);
@@ -51,10 +61,13 @@ driverSchema.pre("save", async function (next) {
   next();
 });
 
+// Comparing Passwords
 driverSchema.methods.matchPassword = function (enteredPassword) {
   return comparePassword(enteredPassword, this.password);
 };
 
+// Preparing to Export
 const Driver = mongoose.model("Driver", driverSchema);
 
+// Exporting Driver Schema
 export default Driver;

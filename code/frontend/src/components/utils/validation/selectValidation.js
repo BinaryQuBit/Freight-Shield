@@ -2,7 +2,7 @@
 
 export const SelectValidation = (option) => {
   if (!option) {
-    return "Please select a role";
+    return "Please select an option";
   }
   return "";
 };

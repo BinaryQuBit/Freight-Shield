@@ -1,8 +1,10 @@
-// Super User Model
-
+// Mongoose Import
 import mongoose from "mongoose";
+
+// Custom Imports
 import { hashPassword, comparePassword } from "../utils/hashPassword.js";
 
+// Defination and Declaration of the Super User Schema
 const superUserSchema = mongoose.Schema(
   {
     email: {
@@ -20,6 +22,7 @@ const superUserSchema = mongoose.Schema(
   }
 );
 
+// Pre Method to Hash Password
 superUserSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
     this.password = await hashPassword(this.password);
@@ -27,10 +30,13 @@ superUserSchema.pre("save", async function (next) {
   next();
 });
 
+// Comparing Passwords
 superUserSchema.methods.matchPassword = function (enteredPassword) {
   return comparePassword(enteredPassword, this.password);
 };
 
+// Preparing to Export Super User Schema
 const SuperUser = mongoose.model("SuperUser", superUserSchema);
 
+// Exporting Super User Schema
 export default SuperUser;

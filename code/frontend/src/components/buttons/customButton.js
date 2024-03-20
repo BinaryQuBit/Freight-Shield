@@ -14,6 +14,7 @@ export default function BlueButton({
   backgroundColor,
   floatSide,
   m,
+  mb
 }) {
   return (
     <Box>
@@ -27,6 +28,7 @@ export default function BlueButton({
         colorvariant={backgroundColor}
         float={floatSide}
         m={m}
+        mb={mb}
       >
         <div className="icon-wrapper">{icon}</div>
         <div className="content-wrapper">{children}</div>

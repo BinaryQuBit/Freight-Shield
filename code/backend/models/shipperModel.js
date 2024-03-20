@@ -1,8 +1,33 @@
-// Shipper Model
-
+// Mongoose Import
 import mongoose from "mongoose";
+
+// Custom Imports
 import { hashPassword, comparePassword } from "../utils/hashPassword.js";
 
+// Defination and Declaration of the Event Schema
+const eventSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: false,
+    },
+    date: {
+      type: Date,
+      required: true,
+    },
+    location: {
+      type: String,
+      required: false,
+    },
+  },
+  { timestamps: true }
+);
+
+// Declaration and Defination of Shipper Schema
 const shipperSchema = mongoose.Schema(
   {
     email: {
@@ -102,16 +127,18 @@ const shipperSchema = mongoose.Schema(
       type: Boolean,
       required: false,
     },
-    isFormComplete: { 
+    isFormComplete: {
       type: Boolean,
       required: false,
-    }
+    },
+    events: [eventSchema],
   },
   {
     timestamps: true,
   }
 );
 
+// Pre Method to Hash Password
 shipperSchema.pre("save", async function (next) {
   if (this.isModified("email")) {
     this.email = this.email.toLowerCase();
@@ -122,10 +149,13 @@ shipperSchema.pre("save", async function (next) {
   next();
 });
 
+// Compare Password
 shipperSchema.methods.matchPassword = function (enteredPassword) {
   return comparePassword(enteredPassword, this.password);
 };
 
+// Prepare to Export Shipper Schema
 const Shipper = mongoose.model("Shipper", shipperSchema);
 
+// Exporting Shipper Schema
 export default Shipper;

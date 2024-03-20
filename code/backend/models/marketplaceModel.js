@@ -1,7 +1,7 @@
-// Marketplace Model
-
+// Mongoose Import
 import mongoose from "mongoose";
 
+// Defination and Declaration of the Marketplace Schema
 const marketplaceSchema = mongoose.Schema(
   {
     pickUpLocation: {
@@ -32,6 +32,10 @@ const marketplaceSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    price: {
+      type: String,
+      required: false,
+    },
     typeLoad: {
       type: String,
       required: true,
@@ -48,7 +52,7 @@ const marketplaceSchema = mongoose.Schema(
     pickUpCity: {
       type: String,
     },
-    dropOffCity:{
+    dropOffCity: {
       type: String,
     },
     pickUpLAT: {
@@ -57,13 +61,13 @@ const marketplaceSchema = mongoose.Schema(
     pickUpLNG: {
       type: String,
     },
-    dropOffLAT:{
+    dropOffLAT: {
       type: String,
     },
     dropOffLNG: {
       type: String,
     },
-    status:{
+    status: {
       type: String,
     },
     shipperFirstName: {
@@ -78,7 +82,7 @@ const marketplaceSchema = mongoose.Schema(
     shipperCompanyName: {
       type: String,
     },
-    shipperEmail:{
+    shipperEmail: {
       type: String,
     },
     shipperBusinessName: {
@@ -106,20 +110,28 @@ const marketplaceSchema = mongoose.Schema(
       type: String,
     },
     driverLastName: {
-      type:String,
+      type: String,
     },
     driverPhoneNumber: {
       type: String,
     },
     driverEmail: {
       type: String,
-    }
+    },
+    driverLAT: {
+      type: String,
+    },
+    driverLNG: {
+      type: String,
+    },
   },
   {
     timestamps: true,
   }
 );
 
+// Preparing to Export Marketplace Schema
 const Marketplace = mongoose.model("Marketplace", marketplaceSchema);
 
+// Exporting Marketplace Schema
 export default Marketplace;

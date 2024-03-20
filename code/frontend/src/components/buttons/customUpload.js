@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FormControl, Box, Input, FormErrorMessage } from "@chakra-ui/react";
+import { FormControl, Box, Input, FormErrorMessage, useColorMode } from "@chakra-ui/react";
 import { FiUpload, FiXCircle } from "react-icons/fi";
 
 const CustomUpload = ({
@@ -18,7 +18,7 @@ const CustomUpload = ({
 }) => {
   const [file, setFile] = useState("");
   const [fileBlobUrl, setFileBlobUrl] = useState("");
-  const margin = typeof ml === 'number' ? ml : 0;
+  const { colorMode } = useColorMode();
 
   useEffect(() => {
     if (fileUrl) {
@@ -65,12 +65,12 @@ const CustomUpload = ({
               href={fileBlobUrl}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ marginRight: "auto", color: "blue" }}
+              style={{ marginRight: "auto", color: colorMode === "dark" ? "white" : "blue" }} // Adjusting color based on color mode
             >
               View {label}
             </a>
             <FiXCircle
-              color="blue"
+              color={colorMode === "dark" ? "white" : "blue"}
               onClick={handleFileRemove}
               cursor="pointer"
               size="1.25em"
@@ -82,7 +82,7 @@ const CustomUpload = ({
               Upload {label}
               {required && <span style={{ color: "red" }}>*</span>}
             </label>
-            <FiUpload style={{ marginRight: "8px", color: "blue" }} />
+            <FiUpload style={{ marginRight: "8px", color: colorMode === "dark" ? "white" : "blue" }} />
             <Input
               type="file"
               accept={accept}
@@ -99,9 +99,10 @@ const CustomUpload = ({
           </>
         )}
       </Box>
-      {isError && <FormErrorMessage ml={margin + 4}>{errorMessage}</FormErrorMessage>}
+      {isError && <FormErrorMessage ml={ml || 0 + 4}>{errorMessage}</FormErrorMessage>}
     </FormControl>
   );
 };
 
 export default CustomUpload;
+

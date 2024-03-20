@@ -45,7 +45,7 @@ export default function App() {
             <Route path="/approved" element={<Approved />} />
             <Route path="/administrators" element={<Administrators />} />
             <Route path="/shippers" element={<Shippers />} />
-            <Route path="/shipperDashboard" element={<ShipperDashboard/>} />
+            <Route path="/shipperdashboard" element={<ShipperDashboard/>} />
             <Route path="/carriers" element={<Carriers />} />
             <Route path="/adminsettings" element={<AdminSettings />} />
             <Route path="/activeloads" element={<ActiveLoads />} />
