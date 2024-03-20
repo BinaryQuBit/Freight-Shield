@@ -1,8 +1,33 @@
-// Carrier Model
-
+// Mongoose Import
 import mongoose from "mongoose";
+
+// Custom Imports
 import { hashPassword, comparePassword } from "../utils/hashPassword.js";
 
+// Event Schema Declaration and Defination
+const eventSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: false,
+    },
+    date: {
+      type: Date,
+      required: true,
+    },
+    location: {
+      type: String,
+      required: false,
+    },
+  },
+  { timestamps: true }
+);
+
+// Unit Schema Declaration and Defination
 const unitSchema = new mongoose.Schema(
   {
     unitNumber: {
@@ -10,7 +35,7 @@ const unitSchema = new mongoose.Schema(
     },
 
     unitType: { type: String },
-    trailerType: {type: String},
+    trailerType: { type: String },
     unitMake: { type: String },
     unitModel: { type: String },
     unitYear: { type: Number },
@@ -19,11 +44,12 @@ const unitSchema = new mongoose.Schema(
     unitStatus: { type: String },
     unitRegistration: { type: String },
     unitInsurance: { type: String },
-    unitSafety: {type: String }
+    unitSafety: { type: String },
   },
   { _id: false, timestamps: true }
 );
 
+// Carrier Schema Defination and Declaration
 const carrierSchema = new mongoose.Schema(
   {
     email: {
@@ -144,6 +170,7 @@ const carrierSchema = new mongoose.Schema(
       required: false,
     },
     units: [unitSchema],
+    events: [eventSchema],
   },
   {
     timestamps: true,
@@ -157,16 +184,18 @@ carrierSchema.pre("save", async function (next) {
   next();
 });
 
+// Matching Password
 carrierSchema.methods.matchPassword = function (enteredPassword) {
   return comparePassword(enteredPassword, this.password);
 };
 
+// Unique addition of the Unit Number
 carrierSchema.methods.addUnit = async function (unitData) {
-  const unitExists = this.units.some(unit => unit.unitNumber === unitData.unitNumber);
-  console.log("Existing units:", this.units.map(unit => unit.unitNumber));
-  console.log("Trying to add unit number:", unitData.unitNumber);
+  const unitExists = this.units.some(
+    (unit) => unit.unitNumber === unitData.unitNumber
+  );
   if (unitExists) {
-    const error = new Error('Unit number must be unique within the carrier.');
+    const error = new Error("Unit number must be unique within the carrier.");
     error.statusCode = 405;
     throw error;
   }
@@ -174,7 +203,8 @@ carrierSchema.methods.addUnit = async function (unitData) {
   await this.save();
 };
 
-
-
+// Preparing Schema to Export
 const Carrier = mongoose.model("Carrier", carrierSchema);
+
+// Exporting Schema Carrier
 export default Carrier;

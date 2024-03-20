@@ -1,12 +1,28 @@
-// Generate Token
-
+// JWT Import
 import jwt from "jsonwebtoken";
 
-const generateToken = (res, userId, role, areContactDetailsComplete, areBusinessDetailsComplete, isFormComplete) => {
-  const token = jwt.sign({ userId, role, areContactDetailsComplete, areBusinessDetailsComplete, isFormComplete }, process.env.JWT_SECRET, {
-    expiresIn: "1d",
-  });
-
+// Generating Token
+const generateToken = (
+  res,
+  userId,
+  role,
+  areContactDetailsComplete,
+  areBusinessDetailsComplete,
+  isFormComplete
+) => {
+  const token = jwt.sign(
+    {
+      userId,
+      role,
+      areContactDetailsComplete,
+      areBusinessDetailsComplete,
+      isFormComplete,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "1d",
+    }
+  );
   res.cookie("jwt", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV !== "development",

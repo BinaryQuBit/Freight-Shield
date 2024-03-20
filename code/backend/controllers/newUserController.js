@@ -1,22 +1,33 @@
-// New User Controller
-
+// Async Handler Import
 import asyncHandler from "express-async-handler";
+
+// Axios Import
+import axios from "axios";
+
+// Custom Imports
 import generateToken from "../utils/generateToken.js";
 import { sendEmail } from "../utils/mailer.js";
+import { getOtpEmailTemplate } from "../utils/emailTemplates/forgotPasswordTemplate.js";
+import { pastLogBookGenerator } from "../utils/pastLogBookGenerator.js";
+
+// Model Imports
 import Admin from "../models/adminModel.js";
 import Carrier from "../models/carrierModel.js";
 import Shipper from "../models/shipperModel.js";
 import SuperUser from "../models/superUser.js";
 import Driver from "../models/driverModel.js";
+import Logbook from "../models/logbookModel.js";
 import OTP from "../models/forgotPasswordModel.js";
-import { getOtpEmailTemplate } from "../utils/emailTemplates/forgotPasswordTemplate.js";
+
+// Const News API
+const apiKey = process.env.REACT_APP_NEWS_API;
 
 ////////////////////////////// Getters //////////////////////////////
 
 // @desc    Logout user and destroying cookie
 // route    GET /logout
 // @access  Public
-const logoutUser = asyncHandler(async (req, res) => {
+export const logoutUser = asyncHandler(async (req, res) => {
   res.cookie("jwt", "", {
     httpOnly: true,
     expires: new Date(0),
@@ -29,15 +40,14 @@ const logoutUser = asyncHandler(async (req, res) => {
 // @desc    Login and Authentication
 // route    POST /login
 // @access  Public
-const loginUser = asyncHandler(async (req, res) => {
+export const loginUser = asyncHandler(async (req, res) => {
   let { email, password } = req.body;
   email = email.toLowerCase();
   const admin = await Admin.findOne({ email });
   const carrier = await Carrier.findOne({ email });
   const shipper = await Shipper.findOne({ email });
   const superUser = await SuperUser.findOne({ email });
-  const driver = await Driver.findOne({email});
-
+  const driver = await Driver.findOne({ email });
   if (admin && (await admin.matchPassword(password))) {
     generateToken(res, admin._id, "admin");
     return res.status(201).json({
@@ -46,7 +56,6 @@ const loginUser = asyncHandler(async (req, res) => {
       role: "admin",
     });
   }
-
   if (driver && (await driver.matchPassword(password))) {
     generateToken(res, driver._id, "driver");
     return res.status(201).json({
@@ -55,7 +64,6 @@ const loginUser = asyncHandler(async (req, res) => {
       role: "driver",
     });
   }
-
   if (carrier && (await carrier.matchPassword(password))) {
     const areContactDetailsComplete = carrier.areContactDetailsComplete;
     const areBusinessDetailsComplete = carrier.areBusinessDetailsComplete;
@@ -77,7 +85,6 @@ const loginUser = asyncHandler(async (req, res) => {
       isFormComplete: carrier.isFormComplete,
     });
   }
-
   if (shipper && (await shipper.matchPassword(password))) {
     const areContactDetailsComplete = shipper.areContactDetailsComplete;
     const areBusinessDetailsComplete = shipper.areBusinessDetailsComplete;
@@ -99,7 +106,6 @@ const loginUser = asyncHandler(async (req, res) => {
       isFormComplete: shipper.isFormComplete,
     });
   }
-
   if (driver && (await driver.matchPassword(password))) {
     generateToken(res, driver._id, "driver");
     return res.status(201).json({
@@ -108,7 +114,6 @@ const loginUser = asyncHandler(async (req, res) => {
       role: "driver",
     });
   }
-
   if (superUser && (await superUser.matchPassword(password))) {
     generateToken(res, superUser._id, "superUser");
     return res.status(201).json({
@@ -117,7 +122,6 @@ const loginUser = asyncHandler(async (req, res) => {
       role: "superUser",
     });
   }
-
   res.status(400);
   throw new Error("Invalid email or password");
 });
@@ -125,8 +129,16 @@ const loginUser = asyncHandler(async (req, res) => {
 // @desc    Register a new user
 // route    POST /register
 // @access  Public
-const registerUser = asyncHandler(async (req, res) => {
-  let { role, email, password, confirmPassword, firstName, lastName, phoneNumber  } = req.body;
+export const registerUser = asyncHandler(async (req, res) => {
+  let {
+    role,
+    email,
+    password,
+    confirmPassword,
+    firstName,
+    lastName,
+    phoneNumber,
+  } = req.body;
   email = email.toLowerCase();
   const shipperExist = await Shipper.findOne({ email }).collation({
     locale: "en",
@@ -152,16 +164,13 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Driver already exists");
   }
-
   if (password !== confirmPassword) {
     res.status(400);
     throw new Error("Password dont match");
   }
-
   if (!email || !password || !confirmPassword || !role) {
     throw new Error("Email, Password, Confirm Password, role cant be empty");
   }
-
   if (role == "shipper") {
     const shipper = await Shipper.create({
       email,
@@ -201,7 +210,6 @@ const registerUser = asyncHandler(async (req, res) => {
       throw new Error("Invalid Shipper Data");
     }
   }
-
   if (role == "carrier") {
     const carrier = await Carrier.create({
       email,
@@ -245,23 +253,39 @@ const registerUser = asyncHandler(async (req, res) => {
       throw new Error("Invalid Carrier Data");
     }
   }
-
   if (role == "driver") {
     const driver = await Driver.create({
       firstName,
       lastName,
-      phoneNumber,
       email,
       password,
+      phoneNumber: "",
       canadianCarrierCode: "",
-      driverLicence: "",
-      driverAbstract: ""
+      driverLicenceFront: "",
+      driverLicenceBack: "",
+      driverAbstract: "",
     });
     if (driver) {
+      const pastDates = pastLogBookGenerator(15);
+      const logbookEntries = pastDates.map(({ date, day }) => ({
+        date,
+        day,
+        status: {
+          OFF: [{ start: "0", end: "1440" }],
+          SB: [],
+          D: [],
+          ON: [],
+        },
+      }));
+      const logbook = await Logbook.create({
+        email,
+        logbook: logbookEntries,
+      });
       generateToken(res, driver._id, "driver");
       res.status(201).json({
         _id: driver._id,
         email: driver.email,
+        logbookId: logbook._id,
       });
     } else {
       res.status(400);
@@ -273,30 +297,25 @@ const registerUser = asyncHandler(async (req, res) => {
 // @desc    Forget Password
 // route    POST /forgotpassword
 // @access  Public
-const forgotPassword = asyncHandler(async (req, res) => {
+export const forgotPassword = asyncHandler(async (req, res) => {
   let { email } = req.body;
   email = email.toLowerCase();
-
   const shipperExist = await Shipper.findOne({ email }).collation({
     locale: "en",
     strength: 2,
   });
-
   const carrierExist = await Carrier.findOne({ email }).collation({
     locale: "en",
     strength: 2,
   });
-
   if (!shipperExist && !carrierExist) {
     return res.status(400).json({ message: "User does not exist" });
   }
-
   const otp = Math.floor(100000 + Math.random() * 900000);
   const logoURL =
     "https://raw.githubusercontent.com/BinaryQuBit/Freight-Shield/main/githubPages/images/banner.jpg";
   const subject = "Password Reset ~ OTP";
   const htmlContent = getOtpEmailTemplate(otp, logoURL);
-
   try {
     await sendEmail(email, subject, htmlContent);
     const expiresAt = new Date(new Date().getTime() + 10 * 60 * 1000);
@@ -309,7 +328,6 @@ const forgotPassword = asyncHandler(async (req, res) => {
       const newOtp = new OTP({ email, otp, expiresAt });
       await newOtp.save();
     }
-
     res.status(200).json({ message: "OTP sent successfully to your email." });
   } catch (error) {
     console.error("Forgot Password Error:", error);
@@ -322,22 +340,18 @@ const forgotPassword = asyncHandler(async (req, res) => {
 // @desc    Verify OTP and update password
 // route    POST /verify
 // @access  Public
-const verifyOTP = asyncHandler(async (req, res) => {
+export const verifyOTP = asyncHandler(async (req, res) => {
   let { email, password, confirmPassword, otpNumber } = req.body;
   email = email.toLowerCase();
-
   if (password !== confirmPassword) {
     return res
       .status(400)
       .json({ message: "Password and Confirm Password do not match" });
   }
-
   const otpRecord = await OTP.findOne({ email }).collation({
     locale: "en",
     strength: 2,
   });
-  console.log("This is the user: ", email);
-
   if (otpRecord) {
     const now = new Date();
     if (otpRecord.otp !== otpNumber) {
@@ -346,20 +360,15 @@ const verifyOTP = asyncHandler(async (req, res) => {
       return res.status(400).json({ message: "OTP expired" });
     } else {
       let user = await Shipper.findOne({ email });
-
       if (!user) {
         user = await Carrier.findOne({ email });
       }
-
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
-
       user.password = password;
       await user.save();
-
       await OTP.deleteOne({ email });
-
       res.json({ message: "Password updated successfully" });
     }
   } else {
@@ -367,4 +376,21 @@ const verifyOTP = asyncHandler(async (req, res) => {
   }
 });
 
-export { loginUser, registerUser, logoutUser, forgotPassword, verifyOTP };
+// @desc    News Fetch
+// route    GET /news
+// @access  Public
+export const news = asyncHandler(async (req, res) => {
+  const params = new URLSearchParams({
+    q: "trucking logistics canada",
+    apiKey: apiKey,
+  });
+  try {
+    const newsResponse = await axios.get(
+      `https://newsapi.org/v2/everything?${params}`
+    );
+    res.json(newsResponse.data);
+  } catch (error) {
+    console.error("Error fetching news:", error);
+    res.status(500).send("Error fetching news");
+  }
+});

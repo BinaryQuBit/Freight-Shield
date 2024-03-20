@@ -1,70 +1,52 @@
-import mongoose from 'mongoose';
+// Mongoose Import
+import mongoose from "mongoose";
 
-const logBookSchema = mongoose.Schema(
-    {
-    driverId: {
-        type: mongoose.Schema.Types.ObjectId, 
-        required: true,
-        ref: 'Driver' 
+// Declaration and Defination of Start and End Time of the LogBook
+const startEndTimeSchema = new mongoose.Schema({
+  start: {
+    type: String,
+  },
+  end: {
+    type: String,
+  },
+});
+
+// Declaration and Defination of Driver Status Schema
+const driverStatusSchema = new mongoose.Schema({
+  OFF: [startEndTimeSchema],
+  SB: [startEndTimeSchema],
+  D: [startEndTimeSchema],
+  ON: [startEndTimeSchema],
+});
+
+// Declaration and Defination of Logbook Entry Schema
+const logEntrySchema = new mongoose.Schema({
+  date: {
+    type: String,
+  },
+  day: {
+    type: String,
+  },
+  status: {
+    type: driverStatusSchema,
+  },
+});
+
+// Defination and Declaration of the Logbook Schema
+const logbookSchema = mongoose.Schema(
+  {
+    email: {
+      type: String,
     },
-    startingOdometer: {
-        type: Number,
-        required: true
-    },
-    endingOdometer: {
-        type: Number,
-        required: true
-    },
-    totalDistanceDrivenToday: {
-        type: Number,
-        required: true
-    },
-    date: {
-        type: Date,
-        required: false
-    },
-    truckNumber: {
-        type: String,
-        required: true
-    },
-    trailerNumber: {
-        type: String,
-        required: false // Set to true if required
-    },
-    driverFirstName: {
-        type: String,
-        required: true
-    },
-    driverLastName: {
-        type: String,
-        required: true
-    },
-    coDriverFullName: {
-        type: String,
-        required: false // Set to true if required
-    },
-    offDutyHours: {
-        type: Number,
-        required: true
-    },
-    sleeperHours: {
-        type: Number,
-        required: true
-    },
-    drivingHours: {
-        type: Number,
-        required: true
-    },
-    onDutyNotDrivingHours: {
-        type: Number,
-        required: true
-    },
-    },
-    {
-        timestamps: true,
-    }
+    logbook: [logEntrySchema],
+  },
+  {
+    timestamps: true,
+  }
 );
 
-const LogBook = mongoose.model('LogBook', logBookSchema);
+// Preparing Logbook Schema to Export
+const Logbook = mongoose.model("Logbook", logbookSchema);
 
-export default LogBook;
+// Exporting Logbook Schema
+export default Logbook;

@@ -130,21 +130,6 @@ export default function CarrierCompanyDetailsForm() {
       lastNameError ||
       companyPhoneNumberError
     ) {
-      console.log(
-        streetAddressError,
-        cityError,
-        provinceError,
-        postalCodeError,
-        countryError,
-        mailingStreetAddressError,
-        mailingCityError,
-        mailingProvinceError,
-        mailingPostalCodeError,
-        mailingCountryError,
-        firstNameError,
-        lastNameError,
-        companyPhoneNumberError
-      );
       return;
     }
     // Start of PUT Method

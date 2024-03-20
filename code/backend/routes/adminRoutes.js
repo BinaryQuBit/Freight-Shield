@@ -1,9 +1,10 @@
-// Admin Routes
-
+// Express Import
 import express from "express";
 
+// Middleware Imports
 import { protect, adminOnly } from "../middleware/authMiddleware.js";
 
+// Custom Imports
 import {
   administrators,
   pending,
@@ -13,6 +14,7 @@ import {
   adminsettings,
 } from "../controllers/adminController.js";
 
+// CONST to use Router
 const router = express.Router();
 
 /////////////////////////////////////////////////////// GETTERS ///////////////////////////////////////////////////////

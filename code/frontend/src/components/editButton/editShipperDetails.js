@@ -2,7 +2,6 @@
 
 // React Imports
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { FaRegSave } from "react-icons/fa";
 import { IoMdCloseCircle } from "react-icons/io";
 
@@ -32,8 +31,7 @@ import { DocumentValidation } from "../utils/validation/documentValidation.js";
 // Start of the Build
 export default function EditShipperDetails({ isOpen, onClose, data }) {
   axios.defaults.withCredentials = true;
-  const navigate = useNavigate();
-  const backendUrl = "http://localhost:8080";
+  const backendUrl = process.env.REACT_APP_BACKEND_PORT;
 
   // Hooks
   const [streetAddress, setStreetAddress] = useState("");
@@ -79,27 +77,30 @@ export default function EditShipperDetails({ isOpen, onClose, data }) {
   const [websiteError, setWebsiteError] = useState("");
 
   // Render Saved Data
+  // Render Saved Data
   useEffect(() => {
-    setFirstName(data.firstName || '');
-    setLastName(data.lastName || '');
-    setCompanyPhoneNumber(data.companyPhoneNumber || '');
-    setStreetAddress(data.streetAddress || '');
-    setApptNumber(data.apptNumber || '');
-    setCity(data.city || '');
-    setProvince(data.province || '');
-    setPostalCode(data.postalCode || '');
-    setCountry(data.country || '');
-    setMailingStreetAddress(data.mailingStreetAddress || '');
-    setMailingApptNumber(data.mailingApptNumber || '');
-    setMailingCity(data.mailingCity || '');
-    setMailingProvince(data.mailingProvince || '');
-    setMailingPostalCode(data.mailingPostalCode || '');
-    setMailingCountry(data.mailingCountry || '');
-    setBusinessName(data.businessName || '');
-    setBusinessNumber(data.businessNumber || '');
-    setProofBusiness(data.proofBusiness || '');
-    setProofInsurance(data.proofInsurance || '');
-    setWebsite(data.website || '');
+    if (data) {
+      setFirstName(data.firstName || "");
+      setLastName(data.lastName || "");
+      setCompanyPhoneNumber(data.companyPhoneNumber || "");
+      setStreetAddress(data.streetAddress || "");
+      setApptNumber(data.apptNumber || "");
+      setCity(data.city || "");
+      setProvince(data.province || "");
+      setPostalCode(data.postalCode || "");
+      setCountry(data.country || "");
+      setMailingStreetAddress(data.mailingStreetAddress || "");
+      setMailingApptNumber(data.mailingApptNumber || "");
+      setMailingCity(data.mailingCity || "");
+      setMailingProvince(data.mailingProvince || "");
+      setMailingPostalCode(data.mailingPostalCode || "");
+      setMailingCountry(data.mailingCountry || "");
+      setBusinessName(data.businessName || "");
+      setBusinessNumber(data.businessNumber || "");
+      setProofBusiness(data.proofBusiness || "");
+      setProofInsurance(data.proofInsurance || "");
+      setWebsite(data.website || "");
+    }
   }, [data]);
 
   // Functions
@@ -528,29 +529,32 @@ export default function EditShipperDetails({ isOpen, onClose, data }) {
               mt={8}
             />
 
-            <CustomUpload
-              id="proofBusiness"
-              label="Proof of Business"
-              required={true}
-              isError={!!proofBusinessError}
-              errorMessage={proofBusinessError}
-              mt={8}
-              setError={setProofBusinessError}
-              setFileState={setProofBusiness}
-              fileUrl={`${backendUrl}/${data.proofBusiness}`}
-            />
-
-            <CustomUpload
-              id="proofInsurance"
-              label="Proof of Insurance"
-              required={true}
-              isError={!!proofInsuranceError}
-              errorMessage={proofInsuranceError}
-              mt={8}
-              setError={setProofInsuranceError}
-              setFileState={setProofInsurance}
-              fileUrl={`${backendUrl}/${data.proofInsurance}`} 
-            />
+            {data && data.proofBusiness && (
+              <CustomUpload
+                id="proofBusiness"
+                label="Proof of Business"
+                required={true}
+                isError={!!proofBusinessError}
+                errorMessage={proofBusinessError}
+                mt={8}
+                setError={setProofBusinessError}
+                setFileState={setProofBusiness}
+                fileUrl={`http://${backendUrl}${data.proofBusiness}`}
+              />
+            )}
+            {data && data.proofInsurance && (
+              <CustomUpload
+                id="proofInsurance"
+                label="Proof of Insurance"
+                required={true}
+                isError={!!proofInsuranceError}
+                errorMessage={proofInsuranceError}
+                mt={8}
+                setError={setProofInsuranceError}
+                setFileState={setProofInsurance}
+                fileUrl={`http://${backendUrl}${data.proofInsurance}`}
+              />
+            )}
 
             <CustomInput
               id={"website"}

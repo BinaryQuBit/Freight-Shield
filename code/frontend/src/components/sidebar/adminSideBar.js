@@ -28,7 +28,7 @@ export default function AdminSideBar({ activePage }) {
   const navigate = useNavigate();
 
   const logout = () => {
-    axios.get('http://localhost:8080/api/users/logout', { withCredentials: true })
+    axios.get('http://localhost:8080/api/users/logout', { withCredentials: true }) 
       .then(() => {
         navigate('/login')
       })

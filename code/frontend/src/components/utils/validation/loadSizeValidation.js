@@ -11,7 +11,7 @@ export const LoadSizeValidation = (number) => {
   }
 
   if (parseInt(trimmedNumber, 10) < 1) {
-      return "Load cannot be less than 1 foot";
+      return "Load cannot be less than 1";
   }
 
   return "";

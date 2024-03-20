@@ -1,8 +1,7 @@
-// Logout Method
+import axios from "axios"
 
-import axios from "axios";
 
-const logout = (navigate) => {
+export default function logout (navigate, setColorMode){
   axios
     .get("/logout", { withCredentials: true })
     .then(() => {
@@ -13,6 +12,5 @@ const logout = (navigate) => {
     });
 };
 
-export default logout;
 
    

@@ -97,7 +97,6 @@ export default function AssignUnitDriver({ isOpen, onClose, units, driverData, s
               withCredentials: true
           }
       );
-      console.log(unit, driver, selectedLoadId);
       if (response.status === 200) {
           window.location.reload();
       }

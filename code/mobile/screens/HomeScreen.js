@@ -1,190 +1,308 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, Alert, TouchableOpacity } from 'react-native';
-import axios from 'axios';
-import { useIsFocused } from '@react-navigation/native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+// React Imports
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, Text, Alert, TouchableOpacity } from "react-native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+
+// Axios Import
+import axios from "axios";
+
+// Icons Imports
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faInfoCircle,
   faUser,
   faMapMarkedAlt,
   faTruckLoading,
   faClock,
-} from '@fortawesome/free-solid-svg-icons';
+  faCircle,
+} from "@fortawesome/free-solid-svg-icons";
 
-const ICON_SIZE = 20;
+// Custom Imports 
+import CustomButton from "../components/customs/customButton";
+import SendingLocation from "../components/sendingLocation";
 
+// Start of the Build
 export default function HomeScreen() {
-  const [firstName, setFirstName] = useState('');
+  const ipConfig = process.env.REACT_IP_CONFIG;
   const isFocused = useIsFocused();
-  const [pickUpCity, setPickUpCity] = useState('');
-  const [dropOffCity, setDropOffCity] = useState('');
-  const [shipperCompanyName, setShipperCompanyName] = useState('');
-  const [loadAccepted, setLoadAccepted] = useState(false);
+  const navigation = useNavigation();
 
+  // Hooks
+  const [firstName, setFirstName] = useState("");
+  const [status, setStatus] = useState("");
+  const [currentLoad, setCurrentLoad] = useState("");
+  const [load, setLoad] = useState("");
+  const [driverLoadStatus, setDriverLoadStatus] = useState("");
 
+  // Mounting
   useEffect(() => {
     if (!isFocused) return;
+    let isMounted = true;
+
+    // Fetching Data for the Home Screen
     const fetchData = async () => {
       try {
-        const API_BASE_URL = 'http://142.3.84.37:8080';
-        const nameResponse = await axios.get(`${API_BASE_URL}/api/getFirstName`);
-        setFirstName(nameResponse.data.firstName);
-
-        if (nameResponse.data.loads && nameResponse.data.loads.length > 0) {
-          setPickUpCity(nameResponse.data.loads[0].pickUpCity);
-          setDropOffCity(nameResponse.data.loads[0].dropOffCity);
-          setShipperCompanyName(nameResponse.data.loads[0].shipperCompanyName);
-        } else {
-          console.log("No loads found");
-          setPickUpCity('');
-          setDropOffCity("");
-          setShipperCompanyName("");
+        const response = await axios.get(`${ipConfig}/api/gethomescreen`);
+        if (isMounted) {
+          setFirstName(response.data.info.firstName);
+          setCurrentLoad(response.data.info.currentLoad);
+          setStatus(response.data.info.driverStatus);
+          setDriverLoadStatus(response.data.info.driverLoadStatus);
+          if (!response.data.info.load[0]) {
+          } else {
+            setLoad(response.data.info.load[0]);
+          }
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
-        Alert.alert('Error', 'Failed to fetch data');
+        console.error("Error fetching data:", error);
+        Alert.alert("Error", "Failed to fetch data");
       }
     };
+
     fetchData();
+
+    return () => {
+      isMounted = false;
+    };
   }, [isFocused]);
 
-  const currentLoad = {
+  // This needs to go
+  const current = {
     workingDayHours: "8 hours",
     workingWeekHours: "40 hours",
   };
 
+  // What happens when you press this button, where is this button defined
   const onCurrentLoadPress = () => {
-    console.log("Current load pressed");
   };
 
   const acceptLoad = async () => {
     try {
-      const API_BASE_URL = 'http://142.3.84.37:8080';
-      // Add the appropriate endpoint and data for your PUT request
-      const response = await axios.put(`${API_BASE_URL}/api/acceptload`, {
-        // Your request payload here, if needed
-      });
-      Alert.alert('Success', 'Load accepted successfully');
-      setLoadAccepted(true); // Update state to reflect that the load has been accepted
+      const backend = process.env.REACT_IP_CONFIG;
+      const response = await axios.put(`${backend}/api/acceptload`, {});
+      Alert.alert("Load has been Accepted");
+      navigation.navigate(PreInspectionScreen);
+      // navigation.reset({
+      //   index: 0,
+      //   routes: [{ name: 'PreInspectionScreen' }],
+      // });
     } catch (error) {
-      console.error('Error accepting load:', error);
-      Alert.alert('Error', 'Failed to accept load');
+      console.error("Error accepting load:", error);
+      Alert.alert("Error", "Failed to accept load");
     }
   };
-  
-  
+
+  // Dynamic Styles
+  const statusStyle = {
+    textAlign: "center",
+    fontSize: 20,
+    fontFamily: "Lora-SemiBold",
+    color: status === "Pending" ? "red" : "#42B72A",
+  };
+  const statusIcon = {
+    alignSelf: "flex-end",
+    color: status === "Pending" ? "red" : "#42B72A",
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome {firstName}</Text>
 
       <View style={styles.sectionContainer}>
-        <Text style={styles.subtitle}>New Load</Text>
+        <View
+          style={styles.currentLoadContainer}
+        >
+          <View style={styles.headerStyle}>
+            <Text style={styles.subtitle}>Driver Status</Text>
+            <FontAwesomeIcon icon={faCircle} size={20} style={statusIcon} />
+          </View>
+          <View>
+            <Text style={statusStyle}>{status}</Text>
+          </View>
+        </View>
+      </View>
+
+      <View style={styles.sectionContainer}>
         <TouchableOpacity
           style={styles.currentLoadContainer}
-          onPress={onCurrentLoadPress}
+          onPress={()=> {navigation.navigate("WorkingHoursScreen", { load: load })}}
           activeOpacity={0.7}
         >
-          <FontAwesomeIcon
-            icon={faInfoCircle}
-            size={ICON_SIZE}
-            style={styles.infoIcon}
-          />
-          <View style={styles.loadDetailRow}>
+          <View style={styles.headerStyle}>
+            <Text style={styles.subtitle}>Working Hours</Text>
             <FontAwesomeIcon
-              icon={faUser}
-              size={ICON_SIZE}
-              style={styles.icon}
+              icon={faInfoCircle}
+              size={20}
+              style={styles.infoIcon}
             />
+          </View>
+          <View style={styles.loadDetailRow}>
+            <FontAwesomeIcon icon={faClock} size={20} style={styles.icon} />
             <Text style={styles.locationText}>
-              Shipper: {shipperCompanyName}
+              Day: {current.workingDayHours}
             </Text>
           </View>
           <View style={styles.loadDetailRow}>
-            <FontAwesomeIcon
-              icon={faMapMarkedAlt}
-              size={ICON_SIZE}
-              style={styles.icon}
-            />
+            <FontAwesomeIcon icon={faClock} size={20} style={styles.icon} />
             <Text style={styles.locationText}>
-              Pickup: {pickUpCity}
-            </Text>
-          </View>
-          <View style={styles.loadDetailRow}>
-            <FontAwesomeIcon
-              icon={faTruckLoading}
-              size={ICON_SIZE}
-              style={styles.icon}
-            />
-            <Text style={styles.locationText}>
-              Drop: {dropOffCity}
+              Week: {current.workingWeekHours}
             </Text>
           </View>
         </TouchableOpacity>
       </View>
 
-      <View style={styles.sectionContainer}>
-        <Text style={styles.subtitle}>Working Hours</Text>
-        <View style={styles.workingHoursContainer}>
-          <View style={styles.workingHoursDetail}>
-            <FontAwesomeIcon
-              icon={faClock}
-              size={ICON_SIZE}
-              style={styles.icon}
-            />
-            <Text style={styles.workingHoursText}>
-              Day: {currentLoad.workingDayHours}
-            </Text>
+      {status === "Approved" &&
+      currentLoad &&
+      driverLoadStatus === "Assigned" ? (
+        <>
+          <View style={styles.sectionContainer}>
+            <TouchableOpacity
+              style={styles.currentLoadContainer}
+              onPress={() =>
+                navigation.navigate("LoadDetailsScreen", { load: load })
+              }
+              activeOpacity={0.7}
+            >
+              <View style={styles.headerStyle}>
+                <Text style={styles.subtitle}>New Load</Text>
+                <FontAwesomeIcon
+                  icon={faInfoCircle}
+                  size={20}
+                  style={styles.infoIcon}
+                />
+              </View>
+              <View style={styles.loadDetailRow}>
+                <FontAwesomeIcon icon={faUser} size={20} style={styles.icon} />
+                <Text style={styles.locationText}>
+                  Shipper: {load.shipperCompanyName}
+                </Text>
+              </View>
+              <View style={styles.loadDetailRow}>
+                <FontAwesomeIcon
+                  icon={faMapMarkedAlt}
+                  size={20}
+                  style={styles.icon}
+                />
+                <Text style={styles.locationText}>
+                  Pickup: {load.pickUpCity}
+                </Text>
+              </View>
+              <View style={styles.loadDetailRow}>
+                <FontAwesomeIcon
+                  icon={faTruckLoading}
+                  size={20}
+                  style={styles.icon}
+                />
+                <Text style={styles.locationText}>
+                  Drop: {load.dropOffCity}
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
-          <View style={styles.workingHoursDetail}>
-            <FontAwesomeIcon
-              icon={faClock}
-              size={ICON_SIZE}
-              style={styles.icon}
-            />
-            <Text style={styles.workingHoursText}>
-              Week: {currentLoad.workingWeekHours}
-            </Text>
+          <View style={styles.acceptButtonContainer}>
+            <TouchableOpacity
+              style={styles.acceptButton}
+              onPress={acceptLoad}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.PreInspectionButtonText}>Start Pre-Inspection</Text>
+            </TouchableOpacity>
           </View>
-        </View>
-      </View>
+        </>
 
-      <View style={styles.acceptButtonContainer}>
-  {!loadAccepted && ( // This line checks if loadAccepted is false
-    <TouchableOpacity
-      style={styles.acceptButton}
-      onPress={acceptLoad}
-      activeOpacity={0.7}
-    >
-      <Text style={styles.acceptButtonText}>Accept</Text>
-    </TouchableOpacity>
-  )}
-</View>
+
+      ) : status === "Approved" &&
+        !currentLoad &&
+        driverLoadStatus === "Available" ? (
+        <>
+          <View
+            style={styles.currentLoadContainer}
+            onPress={onCurrentLoadPress}
+            activeOpacity={0.7}
+          >
+            <View style={styles.headerStyle}>
+              <Text style={styles.subtitle}>Load</Text>
+            </View>
+            <View>
+              <Text style={styles.noLoad}>There is no Load yet</Text>
+            </View>
+          </View>
+        </>
+
+
+
+      ) : status === "Approved" &&
+        driverLoadStatus === "Accepted" &&
+        currentLoad ? (
+        <>
+          <View style={styles.sectionContainer}>
+            <TouchableOpacity
+              style={styles.currentLoadContainer}
+              onPress={() =>
+                navigation.navigate("LoadDetailsScreen", { load: load })
+              }
+              activeOpacity={0.7}
+            >
+              <View style={styles.headerStyle}>
+                <Text style={styles.subtitle}>Current Load</Text>
+                <FontAwesomeIcon
+                  icon={faInfoCircle}
+                  size={20}
+                  style={styles.infoIcon}
+                />
+              </View>
+              <View style={styles.loadDetailRow}>
+                <FontAwesomeIcon icon={faUser} size={20} style={styles.icon} />
+                <Text style={styles.locationText}>
+                  Shipper: {load.shipperCompanyName}
+                </Text>
+              </View>
+              <View style={styles.loadDetailRow}>
+                <FontAwesomeIcon
+                  icon={faMapMarkedAlt}
+                  size={20}
+                  style={styles.icon}
+                />
+                <Text style={styles.locationText}>
+                  Pickup: {load.pickUpCity}
+                </Text>
+              </View>
+              <View style={styles.loadDetailRow}>
+                <FontAwesomeIcon
+                  icon={faTruckLoading}
+                  size={20}
+                  style={styles.icon}
+                />
+                <Text style={styles.locationText}>
+                  Drop: {load.dropOffCity}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <SendingLocation load_id= {load._id}/>
+        </>
+      ) : (
+        <></>
+      )}
+      
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: "#FFFFFF",
     paddingTop: 20,
+  },
+  headerStyle: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 15,
   },
   title: {
     fontSize: 26,
-    fontWeight: "bold",
+    fontFamily: "Lora-SemiBold",
     color: "#0866FF",
-    marginBottom: 20,
-  },
-  subtitle: {
-    fontSize: 22,
-    fontWeight: "600",
-    color: "#0866FF",
-    textAlign: "left",
-    width: "100%",
-    paddingLeft: 20,
     marginBottom: 20,
   },
   sectionContainer: {
@@ -192,44 +310,52 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 20,
   },
+  subtitle: {
+    fontSize: 20,
+    color: "#3949AB",
+    fontFamily: "Lora-Bold",
+  },
   currentLoadContainer: {
-    backgroundColor: "#e8eaf6",
-    borderRadius: 15,
+    backgroundColor: "#E8EAF6",
     padding: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 5,
-    width: "90%", // Adjust width
+    elevation: 4,
+    width: "90%",
+  },
+  infoIcon: {
+    color: "#3949AB",
+    alignSelf: "flex-end",
+  },
+  noLoad: {
+    color: "#3949AB",
+    fontFamily: "Lora-Bold",
+    textAlign: "center",
+    fontSize: 15,
   },
   loadDetailRow: {
     flexDirection: "row",
     alignItems: "center",
     marginTop: 10,
   },
-  locationText: {
-    fontSize: 18,
-  },
-  infoIcon: {
-    color: "#3949ab",
-    alignSelf: "flex-end",
-  },
   icon: {
     marginRight: 10,
+    color: "#3949AB",
+  },
+  locationText: {
+    fontSize: 16,
+    fontFamily: "Lora-Regular",
   },
   workingHoursContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
-    width: "90%",
+    width: "100%",
   },
   workingHoursDetail: {
     flexDirection: "row",
     alignItems: "center",
   },
   workingHoursText: {
-    fontSize: 18,
-    marginLeft: 5,
+    fontSize: 16,
+    fontFamily: "Lora-Regular",
   },
   acceptButtonContainer: {
     width: "100%",
@@ -237,11 +363,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   acceptButton: {
-    backgroundColor: "#4CAF50", // Green background
-    borderRadius: 20,
+    backgroundColor: "#42B72A",
     padding: 10,
-    elevation: 2,
-    width: "90%", // Match the width of other containers for consistency
+    elevation: 4,
+    width: "90%",
   },
   acceptButtonText: {
     color: "white",
@@ -250,4 +375,3 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 });
-

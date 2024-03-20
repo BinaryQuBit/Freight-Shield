@@ -4,7 +4,6 @@ import React, { useEffect } from 'react';
 import { Input } from '@chakra-ui/react';
 import { useLoadScript } from '@react-google-maps/api';
 
-// Define libraries array outside of the component
 const libraries = ['places'];
 
 const GooglePlacesAutocomplete = ({ type, name, placeholder, value, onChange, borderColor, id }) => {
@@ -29,7 +28,6 @@ const GooglePlacesAutocomplete = ({ type, name, placeholder, value, onChange, bo
         autocomplete.addListener('place_changed', () => {
           const place = autocomplete.getPlace();
           if (!place.geometry) {
-            console.log("Returned place contains no geometry");
             return;
           }
 

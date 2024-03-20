@@ -87,7 +87,6 @@ export default function OTPModal({
         confirmPassword,
         otpNumber,
       });
-      console.log(response.data.message);
       onCloseOTP();
       navigate("/login");
     } catch (error) {

@@ -84,7 +84,6 @@ export default function RegisterForm() {
 
     // Start of Post Method
     if (roleError || emailError || passwordError || confirmPasswordError) {
-      console.log(roleError, emailError, passwordError, confirmPasswordError);
       return;
     }
     try {

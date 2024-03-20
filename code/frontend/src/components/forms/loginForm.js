@@ -31,7 +31,7 @@ export default function LoginForm() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  // Password Visibility Hooks
+  // Password Visibility Hook
   const [showPassword, setShowPassword] = useState(false);
 
   // Functions
@@ -55,7 +55,6 @@ export default function LoginForm() {
 
     // Produce Error
     if (emailError || passwordError) {
-      console.log(emailError, passwordError);
       return;
     }
 
@@ -106,7 +105,7 @@ export default function LoginForm() {
         }
         else
         {
-          navigate("/activeloads");
+          navigate("/shipperdashboard");
         }
       }
       else if (role === "admin")

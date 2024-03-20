@@ -1,10 +1,11 @@
-// Carrier Routes 
-
+// Express Import
 import express from "express";
-import upload from "../middleware/upload.js";
 
+// Middleware Imports
+import upload from "../middleware/upload.js";
 import { protect, carrierOnly, status } from "../middleware/authMiddleware.js";
 
+// Custom Imports
 import {
   getMarketplace,
   getMyLoads,
@@ -22,9 +23,11 @@ import {
   updateCarrierStatus,
   updateDriverStatus,
   updateDriverStatusLoad,
+  // postEvents,
   // getUnitDriver,
 } from "../controllers/carrierController.js"; 
 
+// CONST to use Router
 const router = express.Router();
 
 /////////////////////////////////////////////////////// GETTERS ///////////////////////////////////////////////////////
@@ -38,9 +41,9 @@ router.get("/carrierbusinessdetails", protect, carrierOnly, getCarrierBusinessDe
 router.get("/carriersubmission", protect, carrierOnly, getCarrierSubmission);
 // router.get("/getunitdriver", protect, carrierOnly, getUnitDriver);
 
-
 /////////////////////////////////////////////////////// POSTERS ///////////////////////////////////////////////////////
 router.post("/postunit", upload.fields([{ name: "unitRegistration", maxCount: 1 }, { name: "unitInsurance", maxCount: 1 }, { name: "unitSafety", maxCount: 1 }]), protect, carrierOnly, status, postUnit);
+// router.post("/events", protect, carrierOnly, status, postEvents);
 
 /////////////////////////////////////////////////////// PUTTERS ///////////////////////////////////////////////////////
 router.put("/marketplace/:id", protect, carrierOnly, status, updateAssignUnit);

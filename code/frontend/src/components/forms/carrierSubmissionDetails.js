@@ -26,7 +26,7 @@ export default function CarrierSubmissionDetails() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const { data } = useData();
-  const backendUrl = "http://localhost:8080";
+  const backendUrl = process.env.REACT_APP_BACKEND_PORT; 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -133,13 +133,13 @@ export default function CarrierSubmissionDetails() {
 
           {data.carrierProfile && (
             <CustomLink
-              href={`${backendUrl}/${data.carrierProfile}`}
+              href={`http://${backendUrl}${data.carrierProfile}`}
               children="View Carrier Profile"
             />
           )}
           {data.safetyFitnessCertificate && (
             <CustomLink
-              href={`${backendUrl}/${data.safetyFitnessCertificate}`}
+              href={`http://${backendUrl}${data.safetyFitnessCertificate}`}
               children="View Safety Fitness Certificate"
             />
           )}

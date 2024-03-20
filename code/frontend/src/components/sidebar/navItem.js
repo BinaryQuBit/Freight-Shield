@@ -1,9 +1,7 @@
-// Nav Items
-
 import React from "react";
 import { Flex, Text, Icon, Link, Menu, MenuButton } from "@chakra-ui/react";
 
-export default function NavItem({ icon, title, active, navSize, onClick }) {
+export default function NavItem({ icon, title, active, navSize, onClick, menuOpen }) {
   return (
     <Flex
       mt={1}
@@ -32,7 +30,7 @@ export default function NavItem({ icon, title, active, navSize, onClick }) {
                 fontSize="xl"
                 _hover={{ color: active && "white" }}
               />
-              <Text ml={5} display={navSize === "small" ? "none" : "flex"}>
+              <Text ml={5} display={(navSize === "small" && menuOpen) || navSize === "large" ? "flex" : "none"}>
                 {title}
               </Text>
             </Flex>

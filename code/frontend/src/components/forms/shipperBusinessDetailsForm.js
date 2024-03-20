@@ -80,13 +80,6 @@ export default function ShipperCompanyDetailsForm() {
       proofInsuranceError ||
       websiteError
     ) {
-      console.log(
-        businessNameError,
-        businessNumberError,
-        proofBusinessError,
-        proofInsuranceError,
-        websiteError
-      );
       return;
     }
 

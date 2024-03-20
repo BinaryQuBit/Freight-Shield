@@ -20,61 +20,63 @@ import EaseOut from "../../components/responsiveness/easeOut.js";
 import UserHeader from "../../components/header/userHeader.js";
 import { useTheme } from "@chakra-ui/react";
 import Protector from "../../components/utils/methods/getters/protector.js"
-
+import { useData } from "../../components/utils/methods/getters/dataContext.js";
 
 export default function History() {
-  Protector("/history")
+  Protector("/api/history")
+  const { data } = useData();
+  const firstName = data && data.user ? data.user.firstName : "";
+  const lastName = data && data.user ? data.user.lastName : "";
 
-  const theme = useTheme();
-  const customBlue = theme.colors.customBlue;
+  // const theme = useTheme();
+  // const customBlue = theme.colors.customBlue;
 
-  const [fromSearchTerm, setFromSearchTerm] = useState("");
-  const [toSearchTerm, setToSearchTerm] = useState("");
-  const [statusSearchTerm, setStatusSearchTerm] = useState("");
-  const [filteredLoads, setFilteredLoads] = useState([]);
-  const [loads, setLoads] = useState([]);
-  const navigate = useNavigate();
+  // const [fromSearchTerm, setFromSearchTerm] = useState("");
+  // const [toSearchTerm, setToSearchTerm] = useState("");
+  // const [statusSearchTerm, setStatusSearchTerm] = useState("");
+  // const [filteredLoads, setFilteredLoads] = useState([]);
+  // const [loads, setLoads] = useState([]);
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    axios
-      .get("/activeloads", { withCredentials: true })
-      .then((response) => {
-        setLoads(response.data);
-        console.log("Active Loads Fetched Successfully");
-      })
-      .catch((error) => {
-        console.error("Error Fetching Active Loads: ", error);
-        if (
-          error.response &&
-          (error.response.status === 401 || error.response.status === 403)
-        ) {
-          navigate("/login");
-        }
-      });
-  }, [navigate]);
+  // useEffect(() => {
+  //   axios
+  //     .get("/activeloads", { withCredentials: true })
+  //     .then((response) => {
+  //       setLoads(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error Fetching Active Loads: ", error);
+  //       if (
+  //         error.response &&
+  //         (error.response.status === 401 || error.response.status === 403)
+  //       ) {
+  //         navigate("/login");
+  //       }
+  //     });
+  // }, [navigate]);
 
-  useEffect(() => {
-    const filtered = loads.filter(
-      (load) =>
-        load?.pickUpLocation
-          ?.toLowerCase()
-          .includes(fromSearchTerm.toLowerCase()) &&
-        load?.dropOffLocation
-          ?.toLowerCase()
-          .includes(toSearchTerm.toLowerCase()) &&
-        (statusSearchTerm === "" ||
-          load?.status?.toLowerCase() === statusSearchTerm.toLowerCase()) &&
-        load?.status?.toLowerCase() == "delivered"
-    );
-    setFilteredLoads(filtered);
-  }, [fromSearchTerm, toSearchTerm, statusSearchTerm, loads]);
+  // useEffect(() => {
+  //   const filtered = loads.filter(
+  //     (load) =>
+  //       load?.pickUpLocation
+  //         ?.toLowerCase()
+  //         .includes(fromSearchTerm.toLowerCase()) &&
+  //       load?.dropOffLocation
+  //         ?.toLowerCase()
+  //         .includes(toSearchTerm.toLowerCase()) &&
+  //       (statusSearchTerm === "" ||
+  //         load?.status?.toLowerCase() === statusSearchTerm.toLowerCase()) &&
+  //       load?.status?.toLowerCase() == "delivered"
+  //   );
+  //   setFilteredLoads(filtered);
+  // }, [fromSearchTerm, toSearchTerm, statusSearchTerm, loads]);
 
   return (
     <>
       <Sidebar activePage="history" />
       <EaseOut>
-        <UserHeader title="Load History" />
-        <Flex
+        <UserHeader title="Load History" userInfo={{ firstName, lastName }}/>
+        {/* <Flex
           pt={"10"}
           direction={"column"}
           alignItems={"center"}
@@ -199,8 +201,8 @@ export default function History() {
                 </AccordionItem>
               ))}
             </Accordion>
-          </Card>
-        </Flex>
+          </Card> */}
+        {/* </Flex> */}
       </EaseOut>
     </>
   );
