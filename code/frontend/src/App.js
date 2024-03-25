@@ -29,7 +29,8 @@ import CarrierSubmission from "./pages/registration/carrier/carrierSubmission.js
 import ShipperBusinessDetails from "./pages/registration/shipper/shipperBusinessDetails.js";
 import ShipperContactDetails from "./pages/registration/shipper/shipperContactDetails.js";
 import ShipperSubmission from "./pages/registration/shipper/shipperSubmission.js";
-import ShipperDashboard from "./pages/shipper/dashBoard.js";
+import ShipperDashboard from "./pages/shipper/shipperDashBoard.js";
+import CarrierDashboard from "./pages/carrier/carrierDashboard.js"
 
 export default function App() {
   return (
@@ -57,6 +58,7 @@ export default function App() {
             <Route path="/driverprofiles" element={<DriverProfiles />} />
             <Route path="/unitprofiles" element={<UnitProfiles />} />
             <Route path="/carriersettings" element={<CarrierSettings />} />
+            <Route path="/carrierdashboard" element={<CarrierDashboard />} />
             <Route
               path="/carrierbusinessdetails"
               element={<CarrierBusinessDetails />}

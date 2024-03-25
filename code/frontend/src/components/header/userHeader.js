@@ -30,7 +30,7 @@ function UserHeader({ title, userInfo }) {
   const initials = firstNameInitial + lastNameInitial;
 
   const [notificationCount, setNotificationCount] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const incrementNotificationCount = () => {
     setNotificationCount((prevCount) => prevCount + 1);
@@ -101,7 +101,7 @@ function UserHeader({ title, userInfo }) {
         </Flex>
       ) : (
         <Flex alignItems="center" position="absolute" right="50px">
-          <Text mr={2}>
+          <Flex position="relative" mr={2}>
             <MdNotifications
               color={iconColor}
               onClick={() => {
@@ -110,23 +110,23 @@ function UserHeader({ title, userInfo }) {
               }}
               size={20}
             />
-          </Text>
-          {notificationCount > 0 && (
-            <span
-              style={{
-                fontSize: "12px",
-                color: "#fff",
-                background: "#ff0000",
-                padding: "1px 5px",
-                borderRadius: "50%",
-                position: "absolute",
-                top: "-8px",
-                right: "130px",
-              }}
-            >
-              {notificationCount}
-            </span>
-          )}
+            {notificationCount > 0 && (
+              <span
+                style={{
+                  fontSize: "12px",
+                  color: "#fff",
+                  background: "#ff0000",
+                  padding: "1px 5px",
+                  borderRadius: "50%",
+                  position: "absolute",
+                  top: "-8px",
+                  right: "-15px",
+                }}
+              >
+                {notificationCount}
+              </span>
+            )}
+          </Flex>
           <Text fontSize="18px" ml="4" color={textColor}>
             {userInfo.firstName} {userInfo.lastName}
           </Text>
@@ -149,4 +149,3 @@ function UserHeader({ title, userInfo }) {
 }
 
 export default UserHeader;
-

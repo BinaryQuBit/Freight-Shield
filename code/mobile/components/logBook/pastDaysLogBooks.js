@@ -53,7 +53,7 @@ export default function PastDaysLogBooks() {
   );
 
   return (
-    <View>
+    <View style={style.pageContainer}>
       <View style={style.container}>
         <Text style={style.title}>Logbooks</Text>
       </View>
@@ -124,6 +124,9 @@ export default function PastDaysLogBooks() {
 }
 
 const style = StyleSheet.create({
+  pageContainer:{
+    backgroundColor: "#FFFFFF",
+  },
   container: {
     alignItems: "center",
     backgroundColor: "#FFFFFF",

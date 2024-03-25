@@ -10,6 +10,7 @@ export default function CustomLink({
   mr,
   fontSize,
   href,
+  mt,
 }) {
   const handleNavigation = (event) => {
     if (onClick) {
@@ -28,6 +29,7 @@ export default function CustomLink({
       onClick={handleNavigation}
       ml={ml}
       mr={mr}
+      mt={mt}
     >
       {children}
     </Button>

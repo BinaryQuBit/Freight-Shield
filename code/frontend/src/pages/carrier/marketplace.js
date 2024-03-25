@@ -40,6 +40,7 @@ export default function Marketplace() {
   // Hooks
   const { colorMode } = useColorMode();
   const { data } = useData();
+  const { firstName, lastName } = data.user || {};
   const [filterOption, setFilterOption] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const loads = data.loads || [];
@@ -67,6 +68,7 @@ export default function Marketplace() {
       fieldToFilter.includes(searchTerm.toLowerCase()) && matchesTypeLoadFilter
     );
   });
+  console.log("This is Data", data);
 
   return (
     <>
@@ -79,7 +81,7 @@ export default function Marketplace() {
       />
       <CarrierSideBar activePage={"marketplace"} />
       <EaseOut>
-        <UserHeader title={"Marketplace"} />
+        <UserHeader title="Marketplace" userInfo={{ firstName, lastName }} />
         <Flex pt="10" direction="column" alignItems="center" padding="10">
           <Stack spacing={4} direction="row" mb="4">
             <Select

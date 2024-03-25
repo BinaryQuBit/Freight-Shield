@@ -6,12 +6,12 @@ import Shipper from "../models/shipperModel.js";
 import Marketplace from "../models/marketplaceModel.js";
 
 // Delete Middleware Import
-import deleteFiles from "../middleware/delete.js";
+import {deleteFiles} from "../middleware/delete.js";
 
 ////////////////////////////// Getters //////////////////////////////
 
 // @desc    Getting Dashboard
-// route    GET /api/shipperdashboard
+// route    GET /api/shipperdashboard 
 // @access  Private
 export const shipperDasboard = asyncHandler(async (req, res) => {
   try {
@@ -29,25 +29,6 @@ export const shipperDasboard = asyncHandler(async (req, res) => {
     res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ message: error.message });
-  }
-});
-
-
-// @desc    Getting Shipper Events
-// route    GET /api/events
-// @access  Private
-export const getShipperEvents = asyncHandler(async (req, res) => {
-  try {
-    const shipperId = req.user.id;
-    const shipper = await Shipper.findById(shipperId);
-
-    if (!shipper) {
-      return res.status(404).json({ message: "Shipper not found" });
-    }
-    const events = shipper.events;
-    res.status(200).json(events);
-  } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
   }
 });
 
@@ -297,9 +278,9 @@ export const postLoad = asyncHandler(async (req, res) => {
 });
 
 // @desc    Posting Events
-// route    POST /api/events
+// route    POST /api/shipperevents
 // @access  Private
-export const postEvents = async (req, res) => {
+export const postShipperEvents = async (req, res) => {
   try {
     const shipperEmail = req.user.email;
     const shipper = await Shipper.findOne({ email: shipperEmail });
@@ -325,20 +306,24 @@ export const updateLoad = asyncHandler(async (req, res) => {
   const { id } = req.params;
   let updateData = { ...req.body };
   try {
-    const updatedLoad = await Marketplace.findByIdAndUpdate(
-      id,
-      { $set: updateData },
-      { new: true }
-    );
-    if (!updatedLoad) {
+    const load = await Marketplace.findById(id);
+    if (!load) {
       return res.status(404).json({ message: "Load not found" });
     }
+    if (req.file) {
+      updateData.additionalDocument = req.file.path;
+      if (load.additionalDocument) {
+        deleteFiles(load.additionalDocument);
+      }
+    } else if (!req.body.additionalDocument && load.additionalDocument) {
+      deleteFiles(load.additionalDocument);
+      updateData.additionalDocument = "";
+    }
+    const updatedLoad = await Marketplace.findByIdAndUpdate(id, { $set: updateData }, { new: true });
     res.json(updatedLoad);
   } catch (error) {
     console.error("Error in updateLoad:", error);
-    res
-      .status(400)
-      .json({ message: "Error updating load", error: error.message });
+    res.status(400).json({ message: "Error updating load", error: error.message });
   }
 });
 
@@ -623,105 +608,24 @@ export const updateShipperStatus = asyncHandler(async (req, res) => {
 
 ////////////////////////////// Deleters //////////////////////////////
 
-// @desc    Remove Proof of Business
-// route    DELETE /api/users/proofBusiness
-// @access  Private
-export const removeProofBusiness = asyncHandler(async (req, res) => {
-  const email = req.user.email;
-  const shipper = await Shipper.findOne({ email });
-  if (!shipper) {
-    return res.status(404).send({ message: "Shipper not found" });
-  }
-  if (!shipper.proofBusiness) {
-    return res
-      .status(400)
-      .send({ message: "No proof of business file to delete." });
-  }
-  try {
-    await Shipper.findOneAndUpdate(
-      { email },
-      { proofBusiness: null },
-      { new: true }
-    );
-    res.send({ message: "Proof of Business file deleted successfully." });
-  } catch (error) {
-    res.status(500).send({ message: "Server error", error: error.message });
-  }
-});
-
-// @desc    Remove Proof of Insurance
-// route    DELETE /api/users/proofBusinessinsurance
-// @access  Private
-export const removeProofInsurance = asyncHandler(async (req, res) => {
-  const email = req.user.email;
-  const shipper = await Shipper.findOne({ email });
-  if (!shipper) {
-    return res.status(404).send({ message: "Shipper not found" });
-  }
-  if (!shipper.proofInsurance) {
-    return res
-      .status(400)
-      .send({ message: "No proof of insurance file to delete." });
-  }
-  try {
-    await Shipper.findOneAndUpdate(
-      { email },
-      { proofInsurance: null },
-      { new: true }
-    );
-    res.send({ message: "Proof of Insurance file deleted successfully." });
-  } catch (error) {
-    res.status(500).send({ message: "Server error", error: error.message });
-  }
-});
-
-// @desc    Remove Addtional document
-// route    DELETE /api/users/postload
-// @access  Private
-export const removeAdditionalDocument = asyncHandler(async (req, res) => {
-  const { id, filename } = req.params;
-  const load = await Marketplace.findById(id);
-  if (!load) {
-    return res.status(404).send({ message: "Load not found" });
-  }
-  if (!load.additionalDocument) {
-    return res
-      .status(400)
-      .send({ message: "No additional document file to delete." });
-  }
-  const storedFilename = load.additionalDocument.split("/").pop();
-  if (filename !== storedFilename) {
-    return res.status(400).send({ message: "Filename does not match." });
-  }
-  await Marketplace.findByIdAndUpdate(
-    id,
-    { $set: { additionalDocument: "" } },
-    { new: true }
-  );
-  const updatedLoad = await Marketplace.findById(id);
-
-  if (updatedLoad.additionalDocument === null) {
-    res.send({ message: "Additional document deleted successfully." });
-  } else {
-    res
-      .status(500)
-      .send({ message: "Failed to delete the additional document." });
-  }
-});
-
 // @desc    Delete Load
 // route    DELETE /api/users/activeloads/${loadId}
 // @access  Private
-export const deleteLoad = async (req, res) => {
+export const deleteLoad = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
   try {
-    const loadId = req.params.id;
-    const load = await Marketplace.findByIdAndDelete(loadId);
+    const load = await Marketplace.findById(id);
     if (!load) {
       return res.status(404).json({ message: "Load not found" });
     }
+    if (load.additionalDocument) {
+      deleteFiles(load.additionalDocument);
+    }
+    await Marketplace.findByIdAndDelete(id);
     res.status(200).json({ message: "Load deleted successfully" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
+    console.error("Error deleting load:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
-};
+});

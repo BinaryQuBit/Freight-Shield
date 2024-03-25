@@ -293,6 +293,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#FFFFFF",
     paddingTop: 20,
+    height: "100%",
   },
   headerStyle: {
     flexDirection: "row",

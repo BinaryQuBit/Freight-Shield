@@ -1,6 +1,4 @@
-// Carrier Side Bar
-
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { SidebarContext } from "../responsiveness/context.js";
 import {
   Flex,
@@ -10,7 +8,7 @@ import {
   Switch,
   FormLabel,
 } from "@chakra-ui/react";
-import { FiMenu, FiLogOut, FiSettings } from "react-icons/fi";
+import { FiMenu, FiLogOut, FiSettings, FiHome, } from "react-icons/fi";
 import {
   FaPlaceOfWorship,
   FaTrailer,
@@ -28,6 +26,7 @@ export default function CarrierSideBar({ activePage }) {
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
   const navigate = useNavigate();
+  const { setColorMode } = useColorMode();
 
   const logout = () => {
     axios
@@ -39,6 +38,8 @@ export default function CarrierSideBar({ activePage }) {
         console.error("Logout failed:", error);
       });
   };
+
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     function handleResize() {
@@ -55,6 +56,14 @@ export default function CarrierSideBar({ activePage }) {
     return () => window.removeEventListener("resize", handleResize);
   }, [setNavSize]);
 
+  const toggleMenu = () => {
+    if (window.innerWidth < 768) {
+      setMenuOpen(!menuOpen);
+    } else {
+      setNavSize(navSize === "small" ? "large" : "small");
+    }
+  };
+
   return (
     <div style={{ width: navSize === "small" ? "50px" : "200px" }}>
       <Flex
@@ -67,19 +76,29 @@ export default function CarrierSideBar({ activePage }) {
         flexDir="column"
         justifyContent="flex-start"
         background={isDark ? "#343541" : "#E4E9F7"}
-        w={navSize === "small" ? "50px" : "200px"}
+        w={menuOpen ? "100%" : navSize === "small" ? "50px" : "200px"}
         transition="width 0.3s ease-in-out"
       >
-        <Flex align="center" justify="center" p="5%" h="20%">
-          <Logo color={isDark ? "white" : "#0866FF"} />
-        </Flex>
+
         <Flex flexDir="column" as="nav" align="center" p="5%" flexGrow={1}>
+        <Flex
+            align="center"
+            justify="center"
+            h={menuOpen ? "50%" : "30%"}
+            w={"100%"}
+          >
+            <Logo color={isDark ? "white" : "#0866FF"} />
+          </Flex>
           <IconButton
             aria-label="Open Menu"
-            size="lg"
+            size="md"
             variant="ghost"
             icon={<FiMenu />}
-            onClick={() => setNavSize(navSize === "small" ? "large" : "small")}
+            onClick={
+              navSize === "small"
+                ? toggleMenu
+                : () => setNavSize(navSize === "small" ? "large" : "small")
+            }
             sx={{
               "&:hover": {
                 color: "white",
@@ -88,12 +107,21 @@ export default function CarrierSideBar({ activePage }) {
             }}
           />
 
+<NavItem
+            navSize={navSize}
+            icon={FiHome}
+            title="Dashboard"
+            active={activePage === "dashboard"}
+            onClick={() => navigate("/carrierDashboard")}
+            menuOpen={menuOpen}
+          />
          <NavItem
           navSize={navSize}
           icon={FaPlaceOfWorship}
           title="Marketplace"
           active={activePage === "marketplace"}
           onClick={() => navigate("/marketplace")}
+          menuOpen={menuOpen}
         />
         <NavItem
           navSize={navSize}
@@ -101,6 +129,7 @@ export default function CarrierSideBar({ activePage }) {
           title="My Loads"
           active={activePage === "myLoads"}
           onClick={() => navigate("/myloads")}
+          menuOpen={menuOpen}
         />
         <NavItem
           navSize={navSize}
@@ -108,6 +137,7 @@ export default function CarrierSideBar({ activePage }) {
           title="Driver Profiles"
           active={activePage === "driverProfile"}
           onClick={() => navigate("/driverprofiles")}
+          menuOpen={menuOpen}
         />
         <NavItem
           navSize={navSize}
@@ -115,6 +145,7 @@ export default function CarrierSideBar({ activePage }) {
           title="Unit Profiles"
           active={activePage === "unitProfile"}
           onClick={() => navigate("/unitprofiles")}
+          menuOpen={menuOpen}
         />
 
         </Flex>
@@ -132,7 +163,7 @@ export default function CarrierSideBar({ activePage }) {
               onChange={toggleColorMode}
               size="md"
             />
-            {navSize === "large" && (
+            {(navSize === "large" || menuOpen) && (
               <FormLabel htmlFor="dark-mode-switch" mb="0" ml={3}>
                 {isDark ? "Dark Mode" : "Light Mode"}
               </FormLabel>
@@ -148,12 +179,14 @@ export default function CarrierSideBar({ activePage }) {
               title="Settings"
               active={activePage === "carrierSettings"}
               onClick={() => navigate("/carriersettings")}
+              menuOpen={menuOpen}
             />
             <NavItem
               navSize={navSize}
               icon={FiLogOut}
               title="Sign Out"
               onClick={logout}
+              menuOpen={menuOpen}
             />
           </Flex>
         </Flex>

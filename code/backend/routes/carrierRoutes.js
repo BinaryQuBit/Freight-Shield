@@ -23,7 +23,8 @@ import {
   updateCarrierStatus,
   updateDriverStatus,
   updateDriverStatusLoad,
-  // postEvents,
+  carrierDasboard,
+  postCarrierEvents,
   // getUnitDriver,
 } from "../controllers/carrierController.js"; 
 
@@ -39,11 +40,12 @@ router.get("/carriersettings", protect, carrierOnly, getCarrierSettings);
 router.get("/carriercontactdetails", protect, carrierOnly, getCarrierContactDetails);
 router.get("/carrierbusinessdetails", protect, carrierOnly, getCarrierBusinessDetails);
 router.get("/carriersubmission", protect, carrierOnly, getCarrierSubmission);
+router.get("/carrierdashboard", protect, carrierOnly, carrierDasboard);
 // router.get("/getunitdriver", protect, carrierOnly, getUnitDriver);
 
 /////////////////////////////////////////////////////// POSTERS ///////////////////////////////////////////////////////
 router.post("/postunit", upload.fields([{ name: "unitRegistration", maxCount: 1 }, { name: "unitInsurance", maxCount: 1 }, { name: "unitSafety", maxCount: 1 }]), protect, carrierOnly, status, postUnit);
-// router.post("/events", protect, carrierOnly, status, postEvents);
+router.post("/carrierevents", protect, carrierOnly, status, postCarrierEvents);
 
 /////////////////////////////////////////////////////// PUTTERS ///////////////////////////////////////////////////////
 router.put("/marketplace/:id", protect, carrierOnly, status, updateAssignUnit);

@@ -170,7 +170,7 @@ export default function ShipperSideBar({ activePage }) {
               title="Settings"
               active={activePage === "shipperSettings"}
               onClick={() => navigate("/shipperSettings")}
-              menuOpen={menuOpen}
+              menuOpen={menuOpen} 
             />
             <NavItem
               navSize={navSize}
@@ -184,4 +184,4 @@ export default function ShipperSideBar({ activePage }) {
       </Flex>
     </div>
   );
-}
+} 

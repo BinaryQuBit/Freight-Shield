@@ -14,7 +14,7 @@ export default function NavItem({ icon, title, active, navSize, onClick, menuOpe
           backgroundColor={active && "#0866FF"}
           onClick={onClick}
           color={active && "white"}
-          p={3}
+          p={2}
           borderRadius={8}
           _hover={{
             textDecor: "none",

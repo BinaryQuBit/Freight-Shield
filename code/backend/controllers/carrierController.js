@@ -7,19 +7,46 @@ import Marketplace from "../models/marketplaceModel.js";
 import Driver from "../models/driverModel.js";
 
 // Delete Middleware Import
-import deleteFiles from "../middleware/delete.js";
+import {deleteFiles} from "../middleware/delete.js";
 
 ////////////////////////////// Getters //////////////////////////////
+
+// @desc    Getting Dashboard
+// route    GET /api/carrierdashboard 
+// @access  Private
+export const carrierDasboard = asyncHandler(async (req, res) => {
+  try {
+    const userEmail = req.user.email;
+    const carrier = await Carrier.findOne({ email: userEmail });
+    if (!carrier) {
+      return res.status(404).json({ message: "Carrier not found" }); 
+    }
+    const response = {
+      firstName: carrier.firstName,
+      lastName: carrier.lastName,
+      events: carrier.events,
+    };
+
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 // @desc    Getting Marketplace
 // route    GET /api/marketplace
 // @access  Private
-export const getMarketplace = asyncHandler(async (req, res) => {
+export const getMarketplace = asyncHandler(async (req, res) => { 
   try {
     const pendingLoads = await Marketplace.find({ status: "Pending" });
     const userEmail = req.user.email;
     const carrier = await Carrier.findOne({ email: userEmail });
-
+    const user = {
+      _id: req.user._id,
+      email: req.user.email,
+      firstName: req.user.firstName,
+      lastName: req.user.lastName,
+    };
     let units = [];
     let driverData = [];
 
@@ -51,17 +78,19 @@ export const getMarketplace = asyncHandler(async (req, res) => {
       }));
     }
 
-    const response = {
+    const responseData = {
       loads: pendingLoads,
       units,
       driverData,
+      user,
     };
 
-    res.status(200).json(response);
+    res.status(200).json(responseData);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
+
 
 // @desc    Getting My Loads
 // route    GET /api/myloads
@@ -69,11 +98,15 @@ export const getMarketplace = asyncHandler(async (req, res) => {
 export const getMyLoads = asyncHandler(async (req, res) => {
   const carrierEmail = req.user.email;
 
-  // Find loads where the user is involved as a carrier
   const myLoads = await Marketplace.find({ carrierEmail: carrierEmail });
-
+  const user = {
+    _id: req.user._id,
+    email: req.user.email,
+    firstName: req.user.firstName,
+    lastName: req.user.lastName,
+  };
   if (myLoads.length > 0) {
-    res.status(200).json(myLoads);
+    res.status(200).json(myLoads, user);
   } else {
     res.status(404).json({ message: "No loads found for this carrier" });
   }
@@ -86,20 +119,22 @@ export const getDriverProfiles = asyncHandler(async (req, res) => {
   try {
     const userEmail = req.user.email;
     const carrier = await Carrier.findOne({ email: userEmail });
-
     if (!carrier) {
       return res.status(404).json({ message: "Carrier not found" });
     }
-
     const canadianCarrierCode = carrier.canadianCarrierCode;
     const drivers = await Driver.find({
       canadianCarrierCode: canadianCarrierCode,
     });
-
     const filteredDrivers = drivers.filter(
       (driver) => driver.driverStatus !== "declined"
     );
-
+    const user = {
+      _id: req.user._id,
+      email: req.user.email,
+      firstName: req.user.firstName,
+      lastName: req.user.lastName,
+    };
     const driverData = filteredDrivers.map((driver) => ({
       driver_id: driver._id,
       driverAbstract: driver.driverAbstract,
@@ -111,12 +146,12 @@ export const getDriverProfiles = asyncHandler(async (req, res) => {
       phoneNumber: driver.phoneNumber,
       driverStatus: driver.driverStatus,
     }));
-
-    res.status(200).json({ driverData });
+    res.status(200).json({ driverData, user });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
+
 
 // @desc    Getting Unit Profiles
 // route    GET /api/unitprofiles
@@ -125,7 +160,12 @@ export const getUnitProfiles = asyncHandler(async (req, res) => {
   try {
     const userEmail = req.user.email;
     const carrier = await Carrier.findOne({ email: userEmail });
-
+    const user = {
+      _id: req.user._id,
+      email: req.user.email,
+      firstName: req.user.firstName,
+      lastName: req.user.lastName,
+    };
     if (!carrier) {
       return res.status(404).json({ message: "Carrier not found" });
     }
@@ -146,7 +186,7 @@ export const getUnitProfiles = asyncHandler(async (req, res) => {
       };
     });
 
-    res.status(200).json({ units });
+    res.status(200).json({ units, user });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -159,9 +199,40 @@ export const getCarrierSettings = asyncHandler(async (req, res) => {
   const user = {
     _id: req.user._id,
     email: req.user.email,
+    firstName: req.user.firstName,
+    lastName: req.user.lastName,
   };
-
-  res.status(200).json({ user });
+  const carrier = await Carrier.findOne({ email: user.email });
+    if (!carrier) {
+  return res.status(404).json({ message: "carrier not found" }); 
+}
+  const response = {
+  firstName: carrier.firstName,
+  lastName: carrier.lastName,
+  companyPhoneNumber: carrier.companyPhoneNumber,
+  streetAddress: carrier.streetAddress,
+  apptNumber: carrier.apptNumber,
+  city: carrier.city,
+  province: carrier.province,
+  postalCode: carrier.postalCode,
+  country: carrier.country,
+  mailingStreetAddress: carrier.mailingStreetAddress,
+  mailingApptNumber: carrier.mailingApptNumber,
+  mailingCity: carrier.mailingCity,
+  mailingProvince: carrier.mailingProvince,
+  mailingPostalCode: carrier.mailingPostalCode,
+  mailingCountry: carrier.mailingCountry,
+  businessName: carrier.businessName,
+  doingBusinessAs: carrier.doingBusinessAs,
+  businessNumber: carrier.businessNumber,
+  carrierProfile: carrier.carrierProfile,
+  safetyFitnessCertificate: carrier.safetyFitnessCertificate,
+  canadianCarrierCode: carrier.canadianCarrierCode,
+  nationalSafetyCode: carrier.nationalSafetyCode,
+  wcb: carrier.wcb,
+  website: carrier.website,
+};
+  res.status(200).json({ user, response });
 });
 
 // @desc    Getting Carrier Company Details
@@ -353,6 +424,30 @@ export const postUnit = asyncHandler(async (req, res) => {
     res.status(statusCode).json({ message: error.message || "Server error" });
   }
 });
+
+// @desc    Update Driver Status on load
+// route    PUT /api/updatedriverstatusload
+// @access  Private
+export const postCarrierEvents = async (req, res) => {
+  try {
+    const carrierEmail = req.user.email;
+    console.log("Carrier Id", carrierEmail);
+
+    const carrier = await Carrier.findOne({email: carrierEmail});
+    if (!carrier) {
+      return res.status(400).json({ message: "Carrier not found" });
+    }
+    const { title, description, date, location } = req.body;
+    const newEvent = { title, description, date, location };
+
+    carrier.events.push(newEvent);
+    await carrier.save();
+
+    res.status(201).json({ message: "Event added successfully", event: newEvent });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
 
 ////////////////////////////// Putters //////////////////////////////
 
@@ -796,22 +891,3 @@ export const updateDriverStatusLoad = asyncHandler(async (req, res) => {
   }
 });
 
-// export const postEvents = async (req, res) => {
-//   try {
-//     const carrierId = req.user.id;
-
-//     const carrier = await Carrier.findById(carrierId);
-//     if (!carrier) {
-//       return res.status(404).json({ message: "Carrier not found" });
-//     }
-//     const { title, description, date, location } = req.body;
-//     const newEvent = { title, description, date, location };
-
-//     carrier.events.push(newEvent);
-//     await carrier.save();
-
-//     res.status(201).json({ message: "Event added successfully", event: newEvent });
-//   } catch (error) {
-//     res.status(500).json({ message: "Server error", error: error.message });
-//   }
-// };

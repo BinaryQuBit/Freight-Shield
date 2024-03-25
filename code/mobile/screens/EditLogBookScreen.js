@@ -61,7 +61,7 @@ export default function EditLogBookScreen({ route }) {
   };
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.container}>
       <View style={styles.container}>
         <Text style={styles.title}>Edit Logbook</Text>
         <Text style={styles.subtitle}>
@@ -137,6 +137,7 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 20,
     paddingBottom: 20,
+    backgroundColor: "#FFFFFF",
   },
   pickerContainer: {
     flexDirection: "row",
