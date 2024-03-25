@@ -87,7 +87,7 @@ export default function LoginForm() {
         }
         else
         {
-          navigate("/marketplace");
+          navigate("/carrierdashboard");
         }
       }
       else if (role === "shipper") {

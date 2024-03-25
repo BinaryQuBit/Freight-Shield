@@ -155,7 +155,7 @@ export default function ActiveLoads() {
                         _expanded={{ bg: "gray.100", color: "black" }}
                       >
                         <Box flex="1" textAlign="center">
-                          <Text fontSize="lg">
+                        <Text fontSize={{ base: "sm", md: "lg" }}>
                             <strong>From:</strong> {load.pickUpCity}
                             <Box as="span" ml="4" mr="4"></Box>
                             <strong>To:</strong> {load.dropOffCity}
@@ -177,58 +177,59 @@ export default function ActiveLoads() {
                         align={{ lg: "center" }}
                       >
                         <Box flex="1">
-                          <Text fontSize="md" mb="2">
+                          <Text fontSize={{ base: "sm", md: "lg" }} mb="2">
                             <strong>Pickup Location:</strong>{" "}
                             {load.pickUpLocation}
                           </Text>
-                          <Text fontSize="md" mb="2">
+                          <Text fontSize={{ base: "sm", md: "lg" }} mb="2">
                             <strong>Pick Up Date:</strong> {load.pickUpDate}
                           </Text>
-                          <Text fontSize="md" mb="2">
+                          <Text fontSize={{ base: "sm", md: "lg" }} mb="2">
                             <strong>Pick Up Time:</strong> {load.pickUpTime}
                           </Text>
-                          <Text fontSize="md" mb="2">
+                          <Text fontSize={{ base: "sm", md: "lg" }} mb="2">
                             <strong>Drop Off Location:</strong>{" "}
                             {load.dropOffLocation}
                           </Text>
-                          <Text fontSize="md" mb="2">
+                          <Text fontSize={{ base: "sm", md: "lg" }} mb="2">
                             <strong>Drop Off Date:</strong> {load.dropOffDate}
                           </Text>
-                          <Text fontSize="md" mb="2">
+                          <Text fontSize={{ base: "sm", md: "lg" }} mb="2">
                             <strong>Drop Off Time:</strong> {load.dropOffTime}
                           </Text>
-                          <Text fontSize="md" mb="2">
+                          <Text fontSize={{ base: "sm", md: "lg" }} mb="2">
                             <strong>Unit Requested:</strong>{" "}
                             {load.unitRequested}
                           </Text>
-                          <Text fontSize="md" mb="2">
+                          <Text fontSize={{ base: "sm", md: "lg" }} mb="2">
                             <strong>Type of Load:</strong> {load.typeLoad}
                           </Text>
                           {load.typeLoad === "LTL" ? (
-                            <Text fontSize="md" mb="2">
+                            <Text fontSize={{ base: "sm", md: "lg" }} mb="2">
                               <strong>Size of Load:</strong> {load.sizeLoad}{" "}
                               feet
                             </Text>
                           ) : (
                             <></>
                           )}
-                          <Text fontSize="md" mb="2">
+                          <Text fontSize={{ base: "sm", md: "lg" }} mb="2">
                             <strong>Price:</strong> $ {load.price}
                           </Text>
 
                           {load.additionalInformation && (
-                            <Text fontSize="md" mb="2">
+                            <Text fontSize={{ base: "sm", md: "lg" }} mb="2">
                               <strong>Additional Information:</strong>{" "}
                               {load.additionalInformation}
                             </Text>
                           )}
 
                           {load.additionalDocument && (
-                            <Text fontSize="md" mb="2">
+                            <Text fontSize={{ base: "sm", md: "lg" }} mb="2">
                               <strong>Additional Document:</strong>{" "}
                               <CustomLink
                                 href={`http://${backend}${load.additionalDocument}`}
                                 children={"View Additional Document"}
+                                fontSize={{ base: "sm", md: "lg" }}
                               />
                             </Text>
                           )}
@@ -254,25 +255,25 @@ export default function ActiveLoads() {
                               pt={"10"}
                               pb={"5"}
                               fontWeight={"bold"}
-                              fontSize={"18"}
+                              fontSize={{ base: "sm", md: "lg" }}
                             >
                               Carrier Information
                             </Text>
-                            <Text fontSize="md" mb="2">
+                            <Text fontSize={{ base: "sm", md: "lg" }} mb="2">
                               <strong>Business Name:</strong>{" "}
                               {load.carrierBusinessName} {"("}
                               {load.carrierDoingBusinessAs}
                               {")"}
                             </Text>
-                            <Text fontSize="md" mb="2">
+                            <Text fontSize={{ base: "sm", md: "lg" }} mb="2">
                               <strong>Contact Name:</strong>{" "}
                               {load.carrierFirstName} {load.carrierLastName}
                             </Text>
-                            <Text fontSize="md" mb="2">
+                            <Text fontSize={{ base: "sm", md: "lg" }} mb="2">
                               <strong>Phone Number:</strong>{" "}
                               {load.carrierPhoneNumber}
                             </Text>
-                            <Text fontSize={"md"} mb={"2"}>
+                            <Text fontSize={{ base: "sm", md: "lg" }} mb={"2"}>
                               <strong>Email:</strong> {load.carrierEmail}
                             </Text>
                           </Box>
@@ -284,19 +285,19 @@ export default function ActiveLoads() {
                               pt={"10"}
                               pb={"5"}
                               fontWeight={"bold"}
-                              fontSize={"18"}
+                              fontSize={{ base: "sm", md: "lg" }}
                             >
                               Driver Information
                             </Text>
-                            <Text fontSize={"md"} mb={"2"}>
+                            <Text fontSize={{ base: "sm", md: "lg" }} mb={"2"}>
                               <strong>Name:</strong> {load.driverFirstName}{" "}
                               {load.driverLastName}
                             </Text>
-                            <Text fontSize={"md"} mb={"2"}>
+                            <Text fontSize={{ base: "sm", md: "lg" }} mb={"2"}>
                               <strong>Phone Number:</strong>{" "}
                               {load.driverPhoneNumber}
                             </Text>
-                            <Text fontSize={"md"} mb={"2"}>
+                            <Text fontSize={{ base: "sm", md: "lg" }} mb={"2"}>
                               <strong>Email:</strong> {load.driverEmail}
                             </Text>
                           </Box>

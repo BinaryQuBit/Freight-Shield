@@ -40,6 +40,7 @@ export default function Marketplace() {
   // Hooks
   const { colorMode } = useColorMode();
   const { data } = useData();
+  const { firstName, lastName } = data.user || {};
   const [filterOption, setFilterOption] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const loads = Array.isArray(data) ? data : [];
@@ -81,7 +82,7 @@ export default function Marketplace() {
       />
       <CarrierSideBar activePage={"myLoads"} />
       <EaseOut>
-        <UserHeader title={"My Loads"} />
+        <UserHeader title="My Loads" userInfo={{ firstName, lastName }}/>
         <Flex pt="10" direction="column" alignItems="center" padding="10">
           <Stack spacing={4} direction="row" mb="4">
             <Select

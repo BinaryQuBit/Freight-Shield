@@ -102,10 +102,11 @@ const styles = StyleSheet.create({
   flexContainer: {
     flex: 1,
     justifyContent: "space-between",
+    backgroundColor: "#FFFFFF",
   },
   container: {
     flex: 1,
-    backgroundColor: "#f7f7f7",
+    
     padding: 20,
   },
   settingItem: {

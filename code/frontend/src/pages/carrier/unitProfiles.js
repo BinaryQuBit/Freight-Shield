@@ -29,7 +29,9 @@ import CustomLink from "../../components/buttons/customLink.js";
 export default function UnitProfile() {
   Protector("/api/unitprofiles");
   const { colorMode } = useColorMode();
-  const { data: { units } = {} } = useData();
+  const { data } = useData();
+  const { units } = data;
+  const { firstName, lastName } = data.user || {};
   const backendPort = process.env.REACT_APP_BACKEND_PORT;
 
   const sortedUnits = (units || []).sort((a, b) => {
@@ -56,7 +58,7 @@ export default function UnitProfile() {
       <AddUnit isOpen={isAddUnitModalOpen} onClose={closeAddUnitModal} />
       <CarrierSideBar activePage="unitProfile" />
       <EaseOut>
-        <UserHeader title={"Unit Profiles"} />
+        <UserHeader title="Unit Profiles" userInfo={{ firstName, lastName }}/>
         <CustomButton
           backgroundColor="#0866FF"
           w="90px"

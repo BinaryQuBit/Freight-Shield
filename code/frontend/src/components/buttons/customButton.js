@@ -1,7 +1,5 @@
-// Custom Button
-
 import React from "react";
-import { Button, Box } from "@chakra-ui/react";
+import { Button, Box, Text } from "@chakra-ui/react";
 
 export default function BlueButton({
   mt,
@@ -14,7 +12,8 @@ export default function BlueButton({
   backgroundColor,
   floatSide,
   m,
-  mb
+  mb,
+  fontSize,
 }) {
   return (
     <Box>
@@ -30,8 +29,13 @@ export default function BlueButton({
         m={m}
         mb={mb}
       >
-        <div className="icon-wrapper">{icon}</div>
-        <div className="content-wrapper">{children}</div>
+        <Text className="icon-wrapper">{icon}</Text>
+        <Text
+          fontSize = {fontSize}
+          className="content-wrapper"
+        >
+          {children}
+        </Text>
       </Button>
     </Box>
   );

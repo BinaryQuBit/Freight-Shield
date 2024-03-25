@@ -214,6 +214,7 @@ export default function PostedLoadEdit({ isOpen, onClose, load }) {
 
     // Start of the PUT Method
     try {
+      console.log("this is file", additionalDocument);
       const response = await axios.put(`/api/postload/${load._id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -445,7 +446,7 @@ export default function PostedLoadEdit({ isOpen, onClose, load }) {
                 label="Additional Document"
                 mt={8}
                 setFileState={setAdditionalDocument}
-                fileUrl={`http://${backendUrl}${load.additionalDocument}`}
+                fileUrl={load.additionalDocument ? `http://${backendUrl}${load.additionalDocument}` : ""}
               />
 
               <Flex justifyContent="space-between">

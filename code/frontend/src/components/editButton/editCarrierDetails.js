@@ -2,7 +2,6 @@
 
 // React Imports
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { FaRegSave } from "react-icons/fa";
 import { IoMdCloseCircle } from "react-icons/io";
 
@@ -32,7 +31,6 @@ import { DocumentValidation } from "../utils/validation/documentValidation.js";
 // Start of the Build
 export default function EditCarrierDetails({ isOpen, onClose, data }) {
   axios.defaults.withCredentials = true;
-  const navigate = useNavigate();
   const backendUrl = process.env.REACT_APP_BACKEND_PORT; 
 
   // Hooks
@@ -88,6 +86,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
 
   // Render Saved Data
   useEffect(() => {
+    if (data) {
     setFirstName(data.firstName || "");
     setLastName(data.lastName || "");
     setCompanyPhoneNumber(data.companyPhoneNumber || "");
@@ -112,6 +111,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
     setNationalSafetyCode(data.nationalSafetyCode || "");
     setWcb(data.wcb || "");
     setWebsite(data.website || "");
+    }
   }, [data]);
 
   // Functions
@@ -283,7 +283,6 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
       );
 
       if (carrierSubmissionDetailsResponse.status === 200) {
-        navigate("/carriersubmission");
         window.location.reload();
       }
     } catch (error) {
@@ -619,7 +618,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
               type={"text"}
               mt={8}
             />
-
+            {data && data.carrierProfile && (
             <CustomUpload
               id="carrierProfile"
               label="Carrier Profile"
@@ -629,9 +628,11 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
               mt={8}
               setError={setCarrierProfileError}
               setFileState={setCarrierProfile}
-              fileUrl={`http://${backendUrl}${data.carrierProfile}`}
+              fileUrl={`http://${backendUrl}${data.carrierProfile}`} 
             />
+            )}
 
+{data && data.safetyFitnessCertificate && (
             <CustomUpload
               id="safetyFitnessCertificate"
               label="Safety Fitness Certificate"
@@ -643,6 +644,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
               setFileState={setSafetyFitnessCertificate}
               fileUrl={`http://${backendUrl}${data.safetyFitnessCertificate}`}
             />
+            )}
 
             <CustomInput
               id={"website"}

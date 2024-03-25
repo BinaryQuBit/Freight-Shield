@@ -49,6 +49,19 @@ const unitSchema = new mongoose.Schema(
   { _id: false, timestamps: true }
 );
 
+const notificationDescriptionSchema = new mongoose.Schema(
+  {
+    des: { type: String },
+  }
+)
+
+const notificationSchema = new mongoose.Schema(
+  {
+    counter: { type: Number },
+    description: [notificationDescriptionSchema]
+  }
+)
+
 // Carrier Schema Defination and Declaration
 const carrierSchema = new mongoose.Schema(
   {
@@ -171,6 +184,7 @@ const carrierSchema = new mongoose.Schema(
     },
     units: [unitSchema],
     events: [eventSchema],
+    notification : [notificationSchema]
   },
   {
     timestamps: true,

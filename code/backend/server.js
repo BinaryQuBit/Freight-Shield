@@ -14,6 +14,7 @@ import DriverRoutes from "./routes/driverRoutes.js";
 import NewUserRoutes from "./routes/newUserRoutes.js";
 import ShipperRoutes from "./routes/shipperRoutes.js";
 import cors from "cors";
+import Carrier from './models/carrierModel.js';
 
 dotenv.config();
 
@@ -55,7 +56,26 @@ connectDB()
     collectionsToWatch.forEach((colName) => {
       const collection = db.collection(colName);
       const changeStream = collection.watch();
-      changeStream.on("change", (change) => {
+      changeStream.on("change", async (change) => {
+        if (colName === 'carriers' && change.operationType === 'update') {
+          try {
+            const updatedDriver = await collection.findOne({ _id: change.documentKey._id });
+            const carrierId = updatedDriver.carrierId; // Replace with the actual field name if different
+
+            // Now, increment the notification counter for the carrier
+            const updatedCarrier = await Carrier.findOneAndUpdate(
+              { _id: carrierId },
+              { $inc: { 'notification.0.counter': 1 } },
+              { new: true }
+            );
+
+            console.log(`Notification counter updated for carrier: ${updatedCarrier._id}`);
+
+          } catch (err) {
+            console.error("Error updating notification counter:", err);
+          }
+        }
+
         console.log(`Database change detected in ${colName}:`, change);
         wss.clients.forEach((client) => {
           if (client.readyState === client.OPEN) {
