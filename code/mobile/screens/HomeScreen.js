@@ -17,9 +17,12 @@ import {
   faCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
-// Custom Imports 
+// Custom Imports
 import CustomButton from "../components/customs/customButton";
 import SendingLocation from "../components/sendingLocation";
+
+// Screens Imports
+import PreInspectionScreen from "./PreInspectionScreen";
 
 // Start of the Build
 export default function HomeScreen() {
@@ -73,8 +76,7 @@ export default function HomeScreen() {
   };
 
   // What happens when you press this button, where is this button defined
-  const onCurrentLoadPress = () => {
-  };
+  const onCurrentLoadPress = () => {};
 
   const acceptLoad = async () => {
     try {
@@ -109,9 +111,7 @@ export default function HomeScreen() {
       <Text style={styles.title}>Welcome {firstName}</Text>
 
       <View style={styles.sectionContainer}>
-        <View
-          style={styles.currentLoadContainer}
-        >
+        <View style={styles.currentLoadContainer}>
           <View style={styles.headerStyle}>
             <Text style={styles.subtitle}>Driver Status</Text>
             <FontAwesomeIcon icon={faCircle} size={20} style={statusIcon} />
@@ -125,7 +125,9 @@ export default function HomeScreen() {
       <View style={styles.sectionContainer}>
         <TouchableOpacity
           style={styles.currentLoadContainer}
-          onPress={()=> {navigation.navigate("WorkingHoursScreen", { load: load })}}
+          onPress={() => {
+            navigation.navigate("WorkingHoursScreen", { load: load });
+          }}
           activeOpacity={0.7}
         >
           <View style={styles.headerStyle}>
@@ -150,6 +152,15 @@ export default function HomeScreen() {
           </View>
         </TouchableOpacity>
       </View>
+      <TouchableOpacity
+        style={styles.preInspectionButton}
+        onPress={() => {
+          navigation.navigate(PreInspectionScreen);
+        }}
+        activeOpacity={0.7}
+      >
+        <Text style={styles.PreInspectionButtonText}>Start Pre-Inspection</Text>
+      </TouchableOpacity>
 
       {status === "Approved" &&
       currentLoad &&
@@ -205,12 +216,12 @@ export default function HomeScreen() {
               onPress={acceptLoad}
               activeOpacity={0.7}
             >
-              <Text style={styles.PreInspectionButtonText}>Start Pre-Inspection</Text>
+              <Text style={styles.PreInspectionButtonText}>
+                Start Pre-Inspection
+              </Text>
             </TouchableOpacity>
           </View>
         </>
-
-
       ) : status === "Approved" &&
         !currentLoad &&
         driverLoadStatus === "Available" ? (
@@ -228,9 +239,6 @@ export default function HomeScreen() {
             </View>
           </View>
         </>
-
-
-
       ) : status === "Approved" &&
         driverLoadStatus === "Accepted" &&
         currentLoad ? (
@@ -279,12 +287,11 @@ export default function HomeScreen() {
               </View>
             </TouchableOpacity>
           </View>
-          <SendingLocation load_id= {load._id}/>
+          <SendingLocation load_id={load._id} />
         </>
       ) : (
         <></>
       )}
-      
     </View>
   );
 }
@@ -368,6 +375,19 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 4,
     width: "90%",
+  },
+  PreInspectionButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 18,
+  },
+  preInspectionButton: {
+    backgroundColor: "blue",
+    padding: 10,
+    elevation: 4,
+    width: "90%",
+    marginBottom: 20,
   },
   acceptButtonText: {
     color: "white",
