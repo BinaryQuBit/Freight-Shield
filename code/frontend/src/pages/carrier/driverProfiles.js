@@ -1,7 +1,7 @@
-// Driver Profiles Page
-
-// React Imports
+// React Import
 import React from "react";
+
+// Icon Imports
 import { IoMdAddCircle } from "react-icons/io";
 import { IoMdCloseCircle } from "react-icons/io";
 
@@ -18,8 +18,20 @@ import {
   Flex,
   useColorMode,
   Link,
-  Stack,
   VStack,
+  Input,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+  useDisclosure,
+  FormControl,
+  FormLabel,
+  Textarea,
 } from "@chakra-ui/react";
 
 // Axios Import
@@ -33,46 +45,86 @@ import Protector from "../../components/utils/methods/getters/protector.js";
 import { useData } from "../../components/utils/methods/getters/dataContext.js";
 import CustomButton from "../../components/buttons/customButton.js";
 
-// Start of Build
+// Start of the Build
 export default function DriverProfiles() {
-  const { data } = useData();
-  const { firstName, lastName } = data.user || {};
-  Protector("/api/driverprofiles");
-  const driverData = data.driverData || [];
 
-  const pendingDrivers = driverData.filter(
-    (driver) => driver.driverStatus === "Pending"
-  );
-  const approvedDrivers = driverData.filter(
-    (driver) => driver.driverStatus === "Approved"
-  );
+  // Data Context and Extraction
+  const { data } = useData();
+  const { firstName, lastName, canadianCarrierCode } = data.user || {};
+  const driverData = data.driverData || [];
+  const [searchTerm, setSearchTerm] = React.useState("");
+
+  // Modal Setup
+  const {
+    isOpen: isDeclineModalOpen,
+    onOpen: onDeclineModalOpen,
+    onClose: onDeclineModalClose,
+  } = useDisclosure();
+  const [declineReason, setDeclineReason] = React.useState("");
+  const [driverToDecline, setDriverToDecline] = React.useState(null);
+
+  const handleDeclineClick = (driverId) => {
+    setDriverToDecline(driverId);
+    onDeclineModalOpen();
+  };
+  const pendingDrivers =
+    data.driverData?.filter((driver) => driver.driverStatus === "Pending") ||
+    [];
+
+  const approvedDrivers =
+    data.driverData?.filter((driver) => driver.driverStatus === "Approved") ||
+    [];
+
+  const filterDrivers = (drivers) => {
+    return drivers.filter((driver) => {
+      const fullName = `${driver.firstName.toLowerCase()} ${driver.lastName.toLowerCase()}`;
+      const searchLower = searchTerm.toLowerCase();
+      return (
+        fullName.includes(searchLower) ||
+        driver.phoneNumber.includes(searchTerm) ||
+        driver.email.toLowerCase().includes(searchLower)
+      );
+    });
+  };
+
+  const filteredPendingDrivers = filterDrivers(pendingDrivers);
+  const filteredApprovedDrivers = filterDrivers(approvedDrivers);
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
   const backendUrl = process.env.REACT_APP_BACKEND_PORT;
+  Protector("/api/driverprofiles", canadianCarrierCode);
 
   // Hooks
   const { colorMode } = useColorMode();
   // Functions
-  const handleDecline = async (driverId, event) => {
-    event.preventDefault();
+
+  const handleDecline = async () => {
+    if (!driverToDecline) return;
+  
     try {
       const driverStatusResponse = await axios.put(
-        `/api/updatedriverstatus/${driverId}`,
+        `/api/updatedriverstatus/${driverToDecline}`,
         {
-          status: "decline",
+          status: "Decline",
+          reason: declineReason,
         },
         {
           withCredentials: true,
         }
       );
-
+  
       if (driverStatusResponse.status === 200) {
         window.location.reload();
       }
     } catch (error) {
-      if (error.response && error.response.status === 400) {
-        console.error("Error: ", error.response.data.message);
-      } else {
-        console.error("Error submitting form:", error);
-      }
+      console.error("Error submitting form:", error.response?.data.message || error.message);
+    } finally {
+      onDeclineModalClose();
+      setDeclineReason("");
+      setDriverToDecline(null);
     }
   };
 
@@ -112,7 +164,13 @@ export default function DriverProfiles() {
           title="Driver Profiles"
           userInfo={{ firstName, lastName }}
         />
-        <Flex pt="4" direction="column">
+        <Flex pt="4" direction="column" m={5}>
+          <Input
+            placeholder="Search by name, email or phone number"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            my={5}
+          />
           {noDrivers ? (
             <Text fontSize="20" textAlign={"center"}>
               Chirp... Chirp... No Drivers Here
@@ -125,13 +183,7 @@ export default function DriverProfiles() {
               width="full"
             >
               {!noPendingDrivers && (
-                <Card
-                  overflowX="auto"
-                  width="full"
-                  flex={1}
-                  p="2"
-                  mx="1"
-                >
+                <Card overflowX="auto" width="full" flex={1} p="2" mx="1">
                   <Text
                     fontSize={{ base: "17", md: "17", lg: "20" }}
                     mb="2"
@@ -140,49 +192,75 @@ export default function DriverProfiles() {
                     <strong>Pending</strong>
                   </Text>
                   <Accordion allowToggle>
-                    {pendingDrivers.map((driver) => (
+                    {filteredPendingDrivers.map((driver) => (
                       <DriverProfileItem
                         key={driver.email}
                         driver={driver}
                         colorMode={colorMode}
                         handleDecline={handleDecline}
                         handleAccept={handleAccept}
+                        handleDeclineClick={handleDeclineClick}
                         backendUrl={backendUrl}
                       />
                     ))}
                   </Accordion>
                 </Card>
               )}
-
-              <Card
-                overflowX="auto"
-                width="full"
-                flex={1}
-                p="2"
-                mx="1"
-                mt={{ base: "3", md: "3", lg: "0" }}
-              >
-                <Text
-                  fontSize={{ base: "17", md: "17", lg: "20" }}
-                  textAlign={"center"}
-                  mb="2"
+              {filteredApprovedDrivers.length > 0 && (
+                <Card
+                  overflowX="auto"
+                  width="full"
+                  flex={1}
+                  p="2"
+                  mx="1"
+                  mt={{ base: "3", md: "3", lg: "0" }}
                 >
-                  <strong>Approved</strong>
-                </Text>
-                <Accordion allowToggle>
-                  {approvedDrivers.map((driver) => (
-                    <DriverProfileItem
-                      key={driver.email}
-                      driver={driver}
-                      colorMode={colorMode}
-                    />
-                  ))}
-                </Accordion>
-              </Card>
+                  <Text
+                    fontSize={{ base: "17", md: "17", lg: "20" }}
+                    textAlign={"center"}
+                    mb="2"
+                  >
+                    <strong>Approved</strong>
+                  </Text>
+                  <Accordion allowToggle>
+                    {filteredApprovedDrivers.map((driver) => (
+                      <DriverProfileItem
+                        key={driver.email}
+                        driver={driver}
+                        colorMode={colorMode}
+                      />
+                    ))}
+                  </Accordion>
+                </Card>
+              )}
             </Flex>
           )}
         </Flex>
       </EaseOut>
+      <Modal isOpen={isDeclineModalOpen} onClose={onDeclineModalClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Decline Reason</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl>
+              <FormLabel>Why are you declining this driver?</FormLabel>
+              <Textarea
+                value={declineReason}
+                onChange={(e) => setDeclineReason(e.target.value)}
+                placeholder="Specify a reason" 
+              />
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={handleDecline}>
+              Submit
+            </Button>
+            <Button onClick={onDeclineModalClose}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 }
@@ -193,6 +271,7 @@ function DriverProfileItem({
   handleDecline,
   handleAccept,
   backendUrl,
+  handleDeclineClick,
 }) {
   return (
     <AccordionItem key={driver.email}>
@@ -261,7 +340,10 @@ function DriverProfileItem({
               w={{ base: "90px", md: "90px", lg: "100px" }}
               children="Decline"
               variant="blueBackwardButton"
-              onClick={(e) => handleDecline(driver.driver_id, e)}
+              // onClick={(e) => handleDecline(driver.driver_id, e)}
+              onClick={(e) => {
+                handleDeclineClick(driver.driver_id);
+              }}
               fontSize={{ base: "13px", md: "13px", lg: "15px" }}
             />
             <CustomButton

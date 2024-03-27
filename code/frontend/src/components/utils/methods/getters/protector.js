@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useData } from "./dataContext.js";
 
-const Protector = (path) => {
+const Protector = (path, ccc, email) => {
   const { setData } = useData();
   const navigate = useNavigate();
 
@@ -65,9 +65,11 @@ const Protector = (path) => {
                   }
                   break;
                   case "insert":
+                    if(message.change.fullDocument.shipperEmail === email) {
                     if (!updatedLoads.some((item) => item._id === change.fullDocument._id)) {
                       updatedLoads = [...updatedLoads, change.fullDocument];
                     }
+                  }
                     break;
                   case "delete":
                     updatedLoads = updatedLoads.filter(
@@ -91,65 +93,66 @@ const Protector = (path) => {
     }
 
 
-    if (path === "/api/driverprofiles") {
-      const wsSocket = process.env.REACT_APP_WS_SOCKET;
-      const ws = new WebSocket(wsSocket);
+    // if (path === "/api/driverprofiles") {
+    //   const wsSocket = process.env.REACT_APP_WS_SOCKET;
+    //   const ws = new WebSocket(wsSocket);
 
-      ws.onopen = () => console.log("WebSocket connected");
-      ws.onerror = (error) => console.error("WebSocket error:", error);
-      ws.onmessage = (event) => {
-        try {
-          const message = JSON.parse(event.data);
-          if (message.change && message.change.ns.coll === "drivers") {
-            setData((prevData) => {
-              let updatedDriverData = [...prevData.driverData];
-              console.log("Driver Data", updatedDriverData);
-              const { change } = message;
-              console.log("Change Id", change.documentKey);
+    //   ws.onopen = () => console.log("WebSocket connected");
+    //   ws.onerror = (error) => console.error("WebSocket error:", error);
+    //   ws.onmessage = (event) => {
+    //     try {
+    //       const message = JSON.parse(event.data);
+    //       console.log("This is a message from DB", message);
+    //       if (message.change && message.change.ns.coll === "drivers") {
+    //         setData((prevData) => {
+    //           let updatedDriverData = [...prevData.driverData];
+    //           console.log("Driver Data", updatedDriverData);
+    //           const { change } = message;
+    //           console.log("Change Id", change.documentKey);
 
-              switch (change.operationType) {
-                case "update":
-                  console.log("Document Key _id:", change.documentKey._id);
-                  const updatedItemIndex = updatedDriverData.findIndex((item) => {
-                    console.log("Current item driver_id:", item.driver_id);
-                    return item.driver_id === change.documentKey._id;
-                  });
-                  console.log("Index Found:", updatedItemIndex);
-                  if (updatedItemIndex !== -1) {
-                    updatedDriverData[updatedItemIndex] = {
-                      ...updatedDriverData[updatedItemIndex],
-                      ...change.updateDescription.updatedFields,
-                    };
-                  }
-                  break;
+    //           switch (change.operationType) {
+    //             case "update":
+    //               console.log("Document Key _id:", change.documentKey._id);
+    //               const updatedItemIndex = updatedDriverData.findIndex((item) => {
+    //                 console.log("Current item driver_id:", item.driver_id);
+    //                 return item.driver_id === change.documentKey._id;
+    //               });
+    //               console.log("Index Found:", updatedItemIndex);
+    //               if (updatedItemIndex !== -1) {
+    //                 updatedDriverData[updatedItemIndex] = {
+    //                   ...updatedDriverData[updatedItemIndex],
+    //                   ...change.updateDescription.updatedFields,
+    //                 };
+    //               }
+    //               break;
                 
-                  case "insert":
-                    if (!updatedDriverData.some((item) => item._id === change.fullDocument._id)) {
-                      updatedDriverData = [...updatedDriverData, change.fullDocument];
-                    }
-                    break;
-                  case "delete":
-                    updatedDriverData = updatedDriverData.filter(
-                      (item) => item._id !== change.documentKey._id
-                    );
-                    break;
-                  default:
-                    break;
-                }
-                console.log("Updated driverData:", updatedDriverData);
-               return { ...prevData, driverData: updatedDriverData };
-            });
-          }
-        } catch (error) {
-          console.error("Error parsing WebSocket message:", error);
-        }
-      };
+    //               case "insert":
+    //                 if (!updatedDriverData.some((item) => item._id === change.fullDocument._id)) {
+    //                   updatedDriverData = [...updatedDriverData, change.fullDocument];
+    //                 }
+    //                 break;
+    //               case "delete":
+    //                 updatedDriverData = updatedDriverData.filter(
+    //                   (item) => item._id !== change.documentKey._id
+    //                 );
+    //                 break;
+    //               default:
+    //                 break;
+    //             }
+    //             console.log("Updated driverData:", updatedDriverData);
+    //            return { ...prevData, driverData: updatedDriverData };
+    //         });
+    //       }
+    //     } catch (error) {
+    //       console.error("Error parsing WebSocket message:", error);
+    //     }
+    //   };
 
-      return () => {
-        ws.close();
-      };
-    }
-  }, [navigate, path, setData]);
+    //   return () => {
+    //     ws.close();
+    //   };
+    // }
+  }, [navigate, path, email, setData]);
 
   return null;
 };

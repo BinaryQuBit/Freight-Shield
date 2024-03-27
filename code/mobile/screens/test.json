@@ -1,18 +1,13 @@
-This is Log {
-    "logEntry": {
-        "_id": "65ed193296b3fb2ab5372616",
-        "date": "2024-03-06",
-        "day": "WEDNESDAY",
-        "status": {
-            "D": [Array
-            ],
-            "OFF": [Array
-            ],
-            "ON": [Array
-            ],
-            "SB": [Array
-            ],
-            "_id": "65ed193296b3fb2ab5372617"
-        }
-    }
+{
+    "data": {
+        "canadianCarrierCode": "12345",
+        "driverAbstract": "uploads\\1711431428734-r83kys54.jpg",
+        "driverLicenceBack": "uploads\\1711431428713-c5ns5pji.jpg",
+        "driverLicenceFront": "uploads\\1711431428507-7j31afb2.jpg",
+        "email": "driver@driver.com",
+        "firstName": "Fh",
+        "lastName": "Dj",
+        "phoneNumber": "4037026157"
+    },
+    "success": true
 }

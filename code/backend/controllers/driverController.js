@@ -69,6 +69,7 @@ export const getHomeScreen = async (req, res) => {
       driverStatus: driverInfo.driverStatus,
       driverLoadStatus: driverInfo.driverLoadStatus,
       currentLoad: driverInfo.currentLoad,
+      declineReason: driverInfo.declineReason,
     };
     res.status(200).send({
       info,
@@ -133,6 +134,34 @@ export const workingHRS = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+// @desc    Getting Setting Information
+// route    GET /api/driversettings
+// @access  Private
+export const getDriverSettings = async (req, res) => {
+  try {
+    const DriverInformation = await Driver.findOne({ email: req.user.email });
+    if(DriverInformation) {
+      const response ={
+        firstName: DriverInformation.firstName,
+        lastName: DriverInformation.lastName,
+        email: DriverInformation.email,
+        canadianCarrierCode: DriverInformation.canadianCarrierCode,
+        phoneNumber: DriverInformation.phoneNumber,
+        driverLicenceFront: DriverInformation.driverLicenceFront,
+        driverLicenceBack: DriverInformation.driverLicenceBack,
+        driverAbstract: DriverInformation.driverAbstract,
+      }
+      res.json({ success: true, data: response });
+    }
+    else{
+      res.status(404).json({ success: false, message: "Driver not found" });
+    }
+  } catch (error){
+    console.error("Error fetching Settings Page:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+}
 
 ////////////////////////////// Posters //////////////////////////////
 

@@ -41,9 +41,9 @@ export default function Marketplace() {
   const { colorMode } = useColorMode();
   const { data } = useData();
   const { firstName, lastName } = data.user || {};
+  const myLoads = data.myLoads || [];
   const [filterOption, setFilterOption] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const loads = Array.isArray(data) ? data : [];
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
   const openAssignModal = (loadId) => {
     setSelectedLoadId(loadId);
@@ -55,8 +55,7 @@ export default function Marketplace() {
   const [selectedLoadId, setSelectedLoadId] = useState(null);
   const [loadTypeFilter, setLoadTypeFilter] = useState("");
 
-  // Filter Handle
-  const filteredLoads = loads.filter((load) => {
+  const filteredLoads = myLoads.filter((load) => {
     const fieldToFilter = load[filterOption]
       ? load[filterOption].toString().toLowerCase()
       : "";
@@ -68,8 +67,6 @@ export default function Marketplace() {
       fieldToFilter.includes(searchTerm.toLowerCase()) && matchesTypeLoadFilter
     );
   });
-
-
 
   return (
     <>
@@ -228,7 +225,6 @@ export default function Marketplace() {
                             <strong>Shipper Email:</strong> {load.shipperEmail}
                           </Text>
                         </Box>
-                        {/* Conditional rendering if there is driver information */}
                         {load.driverFirstName && (
                           <Box flex="1" mt={{ base: 4, lg: 0 }} ml={{ lg: 4 }}>
                             <Text

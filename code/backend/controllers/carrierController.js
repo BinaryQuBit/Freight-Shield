@@ -97,6 +97,7 @@ export const getMarketplace = asyncHandler(async (req, res) => {
 // @access  Private
 export const getMyLoads = asyncHandler(async (req, res) => {
   const carrierEmail = req.user.email;
+  console.log("Carrier Email", carrierEmail);
 
   const myLoads = await Marketplace.find({ carrierEmail: carrierEmail });
   const user = {
@@ -106,9 +107,9 @@ export const getMyLoads = asyncHandler(async (req, res) => {
     lastName: req.user.lastName,
   };
   if (myLoads.length > 0) {
-    res.status(200).json(myLoads, user);
+    res.status(200).json({ myLoads: myLoads, user: user });
   } else {
-    res.status(404).json({ message: "No loads found for this carrier" });
+    res.status(500).json({ message: "No loads found for this carrier" });
   }
 });
 
@@ -134,6 +135,7 @@ export const getDriverProfiles = asyncHandler(async (req, res) => {
       email: req.user.email,
       firstName: req.user.firstName,
       lastName: req.user.lastName,
+      canadianCarrierCode: canadianCarrierCode,
     };
     const driverData = filteredDrivers.map((driver) => ({
       driver_id: driver._id,
@@ -145,6 +147,7 @@ export const getDriverProfiles = asyncHandler(async (req, res) => {
       lastName: driver.lastName,
       phoneNumber: driver.phoneNumber,
       driverStatus: driver.driverStatus,
+      driverCanadianCarrierCode: driver.canadianCarrierCode, 
     }));
     res.status(200).json({ driverData, user });
   } catch (error) {
@@ -808,16 +811,22 @@ export const updateCarrierStatus = asyncHandler(async (req, res) => {
 export const updateDriverStatus = asyncHandler(async (req, res) => {
   const driverId = req.params.driverId;
   const newStatus = req.body.status;
+  const reason = req.body.reason;
+  console.log("Driver Id", driverId);
+  console.log("New Status", newStatus);
+  console.log("Reason", reason);
+
+  // Validation check for new status
   if (!["Decline", "Approved"].includes(newStatus)) {
     return res.status(400).json({ message: "Invalid status update" });
   }
 
-  const statusToUpdate = newStatus === "Decline" ? "Declined" : newStatus;
+  const statusToUpdate = newStatus === "Decline" ? "Declined" : "Approved";
 
   try {
     const result = await Driver.updateOne(
       { _id: driverId },
-      { $set: { driverStatus: statusToUpdate } }
+      { $set: { driverStatus: statusToUpdate, declineReason: reason } }
     );
 
     if (result.modifiedCount === 1) {
@@ -826,9 +835,7 @@ export const updateDriverStatus = asyncHandler(async (req, res) => {
       res.status(404).json({ message: "Driver not found." });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error updating driver status", error: error });
+    res.status(500).json({ message: "Error updating driver status", error: error });
   }
 });
 
