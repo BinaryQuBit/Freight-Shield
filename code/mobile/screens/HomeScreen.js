@@ -15,11 +15,13 @@ import {
   faTruckLoading,
   faClock,
   faCircle,
+  faExclamationCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
 // Custom Imports
 import CustomButton from "../components/customs/customButton";
 import SendingLocation from "../components/sendingLocation";
+import { useTheme } from "../components/themeContext.js";
 
 // Screens Imports
 import PreInspectionScreen from "./PreInspectionScreen";
@@ -29,6 +31,7 @@ export default function HomeScreen() {
   const ipConfig = process.env.REACT_IP_CONFIG;
   const isFocused = useIsFocused();
   const navigation = useNavigation();
+  const { isDarkMode } = useTheme();
 
   // Hooks
   const [firstName, setFirstName] = useState("");
@@ -38,6 +41,7 @@ export default function HomeScreen() {
   const [driverLoadStatus, setDriverLoadStatus] = useState("");
   const [declineReason, setDeclineReason] = useState("");
 
+  const styles = getDynamicStyles(isDarkMode);
   // Mounting
   useEffect(() => {
     if (!isFocused) return;
@@ -77,7 +81,7 @@ export default function HomeScreen() {
     workingWeekHours: "40 hours",
   };
 
-  // What happens when you press this button, where is this button defined
+  
   const onCurrentLoadPress = () => {};
 
   const acceptLoad = async () => {
@@ -108,10 +112,6 @@ export default function HomeScreen() {
     color: status === "Pending" ? "red" : "#42B72A",
   };
 
-
-
-
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome {firstName}</Text>
@@ -124,13 +124,21 @@ export default function HomeScreen() {
           </View>
           <View>
             <Text style={statusStyle}>{status}</Text>
-            {status === "Declined" && <Text style={styles.declineStyle}>Reason: {declineReason}</Text>}
+            {status === "Declined" && (
+              <View style={styles.declineReasonContainer}>
+                <FontAwesomeIcon
+                  icon={faExclamationCircle}
+                  size={16}
+                  style={styles.declineReasonIcon}
+                />
+                <Text style={styles.declineReasonText}>
+                  Reason: {declineReason}
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       </View>
-
-
-
 
       <View style={styles.sectionContainer}>
         <TouchableOpacity
@@ -305,108 +313,110 @@ export default function HomeScreen() {
     </View>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-    backgroundColor: "#FFFFFF",
-    paddingTop: 20,
-    height: "100%",
-  },
-  headerStyle: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 15,
-  },
-  title: {
-    fontSize: 26,
-    fontFamily: "Lora-SemiBold",
-    color: "#0866FF",
-    marginBottom: 20,
-  },
-  sectionContainer: {
-    width: "100%",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  subtitle: {
-    fontSize: 20,
-    color: "#3949AB",
-    fontFamily: "Lora-Bold",
-  },
-  currentLoadContainer: {
-    backgroundColor: "#E8EAF6",
-    padding: 20,
-    elevation: 4,
-    width: "90%",
-  },
-  infoIcon: {
-    color: "#3949AB",
-    alignSelf: "flex-end",
-  },
-  noLoad: {
-    color: "#3949AB",
-    fontFamily: "Lora-Bold",
-    textAlign: "center",
-    fontSize: 15,
-  },
-  loadDetailRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 10,
-  },
-  icon: {
-    marginRight: 10,
-    color: "#3949AB",
-  },
-  locationText: {
-    fontSize: 16,
-    fontFamily: "Lora-Regular",
-  },
-  workingHoursContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    width: "100%",
-  },
-  workingHoursDetail: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  workingHoursText: {
-    fontSize: 16,
-    fontFamily: "Lora-Regular",
-  },
-  acceptButtonContainer: {
-    width: "100%",
-    alignItems: "center",
-    marginTop: 20,
-  },
-  acceptButton: {
-    backgroundColor: "#42B72A",
-    padding: 10,
-    elevation: 4,
-    width: "90%",
-  },
-  PreInspectionButtonText: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-    fontSize: 18,
-  },
-  preInspectionButton: {
-    backgroundColor: "blue",
-    padding: 10,
-    elevation: 4,
-    width: "90%",
-    marginBottom: 20,
-  },
-  acceptButtonText: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-    fontSize: 18,
-  },
-  declineStyle: {
-    color: "red",
-    fontFamily: "Lora-Regular",
-  },
-});
+const getDynamicStyles = (isDarkMode) =>
+  StyleSheet.create({
+    container: {
+      alignItems: "center",
+      backgroundColor: isDarkMode ? "#222" : "#FFF",
+      paddingTop: 20,
+      flex: 1,
+    },
+    headerStyle: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginBottom: 15,
+      width: "90%",
+    },
+    title: {
+      fontSize: 26,
+      fontFamily: "Lora-SemiBold",
+      color: isDarkMode ? "#FFF" : "#0866FF",
+      marginBottom: 20,
+    },
+    sectionContainer: {
+      width: "100%",
+      alignItems: "center",
+      marginBottom: 20,
+    },
+    subtitle: {
+      fontSize: 20,
+      color: isDarkMode ? "#E0E0E0" : "#3949AB",
+      fontFamily: "Lora-Bold",
+    },
+    currentLoadContainer: {
+      backgroundColor: isDarkMode ? "#333" : "#E8EAF6",
+      padding: 20,
+      borderRadius: 10,
+      elevation: isDarkMode ? 0 : 4,
+      width: "90%",
+    },
+    infoIcon: {
+      color: isDarkMode ? "#BBB" : "#3949AB",
+    },
+    noLoad: {
+      color: isDarkMode ? "#E0E0E0" : "#3949AB",
+      fontFamily: "Lora-Bold",
+      textAlign: "center",
+      fontSize: 15,
+    },
+    loadDetailRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginTop: 10,
+    },
+    icon: {
+      marginRight: 10,
+      color: isDarkMode ? "#BBB" : "#3949AB",
+    },
+    locationText: {
+      fontSize: 16,
+      fontFamily: "Lora-Regular",
+      color: isDarkMode ? "#DDD" : "#000",
+    },
+    acceptButtonContainer: {
+      width: "100%",
+      alignItems: "center",
+      marginTop: 20,
+    },
+    acceptButton: {
+      backgroundColor: "#42B72A",
+      padding: 10,
+      borderRadius: 10,
+      elevation: isDarkMode ? 0 : 4,
+      width: "90%",
+    },
+    PreInspectionButtonText: {
+      color: "white",
+      fontWeight: "bold",
+      textAlign: "center",
+      fontSize: 18,
+    },
+    preInspectionButton: {
+      backgroundColor: "#0866FF",
+      padding: 10,
+      borderRadius: 10,
+      elevation: isDarkMode ? 0 : 4,
+      width: "90%",
+      marginBottom: 20,
+    },
+    declineStyle: {
+      color: "red",
+      fontFamily: "Lora-Regular",
+    },
+    declineReasonContainer: {
+      marginTop: 20, 
+      padding: 10, 
+      backgroundColor: isDarkMode ? "#442222" : "#FFE8E8", 
+      borderRadius: 5,
+    },
+    declineReasonText: {
+      color: isDarkMode ? "#FFCCCC" : "#D22B2B",
+      fontSize: 16,
+      fontFamily: "Lora-Regular",
+      textAlign: "left",
+    },
+    declineReasonIcon: {
+      color: isDarkMode ? "#FFCCCC" : "#D22B2B",
+      marginRight: 5,
+    },
+  });
