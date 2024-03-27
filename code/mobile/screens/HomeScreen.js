@@ -100,18 +100,32 @@ export default function HomeScreen() {
     }
   };
 
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Pending":
+        return "#FFA500"; 
+      case "Approved":
+        return "#42B72A"; 
+      case "Declined":
+        return "#FF0000"; 
+      default:
+        return "#000"; // Default color
+    }
+  };
   // Dynamic Styles
   const statusStyle = {
     textAlign: "center",
     fontSize: 20,
     fontFamily: "Lora-SemiBold",
-    color: status === "Pending" ? "red" : "#42B72A",
+    color: getStatusColor(status),
   };
   const statusIcon = {
     alignSelf: "flex-end",
-    color: status === "Pending" ? "red" : "#42B72A",
+    color: getStatusColor(status),
   };
 
+  
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome {firstName}</Text>

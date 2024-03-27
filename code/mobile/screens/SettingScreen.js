@@ -9,6 +9,7 @@ import {
   Linking,
   Alert,
   TextInput,
+  Image,
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import axios from "axios";
@@ -18,10 +19,12 @@ import {
   faTruck,
   faEdit,
   faSave,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "../components/themeContext.js";
 import { useIsFocused } from "@react-navigation/native";
+import CustomUpload from "../components/customs/customUpload.js";
 
 export default function SettingScreen(props) {
   const { isDarkMode, toggleTheme } = useTheme();
@@ -45,6 +48,10 @@ export default function SettingScreen(props) {
     lastName: false,
     email: false,
     phoneNumber: false,
+    canadianCarrierCode: false,
+    driverLicenceFront: false,
+    driverLicenceBack: false,
+    driverAbstract: false,
   });
 
   const logout = () => {
@@ -114,6 +121,13 @@ export default function SettingScreen(props) {
       [field]: value,
     }));
   };
+  const handleFileSelected = (field, file) => {
+    
+    setDriverData((currentData) => ({
+      ...currentData,
+      [field]: file.uri, 
+    }));
+  };
 
   return (
     <View
@@ -163,7 +177,81 @@ export default function SettingScreen(props) {
                 { borderColor: isDarkMode ? "#555" : "#ccc" },
               ]}
             >
-              {editableFields[key] ? (
+              {[
+                "driverLicenceFront",
+                "driverLicenceBack",
+                "driverAbstract",
+              ].includes(key) ? (
+                <View style={styles.uploadContainer}>
+                  {editableFields[key] ? (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        width: "100%",
+                      }}
+                    >
+                      <View style={{ flex: 4, marginRight: 8 }}>
+                        <CustomUpload
+                          label={`Upload New File`}
+                          required={true}
+                          onFileSelected={(file) =>
+                            handleFileSelected(key, file)
+                          }
+                        />
+                      </View>
+
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          flex: 1,
+                          justifyContent: "flex-end",
+                        }}
+                      >
+                        <TouchableOpacity
+                          onPress={() => toggleEdit(key)}
+                          style={styles.editButton}
+                        >
+                          <FontAwesomeIcon
+                            icon={faSave}
+                            size={20}
+                            style={{ color: isDarkMode ? "#FFF" : "#0866FF" }}
+                          />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() => toggleEdit(key)}
+                          style={[styles.editButton, { marginLeft: 4 }]}
+                        >
+                          <FontAwesomeIcon
+                            icon={faXmark}
+                            size={25}
+                            style={{ color: isDarkMode ? "#FFF" : "#0866FF" }}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  ) : (
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                      <Image
+                        source={{ uri: `${ipConfig}/${driverData[key]}` }}
+                        style={styles.imageStyle}
+                      />
+                      <TouchableOpacity
+                        onPress={() => toggleEdit(key)}
+                        style={styles.editButton}
+                      >
+                        <FontAwesomeIcon
+                          icon={faEdit}
+                          size={20}
+                          style={{ color: isDarkMode ? "#FFF" : "#0866FF" }}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </View>
+              ) : (
                 <>
                   <Text
                     style={{
@@ -176,6 +264,7 @@ export default function SettingScreen(props) {
                   <TextInput
                     style={[
                       styles.input,
+                      editableFields[key] && styles.editableInput,
                       {
                         backgroundColor: isDarkMode ? "#555" : "#FFF",
                         color: isDarkMode ? "#FFF" : "#333",
@@ -183,33 +272,24 @@ export default function SettingScreen(props) {
                     ]}
                     onChangeText={(text) => handleChange(key, text)}
                     value={driverData[key]}
+                    editable={editableFields[key]}
                   />
+                  <TouchableOpacity
+                    onPress={() => toggleEdit(key)}
+                    style={styles.editButton}
+                  >
+                    <FontAwesomeIcon
+                      icon={editableFields[key] ? faSave : faEdit}
+                      size={20}
+                      style={{ color: isDarkMode ? "#FFF" : "#0866FF" }}
+                    />
+                  </TouchableOpacity>
                 </>
-              ) : (
-                <Text
-                  style={[
-                    styles.infoText,
-                    { color: isDarkMode ? "#FFF" : "#333", flex: 1 },
-                  ]}
-                >
-                  {`${key.charAt(0).toUpperCase() + key.slice(1)}: ${
-                    driverData[key]
-                  }`}
-                </Text>
               )}
-              <TouchableOpacity
-                onPress={() => toggleEdit(key)}
-                style={styles.editButton}
-              >
-                <FontAwesomeIcon
-                  icon={editableFields[key] ? faSave : faEdit}
-                  size={20}
-                  style={{ color: isDarkMode ? "#FFF" : "#0866FF" }}
-                />
-              </TouchableOpacity>
             </View>
           ))}
         </View>
+
         <View style={styles.bottomButtons}>
           <TouchableOpacity
             style={[styles.button, { backgroundColor: "#0866FF" }]}
@@ -303,9 +383,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingVertical: 5,
     paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
   },
   toggleContainer: {
     flexDirection: "row",
@@ -320,5 +397,38 @@ const styles = StyleSheet.create({
   toggleLabel: {
     fontSize: 16,
     fontWeight: "500",
+  },
+  imageStyle: {
+    width: 150,
+    height: 150,
+    resizeMode: "cover",
+    marginVertical: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  uploadContainer: {
+    width: "100%",
+    minHeight: 150,
+    padding: 10,
+    justifyContent: "center",
+    alignItems: "center",
+
+    borderColor: "#ccc",
+    borderRadius: 5,
+    marginBottom: 20,
+  },
+  editableInput: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
   },
 });
