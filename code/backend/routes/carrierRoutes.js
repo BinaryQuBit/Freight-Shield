@@ -53,7 +53,7 @@ router.put("/carriercontactdetails", protect, carrierOnly, updateCarrierContactD
 router.put("/carrierbusinessdetails", protect, carrierOnly, upload.fields([{ name: "carrierProfile", maxCount: 1 }, { name: "safetyFitnessCertificate", maxCount: 1 }]), updateCarrierBusinessDetails);
 router.put("/carriersubmissiondetails", protect, carrierOnly, upload.fields([{ name: "carrierProfile", maxCount: 1 }, { name: "safetyFitnessCertificate", maxCount: 1 }]), updateCarrierSubmissionDetails);
 router.put("/carrierstatus", protect, carrierOnly, updateCarrierStatus);
-router.put("/updatedriverstatus/:driverId", protect, carrierOnly, status, updateDriverStatus);
+router.put("/updatedriverstatus/:driverId", protect, carrierOnly, status, updateDriverStatus); 
 router.put("/updatedriverstatusload", protect, carrierOnly, status, updateDriverStatusLoad);
 
 export default router;

@@ -17,6 +17,7 @@ import {
     editLogBook,
     sendingLocation,
     workingHRS,
+    getDriverSettings,
     // postLogBook,
 } from "../controllers/driverController.js"
 
@@ -29,6 +30,7 @@ router.get("/gethomescreen", protect, getHomeScreen);
 router.get("/getlogbook1", protect, getLogBooks1);
 router.get("/savepdf", protect, generateAndSendPDF);
 router.get("/workinghrs", protect, workingHRS);
+router.get("/driversettings", protect, getDriverSettings);
 
 /////////////////////////////////////////////////////// POSTERS ///////////////////////////////////////////////////////
 router.post('/createlogbook', protect, createLogBook);

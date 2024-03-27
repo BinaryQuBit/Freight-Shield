@@ -39,7 +39,7 @@ export const getActiveLoads = asyncHandler(async (req, res) => {
   try {
     const { email, firstName, lastName } = req.user;
     const loads = await Marketplace.find({ shipperEmail: email });
-    res.status(200).json({ loads, firstName, lastName });
+    res.status(200).json({ loads, firstName, lastName, email });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

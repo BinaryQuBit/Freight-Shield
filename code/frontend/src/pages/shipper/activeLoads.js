@@ -40,10 +40,11 @@ import CustomLink from "../../components/buttons/customLink.js";
 export default function ActiveLoads() {
   axios.defaults.withCredentials = true;
   const backend = process.env.REACT_APP_BACKEND_PORT;
-  Protector("/api/activeloads");
   const theme = useTheme();
   const customBlue = theme.colors.customBlue;
-  const { data: { loads, firstName, lastName } } = useData();
+  const { data: { loads, firstName, lastName, email } } = useData();
+
+  Protector("/api/activeloads", email);
 
   // Hooks
   const [fromSearchTerm, setFromSearchTerm] = useState("");

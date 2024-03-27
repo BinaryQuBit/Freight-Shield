@@ -58,7 +58,7 @@ export default function UnitProfile() {
       <AddUnit isOpen={isAddUnitModalOpen} onClose={closeAddUnitModal} />
       <CarrierSideBar activePage="unitProfile" />
       <EaseOut>
-        <UserHeader title="Unit Profiles" userInfo={{ firstName, lastName }}/>
+        <UserHeader title="Unit Profiles" userInfo={{ firstName, lastName }} />
         <CustomButton
           backgroundColor="#0866FF"
           w="90px"
@@ -90,6 +90,7 @@ export default function UnitProfile() {
             />
           </Stack>
         </Flex>
+        {filteredUnits.length > 0 ? (
         <Card m="5" rounded="lg" p="5">
           <Accordion allowToggle>
             {filteredUnits &&
@@ -127,10 +128,10 @@ export default function UnitProfile() {
                           <strong>Type:</strong> {unit.unitType}
                         </Text>
                         {unit.trailerType && (
-                        <Text fontSize="md">
-                        <strong>Trailer Type:</strong> {unit.trailerType}
+                          <Text fontSize="md">
+                            <strong>Trailer Type:</strong> {unit.trailerType}
                           </Text>
-                                  )}
+                        )}
                         <Text fontSize="md">
                           <strong>Make:</strong> {unit.unitMake}
                         </Text>
@@ -170,6 +171,11 @@ export default function UnitProfile() {
               ))}
           </Accordion>
         </Card>
+        ) : (
+          <Text fontSize="20" textAlign="center" m={5}>
+            Chirp... Chirp... No Units Available
+          </Text>
+        )}
       </EaseOut>
     </>
   );

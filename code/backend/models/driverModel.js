@@ -47,6 +47,10 @@ const driverSchema = mongoose.Schema(
     currentLoad: {
       type: String,
     },
+    declineReason: {
+      type: String,
+      default: "None", 
+    }
   },
   {
     timestamps: true,

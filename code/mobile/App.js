@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { ThemeProvider } from "./components/themeContext";
 
 // Expo Import
 import * as Font from "expo-font";
@@ -49,6 +50,7 @@ export default function App() {
   }
 
   return (
+    <ThemeProvider>
     <NavigationContainer>
       <SafeAreaView style={{ flex: 1 }}>
         <Stack.Navigator>
@@ -84,5 +86,6 @@ export default function App() {
         </Stack.Navigator>
       </SafeAreaView>
     </NavigationContainer>
+    </ThemeProvider>
   );
 }

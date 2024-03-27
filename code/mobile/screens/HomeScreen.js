@@ -33,6 +33,7 @@ export default function HomeScreen() {
   const [currentLoad, setCurrentLoad] = useState("");
   const [load, setLoad] = useState("");
   const [driverLoadStatus, setDriverLoadStatus] = useState("");
+  const [declineReason, setDeclineReason] = useState("");
 
   // Mounting
   useEffect(() => {
@@ -48,6 +49,7 @@ export default function HomeScreen() {
           setCurrentLoad(response.data.info.currentLoad);
           setStatus(response.data.info.driverStatus);
           setDriverLoadStatus(response.data.info.driverLoadStatus);
+          setDeclineReason(response.data.info.declineReason);
           if (!response.data.info.load[0]) {
           } else {
             setLoad(response.data.info.load[0]);
@@ -104,6 +106,10 @@ export default function HomeScreen() {
     color: status === "Pending" ? "red" : "#42B72A",
   };
 
+
+
+
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome {firstName}</Text>
@@ -118,9 +124,13 @@ export default function HomeScreen() {
           </View>
           <View>
             <Text style={statusStyle}>{status}</Text>
+            {status === "Declined" && <Text style={styles.declineStyle}>Reason: {declineReason}</Text>}
           </View>
         </View>
       </View>
+
+
+
 
       <View style={styles.sectionContainer}>
         <TouchableOpacity
@@ -374,5 +384,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     fontSize: 18,
+  },
+  declineStyle: {
+    color: "red",
+    fontFamily: "Lora-Regular",
   },
 });
