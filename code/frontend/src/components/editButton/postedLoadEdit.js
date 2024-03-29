@@ -44,7 +44,8 @@ import CustomSelectMultiple from "../buttons/customSelectMultiple"
 export default function PostedLoadEdit({ isOpen, onClose, load }) {
   axios.defaults.withCredentials = true;
   const theme = useTheme();
-  const customBlue = theme.colors.customBlue;
+  const customBlue = theme && theme.colors && theme.colors.customBlue || "#0000FF";
+
   const today = new Date().toISOString().split("T")[0];
   const backendUrl = process.env.REACT_APP_BACKEND_PORT;
 
