@@ -25,6 +25,8 @@ import {
   updateDriverStatusLoad,
   carrierDasboard,
   postCarrierEvents,
+  deleteUnit,
+  updateUnit,
   // getUnitDriver,
 } from "../controllers/carrierController.js"; 
 
@@ -55,5 +57,9 @@ router.put("/carriersubmissiondetails", protect, carrierOnly, upload.fields([{ n
 router.put("/carrierstatus", protect, carrierOnly, updateCarrierStatus);
 router.put("/updatedriverstatus/:driverId", protect, carrierOnly, status, updateDriverStatus); 
 router.put("/updatedriverstatusload", protect, carrierOnly, status, updateDriverStatusLoad);
+router.put("/updateunit/:unitNum", upload.fields([{ name: "unitRegistration", maxCount: 1 }, { name: "unitSafety", maxCount: 1 }, { name: "unitInsurance", maxCount: 1 }]), protect, carrierOnly, status, updateUnit);
+
+/////////////////////////////////////////////////////// DELETERS ///////////////////////////////////////////////////////
+router.delete("/units/:unitNumber", protect, carrierOnly, status, deleteUnit);
 
 export default router;

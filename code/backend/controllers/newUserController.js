@@ -140,6 +140,14 @@ export const registerUser = asyncHandler(async (req, res) => {
     phoneNumber,
   } = req.body;
   email = email.toLowerCase();
+  const adminExist = await Admin.findOne({ email }).collation({
+    locale: "en",
+    strength: 2,
+  });
+  if (adminExist) {
+    res.status(400);
+    throw new Error("Admin already exists");
+  }
   const shipperExist = await Shipper.findOne({ email }).collation({
     locale: "en",
     strength: 2,
@@ -171,6 +179,24 @@ export const registerUser = asyncHandler(async (req, res) => {
   if (!email || !password || !confirmPassword || !role) {
     throw new Error("Email, Password, Confirm Password, role cant be empty");
   }
+
+  if (role == "admin") {
+    const admin = await Admin.create({
+      email,
+      password,
+    });
+    if (admin) {
+      generateToken(res, admin._id);
+      res.status(201).json({
+        _id: admin._id,
+        email: admin.email,
+      });
+    } else {
+      res.status(400);
+      throw new Error("Invalid Admin Data");
+    }
+  }
+
   if (role == "shipper") {
     const shipper = await Shipper.create({
       email,

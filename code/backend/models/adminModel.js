@@ -16,6 +16,19 @@ const adminSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    firstName: {
+      type: String,
+    },
+    lastName: {
+      type: String,
+    },
+    phoneNumber: {
+      type: String,
+    },
+    status: {
+      type: String,
+      default: "Inactive"
+    },
   },
   {
     timestamps: true,

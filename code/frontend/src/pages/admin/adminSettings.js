@@ -1,19 +1,24 @@
-// Admin Settings Page
-
-import Sidebar from "../../components/sidebar/adminSideBar.js";
 import React from "react";
-import { Flex, Text } from "@chakra-ui/react";
-import Protector from "../../components/utils/methods/getters/protector.js"
+import AdminSidebar from "../../components/sidebar/adminSideBar.js";
+import Protector from "../../components/utils/methods/getters/protector.js";
+import EaseOut from "../../components/responsiveness/easeOut.js";
+import UserHeader from "../../components/header/userHeader.js";
+import { useData } from "../../components/utils/methods/getters/dataContext.js";
 
 export default function AdminSettings() {
-  Protector("/adminsettings");
+  Protector("/api/adminsettings");
+  const { data } = useData();
+  const { firstName, lastName } = data.user || {};
 
   return (
-    <Flex>
-      <Sidebar activePage="administrators" />
-      <Flex flex="1" justifyContent="center">
-        <Text>Admin Settings</Text>
-      </Flex>
-    </Flex>
+    <>
+      <AdminSidebar activePage={"adminSettings"} />
+      <EaseOut>
+        <UserHeader
+          title="Admin Settings"
+          userInfo={{ firstName, lastName }}
+        />
+      </EaseOut>
+    </>
   );
 }

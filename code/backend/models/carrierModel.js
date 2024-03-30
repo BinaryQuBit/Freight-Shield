@@ -182,6 +182,14 @@ const carrierSchema = new mongoose.Schema(
       type: Boolean,
       required: false,
     },
+    status: {
+      type: String,
+      default: "Pending",
+    },
+    statusReasonChange: {
+      type: String,
+      default: "",
+    },
     units: [unitSchema],
     events: [eventSchema],
     notification : [notificationSchema]
@@ -214,6 +222,27 @@ carrierSchema.methods.addUnit = async function (unitData) {
     throw error;
   }
   this.units.push(unitData);
+  await this.save();
+};
+
+carrierSchema.methods.updateUnit = async function (unitNum, updatedUnitData) {
+  const unitIndex = this.units.findIndex(unit => unit.unitNumber === unitNum);
+  if (unitIndex === -1) {
+    const error = new Error("Unit not found.");
+    error.statusCode = 405;
+    throw error;
+  }
+
+  if (updatedUnitData.unitNumber) {
+    const isUnique = !this.units.some((unit, index) => index !== unitIndex && unit.unitNumber === updatedUnitData.unitNumber);
+    if (!isUnique) {
+      const error = new Error("Unit number must be unique within the carrier.");
+      error.statusCode = 405;
+      throw error;
+    }
+  }
+
+  this.units[unitIndex] = { ...this.units[unitIndex], ...updatedUnitData };
   await this.save();
 };
 

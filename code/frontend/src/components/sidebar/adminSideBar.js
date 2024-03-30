@@ -1,11 +1,5 @@
-// Admin Side Bar
-
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-// !!!
-import axios from "axios";
-
+import React, { useEffect, useState } from "react";
+import { SidebarContext } from "../responsiveness/context.js";
 import {
   Flex,
   IconButton,
@@ -20,131 +14,179 @@ import { GrCertificate } from "react-icons/gr";
 import { FaHardHat, FaUserLock } from "react-icons/fa";
 import NavItem from "./navItem.js";
 import Logo from "../logo/logo.js";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useContext } from "react";
 
 export default function AdminSideBar({ activePage }) {
-  const [navSize, changeNavSize] = useState("large");
+  const { navSize, setNavSize } = useContext(SidebarContext);
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
   const navigate = useNavigate();
+  const { setColorMode } = useColorMode();
 
   const logout = () => {
-    axios.get('http://localhost:8080/api/users/logout', { withCredentials: true }) 
+    axios
+      .get("/logout", { withCredentials: true })
       .then(() => {
-        navigate('/login')
+        navigate("/login");
       })
       .catch((error) => {
-        console.error('Logout failed:', error);
+        console.error("Logout failed:", error);
       });
   };
 
-  return (
-    <Flex
-      paddingTop={10}
-      pos="fixed"
-      top="0"
-      zIndex="10"
-      pt={10}
-      h="100vh"
-      boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
-      w={navSize === "small" ? "75px" : "200px"}
-      flexDir="column"
-      justifyContent="flex-start"
-      background={isDark ? "#343541" : "#E4E9F7"}
-    >
-      <Flex align="center" justify="center" p="5%" h="20%">
-        <Logo color={isDark ? "white" : "#0866FF"} />
-      </Flex>
-      <Flex flexDir="column" as="nav" align="center" p="5%" flexGrow={1}>
-        <IconButton
-          aria-label="Open Menu"
-          size="lg"
-          variant="ghost"
-          icon={<FiMenu />}
-          onClick={() => changeNavSize(navSize === "small" ? "large" : "small")}
-          sx={{
-            "&:hover": {
-              color: "white",
-              background: "#0866FF",
-            },
-          }}
-        />
+  const [menuOpen, setMenuOpen] = useState(false);
 
-        <NavItem
-          navSize={navSize}
-          icon={FiHome}
-          title="Logged in as Administrator"
-        />
-        <NavItem
-          navSize={navSize}
-          icon={MdOutlinePendingActions}
-          title="Pending"
-          active={activePage === "pending"}
-          onClick={() => navigate("/pending")}
-        />
-        <NavItem
-          navSize={navSize}
-          icon={GrCertificate}
-          title="Approved"
-          active={activePage === "approved"}
-          onClick={() => navigate("/approved")}
-        />
-        <NavItem
-          navSize={navSize}
-          icon={FaUserLock}
-          title="Administrators"
-          active={activePage === "administrators"}
-          onClick={() => navigate("/administrators")}
-        />
-        <NavItem
-          navSize={navSize}
-          icon={FaHardHat}
-          title="Shippers"
-          active={activePage === "shippers"}
-          onClick={() => navigate("/shippers")}
-        />
-        <NavItem
-          navSize={navSize}
-          icon={FiTruck}
-          title="Carriers"
-          active={activePage === "carriers"}
-          onClick={() => navigate("/carriers")}
-        />
-      </Flex>
-      <Flex p="5%" flexDir="column" w="100%">
-        <Divider />
-        <Flex
-          align="center"
-          justify={navSize === "small" ? "center" : "flex-start"}
-          my={3}
-          ml={navSize === "small" ? "0" : "1"}
-        >
-          <Switch
-            id="dark-mode-switch"
-            isChecked={isDark}
-            onChange={toggleColorMode}
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth < 768) {
+        setNavSize("small");
+      } else {
+        setNavSize("large");
+      }
+    }
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, [setNavSize]);
+
+  const toggleMenu = () => {
+    if (window.innerWidth < 768) {
+      setMenuOpen(!menuOpen);
+    } else {
+      setNavSize(navSize === "small" ? "large" : "small");
+    }
+  };
+
+  return (
+    <div style={{ width: navSize === "small" ? "50px" : "200px" }}>
+      <Flex
+        pos="fixed"
+        top="0"
+        zIndex="10"
+        h="100vh"
+        overflowY="auto"
+        boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
+        flexDir="column"
+        justifyContent="flex-start"
+        background={isDark ? "#343541" : "#E4E9F7"}
+        w={menuOpen ? "100%" : navSize === "small" ? "50px" : "200px"}
+        transition="width 0.3s ease-in-out"
+      >
+        <Flex flexDir="column" as="nav" align="center" p="5%" flexGrow={1}>
+          <Flex
+            align="center"
+            justify="center"
+            h={menuOpen ? "50%" : "30%"}
+            w={"100%"}
+          >
+            <Logo color={isDark ? "white" : "#0866FF"} />
+          </Flex>
+          <IconButton
+            aria-label="Open Menu"
             size="md"
+            variant="ghost"
+            icon={<FiMenu />}
+            onClick={
+              navSize === "small"
+                ? toggleMenu
+                : () => setNavSize(navSize === "small" ? "large" : "small")
+            }
+            sx={{
+              "&:hover": {
+                color: "white",
+                background: "#0866FF",
+              },
+            }}
           />
-          {navSize === "large" && (
-            <FormLabel htmlFor="dark-mode-switch" mb="0" ml={3}>
-              {isDark ? "Dark Mode" : "Light Mode"}
-            </FormLabel>
-          )}
-        </Flex>
-        <Flex
-          flexDir="column"
-          align={navSize === "small" ? "center" : "flex-start"}
-        >
+
           <NavItem
             navSize={navSize}
-            icon={FiSettings}
-            title="Settings"
-            active={activePage === "adminSettings"}
-            onClick={() => navigate("/adminsettings")}
+            icon={MdOutlinePendingActions}
+            title="Pending"
+            active={activePage === "pending"}
+            onClick={() => navigate("/pending")}
+            menuOpen={menuOpen}
           />
-          
-          <NavItem navSize={navSize} icon={FiLogOut} title="Sign Out" onClick={logout} />
+          <NavItem
+            navSize={navSize}
+            icon={GrCertificate}
+            title="Approved"
+            active={activePage === "approved"}
+            onClick={() => navigate("/approved")}
+            menuOpen={menuOpen}
+          />
+          <NavItem
+            navSize={navSize}
+            icon={FaUserLock}
+            title="Administrators"
+            active={activePage === "administrators"}
+            onClick={() => navigate("/administrators")}
+            menuOpen={menuOpen}
+          />
+          <NavItem
+            navSize={navSize}
+            icon={FaHardHat}
+            title="Shippers"
+            active={activePage === "shippers"}
+            onClick={() => navigate("/shippers")}
+            menuOpen={menuOpen}
+          />
+          <NavItem
+            navSize={navSize}
+            icon={FiTruck}
+            title="Carriers"
+            active={activePage === "carriers"}
+            onClick={() => navigate("/carriers")}
+            menuOpen={menuOpen}
+          />
+        </Flex>
+        <Flex p="5%" flexDir="column" w="100%">
+          <Divider />
+          <Flex
+            align="center"
+            justify={navSize === "small" ? "center" : "flex-start"}
+            my={3}
+            ml={navSize === "small" ? "0" : "1"}
+          >
+            <Switch
+              id="dark-mode-switch"
+              isChecked={isDark}
+              onChange={toggleColorMode}
+              size="md"
+            />
+            {(navSize === "large" || menuOpen) && (
+              <FormLabel htmlFor="dark-mode-switch" mb="0" ml={3}>
+                {isDark ? "Dark Mode" : "Light Mode"}
+              </FormLabel>
+            )}
+          </Flex>
+          <Flex
+            flexDir="column"
+            align={navSize === "small" ? "center" : "flex-start"}
+          >
+            <NavItem
+              navSize={navSize}
+              icon={FiSettings}
+              title="Settings"
+              active={activePage === "adminSettings"}
+              onClick={() => navigate("/adminsettings")}
+              menuOpen={menuOpen}
+            />
+
+            <NavItem
+              navSize={navSize}
+              icon={FiLogOut}
+              title="Sign Out"
+              onClick={logout}
+              menuOpen={menuOpen}
+            />
+          </Flex>
         </Flex>
       </Flex>
-    </Flex>
+    </div>
   );
 }

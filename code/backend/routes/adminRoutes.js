@@ -12,6 +12,8 @@ import {
   shippers,
   carriers,
   adminsettings,
+  updateCarrierStatus,
+  updateShipperStatus,
 } from "../controllers/adminController.js";
 
 // CONST to use Router
@@ -24,5 +26,9 @@ router.get("/approved", protect, adminOnly, approved);
 router.get("/shippers", protect, adminOnly, shippers);
 router.get("/carriers", protect, adminOnly, carriers);
 router.get("/adminsettings", protect, adminOnly, adminsettings);
+
+/////////////////////////////////////////////////////// PUTERS ///////////////////////////////////////////////////////
+router.put("/carriers/:carrierId", protect, adminOnly, updateCarrierStatus);
+router.put("/shippers/:shipperId", protect, adminOnly, updateShipperStatus);
 
 export default router;

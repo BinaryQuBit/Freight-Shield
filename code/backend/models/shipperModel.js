@@ -131,6 +131,14 @@ const shipperSchema = mongoose.Schema(
       type: Boolean,
       required: false,
     },
+    status: {
+      type: String,
+      default: "Pending",
+    },
+    statusReasonChange: {
+      type: String,
+      default: "",
+    },
     events: [eventSchema],
   },
   {

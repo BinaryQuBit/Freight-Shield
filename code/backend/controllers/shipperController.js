@@ -64,14 +64,13 @@ export const getPostLoad = asyncHandler(async (req, res) => {
 // route    GET /api/history
 // @access  Private
 export const getHistory = asyncHandler(async (req, res) => {
-  const user = {
-    _id: req.user._id,
-    email: req.user.email,
-    firstName: req.user.firstName,
-    lastName: req.user.lastName,
-  };
-
-  res.status(200).json({ user });
+  try {
+    const { email, firstName, lastName } = req.user;
+    const loads = await Marketplace.find({ shipperEmail: email, status: "Delivered" });
+    res.status(200).json({ loads, firstName, lastName, email });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 // @desc    Getting Shipper Settings
