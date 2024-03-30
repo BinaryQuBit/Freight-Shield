@@ -7,6 +7,7 @@ import axios from "axios";
 import moment from "moment-timezone";
 import CustomButton from "../customs/customButton";
 import LogBookStructure from "./logBookStructure";
+import { useTheme } from "../themeContext";
 
 const generatePastDates = (days) => {
   const dates = [];
@@ -26,6 +27,9 @@ export default function PastDaysLogBooks() {
   const currentTimeInMinutes = moment().tz("America/Regina").hours() * 60 + moment().tz("America/Regina").minutes();
   const isFocused = useIsFocused();
   const navigation = useNavigation();
+  const { isDarkMode } = useTheme();
+
+  const style = getDynamicStyles(isDarkMode);
 
   useEffect(() => {
     if (!isFocused) return;
@@ -123,18 +127,19 @@ export default function PastDaysLogBooks() {
   );
 }
 
-const style = StyleSheet.create({
-  pageContainer:{
-    backgroundColor: "#FFFFFF",
+const getDynamicStyles = (isDarkMode) => StyleSheet.create({
+  pageContainer: {
+    backgroundColor: isDarkMode ? "#333" : "#FFFFFF",
+    flex: 1,
+    marginBottom: 60,
   },
   container: {
     alignItems: "center",
-    backgroundColor: "#FFFFFF",
     paddingTop: 20,
   },
   title: {
     fontSize: 26,
-    color: "#0866FF",
+    color: isDarkMode ? "#FFF" : "#0866FF",
     marginBottom: 20,
     fontFamily: "Lora-SemiBold",
   },
@@ -142,19 +147,21 @@ const style = StyleSheet.create({
     fontFamily: "Lora-Bold",
     fontSize: 18,
     padding: 10,
-    color: "#0866FF",
+    color: isDarkMode ? "#FFF" : "#0866FF",
   },
   accordionSection: {
     marginBottom: 10,
     borderWidth: 1,
-    borderColor: "lightgrey",
+    borderColor: isDarkMode ? "#555" : "lightgrey",
+    backgroundColor: isDarkMode ? "#222" : "#f7f7f7",
   },
   accordionHeader: {
     padding: 15,
-    backgroundColor: "#f7f7f7",
+    backgroundColor: isDarkMode ? "#444" : "#f7f7f7",
   },
   accordionHeaderText: {
     fontFamily: "Lora-Bold",
+    color: isDarkMode ? "#FFF" : "#000", 
   },
   headerContent: {
     flexDirection: "row",
@@ -167,7 +174,6 @@ const style = StyleSheet.create({
     alignItems: "center",
   },
   buttons: {
-    flex: 1,
     justifyContent: "space-between",
     flexDirection: "row",
     padding: 10,
