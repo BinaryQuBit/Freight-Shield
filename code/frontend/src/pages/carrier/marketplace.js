@@ -77,7 +77,7 @@ export default function Marketplace() {
         onClose={closeAssignModal}
         units={units}
         driverData={driverData}
-        selectedLoadId={selectedLoadId}
+        selectedLoadId={selectedLoadId} 
       />
       <CarrierSideBar activePage={"marketplace"} />
       <EaseOut>

@@ -1,5 +1,5 @@
 export const YearValidation = (year) => {
-    const trimmedYear = year.trim();
+    const trimmedYear = String(year).trim();
 
     if (trimmedYear === "") {
         return "Year is required";
@@ -18,6 +18,7 @@ export const YearValidation = (year) => {
 
     return "";
 };
+
 
 
 

@@ -898,3 +898,54 @@ export const updateDriverStatusLoad = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Update Unit
+// route    PUT /api/updateunit/:unitNumber
+// @access  Private
+export const updateUnit = asyncHandler(async (req, res) => {
+  const { unitNum } = req.params;
+  const carrierEmail = req.user.email;
+
+  const carrier = await Carrier.findOne({ email: carrierEmail });
+  if (!carrier) {
+    return res.status(404).json({ message: "Carrier not found" });
+  }
+
+  try {
+    await carrier.updateUnit(unitNum, req.body);
+    res.status(200).json({ message: "Unit updated successfully" });
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+    res.status(statusCode).json({ message: error.message });
+  }
+});
+
+
+
+////////////////////////////// Deleters //////////////////////////////
+// @desc    Delete Units
+// route    DELETE /api/units/:unitNumber
+// @access  Private
+export const deleteUnit = asyncHandler(async (req, res) => {
+  const unitNumber = req.params.unitNumber;
+  const carrierId = req.user._id;
+
+  const carrier = await Carrier.findById(carrierId);
+
+  if (!carrier) {
+    res.status(404);
+    throw new Error('Carrier not found');
+  }
+
+  const unitIndex = carrier.units.findIndex(unit => unit.unitNumber === unitNumber);
+
+  if (unitIndex === -1) {
+    res.status(404);
+    throw new Error('Unit not found');
+  }
+
+  carrier.units.splice(unitIndex, 1);
+
+  await carrier.save();
+
+  res.status(204).json();
+});

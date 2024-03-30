@@ -1,20 +1,24 @@
-// Approved Page
-
-import Sidebar from "../../components/sidebar/adminSideBar";
 import React from "react";
-import { Flex, Text } from "@chakra-ui/react";
-import Protector from "../../components/utils/methods/getters/protector";
+import AdminSidebar from "../../components/sidebar/adminSideBar.js";
+import Protector from "../../components/utils/methods/getters/protector.js";
+import EaseOut from "../../components/responsiveness/easeOut.js";
+import UserHeader from "../../components/header/userHeader.js";
+import { useData } from "../../components/utils/methods/getters/dataContext.js";
 
 export default function Approved() {
-  Protector("/approved")
+  Protector("/api/approved");
+  const { data } = useData();
+  const { firstName, lastName } = data.user || {};
 
   return (
-    <Flex>
-      <Sidebar activePage="Approved" />
-      <Flex flex="1" justifyContent="center">
-        <Text>Approved</Text>
-      </Flex>
-    </Flex>
-
+    <>
+      <AdminSidebar activePage={"approved"} />
+      <EaseOut>
+        <UserHeader
+          title="Approved"
+          userInfo={{ firstName, lastName }}
+        />
+      </EaseOut>
+    </>
   );
 }

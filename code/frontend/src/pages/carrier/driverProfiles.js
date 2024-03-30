@@ -268,7 +268,6 @@ export default function DriverProfiles() {
 function DriverProfileItem({
   driver,
   colorMode,
-  handleDecline,
   handleAccept,
   backendUrl,
   handleDeclineClick,
@@ -340,7 +339,6 @@ function DriverProfileItem({
               w={{ base: "90px", md: "90px", lg: "100px" }}
               children="Decline"
               variant="blueBackwardButton"
-              // onClick={(e) => handleDecline(driver.driver_id, e)}
               onClick={(e) => {
                 handleDeclineClick(driver.driver_id);
               }}

@@ -14,69 +14,52 @@ import {
   AccordionIcon,
   AccordionPanel,
 } from "@chakra-ui/react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import EaseOut from "../../components/responsiveness/easeOut.js";
 import UserHeader from "../../components/header/userHeader.js";
-import { useTheme } from "@chakra-ui/react";
-import Protector from "../../components/utils/methods/getters/protector.js"
+import Protector from "../../components/utils/methods/getters/protector.js";
 import { useData } from "../../components/utils/methods/getters/dataContext.js";
 
 export default function History() {
-  Protector("/api/history")
+  Protector("/api/history");
   const { data } = useData();
-  const firstName = data && data.user ? data.user.firstName : "";
-  const lastName = data && data.user ? data.user.lastName : "";
+  const firstName = data ? data.firstName : "";
+  const lastName = data ? data.lastName : "";
+  const backend = process.env.REACT_APP_BACKEND_PORT;
 
-  // const theme = useTheme();
-  // const customBlue = theme.colors.customBlue;
+  const [fromSearchTerm, setFromSearchTerm] = useState("");
+  const [toSearchTerm, setToSearchTerm] = useState("");
+  const [statusSearchTerm, setStatusSearchTerm] = useState("");
+  const [filteredLoads, setFilteredLoads] = useState([]);
+  const [loads, setLoads] = useState([]);
 
-  // const [fromSearchTerm, setFromSearchTerm] = useState("");
-  // const [toSearchTerm, setToSearchTerm] = useState("");
-  // const [statusSearchTerm, setStatusSearchTerm] = useState("");
-  // const [filteredLoads, setFilteredLoads] = useState([]);
-  // const [loads, setLoads] = useState([]);
-  // const navigate = useNavigate();
+  useEffect(() => {
+    if (Array.isArray(data.loads)) {
+      setLoads(data.loads);
+    }
+  }, [data]);
 
-  // useEffect(() => {
-  //   axios
-  //     .get("/activeloads", { withCredentials: true })
-  //     .then((response) => {
-  //       setLoads(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error Fetching Active Loads: ", error);
-  //       if (
-  //         error.response &&
-  //         (error.response.status === 401 || error.response.status === 403)
-  //       ) {
-  //         navigate("/login");
-  //       }
-  //     });
-  // }, [navigate]);
-
-  // useEffect(() => {
-  //   const filtered = loads.filter(
-  //     (load) =>
-  //       load?.pickUpLocation
-  //         ?.toLowerCase()
-  //         .includes(fromSearchTerm.toLowerCase()) &&
-  //       load?.dropOffLocation
-  //         ?.toLowerCase()
-  //         .includes(toSearchTerm.toLowerCase()) &&
-  //       (statusSearchTerm === "" ||
-  //         load?.status?.toLowerCase() === statusSearchTerm.toLowerCase()) &&
-  //       load?.status?.toLowerCase() == "delivered"
-  //   );
-  //   setFilteredLoads(filtered);
-  // }, [fromSearchTerm, toSearchTerm, statusSearchTerm, loads]);
+  useEffect(() => {
+    const filtered = loads.filter(
+      (load) =>
+        load?.pickUpLocation
+          ?.toLowerCase()
+          .includes(fromSearchTerm.toLowerCase()) &&
+        load?.dropOffLocation
+          ?.toLowerCase()
+          .includes(toSearchTerm.toLowerCase()) &&
+        (statusSearchTerm === "" ||
+          load?.status?.toLowerCase() === statusSearchTerm.toLowerCase()) &&
+        load?.status?.toLowerCase() === "delivered"
+    );
+    setFilteredLoads(filtered);
+  }, [fromSearchTerm, toSearchTerm, statusSearchTerm, loads]);
 
   return (
     <>
       <Sidebar activePage="history" />
       <EaseOut>
-        <UserHeader title="Load History" userInfo={{ firstName, lastName }}/>
-        {/* <Flex
+        <UserHeader title="Load History" userInfo={{ firstName, lastName }} />
+        <Flex
           pt={"10"}
           direction={"column"}
           alignItems={"center"}
@@ -89,10 +72,6 @@ export default function History() {
             />
             <Input
               placeholder="To..."
-              onChange={(e) => setToSearchTerm(e.target.value)}
-            />
-            <Input
-              placeholder="Delivered By..."
               onChange={(e) => setToSearchTerm(e.target.value)}
             />
           </Stack>
@@ -126,7 +105,14 @@ export default function History() {
                       direction={{ base: "column", md: "column", lg: "row" }}
                     >
                       <Box flex="1">
-                      <Text textAlign={"center"} fontSize={"18"} fontWeight="bold" pb={"10px"}>Load Information</Text>
+                        <Text
+                          textAlign={"center"}
+                          fontSize={"18"}
+                          fontWeight="bold"
+                          pb={"10px"}
+                        >
+                          Load Information
+                        </Text>
                         <Text fontSize="md" mb="2">
                           <strong>Pickup Location:</strong>{" "}
                           {load.pickUpLocation}
@@ -163,46 +149,60 @@ export default function History() {
                           </Text>
                         )}
 
-                        <Text fontSize="md" mb="2">
-                          <strong>Additional Information:</strong>{" "}
-                          {load.additionalInformation}
-                        </Text>
-                        <Text fontSize="md" mb="2">
-                          <strong>Additional Document:</strong>{" "}
-                          {load.additionalDocument ? (
+                        {load.additionalInformation ? (
+                          <Text fontSize="md" mb="2">
+                            <strong>Additional Information:</strong>{" "}
+                            {load.additionalInformation}
+                          </Text>
+                        ) : (
+                          <></>
+                        )}
+                        {load.additionalDocument ? (
+                          <Text fontSize="md" mb="2">
+                            <strong>Additional Document:</strong>{" "}
                             <a
-                              href={`http://localhost:8080/uploads/${load.additionalDocument}`}
+                              href={`http://${backend}${load.additionalDocument}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               style={{ color: "blue" }}
                             >
                               View Document
                             </a>
-                          ) : (
-                            "None"
-                          )}
-                        </Text>
+                          </Text>
+                        ) : (
+                          <></>
+                        )}
                       </Box>
 
-                      <Box flex="1" ml="4" >
-                        <Text textAlign={"center"} fontSize={"18"} fontWeight="bold" pb={"10px"}>Delivery Information</Text>
-                        <Text fontSize="md" mb="2">
-                          <strong>Carrier Name:</strong>
+                      <Box flex="1" ml="4">
+                        <Text
+                          textAlign={"center"}
+                          fontSize={"18"}
+                          fontWeight="bold"
+                          pb={"10px"}
+                        >
+                          Delivery Information
                         </Text>
                         <Text fontSize="md" mb="2">
-                          <strong>Carrier Phone Number:</strong>
+                          <strong>Carrier Name:</strong>{" "}
+                          {load.carrierFirstName}{" "}{load.carrierLastName}
                         </Text>
                         <Text fontSize="md" mb="2">
-                          <strong>Driver Name:</strong>
+                          <strong>Carrier Phone Number:</strong>{" "}
+                          {load.carrierPhoneNumber}
                         </Text>
-                      </Box>  
+                        <Text fontSize="md" mb="2">
+                          <strong>Driver Name:</strong>{" "}
+                          {load.driverFirstName}{" "}{load.driverLastName}
+                        </Text>
+                      </Box>
                     </Flex>
                   </AccordionPanel>
                 </AccordionItem>
               ))}
             </Accordion>
-          </Card> */}
-        {/* </Flex> */}
+          </Card>
+        </Flex>
       </EaseOut>
     </>
   );
