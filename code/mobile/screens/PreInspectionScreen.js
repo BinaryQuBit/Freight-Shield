@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View, TextInput, Button,TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, TextInput, Button,TouchableOpacity, Alert } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import { useTheme } from '../components/themeContext.js';
+import { useNavigation } from '@react-navigation/native';
 
 export default function PreInspectionScreen() {
   const { isDarkMode } = useTheme();
@@ -31,6 +32,7 @@ export default function PreInspectionScreen() {
     { label: 'Windshields Wipers/Washer', checked: false },
   ]);
   const [defectDetails, setDefectDetails] = useState('');
+  const navigation = useNavigation();
 
   const styles = getDynamicStyles(isDarkMode);
 
@@ -42,8 +44,18 @@ export default function PreInspectionScreen() {
 
   const handleSubmit = () => {
     // Here you can handle the submission, e.g., log to the console, send to an API, etc.
+    const isAnyChecked = checkedItems.some(item => item.checked);
+    
+    if (isAnyChecked && !defectDetails.trim()) {
+      Alert.alert("Missing Details", "Please provide details for the selected defect(s).");
+      return; 
+    }
+
     console.log('Submitted Items:', checkedItems);
     console.log('Defect Details:', defectDetails);
+
+    navigation.goBack();
+
   };
 
   return (
