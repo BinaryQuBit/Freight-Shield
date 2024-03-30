@@ -35,7 +35,7 @@ import { DocumentValidation } from "../utils/validation/documentValidation";
 export default function AddUnit({ isOpen, onClose }) {
   axios.defaults.withCredentials = true;
   const theme = useTheme();
-  const customBlue = theme.colors.customBlue;
+  const customBlue = theme && theme.colors && theme.colors.customBlue || "#0000FF";
 
   // Hooks
   const [unitNumber, setUnitNumber] = useState("");
