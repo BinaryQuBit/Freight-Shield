@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View, TextInput, Button,TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, TextInput, Button,TouchableOpacity, Alert } from 'react-native';
 import { CheckBox } from 'react-native-elements';
+import { useTheme } from '../components/themeContext.js';
+import { useNavigation } from '@react-navigation/native';
 
 export default function PreInspectionScreen() {
+  const { isDarkMode } = useTheme();
   const [checkedItems, setCheckedItems] = useState([
     { label: 'Air Brake System', checked: false },
     { label: 'Cab', checked: false },
@@ -29,6 +32,9 @@ export default function PreInspectionScreen() {
     { label: 'Windshields Wipers/Washer', checked: false },
   ]);
   const [defectDetails, setDefectDetails] = useState('');
+  const navigation = useNavigation();
+
+  const styles = getDynamicStyles(isDarkMode);
 
   const toggleCheckbox = (index) => {
     setCheckedItems(checkedItems.map((item, i) => 
@@ -38,8 +44,18 @@ export default function PreInspectionScreen() {
 
   const handleSubmit = () => {
     // Here you can handle the submission, e.g., log to the console, send to an API, etc.
+    const isAnyChecked = checkedItems.some(item => item.checked);
+    
+    if (isAnyChecked && !defectDetails.trim()) {
+      Alert.alert("Missing Details", "Please provide details for the selected defect(s).");
+      return; 
+    }
+
     console.log('Submitted Items:', checkedItems);
     console.log('Defect Details:', defectDetails);
+
+    navigation.goBack();
+
   };
 
   return (
@@ -53,6 +69,7 @@ export default function PreInspectionScreen() {
           checked={item.checked}
           onPress={() => toggleCheckbox(index)}
           containerStyle={styles.checkbox}
+          textStyle={isDarkMode ? styles.checkboxLabelDark : styles.checkboxLabelLight}
         />
       ))}
       <Text style={styles.inputLabel}>Provide details of defect(s) detected:</Text>
@@ -70,45 +87,65 @@ export default function PreInspectionScreen() {
   );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        padding: 10,
-        backgroundColor: 'white',
+const getDynamicStyles = (isDarkMode) => StyleSheet.create({
+   container: {
+    padding: 10,
+    backgroundColor: isDarkMode ? '#222' : '#F0F0F0',
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 15,
+    textAlign: 'center',
+    color: isDarkMode ? '#FFD700' : '#007BFF', 
+  },
+  checkbox: {
+    borderWidth: 0,
+    backgroundColor: 'transparent',
+    marginVertical: 5,
+  },
+  inputLabel: {
+    marginTop: 15,
+    fontSize: 18,
+    fontWeight: '600',
+    color: isDarkMode ? '#FFF' : '#333', 
+  },
+  input: {
+    borderWidth: 2,
+    borderColor: isDarkMode ? '#888' : '#ccc',
+    padding: 12,
+    marginVertical: 5,
+    borderRadius: 8,
+    backgroundColor: isDarkMode ? '#444' : '#FFF',
+    color: isDarkMode ? '#FFF' : '#333', 
+  },
+  submitButton: {
+    backgroundColor: isDarkMode ? '#FFA07A' : '#007bff',
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
     },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginBottom: 10,
-        textAlign: 'center',
-    },
-    checkbox: {
-        borderWidth: 0,
-        backgroundColor: 'transparent',
-    },
-    inputLabel: {
-        marginTop: 10,
-        fontSize: 16,
-        fontWeight: 'bold',
-        marginBottom: 10,
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: '#ddd',
-        padding: 10,
-        marginBottom: 5,
-        borderRadius: 5,
-    },
-    submitButton: {
-      backgroundColor: '#007bff', 
-      padding: 10,
-      borderRadius: 5,
-      alignItems: 'center',
-      marginVertical: 10, 
-      marginBottom: 30, 
-    },
-    submitButtonText: {
-      color: '#ffffff', 
-      fontSize: 16,
-      fontWeight: 'bold',
-    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  submitButtonText: {
+    color: '#ffffff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  checkboxLabelDark: {
+    color: '#FFF', 
+    fontSize: 16, 
+  },
+  checkboxLabelLight: {
+    color: '#000', 
+    fontSize: 16, 
+  },
 });
