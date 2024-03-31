@@ -21,7 +21,7 @@ import CustomLink from "../buttons/customLink";
 
 export default function MoreDetails({ isOpen, onClose, shipper }) {
   const theme = useTheme();
-  const customBlue = theme.colors.customBlue;
+  const customBlue = theme && theme.colors && theme.colors.customBlue || "#0000FF";
   const backendUrl = process.env.REACT_APP_BACKEND_PORT;
 
   const handleCloseClick = () => {
