@@ -27,7 +27,7 @@ import { SelectValidation } from "../utils/validation/selectValidation";
 export default function AssignUnitDriver({ isOpen, onClose, units, driverData, selectedLoadId }) {
   axios.defaults.withCredentials = true;
   const theme = useTheme();
-  const customBlue = theme.colors.customBlue;
+  const customBlue = theme && theme.colors && theme.colors.customBlue || "#0000FF";
   
   // Hooks
   const [unit, setUnit] = useState("");
