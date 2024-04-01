@@ -20,22 +20,22 @@ describe("Carrier Company Details Form Component", () => {
         const businessDetailsText = getByText("Business Details");
         expect(businessDetailsText).toBeInTheDocument();
 
-        const businessNameLabel = getByText("Business Name *");
+        const businessNameLabel = getByText("Business Name");
         expect(businessNameLabel).toBeInTheDocument();
 
         const doingBusinessAsLabel = getByText("Doing Business As");
         expect(doingBusinessAsLabel).toBeInTheDocument();
 
-        const businessNumberLabel = getByText("Business Number *");
+        const businessNumberLabel = getByText("Business Number");
         expect(businessNumberLabel).toBeInTheDocument();
 
-        const canadianCarrierCodeLabel = getByText("Canadian Carrier Code *");
+        const canadianCarrierCodeLabel = getByText("Canadian Carrier Code");
         expect(canadianCarrierCodeLabel).toBeInTheDocument();
 
-        const nationalSafetyCodeLabel = getByText("National Safety Code *");
+        const nationalSafetyCodeLabel = getByText("National Safety Code");
         expect(nationalSafetyCodeLabel).toBeInTheDocument();
 
-        const wcbLabel = getByText("WCB Number *");
+        const wcbLabel = getByText("WCB Number");
         expect(wcbLabel).toBeInTheDocument();
 
         const websiteLabel = getByText("Website");
