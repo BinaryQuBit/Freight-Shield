@@ -4,12 +4,21 @@
 import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdSwitchAccount } from "react-icons/md";
+import { FiTruck } from "react-icons/fi";
 
 // Axios Import
 import axios from "axios";
 
 // Chakra UI Imports
-import { Box, Flex, Card, Text } from "@chakra-ui/react";
+import { Box, Flex, Card, Text,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  } from "@chakra-ui/react";
 
 // Custom Imports
 import CustomButton from "../buttons/customButton";
@@ -34,6 +43,7 @@ export default function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isSuccessOpen, setSuccessOpen] = useState(false);
 
   // Error Hooks
   const [roleError, setRoleError] = useState("");
@@ -48,6 +58,8 @@ export default function RegisterForm() {
   // Modal Hooks
   const [isTermsOpen, setTermsOpen] = useState(false);
   const [isPrivacyOpen, setPrivacyOpen] = useState(false);
+  const onCloseSuccess = () => setSuccessOpen(false);
+
 
   // Functions
   const onOpenTerms = () => setTermsOpen(true);
@@ -95,7 +107,7 @@ export default function RegisterForm() {
       });
 
       if (response.status === 201) {
-        navigate("/login");
+        setSuccessOpen(true);
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
@@ -225,7 +237,30 @@ export default function RegisterForm() {
           </form>
         </Card>
       </Box>
-
+      <Modal isOpen={isSuccessOpen} onClose={onCloseSuccess}>
+  <ModalOverlay />
+  <ModalContent>
+    <ModalHeader textAlign={"center"}>Registration Successful</ModalHeader>
+    <ModalCloseButton />
+    <ModalBody>
+  <Flex direction="column" align="center" justify="center">
+    <Text mt={4} textAlign={"center"}>Your account has been successfully created!</Text>
+  </Flex>
+</ModalBody>
+    <ModalFooter>
+      <CustomButton
+       variant={"blueForwardButton"}
+       w={"100px"}
+       children={"Login"}
+       icon={<FiTruck />}
+       onClick={() => {
+        onCloseSuccess();
+        navigate("/login");
+       }}
+      />
+    </ModalFooter>
+  </ModalContent>
+</Modal>
       <Terms isTermsOpen={isTermsOpen} onCloseTerms={onCloseTerms} />
       <Privacy isPrivacyOpen={isPrivacyOpen} onClosePrivacy={onClosePrivacy} />
     </>

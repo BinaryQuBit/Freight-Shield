@@ -40,7 +40,7 @@ export default function Marketplace() {
   // Hooks
   const { colorMode } = useColorMode();
   const { data } = useData();
-  const { firstName, lastName } = data.user || {};
+  const { firstName, lastName, status, notification } = data.user || {};
   const [filterOption, setFilterOption] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const loads = data.loads || [];
@@ -79,9 +79,9 @@ export default function Marketplace() {
         driverData={driverData}
         selectedLoadId={selectedLoadId} 
       />
-      <CarrierSideBar activePage={"marketplace"} />
+      <CarrierSideBar activePage={"marketplace"} Status = { status } />
       <EaseOut>
-        <UserHeader title="Marketplace" userInfo={{ firstName, lastName }} />
+        <UserHeader title="Marketplace" userInfo={{ firstName, lastName, notification }} Status={status}/>
         <Flex pt="10" direction="column" alignItems="center" padding="10">
           <Stack spacing={4} direction="row" mb="4">
             <Select

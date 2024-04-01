@@ -3,7 +3,7 @@ import express from "express";
 
 // Middleware Imports
 import upload from "../middleware/upload.js";
-import { protect, carrierOnly, status } from "../middleware/authMiddleware.js";
+import { protect, carrierOnly, carrierStatus, status } from "../middleware/authMiddleware.js";
 
 // Custom Imports
 import {
@@ -34,20 +34,20 @@ import {
 const router = express.Router();
 
 /////////////////////////////////////////////////////// GETTERS ///////////////////////////////////////////////////////
-router.get("/marketplace", protect, carrierOnly, status, getMarketplace);
-router.get("/myloads", protect, carrierOnly, status, getMyLoads);
-router.get("/driverprofiles", protect, carrierOnly, status, getDriverProfiles);
-router.get("/unitprofiles", protect, carrierOnly, status, getUnitProfiles);
+router.get("/marketplace", protect, carrierStatus, carrierOnly, status, getMarketplace);
+router.get("/myloads", protect, carrierStatus, carrierOnly, status, getMyLoads);
+router.get("/driverprofiles", protect, carrierStatus, carrierOnly, status, getDriverProfiles);
+router.get("/unitprofiles", protect, carrierStatus, carrierOnly, status, getUnitProfiles);
 router.get("/carriersettings", protect, carrierOnly, getCarrierSettings);
 router.get("/carriercontactdetails", protect, carrierOnly, getCarrierContactDetails);
 router.get("/carrierbusinessdetails", protect, carrierOnly, getCarrierBusinessDetails);
 router.get("/carriersubmission", protect, carrierOnly, getCarrierSubmission);
-router.get("/carrierdashboard", protect, carrierOnly, carrierDasboard);
+router.get("/carrierdashboard", protect, carrierStatus, carrierOnly, carrierDasboard);
 // router.get("/getunitdriver", protect, carrierOnly, getUnitDriver);
 
 /////////////////////////////////////////////////////// POSTERS ///////////////////////////////////////////////////////
-router.post("/postunit", upload.fields([{ name: "unitRegistration", maxCount: 1 }, { name: "unitInsurance", maxCount: 1 }, { name: "unitSafety", maxCount: 1 }]), protect, carrierOnly, status, postUnit);
-router.post("/carrierevents", protect, carrierOnly, status, postCarrierEvents);
+router.post("/postunit", upload.fields([{ name: "unitRegistration", maxCount: 1 }, { name: "unitInsurance", maxCount: 1 }, { name: "unitSafety", maxCount: 1 }]), protect, carrierStatus, carrierOnly, status, postUnit);
+router.post("/carrierevents", protect, carrierStatus, carrierOnly, status, postCarrierEvents);
 
 /////////////////////////////////////////////////////// PUTTERS ///////////////////////////////////////////////////////
 router.put("/marketplace/:id", protect, carrierOnly, status, updateAssignUnit);

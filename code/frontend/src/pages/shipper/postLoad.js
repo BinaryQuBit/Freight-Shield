@@ -50,6 +50,8 @@ export default function PostLoad() {
   const { data } = useData();
   const firstName = data && data.user ? data.user.firstName : "";
   const lastName = data && data.user ? data.user.lastName : "";
+  const notification = data && data ? data.notification : "";
+  const status = data && data.user ? data.user.status : "";
 
   // Hooks
   const [pickUpLocation, setPickUpLocation] = useState("");
@@ -205,9 +207,9 @@ export default function PostLoad() {
 
   return (
     <>
-      <Sidebar activePage="postLoad" />
+      <Sidebar activePage="postLoad" Status = { status }/>
       <EaseOut>
-      <UserHeader title="Post Load" userInfo={{ firstName, lastName }} />
+      <UserHeader title="Post Load" userInfo={{ firstName, lastName, notification }} Status={status}/>
         <Box w="100%" p={5}>
           <Card p={5} rounded={"no"}>
             <form onSubmit={handlePost} noValidate>

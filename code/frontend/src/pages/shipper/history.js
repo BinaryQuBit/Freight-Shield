@@ -24,6 +24,8 @@ export default function History() {
   const { data } = useData();
   const firstName = data ? data.firstName : "";
   const lastName = data ? data.lastName : "";
+  const status = data ? data.status : "";
+  const notification = data ? data.notification : "";
   const backend = process.env.REACT_APP_BACKEND_PORT;
 
   const [fromSearchTerm, setFromSearchTerm] = useState("");
@@ -56,9 +58,9 @@ export default function History() {
 
   return (
     <>
-      <Sidebar activePage="history" />
+      <Sidebar activePage="history" Status = { status }/>
       <EaseOut>
-        <UserHeader title="Load History" userInfo={{ firstName, lastName }} />
+        <UserHeader title="Load History" userInfo={{ firstName, lastName, notification }} Status={status} />
         <Flex
           pt={"10"}
           direction={"column"}
@@ -76,6 +78,7 @@ export default function History() {
             />
           </Stack>
           <Card overflowX="auto" width="full" p="4">
+          {filteredLoads.length > 0 ? (
             <Accordion allowToggle>
               {filteredLoads.map((load, index) => (
                 <AccordionItem key={load.id} my="2">
@@ -201,6 +204,11 @@ export default function History() {
                 </AccordionItem>
               ))}
             </Accordion>
+            ) : (
+              <Text textAlign={"center"}>
+                Chirp Chirp No History Yet
+              </Text>
+            )}
           </Card>
         </Flex>
       </EaseOut>

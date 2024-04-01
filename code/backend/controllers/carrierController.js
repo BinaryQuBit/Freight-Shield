@@ -1,4 +1,4 @@
-// Async Handler Import
+// Async Handler Import 
 import asyncHandler from "express-async-handler";
 
 // Model Imports
@@ -25,6 +25,8 @@ export const carrierDasboard = asyncHandler(async (req, res) => {
       firstName: carrier.firstName,
       lastName: carrier.lastName,
       events: carrier.events,
+      status: carrier.status,
+      notification: carrier.notification,
     };
 
     res.status(200).json(response);
@@ -46,6 +48,8 @@ export const getMarketplace = asyncHandler(async (req, res) => {
       email: req.user.email,
       firstName: req.user.firstName,
       lastName: req.user.lastName,
+      status: req.user.status,
+      notification: carrier.notification,
     };
     let units = [];
     let driverData = [];
@@ -97,21 +101,29 @@ export const getMarketplace = asyncHandler(async (req, res) => {
 // @access  Private
 export const getMyLoads = asyncHandler(async (req, res) => {
   const carrierEmail = req.user.email;
-  console.log("Carrier Email", carrierEmail);
-
   const myLoads = await Marketplace.find({ carrierEmail: carrierEmail });
+  const carrier = await Carrier.findOne({ email: carrierEmail });
+
+  if (!carrier) {
+    return res.status(404).json({ message: "Carrier not found" });
+  }
+
   const user = {
     _id: req.user._id,
     email: req.user.email,
     firstName: req.user.firstName,
     lastName: req.user.lastName,
+    status: req.user.status,
+    notification: carrier.notification,
   };
+
   if (myLoads.length > 0) {
     res.status(200).json({ myLoads: myLoads, user: user });
   } else {
-    res.status(500).json({ message: "No loads found for this carrier" });
+    res.status(200).json({ myLoads: [], user: user, message: "No loads found for this carrier" });
   }
 });
+
 
 // @desc    Getting Driver Profiles
 // route    GET /api/driverprofiles
@@ -136,6 +148,8 @@ export const getDriverProfiles = asyncHandler(async (req, res) => {
       firstName: req.user.firstName,
       lastName: req.user.lastName,
       canadianCarrierCode: canadianCarrierCode,
+      status: req.user.status,
+      notification: carrier.notification,
     };
     const driverData = filteredDrivers.map((driver) => ({
       driver_id: driver._id,
@@ -168,6 +182,8 @@ export const getUnitProfiles = asyncHandler(async (req, res) => {
       email: req.user.email,
       firstName: req.user.firstName,
       lastName: req.user.lastName,
+      status: req.user.status,
+      notification: carrier.notification,
     };
     if (!carrier) {
       return res.status(404).json({ message: "Carrier not found" });
@@ -204,6 +220,7 @@ export const getCarrierSettings = asyncHandler(async (req, res) => {
     email: req.user.email,
     firstName: req.user.firstName,
     lastName: req.user.lastName,
+    status: req.user.status,
   };
   const carrier = await Carrier.findOne({ email: user.email });
     if (!carrier) {
@@ -234,6 +251,8 @@ export const getCarrierSettings = asyncHandler(async (req, res) => {
   nationalSafetyCode: carrier.nationalSafetyCode,
   wcb: carrier.wcb,
   website: carrier.website,
+  statusReasonChange: carrier.statusReasonChange,
+  notification: carrier.notification,
 };
   res.status(200).json({ user, response });
 });

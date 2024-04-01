@@ -35,7 +35,7 @@ export default function UnitProfile() {
   const { colorMode } = useColorMode();
   const { data } = useData();
   const { units } = data;
-  const { firstName, lastName } = data.user || {};
+  const { firstName, lastName, status, notification } = data.user || {};
   const backendPort = process.env.REACT_APP_BACKEND_PORT;
 
   const sortedUnits = (units || []).filter(unit => unit && unit.unitNumber !== undefined).sort((a, b) => {
@@ -83,9 +83,9 @@ export default function UnitProfile() {
   return (
     <>
       <AddUnit isOpen={isAddUnitModalOpen} onClose={closeAddUnitModal} />
-      <CarrierSideBar activePage="unitProfile" />
+      <CarrierSideBar activePage="unitProfile" Status = { status }/>
       <EaseOut>
-        <UserHeader title="Unit Profiles" userInfo={{ firstName, lastName }} />
+        <UserHeader title="Unit Profiles" userInfo={{ firstName, lastName, notification }} Status={status} />
         <CustomButton
           backgroundColor="#0866FF"
           w="90px"

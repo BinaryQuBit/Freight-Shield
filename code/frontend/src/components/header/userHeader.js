@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Flex,
   Text,
@@ -12,8 +12,9 @@ import {
   ModalCloseButton,
 } from "@chakra-ui/react";
 import { MdNotifications } from "react-icons/md";
+import axios from "axios";
 
-function UserHeader({ title, userInfo }) {
+function UserHeader({ title, userInfo, Status }) {
   const { colorMode } = useColorMode();
   const bgColor = colorMode === "dark" ? "#343541" : "#E4E9F7";
   const textColor = colorMode === "dark" ? "white" : "#0866FF";
@@ -29,12 +30,14 @@ function UserHeader({ title, userInfo }) {
 
   const initials = firstNameInitial + lastNameInitial;
 
-  const [notificationCount, setNotificationCount] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [notificationCount, setNotificationCount] = useState(0);
 
-  const incrementNotificationCount = () => {
-    setNotificationCount((prevCount) => prevCount + 1);
-  };
+  useEffect(() => {
+    if (userInfo.notification) {
+      setNotificationCount(userInfo.notification.length);
+    }
+  }, [userInfo.notification]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -42,6 +45,17 @@ function UserHeader({ title, userInfo }) {
 
   const closeModal = () => {
     setIsModalOpen(false);
+    setNotificationCount(0); // Reset notification count on modal close
+  };
+
+  const deleteNotifications = () => {
+    axios
+      .delete("/api/notifications/delete")
+      .then((response) => {
+        console.log(response.data);
+        setNotificationCount(0); // Reset notification count on successful deletion
+      })
+      .catch((error) => console.error("Error deleting notifications:", error));
   };
 
   return (
@@ -56,34 +70,39 @@ function UserHeader({ title, userInfo }) {
       <Text fontSize="25px" fontWeight="bold">
         {title}
       </Text>
+
       {isSmallScreen || isMediumScreen ? (
         <Flex alignItems="center" position="absolute" right="1">
-          <Text mr={5}>
-            <MdNotifications
-              color={iconColor}
-              onClick={() => {
-                incrementNotificationCount();
-                openModal();
-              }}
-              size={20}
-            />
-          </Text>
-          {notificationCount > 0 && (
-            <span
-              style={{
-                fontSize: "12px",
-                color: "#fff",
-                background: "#ff0000",
-                padding: "1px 5px",
-                borderRadius: "50%",
-                position: "absolute",
-                top: "0",
-                right: "45px",
-              }}
-            >
-              {notificationCount}
-            </span>
+          {Status === "Active" ? (
+            <>
+              <Text mr={5}>
+                <MdNotifications
+                  color={iconColor}
+                  onClick={openModal}
+                  size={20}
+                />
+              </Text>
+              {notificationCount > 0 && (
+                <span
+                  style={{
+                    fontSize: "12px",
+                    color: "#fff",
+                    background: "#ff0000",
+                    padding: "1px 5px",
+                    borderRadius: "50%",
+                    position: "absolute",
+                    top: "0",
+                    right: "45px",
+                  }}
+                >
+                  {notificationCount}
+                </span>
+              )}
+            </>
+          ) : (
+            <></>
           )}
+
           <Flex
             align="center"
             justify="center"
@@ -102,29 +121,33 @@ function UserHeader({ title, userInfo }) {
       ) : (
         <Flex alignItems="center" position="absolute" right="50px">
           <Flex position="relative" mr={2}>
-            <MdNotifications
-              color={iconColor}
-              onClick={() => {
-                incrementNotificationCount();
-                openModal();
-              }}
-              size={20}
-            />
-            {notificationCount > 0 && (
-              <span
-                style={{
-                  fontSize: "12px",
-                  color: "#fff",
-                  background: "#ff0000",
-                  padding: "1px 5px",
-                  borderRadius: "50%",
-                  position: "absolute",
-                  top: "-8px",
-                  right: "-15px",
-                }}
-              >
-                {notificationCount}
-              </span>
+            {Status === "Active" ? (
+              <>
+                <MdNotifications
+                  color={iconColor}
+                  onClick={openModal}
+                  size={20}
+                />
+
+                {notificationCount > 0 && (
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      color: "#fff",
+                      background: "#ff0000",
+                      padding: "1px 5px",
+                      borderRadius: "50%",
+                      position: "absolute",
+                      top: "-8px",
+                      right: "-15px",
+                    }}
+                  >
+                    {notificationCount}
+                  </span>
+                )}
+              </>
+            ) : (
+              <></>
             )}
           </Flex>
           <Text fontSize="18px" ml="4" color={textColor}>
@@ -132,15 +155,20 @@ function UserHeader({ title, userInfo }) {
           </Text>
         </Flex>
       )}
+
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Notifications</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton onClick={deleteNotifications} />
           <ModalBody>
-            <Text>Notification 1</Text>
-            <Text>Notification 2</Text>
-            <Text>Notification 3</Text>
+            {userInfo?.notification?.length > 0 ? (
+              userInfo.notification.map((note, index) => (
+                <Text key={index}>{note.description}</Text>
+              ))
+            ) : (
+              <Text>No New Notification</Text>
+            )}
           </ModalBody>
         </ModalContent>
       </Modal>

@@ -8,7 +8,8 @@ const generateToken = (
   role,
   areContactDetailsComplete,
   areBusinessDetailsComplete,
-  isFormComplete
+  isFormComplete,
+  status
 ) => {
   const token = jwt.sign(
     {
@@ -17,6 +18,7 @@ const generateToken = (
       areContactDetailsComplete,
       areBusinessDetailsComplete,
       isFormComplete,
+      status,
     },
     process.env.JWT_SECRET,
     {

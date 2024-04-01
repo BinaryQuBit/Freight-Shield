@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"; 
 import AdminSidebar from "../../components/sidebar/adminSideBar.js";
 import Protector from "../../components/utils/methods/getters/protector.js";
 import EaseOut from "../../components/responsiveness/easeOut.js";
@@ -7,11 +7,11 @@ import { useData } from "../../components/utils/methods/getters/dataContext.js";
 import CustomSelectMultiple from "../../components/buttons/customSelectMultiple.js";
 import CustomInput from "../../components/utils/forms/customInput.js";
 import CustomButton from "../../components/buttons/customButton.js";
-import { IoMdCloseCircle } from "react-icons/io";
+import { IoMdCloseCircle, IoMdAddCircle } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 import { EmptyValidation } from "../../components/utils/validation/emptyValidation.js";
-import AddAdmin from "../../components/addButton/addAdmin.js"
+import AddAdmin from "../../components/addButton/addAdmin.js";
 import axios from "axios";
 import {
   Table,
@@ -47,10 +47,14 @@ import {
 export default function Administrators() {
   Protector("/api/administrators");
   const { data } = useData();
-  const { firstName, lastName } = data.user || {};
+  const { firstName, lastName, notification, status } = data.user || {};
   const administrators = data.administrators || [];
+  const { adminStatus } = data.status || {};
   const moreDetailsDisclosure = useDisclosure();
   const actionModalDisclosure = useDisclosure();
+  const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
+  const openAddAdminModal = () => setIsAddAdminModalOpen(true);
+  const closeAddAdminModal = () => setIsAddAdminModalOpen(false);
   const isLargeScreen = useBreakpointValue({
     base: false,
     md: false,
@@ -109,7 +113,10 @@ export default function Administrators() {
     };
 
     try {
-      await axios.put(`/api/administrators/${selectedAdministrator._id}`, payload);
+      await axios.put(
+        `/api/administrators/${selectedAdministrator._id}`,
+        payload
+      );
       setActionReason("");
       setSelectedAction(null);
       setSelectedAdministrator(null);
@@ -123,10 +130,8 @@ export default function Administrators() {
     switch (status.toLowerCase()) {
       case "inactive":
         return "red";
-      case "admin":
+      case "active":
         return "green";
-        case "super user":
-          return "purple";
       default:
         return "gray";
     }
@@ -155,13 +160,30 @@ export default function Administrators() {
 
   return (
     <>
-      <AdminSidebar activePage={"administrators"} />
+      <AddAdmin isOpen={isAddAdminModalOpen} onClose={closeAddAdminModal} />
+      <AdminSidebar activePage={"administrators"} Status = { status } />
       <EaseOut>
-        <UserHeader title="Administrators" userInfo={{ firstName, lastName }} />
+        <UserHeader title="Administrators" userInfo={{ firstName, lastName, notification }} Status={status} />
+        {adminStatus == "Super User" ? (
+          <CustomButton
+            backgroundColor="#0866FF"
+            w="90px"
+            children="Add"
+            variant="blueForwardButton"
+            icon={<IoMdAddCircle />}
+            floatSide={"right"}
+            m={"5"}
+            onClick={openAddAdminModal}
+          />
+        ) : (
+          <></>
+        )}
         <Card
           flex={1}
           p={{ base: "1", md: "2" }}
-          m={{ base: "3", md: "5" }}
+          mr={{ base: "3", md: "5" }}
+          ml={{ base: "3", md: "5" }}
+          mt={{ base: "3", md: "5" }}
           rounded={"none"}
         >
           <Flex mb={4}>
@@ -200,7 +222,7 @@ export default function Administrators() {
                     <Th>Email</Th>
                     <Th>Phone Number</Th>
                     <Th>Status</Th>
-                    <Th>Action</Th>
+                    {adminStatus !== "Admin" && <Th>Action</Th>}
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -214,21 +236,26 @@ export default function Administrators() {
                       <Td>{administrator.email}</Td>
                       <Td>{administrator.phoneNumber}</Td>
                       <Td>{administrator.status || "Inactive"}</Td>
-                      <Td>
-                      {administrator.status !== "Super User" ? (
-                        <CustomSelectMultiple
-                          id={`action-${index}`}
-                          isRequired={true}
-                          placeholder={"Select Action"}
-                          options={action}
-                          onChange={(e) =>
-                            handleActionChange(e.target.value, administrator)
-                          }
-                        />
-                        ) : (
-                          <Text>No actions available</Text>
-                        )}
-                      </Td>
+                      {adminStatus !== "Admin" && (
+                        <Td>
+                          {administrator.adminStatus !== "Super User" ? (
+                            <CustomSelectMultiple
+                              id={`action-${index}`}
+                              isRequired={true}
+                              placeholder={"Select Action"}
+                              options={action}
+                              onChange={(e) =>
+                                handleActionChange(
+                                  e.target.value,
+                                  administrator
+                                )
+                              }
+                            />
+                          ) : (
+                            <Text>No actions available</Text>
+                          )}
+                        </Td>
+                      )}
                     </Tr>
                   ))}
                 </Tbody>
@@ -241,7 +268,7 @@ export default function Administrators() {
                   <h2>
                     <AccordionButton>
                       <Box flex="1" textAlign="left">
-                        {administrator.firstName}{" "}{administrator.lastName}
+                        {administrator.firstName} {administrator.lastName}
                       </Box>
                       <Badge
                         colorScheme={getStatusColor(administrator.status)}
@@ -258,18 +285,24 @@ export default function Administrators() {
                       Name: {administrator.firstName} {administrator.lastName}
                     </Text>
                     <Text mt={2}>Email: {administrator.email}</Text>
-                    <Text mt={2}>Email: {administrator.phoneNumber}</Text>
-                    {administrator.status !== "Super User" ? (
-                    <CustomSelectMultiple
-                      id={`action-${index}`}
-                      mt={6}
-                      isRequired={true}
-                      placeholder={"Select Action"}
-                      options={action}
-                      onChange={(e) =>
-                        handleActionChange(e.target.value, administrator)
-                      }
-                    />
+                    <Text mt={2}>
+                      Phone Number: {administrator.phoneNumber}
+                    </Text>
+                    {adminStatus !== "Admin" ? (
+                      administrator.adminStatus !== "Super User" ? (
+                        <CustomSelectMultiple
+                          id={`action-${index}`}
+                          mt={6}
+                          isRequired={true}
+                          placeholder={"Select Action"}
+                          options={action}
+                          onChange={(e) =>
+                            handleActionChange(e.target.value, administrator)
+                          }
+                        />
+                      ) : (
+                        <></>
+                      )
                     ) : (
                       <></>
                     )}

@@ -4,7 +4,7 @@ import React from "react";
 // Icon Imports
 import { CiEdit } from "react-icons/ci";
 
-// Chakra UI Imports
+// Chakra UI Imports 
 import {
   Card,
   VStack,
@@ -17,7 +17,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 
-// Custom Imports
+// Custom Imports 
 import Sidebar from "../../components/sidebar/carrierSideBar.js";
 import Protector from "../../components/utils/methods/getters/protector.js";
 import EaseOut from "../../components/responsiveness/easeOut.js";
@@ -32,25 +32,37 @@ export default function ShipperSettings() {
   const { data } = useData();
   const firstName = data && data.user ? data.user.firstName : "";
   const lastName = data && data.user ? data.user.lastName : "";
+  const notification = data && data.user ? data.user.notification : "";
+  const status = data && data.user ? data.user.status : "";
   const details = data && data.response ? data.response : "";
   const { isOpen, onOpen, onClose } = useDisclosure();
   const backendUrl = process.env.REACT_APP_BACKEND_PORT;
 
   return (
     <>
-      <Sidebar activePage="carrierSettings" />
+      <Sidebar activePage="carrierSettings" Status = { status }/>
       <EaseOut>
         <UserHeader
           title="Carrier Settings"
-          userInfo={{ firstName, lastName }}
+          userInfo={{ firstName, lastName, notification }}
+          Status={status}
         />
         <Box w="100%" p={5}>
+        <Card p={5} rounded="none" mb={5}>
+            <Text>
+              <strong>Status:</strong> {status}
+            </Text>
+            <Text mt={5}>
+              <strong>Reason:</strong> {details.statusReasonChange}
+            </Text>
+          </Card>
           <Card p={5} rounded="none">
             <VStack spacing={5} align="stretch">
               <Flex justify={"space-between"}>
                 <Heading as="h3" size="md" textAlign="center">
                   Company Details
                 </Heading>
+                {status === "Active" ? (
                 <Tooltip label="Edit Details" aria-label="Edit Details Tooltip">
                   <span>
                     <CiEdit
@@ -63,6 +75,9 @@ export default function ShipperSettings() {
                     />
                   </span>
                 </Tooltip>
+                                ) : (
+                                  <></>
+                                )}
               </Flex>
               <Divider />
               <Text>

@@ -48,7 +48,7 @@ import {
 export default function Carriers() {
   Protector("/api/carriers");
   const { data } = useData();
-  const { firstName, lastName } = data.user || {};
+  const { firstName, lastName, status, notification } = data.user || {};
   const carriers = data.carriers || [];
   const moreDetailsDisclosure = useDisclosure();
   const actionModalDisclosure = useDisclosure();
@@ -161,9 +161,9 @@ export default function Carriers() {
 
   return (
     <>
-      <AdminSidebar activePage={"carriers"} />
+      <AdminSidebar activePage={"carriers"} Status = { status }/>
       <EaseOut>
-        <UserHeader title="Carriers" userInfo={{ firstName, lastName }} />
+        <UserHeader title="Carriers" userInfo={{ firstName, lastName, notification }} Status={status} />
         <Card
           flex={1}
           p={{ base: "1", md: "2" }}

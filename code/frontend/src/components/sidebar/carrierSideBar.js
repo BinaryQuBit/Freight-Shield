@@ -7,6 +7,7 @@ import {
   useColorMode,
   Switch,
   FormLabel,
+  Text,
 } from "@chakra-ui/react";
 import { FiMenu, FiLogOut, FiSettings, FiHome, } from "react-icons/fi";
 import {
@@ -21,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useContext } from "react";
 
-export default function CarrierSideBar({ activePage }) {
+export default function CarrierSideBar({ activePage, Status }) {
   const { navSize, setNavSize } = useContext(SidebarContext);
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
@@ -106,7 +107,8 @@ export default function CarrierSideBar({ activePage }) {
               },
             }}
           />
-
+          {Status === "Active" ? (
+                        <>
 <NavItem
             navSize={navSize}
             icon={FiHome}
@@ -147,6 +149,8 @@ export default function CarrierSideBar({ activePage }) {
           onClick={() => navigate("/unitprofiles")}
           menuOpen={menuOpen}
         />
+                  </>
+          ): (<Text m={20}></Text>)}
 
         </Flex>
         <Flex p="5%" flexDir="column" w="100%">

@@ -49,11 +49,13 @@ export const loginUser = asyncHandler(async (req, res) => {
   const superUser = await SuperUser.findOne({ email });
   const driver = await Driver.findOne({ email });
   if (admin && (await admin.matchPassword(password))) {
-    generateToken(res, admin._id, "admin");
+    const status = admin.status;
+    generateToken(res, admin._id, "admin", status);
     return res.status(201).json({
       _id: admin._id,
       email: admin.email,
       role: "admin",
+      status: admin.status,
     });
   }
   if (driver && (await driver.matchPassword(password))) {
@@ -68,13 +70,15 @@ export const loginUser = asyncHandler(async (req, res) => {
     const areContactDetailsComplete = carrier.areContactDetailsComplete;
     const areBusinessDetailsComplete = carrier.areBusinessDetailsComplete;
     const isFormComplete = carrier.isFormComplete;
+    const status = carrier.status;
     generateToken(
       res,
       carrier._id,
       "carrier",
       areContactDetailsComplete,
       areBusinessDetailsComplete,
-      isFormComplete
+      isFormComplete,
+      status,
     );
     return res.status(201).json({
       _id: carrier._id,
@@ -83,19 +87,22 @@ export const loginUser = asyncHandler(async (req, res) => {
       areContactDetailsComplete: carrier.areContactDetailsComplete,
       areBusinessDetailsComplete: carrier.areBusinessDetailsComplete,
       isFormComplete: carrier.isFormComplete,
+      status: carrier.status,
     });
   }
   if (shipper && (await shipper.matchPassword(password))) {
     const areContactDetailsComplete = shipper.areContactDetailsComplete;
     const areBusinessDetailsComplete = shipper.areBusinessDetailsComplete;
     const isFormComplete = shipper.isFormComplete;
+    const status = shipper.status;
     generateToken(
       res,
       shipper._id,
       "shipper",
       areContactDetailsComplete,
       areBusinessDetailsComplete,
-      isFormComplete
+      isFormComplete,
+      status,
     );
     return res.status(201).json({
       _id: shipper._id,
@@ -104,6 +111,7 @@ export const loginUser = asyncHandler(async (req, res) => {
       areContactDetailsComplete: shipper.areContactDetailsComplete,
       areBusinessDetailsComplete: shipper.areBusinessDetailsComplete,
       isFormComplete: shipper.isFormComplete,
+      status: shipper.status
     });
   }
   if (driver && (await driver.matchPassword(password))) {
@@ -184,9 +192,11 @@ export const registerUser = asyncHandler(async (req, res) => {
     const admin = await Admin.create({
       email,
       password,
+      firstName,
+      lastName,
+      phoneNumber,
     });
     if (admin) {
-      generateToken(res, admin._id);
       res.status(201).json({
         _id: admin._id,
         email: admin.email,
@@ -420,3 +430,5 @@ export const news = asyncHandler(async (req, res) => {
     res.status(500).send("Error fetching news");
   }
 });
+
+

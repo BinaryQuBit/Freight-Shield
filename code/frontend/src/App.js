@@ -1,5 +1,3 @@
-// Routes
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SidebarProvider } from "./components/responsiveness/context.js";
 import { DataProvider } from "./components/utils/methods/getters/dataContext.js";
@@ -8,8 +6,6 @@ import Homepage from "./pages/shared/homePage.js";
 import Login from "./pages/login.js";
 import Register from "./pages/register.js";
 import ForgotPassword from "./pages/forgotPassword.js";
-import Pending from "./pages/admin/pending.js";
-import Approved from "./pages/admin/approved.js";
 import Administrators from "./pages/admin/administrators.js";
 import Shippers from "./pages/admin/shippers.js";
 import Carriers from "./pages/admin/carriers.js";
@@ -30,7 +26,7 @@ import ShipperBusinessDetails from "./pages/registration/shipper/shipperBusiness
 import ShipperContactDetails from "./pages/registration/shipper/shipperContactDetails.js";
 import ShipperSubmission from "./pages/registration/shipper/shipperSubmission.js";
 import ShipperDashboard from "./pages/shipper/shipperDashBoard.js";
-import CarrierDashboard from "./pages/carrier/carrierDashboard.js"
+import CarrierDashboard from "./pages/carrier/carrierDashboard.js";
 
 export default function App() {
   return (
@@ -42,11 +38,9 @@ export default function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/forgotpassword" element={<ForgotPassword />} />
-            <Route path="/pending" element={<Pending />} />
-            <Route path="/approved" element={<Approved />} />
             <Route path="/administrators" element={<Administrators />} />
             <Route path="/shippers" element={<Shippers />} />
-            <Route path="/shipperdashboard" element={<ShipperDashboard/>} />
+            <Route path="/shipperdashboard" element={<ShipperDashboard />} />
             <Route path="/carriers" element={<Carriers />} />
             <Route path="/adminsettings" element={<AdminSettings />} />
             <Route path="/activeloads" element={<ActiveLoads />} />

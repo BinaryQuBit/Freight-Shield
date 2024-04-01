@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import { hashPassword, comparePassword } from "../utils/hashPassword.js";
 
 // Event Schema Declaration and Defination
-const eventSchema = new mongoose.Schema(
+const eventSchema = new mongoose.Schema( 
   {
     title: {
       type: String,
@@ -49,16 +49,9 @@ const unitSchema = new mongoose.Schema(
   { _id: false, timestamps: true }
 );
 
-const notificationDescriptionSchema = new mongoose.Schema(
-  {
-    des: { type: String },
-  }
-)
-
 const notificationSchema = new mongoose.Schema(
   {
-    counter: { type: Number },
-    description: [notificationDescriptionSchema]
+    description: { type: String },
   }
 )
 
@@ -188,7 +181,7 @@ const carrierSchema = new mongoose.Schema(
     },
     statusReasonChange: {
       type: String,
-      default: "",
+      default: "Your account is under review",
     },
     units: [unitSchema],
     events: [eventSchema],
