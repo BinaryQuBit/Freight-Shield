@@ -16,47 +16,29 @@ export const administrators = asyncHandler(async (req, res) => {
     email: req.user.email,
     firstName: req.user.firstName,
     lastName: req.user.lastName,
+    status: req.user.status,
   };
+
+  const admin = await Admin.findOne({ email: user.email });
+  user.notification = admin.notification;
+
+  if (!admin) {
+    return res.status(404).json({ message: "Admin not found" });
+  }
+
   const adminList = await Admin.find({}, {
     password: 0,
   });
+
+  const status = {
+    adminStatus: admin.adminStatus,
+  };
+
   res.status(200).json({
     user,
     administrators: adminList,
+    status,
   });
-});
-
-// @desc    Getting Pending
-// route    GET /api/pending
-// @access  Private
-export const pending = asyncHandler(async (req, res) => {
-  const user = {
-    _id: req.user._id,
-    email: req.user.email,
-    firstName: req.user.firstName,
-    lastName: req.user.lastName,
-  };
-  const adminList = await Admin.find({}, {
-    password: 0,
-  });
-  res.status(200).json({
-    user,
-    administrators: adminList,
-  });
-});
-
-// @desc    Getting Approved
-// route    GET /api/approved
-// @access  Private
-export const approved = asyncHandler(async (req, res) => {
-  const user = {
-    _id: req.user._id,
-    email: req.user.email,
-    firstName: req.user.firstName,
-    lastName: req.user.lastName,
-  };
-
-  res.status(200).json({ user });
 });
 
 // @desc    Getting Shippers
@@ -68,7 +50,11 @@ export const shippers = asyncHandler(async (req, res) => {
     email: req.user.email,
     firstName: req.user.firstName,
     lastName: req.user.lastName,
+    status: req.user.status,
   };
+  const admin = await Admin.findOne({ email: user.email });
+  user.notification = admin.notification;
+
   const shipperList = await Shipper.find({}, {
     password: 0,
     areContactDetailsComplete: 0,
@@ -92,7 +78,10 @@ export const carriers = asyncHandler(async (req, res) => {
     email: req.user.email,
     firstName: req.user.firstName,
     lastName: req.user.lastName,
+    status: req.user.status,
   };
+  const admin = await Admin.findOne({ email: user.email });
+  user.notification = admin.notification;
   const carriers = await Carrier.find({}, {
     password: 0,
     areContactDetailsComplete: 0,
@@ -127,7 +116,7 @@ export const carriers = asyncHandler(async (req, res) => {
 });
 
 // @desc    Getting Admin Settings
-// route    GET /api/adminsettings
+// route    GET /api/adminsettings 
 // @access  Private
 export const adminsettings = asyncHandler(async (req, res) => {
   const user = {
@@ -135,9 +124,22 @@ export const adminsettings = asyncHandler(async (req, res) => {
     email: req.user.email,
     firstName: req.user.firstName,
     lastName: req.user.lastName,
+    status: req.user.status,
   };
-
-  res.status(200).json({ user });
+  const admin = await Admin.findOne({ email: user.email });
+  user.notification = admin.notification;
+  if (!admin) {
+return res.status(404).json({ message: "Admin not found" }); 
+}
+const response = {
+firstName: admin.firstName,
+lastName: admin.lastName,
+phoneNumber: admin.phoneNumber,
+email: admin.email,
+status: admin.status,
+statusReasonChange: admin.statusReasonChange,
+};
+res.status(200).json({ user, response }); 
 });
 
 ////////////////////////////// Putters //////////////////////////////
@@ -196,3 +198,58 @@ export const updateShipperStatus = asyncHandler(async (req, res) => {
   }
   res.json(shipper);
 });
+
+// @desc    Changing Status of admin
+// route    PUT /api/administrators/:adminId
+// @access  Private
+export const updateAdminStatus = asyncHandler(async (req, res) => {
+  const adminId = req.params.adminId;
+  const { status, statusReasonChange } = req.body;
+  const validStatuses = ['Active', 'Inactive', 'Delete'];
+  if (!validStatuses.includes(status)) {
+    return res.status(400).json({ message: 'Invalid status value' });
+  }
+  if (status === 'Delete') {
+    const deletedAdmin = await Admin.findByIdAndDelete(adminId);
+    if (!deletedAdmin) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+    return res.json({ message: 'Admin deleted successfully' });
+  }
+  const admin = await Admin.findByIdAndUpdate(
+    adminId,
+    { $set: { status, statusReasonChange } },
+    { new: true }
+  );
+  if (!admin) {
+    return res.status(404).json({ message: 'Admin not found' });
+  }
+  res.json(admin);
+});
+
+// @desc    Updating Settings for Admin
+// route    PUT /api/editadmin
+// @access  Private
+export const updateAdminSettings = asyncHandler(async (req, res) => {
+  try {
+    const { _id } = req.user;
+
+    const { email, firstName, lastName, phoneNumber } = req.body;
+
+    const admin = await Admin.findByIdAndUpdate(
+      _id,
+      { $set: { email, firstName, lastName, phoneNumber } },
+      { new: true }
+    );
+
+    if (!admin) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+
+    res.status(200).json(admin);
+  } catch (error) {
+    console.error("Update Admin Settings Error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+

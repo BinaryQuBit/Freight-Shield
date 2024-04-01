@@ -5,12 +5,11 @@ import {
   IconButton,
   Divider,
   useColorMode,
-  Switch,
+  Switch, 
   FormLabel,
+  Text,
 } from "@chakra-ui/react";
 import { FiTruck, FiMenu, FiLogOut, FiSettings, FiHome } from "react-icons/fi";
-import { MdOutlinePendingActions } from "react-icons/md";
-import { GrCertificate } from "react-icons/gr";
 import { FaHardHat, FaUserLock } from "react-icons/fa";
 import NavItem from "./navItem.js";
 import Logo from "../logo/logo.js";
@@ -18,12 +17,11 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useContext } from "react";
 
-export default function AdminSideBar({ activePage }) {
+export default function AdminSideBar({ activePage, Status }) {
   const { navSize, setNavSize } = useContext(SidebarContext);
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
   const navigate = useNavigate();
-  const { setColorMode } = useColorMode();
 
   const logout = () => {
     axios
@@ -102,23 +100,8 @@ export default function AdminSideBar({ activePage }) {
               },
             }}
           />
-
-          <NavItem
-            navSize={navSize}
-            icon={MdOutlinePendingActions}
-            title="Pending"
-            active={activePage === "pending"}
-            onClick={() => navigate("/pending")}
-            menuOpen={menuOpen}
-          />
-          <NavItem
-            navSize={navSize}
-            icon={GrCertificate}
-            title="Approved"
-            active={activePage === "approved"}
-            onClick={() => navigate("/approved")}
-            menuOpen={menuOpen}
-          />
+          {Status === "Active" ? (
+            <>
           <NavItem
             navSize={navSize}
             icon={FaUserLock}
@@ -143,6 +126,8 @@ export default function AdminSideBar({ activePage }) {
             onClick={() => navigate("/carriers")}
             menuOpen={menuOpen}
           />
+          </>
+          ): (<Text m={20}></Text>)}
         </Flex>
         <Flex p="5%" flexDir="column" w="100%">
           <Divider />

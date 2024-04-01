@@ -1,5 +1,3 @@
-
-// React Imports
 import React, { useState } from "react";
 import { IoMdAddCircle } from "react-icons/io";
 import { IoMdCloseCircle } from "react-icons/io";
@@ -16,193 +14,124 @@ import {
   ModalHeader,
   ModalBody,
   Flex,
-  RadioGroup,
-  Radio,
-  SimpleGrid,
 } from "@chakra-ui/react";
 
 // Custom Imports
 import CustomButton from "../buttons/customButton";
 import { EmptyValidation } from "../utils/validation/emptyValidation";
-import { YearValidation } from "../utils/validation/yearCalidation";
-import { VinValidation } from "../utils/validation/vinValidation";
 import CustomInput from "../utils/forms/customInput";
-import CustomSelect from "../utils/forms/customSelect";
-import CustomUpload from "../buttons/customUpload";
-import { DocumentValidation } from "../utils/validation/documentValidation";
+import { EmailValidation } from "../utils/validation/emailValidation";
+import {
+  PasswordValidation,
+  ConfirmPasswordValidation,
+} from "../utils/validation/passwordValidation";
+import { PhoneNumberValidation } from "../utils/validation/phoneNumberValidation";
 
-export default function AddUnit({ isOpen, onClose }) {
+export default function AddAdmin({ isOpen, onClose }) {
   axios.defaults.withCredentials = true;
   const theme = useTheme();
   const customBlue = theme.colors.customBlue;
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const toggleShowPassword = () => setShowPassword(!showPassword);
+  const toggleShowConfirmPassword = () =>
+    setShowConfirmPassword(!showConfirmPassword);
 
   // Hooks
-  const [unitNumber, setUnitNumber] = useState("");
-  const [unitType, setUnitType] = useState("");
-  const [trailerType, setTrailerType] = useState("Dry Van");
-  const [unitMake, setUnitMake] = useState("");
-  const [unitModel, setUnitModel] = useState("");
-  const [unitYear, setUnitYear] = useState("");
-  const [unitVIN, setUnitVIN] = useState("");
-  const [unitLicencePlate, setUnitLicencePlate] = useState("");
-  const [unitStatus, setUnitStatus] = useState("");
-  const [unitRegistration, setUnitRegistration] = useState("");
-  const [unitInsurance, setUnitInsurance] = useState("");
-  const [unitSafety, setUnitSafety] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   // Error Hooks
-  const [unitNumberError, setUnitNumberError] = useState("");
-  const [unitTypeError, setUnitTypeError] = useState("");
-  const [trailerTypeError, setTrailerTypeError] = useState("");
-  const [unitMakeError, setUnitMakeError] = useState("");
-  const [unitModelError, setUnitModelError] = useState("");
-  const [unitYearError, setUnitYearError] = useState("");
-  const [unitVINError, setUnitVINError] = useState("");
-  const [unitLicencePlateError, setUnitLicencePlateError] = useState("");
-  const [unitStatusError, setUnitStatusError] = useState("");
-  const [unitRegistrationError, setUnitRegistrationError] = useState("");
-  const [unitInsuranceError, setUnitInsuranceError] = useState("");
-  const [unitSafetyError, setUnitSafetyError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [firstNameError, setFirstNameError] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
+  const [phoneNumberError, setPhoneNumberError] = useState("");
 
   // Functions
   const handleCloseClick = () => {
-    setUnitNumber("");
-    setUnitType("");
-    setTrailerType("Dry Van");
-    setUnitMake("");
-    setUnitModel("");
-    setUnitYear("");
-    setUnitVIN("");
-    setUnitLicencePlate("");
-    setUnitStatus("");
-    setUnitRegistration("");
-    setUnitInsurance("");
-    setUnitSafety("");
-    setUnitNumberError("");
-    setUnitTypeError("");
-    setTrailerTypeError("");
-    setUnitMakeError("");
-    setUnitModelError("");
-    setUnitYearError();
-    setUnitVINError("");
-    setUnitLicencePlateError("");
-    setUnitStatusError("");
-    setUnitRegistrationError("");
-    setUnitInsuranceError("");
-    setUnitSafetyError("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setFirstName("");
+    setLastName("");
+    setPhoneNumber("");
+    setEmailError("");
+    setPasswordError("");
+    setConfirmPasswordError("");
+    setFirstNameError("");
+    setLastNameError("");
+    setPhoneNumberError("");
     onClose();
   };
 
   // Add Unit Handle
-  const handleAddUnit = async (event) => {
+  const handleAddAdmin = async (event) => {
     event.preventDefault();
 
     // Reset Error Hooks
-    setUnitNumberError("");
-    setUnitTypeError("");
-    setTrailerTypeError("");
-    setUnitMakeError("");
-    setUnitModelError("");
-    setUnitYearError("");
-    setUnitVINError("");
-    setUnitLicencePlateError("");
-    setUnitStatusError("");
-    setUnitRegistrationError("");
-    setUnitInsuranceError("");
-    setUnitSafetyError("");
+    setEmailError("");
+    setPasswordError("");
+    setConfirmPasswordError("");
+    setFirstNameError("");
+    setLastNameError("");
+    setPhoneNumberError("");
 
     // Validation Checks
-    const unitNumberError = EmptyValidation("Unit Number", unitNumber);
-    const unitTypeError = EmptyValidation("Unit Type", unitType);
-    const unitMakeError = EmptyValidation("Make", unitMake);
-    const unitModelError = EmptyValidation("Model", unitModel);
-    const unitYearError = YearValidation(unitYear);
-    const unitVINError = VinValidation(unitVIN);
-    const unitLicencePlateError = EmptyValidation("Licence Plate",
-      unitLicencePlate
+    const emailError = EmailValidation(email);
+    const passwordError = PasswordValidation(password);
+    const confirmPasswordError = ConfirmPasswordValidation(
+      password,
+      confirmPassword
     );
-    const unitStatusError = EmptyValidation("Status", unitStatus);
-    const unitRegistrationError = DocumentValidation(
-      "Registration",
-      unitRegistration
-    );
-    const unitInsuranceError = DocumentValidation("Insurance", unitInsurance);
-    const unitSafetyError = DocumentValidation("Safety", unitSafety);
-    let trailerTypeError = "";
-    if (unitType === "Trailer") {
-        trailerTypeError = EmptyValidation("Trailer Type", trailerType);
-    }
+    const firstNameError = EmptyValidation("First Name", firstName);
+    const lastNameError = EmptyValidation("Last Name", lastName);
+    const phoneNumberError = PhoneNumberValidation(phoneNumber);
 
     // Set Errors
-    setUnitNumberError(unitNumberError);
-    setUnitTypeError(unitTypeError);
-    setTrailerTypeError(trailerTypeError);
-    setUnitMakeError(unitMakeError);
-    setUnitModelError(unitModelError);
-    setUnitYearError(unitYearError);
-    setUnitVINError(unitVINError);
-    setUnitLicencePlateError(unitLicencePlateError);
-    setUnitStatusError(unitStatusError);
-    setUnitRegistrationError(unitRegistrationError);
-    setUnitInsuranceError(unitInsuranceError);
-    setUnitSafetyError(unitSafetyError);
+    setEmailError(emailError);
+    setPasswordError(passwordError);
+    setConfirmPasswordError(confirmPasswordError);
+    setFirstNameError(firstNameError);
+    setLastNameError(lastNameError);
+    setPhoneNumberError(phoneNumberError);
 
     // Checking Errors
     if (
-      unitNumberError ||
-      unitTypeError ||
-      trailerTypeError ||
-      unitMakeError ||
-      unitModelError ||
-      unitYearError ||
-      unitVINError ||
-      unitLicencePlateError ||
-      unitStatusError ||
-      unitRegistrationError | unitInsuranceError ||
-      unitSafetyError
+      emailError ||
+      passwordError ||
+      confirmPasswordError ||
+      firstNameError ||
+      lastNameError ||
+      phoneNumberError
     ) {
       return;
     }
 
-    // Form Data
-    const formData = new FormData();
-    formData.append("unitNumber", unitNumber);
-    formData.append("unitType", unitType);
-    if (unitType === "Trailer") {
-      formData.append("trailerType", trailerType);
-  }
-    formData.append("unitMake", unitMake);
-    formData.append("unitModel", unitModel);
-    formData.append("unitYear", unitYear);
-    formData.append("unitVIN", unitVIN);
-    formData.append("unitLicencePlate", unitLicencePlate);
-    formData.append("unitStatus", unitStatus);
-
-    if (unitRegistration) {
-      formData.append("unitRegistration", unitRegistration);
-    }
-    if (unitInsurance) {
-      formData.append("unitInsurance", unitInsurance);
-    }
-    if (unitSafety) {
-      formData.append("unitSafety", unitSafety);
-    }
     // Start of POST Method
     try {
-      const addUnitResponse = await axios.post("/api/postunit", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          withCredentials: true,
-        },
+      const addAdminResponse = await axios.post("/register", {
+        email,
+        password,
+        confirmPassword,
+        firstName,
+        lastName,
+        phoneNumber,
+        role: "admin",
       });
-      if (addUnitResponse.status === 200) {
+      if (addAdminResponse.status === 201) {
         window.location.reload();
       }
-    }  catch (error) {
-      if (error.response && error.response.status === 405) {
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
         console.error("Error: ", error.response.data.message);
-        if (error.response.data.message.includes("Unit number must be unique within the carrier.")) {
-          setUnitNumberError("Unit Number Already Exists");
+        if (error.response.data.message.includes("already exists")) {
+          setEmailError("An account with this email already exists");
         }
       } else {
         console.error("Error submitting form:", error);
@@ -213,141 +142,68 @@ export default function AddUnit({ isOpen, onClose }) {
     <Modal isOpen={isOpen} onClose={() => {}} size="3xl" isClosable={false}>
       <ModalOverlay />
       <ModalContent padding={2}>
-        <ModalHeader textAlign={"center"}>Add New Unit</ModalHeader>
-        <form onSubmit={handleAddUnit} noValidate>
+        <ModalHeader textAlign={"center"}>Add New Admin</ModalHeader>
+        <form onSubmit={handleAddAdmin} noValidate>
           <ModalBody>
             <Flex>
               <CustomInput
-                id={"unitNumber"}
-                label={"Unit Number"}
-                value={unitNumber}
+                id={"email"}
+                label={"Email"}
+                value={email}
                 onChange={(e) => {
-                  setUnitNumber(e.target.value);
-                  setUnitNumberError("");
+                  setEmail(e.target.value);
+                  setEmailError("");
                 }}
-                isError={!!unitNumberError}
-                errorMessage={unitNumberError}
+                isError={!!emailError}
+                errorMessage={emailError}
                 isRequired={true}
-                type={"text"}
+                type={"email"}
                 mr={2}
                 mt={2}
               />
-              <CustomSelect
-                id={"unitType"}
-                isRequired={true}
-                isError={!!unitTypeError}
-                errorMessage={unitTypeError}
-                placeholder={"Select Type"}
-                value={unitType}
+              <CustomInput
+                id={"phoneNumber"}
+                label={"Phone Number"}
+                value={phoneNumber}
                 onChange={(e) => {
-                  setUnitType(e.target.value);
-                  setUnitTypeError("");
+                  setPhoneNumber(e.target.value);
+                  setPhoneNumberError("");
                 }}
-                value1={"Truck"}
-                children1={"Truck"}
-                value2={"Trailer"}
-                children2={"Trailer"}
-                ml={2}
+                isError={!!phoneNumberError}
+                errorMessage={phoneNumberError}
+                isRequired={true}
+                type={"tel"}
+                mr={2}
                 mt={2}
               />
             </Flex>
-            {unitType === "Trailer" && (
-              <div className={unitType === "Trailer" ? "fade-in" : "fade-out"}>
-                <RadioGroup
-                  onChange={setTrailerType}
-                  value={trailerType}
-                  columns={{ base: 1, md: 2, lg: 4 }}
-                  spacing={4}
-                  mt={8}
-                >
-                  <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={4}>
-                    <Radio color={customBlue} value="Dry Van">
-                      Dry Van
-                    </Radio>
-                    <Radio color={customBlue} value="Flat Bed">
-                      Flat Bed
-                    </Radio>
-                    <Radio color={customBlue} value="Reefer">
-                      Reefer
-                    </Radio>
-                    <Radio color={customBlue} value="Low Boy">
-                      Low Boy
-                    </Radio>
-                    <Radio color={customBlue} value="Step Deck">
-                      Step Deck
-                    </Radio>
-                    <Radio color={customBlue} value="Tank">
-                      Tank
-                    </Radio>
-                    <Radio color={customBlue} value="Conestega">
-                      Conestega
-                    </Radio>
-                    <Radio color={customBlue} value="Double Drop">
-                      Double Drop
-                    </Radio>
-                    <Radio color={customBlue} value="Car Carriers">
-                      Car Carriers
-                    </Radio>
-                    <Radio color={customBlue} value="Side kit">
-                      Side kit
-                    </Radio>
-                    <Radio color={customBlue} value="Dump">
-                      Dump
-                    </Radio>
-                    <Radio color={customBlue} value="Live Floor">
-                      Live Floor
-                    </Radio>
-                    <Radio color={customBlue} value="End Dump">
-                      End Dump
-                    </Radio>
-                    <Radio color={customBlue} value="Side Dump">
-                      Side Dump
-                    </Radio>
-                    <Radio color={customBlue} value="OverLoad">
-                      OverLoad
-                    </Radio>
-                    <Radio color={customBlue} value="Rocky Mountain">
-                      Rocky Mountain
-                    </Radio>
-                    <Radio color={customBlue} value="Twinpike">
-                      Twinpike
-                    </Radio>
-                    <Radio color={customBlue} value="LHV">
-                      LHV
-                    </Radio>
-                    <Radio color={customBlue} value="Super V">
-                      Super V
-                    </Radio>
-                  </SimpleGrid>
-                </RadioGroup>
-              </div>
-            )}
+
             <Flex>
               <CustomInput
-                id={"unitMake"}
-                label={"Unit Make"}
-                value={unitMake}
+                id={"firstName"}
+                label={"First Name"}
+                value={firstName}
                 onChange={(e) => {
-                  setUnitMake(e.target.value);
-                  setUnitMakeError("");
+                  setFirstName(e.target.value);
+                  setFirstNameError("");
                 }}
-                isError={!!unitMakeError}
-                errorMessage={unitMakeError}
+                isError={!!firstNameError}
+                errorMessage={firstNameError}
                 isRequired={true}
                 type={"text"}
                 mr={2}
                 mt={8}
               />
               <CustomInput
-                id={"unitModel"}
-                label={"Unit Model"}
-                value={unitModel}
+                id={"lastName"}
+                label={"Last Name"}
+                value={lastName}
                 onChange={(e) => {
-                  setUnitModel(e.target.value);
-                  setUnitModelError("");
+                  setLastName(e.target.value);
+                  setLastNameError("");
                 }}
-                isError={!!unitModelError}
-                errorMessage={unitModelError}
+                isError={!!lastNameError}
+                errorMessage={lastNameError}
                 isRequired={true}
                 type={"text"}
                 ml={2}
@@ -356,105 +212,41 @@ export default function AddUnit({ isOpen, onClose }) {
             </Flex>
             <Flex>
               <CustomInput
-                id={"unitYear"}
-                label={"Unit Year"}
-                value={unitYear}
+                id={"password"}
+                label={"Password"}
+                value={password}
                 onChange={(e) => {
-                  setUnitYear(e.target.value);
-                  setUnitYearError("");
+                  setPassword(e.target.value);
+                  setPasswordError("");
                 }}
-                isError={!!unitYearError}
-                errorMessage={unitYearError}
+                isError={!!passwordError}
+                errorMessage={passwordError}
                 isRequired={true}
-                type={"text"}
+                isPassword={true}
+                showPassword={showPassword}
+                onToggleShowPassword={toggleShowPassword}
                 mr={2}
                 mt={8}
               />
               <CustomInput
-                id={"unitVIN"}
-                label={"Unit VIN"}
-                value={unitVIN}
+                id={"confirmPassword"}
+                label={"Confirm Password"}
+                value={confirmPassword}
                 onChange={(e) => {
-                  setUnitVIN(e.target.value);
-                  setUnitVINError("");
+                  setConfirmPassword(e.target.value);
+                  setConfirmPasswordError("");
                 }}
-                isError={!!unitVINError}
-                errorMessage={unitVINError}
+                isError={!!confirmPasswordError}
+                errorMessage={confirmPasswordError}
                 isRequired={true}
-                type={"text"}
+                isPassword={true}
+                showPassword={showConfirmPassword}
+                onToggleShowPassword={toggleShowConfirmPassword}
                 ml={2}
                 mt={8}
               />
             </Flex>
-            <Flex>
-              <CustomInput
-                id={"unitLicencePlate"}
-                label={"Licence Plate"}
-                value={unitLicencePlate}
-                onChange={(e) => {
-                  setUnitLicencePlate(e.target.value);
-                  setUnitLicencePlateError("");
-                }}
-                isError={!!unitLicencePlateError}
-                errorMessage={unitLicencePlateError}
-                isRequired={true}
-                type={"text"}
-                mr={2}
-                mt={8}
-              />
-              <CustomSelect
-                id={"unitStatus"}
-                isRequired={true}
-                isError={!!unitStatusError}
-                errorMessage={unitStatusError}
-                placeholder={"Select Status"}
-                value={unitStatus}
-                onChange={(e) => {
-                  setUnitStatus(e.target.value);
-                  setUnitStatusError("");
-                }}
-                value1={"active"}
-                children1={"Active"}
-                value2={"maintenance"}
-                children2={"Maintenance"}
-                ml={2}
-                mt={8}
-              />
-            </Flex>
-            <Flex>
-              <CustomUpload
-                id="unitRegistration"
-                label="Unit Registration"
-                required={true}
-                isError={!!unitRegistrationError}
-                errorMessage={unitRegistrationError}
-                mt={8}
-                mr={2}
-                setError={setUnitRegistrationError}
-                setFileState={setUnitRegistration}
-              />
-              <CustomUpload
-                id="unitInsurance"
-                label="Unit Insurance"
-                required={true}
-                isError={!!unitInsuranceError}
-                errorMessage={unitInsuranceError}
-                mt={8}
-                ml={2}
-                setError={setUnitInsuranceError}
-                setFileState={setUnitInsurance}
-              />
-            </Flex>
-            <CustomUpload
-                id="unitSafety"
-                label="Unit Safety"
-                required={true}
-                isError={!!unitSafetyError}
-                errorMessage={unitSafetyError}
-                mt={8}
-                setError={setUnitSafetyError}
-                setFileState={setUnitSafety}
-              />
+
             <Flex justifyContent="space-between">
               <CustomButton
                 color={customBlue}

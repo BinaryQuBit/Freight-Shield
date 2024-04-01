@@ -45,6 +45,8 @@ export default function ShipperDashboard() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode } = useColorMode();
   const { data: userInfo } = useData();
+  const status = userInfo.status;
+
 
   // Hooks
   const [latestNews, setLatestNews] = useState([]);
@@ -141,11 +143,11 @@ export default function ShipperDashboard() {
               color: ${colorMode === "dark" ? "white" : "white"};
             }
         `}
-      </style>
+      </style> 
 
-      <ShipperSideBar activePage="dashboard" />
+      <ShipperSideBar activePage="dashboard" Status = { status }/>
       <Easeout>
-        <UserHeader title="Dash Board" userInfo={userInfo} />
+        <UserHeader title="Dash Board" userInfo={userInfo} Status = {status}/>
         <Grid
           templateColumns={{ base: "1fr", md: "1fr", lg: "1fr 1fr" }}
           gap={4}

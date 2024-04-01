@@ -48,7 +48,7 @@ import {
 export default function Shippers() {
   Protector("/api/shippers");
   const { data } = useData();
-  const { firstName, lastName } = data.user || {};
+  const { firstName, lastName, status, notification } = data.user || {};
   const shippers = data.shippers || [];
   const moreDetailsDisclosure = useDisclosure();
   const actionModalDisclosure = useDisclosure();
@@ -161,9 +161,9 @@ export default function Shippers() {
 
   return (
     <>
-      <AdminSidebar activePage={"shippers"} />
+      <AdminSidebar activePage={"shippers"} Status = { status }/>
       <EaseOut>
-        <UserHeader title="Shippers" userInfo={{ firstName, lastName }} />
+        <UserHeader title="Shippers" userInfo={{ firstName, lastName, notification }} Status={status}/>
         <Card
           flex={1}
           p={{ base: "1", md: "2" }}

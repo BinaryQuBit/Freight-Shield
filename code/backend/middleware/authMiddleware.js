@@ -53,6 +53,7 @@ export const protect = asyncHandler(async (req, res, next) => {
     req.areContactDetailsComplete = user.areContactDetailsComplete;
     req.areBusinessDetailsComplete = user.areBusinessDetailsComplete;
     req.isFormComplete = user.isFormComplete;
+    req.status = user.status;
     next();
   } catch (error) {
     if (error.name === "JsonWebTokenError") {
@@ -86,6 +87,14 @@ export const adminOnly = (req, res, next) => {
   throw new Error("Access denied");
 };
 
+export const adminStatus = (req, res, next) => {
+  if (req.status == "Active") {
+    return next();
+  }
+  res.status(604);
+  throw new Error("Status Inactive");
+};
+
 // Carrier Only Middleware
 export const carrierOnly = (req, res, next) => {
   if (req.role == "carrier") {
@@ -95,6 +104,14 @@ export const carrierOnly = (req, res, next) => {
   throw new Error("Access denied");
 };
 
+export const carrierStatus = (req, res, next) => {
+  if (req.status == "Active") {
+    return next();
+  }
+  res.status(605);
+  throw new Error("Status Inactive");
+};
+
 // Shipper Only Middleware
 export const shipperOnly = (req, res, next) => {
   if (req.role == "shipper") {
@@ -102,6 +119,14 @@ export const shipperOnly = (req, res, next) => {
   }
   res.status(403);
   throw new Error("Access denied");
+};
+
+export const shipperStatus = (req, res, next) => {
+  if (req.status == "Active") {
+    return next();
+  }
+  res.status(606);
+  throw new Error("Status Inactive");
 };
 
 // Status Approval Middleware
@@ -117,3 +142,80 @@ export const status = (req, res, next) => {
     throw new Error("Access denied. Need details filled");
   }
 };
+
+export const deleteNotificationsBasedOnRole = (req, res, next) => {
+  if ( req.role === 'admin') {
+      deleteNotificationsAdmin(req, res, next);
+  } else if (req.role === 'shipper') {
+      deleteNotificationsShipper(req, res, next);
+    } else if (req.role === 'carrier') {
+      deleteNotificationsCarrier(req, res, next);
+  } else {
+      const error = new Error('Unauthorized or invalid role');
+      error.status = 401;
+      next(error);
+  }
+}
+
+export const deleteNotificationsAdmin = async (req, res) => {
+  try {
+    const adminId = req.user._id;
+
+    const updatedAdmin = await Admin.findByIdAndUpdate(
+      adminId,
+      { $set: { notification: [] } },
+      { new: true }
+    );
+
+    if (!updatedAdmin) {
+      return res.status(404).json({ success: false, error: "Admin not found" });
+    }
+
+    res.status(200).json({ success: true, message: "Notifications deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting notifications:", error);
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+};
+
+export const deleteNotificationsShipper = async (req, res) => {
+  try {
+      const shipperId = req.user._id;
+      const updatedShipper = await Shipper.findByIdAndUpdate(
+          shipperId,
+          { $set: { notification: [] } },
+          { new: true }
+      );
+
+      if (!updatedShipper) {
+          return res.status(404).json({ success: false, error: "Shipper not found" });
+      }
+
+      res.status(200).json({ success: true, message: "Notifications deleted successfully" });
+  } catch (error) {
+      console.error("Error deleting notifications for shipper:", error);
+      res.status(500).json({ success: false, error: "Internal server error" });
+  }
+};
+
+export const deleteNotificationsCarrier = async (req, res) => {
+  try {
+    const carrierId = req.user._id;
+
+    const updatedCarrier = await Carrier.findByIdAndUpdate(
+      carrierId,
+      { $set: { notification: [] } },
+      { new: true }
+    );
+
+    if (!updatedCarrier) {
+      return res.status(404).json({ success: false, error: "Carrier not found" });
+    }
+
+    res.status(200).json({ success: true, message: "Notifications deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting notifications:", error);
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+};
+

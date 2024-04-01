@@ -50,7 +50,7 @@ export default function DriverProfiles() {
 
   // Data Context and Extraction
   const { data } = useData();
-  const { firstName, lastName, canadianCarrierCode } = data.user || {};
+  const { firstName, lastName, canadianCarrierCode, status, notification } = data.user || {};
   const driverData = data.driverData || [];
   const [searchTerm, setSearchTerm] = React.useState("");
 
@@ -158,11 +158,12 @@ export default function DriverProfiles() {
 
   return (
     <>
-      <Sidebar activePage={"driverProfile"} />
+      <Sidebar activePage={"driverProfile"} Status = { status }/>
       <EaseOut>
         <UserHeader
           title="Driver Profiles"
-          userInfo={{ firstName, lastName }}
+          userInfo={{ notification, firstName, lastName }}
+          Status = {status}
         />
         <Flex pt="4" direction="column" m={5}>
           <Input

@@ -37,6 +37,28 @@ const Protector = (path, ccc, email) => {
         ) {
           navigate("/login");
         }
+        else if (
+          error.response &&
+          (error.response.status === 604)
+        ) {
+          navigate("/adminsettings");
+        }
+
+        else if (
+          error.response &&
+          (error.response.status === 605)
+        ) {
+          navigate("/carriersettings");
+        }
+
+
+        else if (
+          error.response &&
+          (error.response.status === 606)
+        ) {
+          navigate("/shippersettings");
+        }
+
       });
     if (path === "/api/activeloads") {
       const wsSocket = process.env.REACT_APP_WS_SOCKET;

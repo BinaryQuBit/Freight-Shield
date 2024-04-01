@@ -37,7 +37,7 @@ export default function ShipperSubmissionDetails() {
       });
 
       if (shipperStatusResponse.status === 200) {
-        navigate("/shipperdashboard");
+        navigate("/shippersettings");
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {

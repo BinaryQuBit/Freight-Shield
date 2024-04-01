@@ -37,7 +37,7 @@ export default function CarrierSubmissionDetails() {
       });
 
       if (carrierStatusResponse.status === 200) {
-        navigate("/marketplace");
+        navigate("/carriersettings");
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {

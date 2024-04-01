@@ -70,6 +70,8 @@ export default function LoginForm() {
       const contactDetails = loginResponse.data.areContactDetailsComplete;
       const businessDetails = loginResponse.data.areBusinessDetailsComplete;
       const submissionComplete = loginResponse.data.isFormComplete;
+      const status = loginResponse.data.status;
+      console.log("This is satus", status);
 
       if (role === "carrier")
       {
@@ -84,6 +86,10 @@ export default function LoginForm() {
         else if (submissionComplete == false)
         {
           navigate("/carriersubmission");
+        }
+        else if (status === "Inactive" || status === "Pending")
+        {
+          navigate("/carriersettings")
         }
         else
         {
@@ -103,14 +109,24 @@ export default function LoginForm() {
         {
           navigate("/shippersubmission");
         }
+        else if (status === "Inactive" || status === "Pending")
+        {
+          navigate("/shippersettings")
+        }
         else
         {
           navigate("/shipperdashboard");
         }
       }
-      else if (role === "admin")
-      {
-        navigate("/pending");
+      else if (role === "admin") {
+        if (status === "Inactive")
+        {
+          navigate("/adminsettings")
+        }
+        else
+        {
+          navigate("/administrators");
+        }
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {

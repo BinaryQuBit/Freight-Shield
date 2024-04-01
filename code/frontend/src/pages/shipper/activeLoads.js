@@ -42,7 +42,9 @@ export default function ActiveLoads() {
   const backend = process.env.REACT_APP_BACKEND_PORT;
   const theme = useTheme();
   const customBlue = theme.colors.customBlue;
-  const { data: { loads, firstName, lastName, email } } = useData();
+  const { data: { loads, firstName, lastName, email, status, notification } } = useData();
+  console.log("This is load", loads);
+  console.log("This is No", notification);
 
   Protector("/api/activeloads", email);
 
@@ -119,9 +121,9 @@ export default function ActiveLoads() {
 
   return (
     <>
-      <ShipperSideBar activePage="activeLoads" />
+      <ShipperSideBar activePage="activeLoads" Status = { status }/>
       <Easeout>
-        <UserHeader title="Active Loads" userInfo={{ firstName, lastName }} />
+        <UserHeader title="Active Loads" userInfo={{ firstName, lastName, notification }} Status={status} />
         <Flex pt="10" direction="column" alignItems="center" padding="10">
           <Stack spacing={4} direction="row" mb="4">
             <Input

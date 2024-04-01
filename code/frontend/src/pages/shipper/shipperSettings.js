@@ -1,5 +1,5 @@
 // React Import
-import React from "react";
+import React from "react"; 
 
 // Icon Imports
 import { CiEdit } from "react-icons/ci";
@@ -32,19 +32,30 @@ export default function ShipperSettings() {
   const { data } = useData();
   const firstName = data && data.user ? data.user.firstName : "";
   const lastName = data && data.user ? data.user.lastName : "";
+  const status = data && data.user ? data.user.status : "";
   const details = data && data.response ? data.response : "";
+  const notification = data.response ? data.response.notification : "";
   const { isOpen, onOpen, onClose } = useDisclosure();
   const backendUrl = process.env.REACT_APP_BACKEND_PORT;
 
   return (
     <>
-      <Sidebar activePage="shipperSettings" />
+      <Sidebar activePage="shipperSettings" Status = { status }/>
       <EaseOut>
         <UserHeader
           title="Shipper Settings"
-          userInfo={{ firstName, lastName }}
+          userInfo={{ firstName, lastName, notification }}
+          Status={status}
         />
                 <Box w="100%" p={5}>
+                <Card p={5} rounded="none" mb={5}>
+            <Text>
+              <strong>Status:</strong> {status}
+            </Text>
+            <Text mt={5}>
+              <strong>Reason:</strong> {details.statusReasonChange}
+            </Text>
+          </Card>
         <Card
           p={5}
           rounded="none"
@@ -54,6 +65,7 @@ export default function ShipperSettings() {
               <Heading as="h3" size="md" textAlign="center">
                 Company Details
               </Heading>
+              {status === "Active" ? (
               <Tooltip label="Edit Details" aria-label="Edit Details Tooltip">
                 <span>
                   <CiEdit
@@ -66,6 +78,9 @@ export default function ShipperSettings() {
                   />
                 </span>
               </Tooltip>
+               ) : (
+                <></>
+              )}
             </Flex>
             <Divider />
             <Text>

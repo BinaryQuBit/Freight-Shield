@@ -24,6 +24,8 @@ export const shipperDasboard = asyncHandler(async (req, res) => {
       firstName: shipper.firstName,
       lastName: shipper.lastName,
       events: shipper.events,
+      status: shipper.status,
+      notification: shipper.notification,
     };
 
     res.status(200).json(response);
@@ -37,14 +39,15 @@ export const shipperDasboard = asyncHandler(async (req, res) => {
 // @access  Private
 export const getActiveLoads = asyncHandler(async (req, res) => {
   try {
-    const { email, firstName, lastName } = req.user;
+    const { email, firstName, lastName, status } = req.user;
+    const shipper = await Shipper.findOne({ email: email });
     const loads = await Marketplace.find({ shipperEmail: email });
-    res.status(200).json({ loads, firstName, lastName, email });
+    const notification = shipper.notification;
+    res.status(200).json({ loads, firstName, lastName, email, status, notification });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
-
 
 // @desc    Getting History
 // route    GET /api/postload
@@ -55,9 +58,12 @@ export const getPostLoad = asyncHandler(async (req, res) => {
     email: req.user.email,
     firstName: req.user.firstName,
     lastName: req.user.lastName,
+    status: req.user.status,
   };
+  const shipper = await Shipper.findOne({ email: user.email });
+  const notification = shipper.notification;
 
-  res.status(200).json({ user });
+  res.status(200).json({ user, notification });
 });
 
 // @desc    Getting History
@@ -65,9 +71,12 @@ export const getPostLoad = asyncHandler(async (req, res) => {
 // @access  Private
 export const getHistory = asyncHandler(async (req, res) => {
   try {
-    const { email, firstName, lastName } = req.user;
+    const { email, firstName, lastName, status } = req.user;
     const loads = await Marketplace.find({ shipperEmail: email, status: "Delivered" });
-    res.status(200).json({ loads, firstName, lastName, email });
+    const shipper = await Shipper.findOne({ email: email });
+    const notification = shipper.notification;
+
+    res.status(200).json({ loads, firstName, lastName, email, status, notification });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -82,6 +91,7 @@ export const getShipperSettings = asyncHandler(async (req, res) => {
       email: req.user.email,
       firstName: req.user.firstName,
       lastName: req.user.lastName,
+      status: req.user.status
     };
     const shipper = await Shipper.findOne({ email: user.email });
       if (!shipper) {
@@ -108,6 +118,8 @@ export const getShipperSettings = asyncHandler(async (req, res) => {
     proofBusiness: shipper.proofBusiness,
     proofInsurance: shipper.proofInsurance,
     website: shipper.website,
+    notification: shipper.notification,
+    statusReasonChange: shipper.statusReasonChange,
   };
     res.status(200).json({ user, response });
 });
@@ -628,3 +640,4 @@ export const deleteLoad = asyncHandler(async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
+

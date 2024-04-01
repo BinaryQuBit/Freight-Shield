@@ -7,6 +7,7 @@ import {
   useColorMode,
   Switch,
   FormLabel,
+  Text,
 } from "@chakra-ui/react";
 import {
   FiMenu,
@@ -23,7 +24,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useContext } from "react";
 
-export default function ShipperSideBar({ activePage }) {
+export default function ShipperSideBar({ activePage, Status }) {
   const { navSize, setNavSize } = useContext(SidebarContext);
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
@@ -106,7 +107,8 @@ export default function ShipperSideBar({ activePage }) {
               },
             }}
           />
-
+          {Status === "Active" ? (
+            <>
           <NavItem
             navSize={navSize}
             icon={FiHome}
@@ -139,6 +141,8 @@ export default function ShipperSideBar({ activePage }) {
             onClick={() => navigate("/history")}
             menuOpen={menuOpen}
           />
+          </>
+          ): (<Text m={20}></Text>)}
         </Flex>
         <Flex p="5%" flexDir="column" w="100%">
           <Divider />
