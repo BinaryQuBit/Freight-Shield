@@ -43,8 +43,8 @@ export default function ActiveLoads() {
   const theme = useTheme();
   const customBlue = theme.colors.customBlue;
   const { data: { loads, firstName, lastName, email, status, notification } } = useData();
-  console.log("This is load", loads);
-  console.log("This is No", notification);
+  // console.log("This is load", loads);
+  // console.log("This is No", notification);
 
   Protector("/api/activeloads", email);
 

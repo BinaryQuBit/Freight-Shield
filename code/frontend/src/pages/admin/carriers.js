@@ -48,7 +48,8 @@ import {
 export default function Carriers() {
   Protector("/api/carriers");
   const { data } = useData();
-  const { firstName, lastName, status, notification } = data.user || {};
+  const { firstName, lastName, status } = data.user || {};
+  const notification = data.notification;
   const carriers = data.carriers || [];
   const moreDetailsDisclosure = useDisclosure();
   const actionModalDisclosure = useDisclosure();
@@ -98,7 +99,7 @@ export default function Carriers() {
   const handleSubmitAction = async (event) => {
     event.preventDefault();
     if (!selectedCarrier || !selectedCarrier._id) {
-      console.error("No carrier selected");
+      // console.error("No carrier selected");
       return;
     }
 
@@ -121,7 +122,7 @@ export default function Carriers() {
       setSelectedCarrier(null);
       window.location.reload();
     } catch (error) {
-      console.error("Error updating carrier status:", error);
+      // console.error("Error updating carrier status:", error);
     }
   };
 

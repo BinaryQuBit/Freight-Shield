@@ -49,10 +49,11 @@ function UserHeader({ title, userInfo, Status }) {
   };
 
   const deleteNotifications = () => {
+    if(notificationCount)
     axios
       .delete("/api/notifications/delete")
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setNotificationCount(0); // Reset notification count on successful deletion
       })
       .catch((error) => console.error("Error deleting notifications:", error));

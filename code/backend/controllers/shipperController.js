@@ -26,6 +26,7 @@ export const shipperDasboard = asyncHandler(async (req, res) => {
       events: shipper.events,
       status: shipper.status,
       notification: shipper.notification,
+      email: req.user.email,
     };
 
     res.status(200).json(response);
@@ -60,10 +61,11 @@ export const getPostLoad = asyncHandler(async (req, res) => {
     lastName: req.user.lastName,
     status: req.user.status,
   };
+  const email = user.email;
   const shipper = await Shipper.findOne({ email: user.email });
   const notification = shipper.notification;
 
-  res.status(200).json({ user, notification });
+  res.status(200).json({ user, notification, email });
 });
 
 // @desc    Getting History
@@ -93,6 +95,7 @@ export const getShipperSettings = asyncHandler(async (req, res) => {
       lastName: req.user.lastName,
       status: req.user.status
     };
+    const email = user.email;
     const shipper = await Shipper.findOne({ email: user.email });
       if (!shipper) {
     return res.status(404).json({ message: "Shipper not found" }); 
@@ -118,10 +121,10 @@ export const getShipperSettings = asyncHandler(async (req, res) => {
     proofBusiness: shipper.proofBusiness,
     proofInsurance: shipper.proofInsurance,
     website: shipper.website,
-    notification: shipper.notification,
     statusReasonChange: shipper.statusReasonChange,
   };
-    res.status(200).json({ user, response });
+  const notification = shipper.notification
+    res.status(200).json({ user, response, email, notification });
 });
 
 // @desc    Getting Shipper Contact Details
@@ -333,7 +336,7 @@ export const updateLoad = asyncHandler(async (req, res) => {
     const updatedLoad = await Marketplace.findByIdAndUpdate(id, { $set: updateData }, { new: true });
     res.json(updatedLoad);
   } catch (error) {
-    console.error("Error in updateLoad:", error);
+    // console.error("Error in updateLoad:", error);
     res.status(400).json({ message: "Error updating load", error: error.message });
   }
 });
@@ -636,7 +639,7 @@ export const deleteLoad = asyncHandler(async (req, res) => {
     await Marketplace.findByIdAndDelete(id);
     res.status(200).json({ message: "Load deleted successfully" });
   } catch (error) {
-    console.error("Error deleting load:", error);
+    // console.error("Error deleting load:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });

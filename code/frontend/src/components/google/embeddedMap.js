@@ -93,7 +93,7 @@ function EmbeddedMap({
             if (status === google.maps.DirectionsStatus.OK) {
               setDirections(result);
             } else {
-              console.error(`Error fetching directions: ${status}`);
+              // console.error(`Error fetching directions: ${status}`);
             }
           }
         );

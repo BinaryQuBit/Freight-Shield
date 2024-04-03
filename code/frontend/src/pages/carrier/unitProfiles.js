@@ -35,8 +35,9 @@ export default function UnitProfile() {
   const { colorMode } = useColorMode();
   const { data } = useData();
   const { units } = data;
-  const { firstName, lastName, status, notification } = data.user || {};
+  const { firstName, lastName, status } = data.user || {};
   const backendPort = process.env.REACT_APP_BACKEND_PORT;
+  const notification = data.notification;
 
   const sortedUnits = (units || []).filter(unit => unit && unit.unitNumber !== undefined).sort((a, b) => {
     const unitANumber = a.unitNumber.toString();

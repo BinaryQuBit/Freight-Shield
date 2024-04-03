@@ -19,9 +19,9 @@ export function deleteFiles(filePaths) {
 
     fs.unlink(fullPath, (err) => {
       if (err) {
-        console.error("Error deleting file:", err);
+        // console.error("Error deleting file:", err);
       } else {
-        console.log(`File ${fullPath} was deleted successfully.`);
+        // console.log(`File ${fullPath} was deleted successfully.`);
       }
     });
   });

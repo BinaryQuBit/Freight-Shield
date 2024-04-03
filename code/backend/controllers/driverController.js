@@ -13,7 +13,7 @@ import path from "path";
 // URL Import
 import { fileURLToPath } from "url";
 
-// Models Import
+// Model Imports
 import Driver from "../models/driverModel.js";
 import LogBook from "../models/logbookModel.js";
 import Marketplace from "../models/marketplaceModel.js";
@@ -21,7 +21,7 @@ import Marketplace from "../models/marketplaceModel.js";
 // Custom Import
 import { generateLogbook } from "../utils/generateLogbook.js";
 
-// Functions
+// Function to generate PDF
 async function generatePDF(htmlContent) {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
@@ -34,19 +34,26 @@ async function generatePDF(htmlContent) {
 ////////////////////////////// Getters //////////////////////////////
 
 // @desc    Getting Logbooks
-// route    GET /api//getlogbook
+// route    GET /api/getlogbook
 // @access  Private
 export const getLogBooks = async (req, res) => {
+  // Extract the driver id from the cookie
   const driverId = req.user._id;
   try {
+    // create empty object
     let query = {};
+
+    // If there is driverid, save it in the object
     if (driverId) {
       query.driverId = driverId;
     }
+
+    // find the logbooks based on the object
     const logBooks = await LogBook.find(query);
+
+    // send the logbooks in the json format with status 200 OK
     res.status(200).send(logBooks);
   } catch (error) {
-    console.error("Error fetching logbooks:", error);
     res.status(500).send(error);
   }
 };
@@ -111,7 +118,7 @@ export const generateAndSendPDF = async (req, res) => {
     fs.writeFileSync(savePath, pdfBuffer);
     res.status(200).json({ message: "PDF generated and saved successfully." });
   } catch (error) {
-    console.error("Error generating PDF:", error);
+    // console.error("Error generating PDF:", error);
     return res.status(500).json({ message: error.message });
   }
 };
@@ -130,7 +137,7 @@ export const workingHRS = async (req, res) => {
       res.status(404).json({ success: false, message: "Logbook not found" });
     }
   } catch (error) {
-    console.error("Error fetching logbook:", error);
+    // console.error("Error fetching logbook:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
@@ -158,7 +165,7 @@ export const getDriverSettings = async (req, res) => {
       res.status(404).json({ success: false, message: "Driver not found" });
     }
   } catch (error){
-    console.error("Error fetching Settings Page:", error);
+    // console.error("Error fetching Settings Page:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 }
@@ -266,7 +273,7 @@ export const acceptLoad = async (req, res) => {
       res.status(404).json({ message: "Load not found" });
     }
   } catch (error) {
-    console.error("Error updating load status:", error);
+    // console.error("Error updating load status:", error);
     res.status(500).json({ message: "Error updating load status" });
   }
 };
@@ -293,7 +300,7 @@ export const editLogBook = async (req, res) => {
     }
     res.json({ message: "Logbook updated successfully" });
   } catch (error) {
-    console.error("Editing error:", error);
+    // console.error("Editing error:", error);
     res
       .status(500)
       .json({ message: "An error occurred while updating the logbook." });
@@ -319,7 +326,7 @@ export const sendingLocation = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    console.error("An error occurred:", error);
+    // console.error("An error occurred:", error);
     res.status(500).json({ status: "error", message: "Internal server error" });
   }
 };

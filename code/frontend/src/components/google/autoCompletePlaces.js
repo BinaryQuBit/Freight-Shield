@@ -16,7 +16,7 @@ const GooglePlacesAutocomplete = ({ type, name, placeholder, value, onChange, bo
     if (isLoaded) {
       const initializeAutocomplete = (autocompleteId) => {
         if (!window.google) {
-          console.error('Google Maps JavaScript API not loaded');
+          // console.error('Google Maps JavaScript API not loaded');
           return;
         }
 

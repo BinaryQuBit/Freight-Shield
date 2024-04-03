@@ -71,7 +71,7 @@ export default function LoginForm() {
       const businessDetails = loginResponse.data.areBusinessDetailsComplete;
       const submissionComplete = loginResponse.data.isFormComplete;
       const status = loginResponse.data.status;
-      console.log("This is satus", status);
+      // console.log("This is satus", status);
 
       if (role === "carrier")
       {
@@ -130,12 +130,12 @@ export default function LoginForm() {
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        console.error("Error: ", error.response.data.message);
+        // console.error("Error: ", error.response.data.message);
         if (error.response.data.message.includes("Invalid")) {
           setPasswordError("Invalid Email or Password");
         }
       } else {
-        console.error("Error submitting form:", error);
+        // console.error("Error submitting form:", error);
       }
     }
   };

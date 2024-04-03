@@ -34,7 +34,7 @@ export default function ShipperSettings() {
   const lastName = data && data.user ? data.user.lastName : "";
   const status = data && data.user ? data.user.status : "";
   const details = data && data.response ? data.response : "";
-  const notification = data.response ? data.response.notification : "";
+  const notification = data ? data.notification : "";
   const { isOpen, onOpen, onClose } = useDisclosure();
   const backendUrl = process.env.REACT_APP_BACKEND_PORT;
 

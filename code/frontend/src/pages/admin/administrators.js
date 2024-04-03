@@ -47,7 +47,8 @@ import {
 export default function Administrators() {
   Protector("/api/administrators");
   const { data } = useData();
-  const { firstName, lastName, notification, status } = data.user || {};
+  const { firstName, lastName, status } = data.user || {};
+  const notification = data.notification;
   const administrators = data.administrators || [];
   const { adminStatus } = data.status || {};
   const moreDetailsDisclosure = useDisclosure();
@@ -96,7 +97,7 @@ export default function Administrators() {
   const handleSubmitAction = async (event) => {
     event.preventDefault();
     if (!selectedAdministrator || !selectedAdministrator._id) {
-      console.error("No administrator selected");
+      // console.error("No administrator selected");
       return;
     }
 
@@ -122,7 +123,7 @@ export default function Administrators() {
       setSelectedAdministrator(null);
       window.location.reload();
     } catch (error) {
-      console.error("Error updating administrator status:", error);
+      // console.error("Error updating administrator status:", error);
     }
   };
 

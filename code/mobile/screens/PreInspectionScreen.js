@@ -51,8 +51,8 @@ export default function PreInspectionScreen() {
       return; 
     }
 
-    console.log('Submitted Items:', checkedItems);
-    console.log('Defect Details:', defectDetails);
+    // console.log('Submitted Items:', checkedItems);
+    // console.log('Defect Details:', defectDetails);
 
     navigation.goBack();
 

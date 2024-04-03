@@ -215,7 +215,7 @@ export default function PostedLoadEdit({ isOpen, onClose, load }) {
 
     // Start of the PUT Method
     try {
-      console.log("this is file", additionalDocument);
+      // console.log("this is file", additionalDocument);
       const response = await axios.put(`/api/postload/${load._id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -224,7 +224,7 @@ export default function PostedLoadEdit({ isOpen, onClose, load }) {
 
       handleCloseClick();
     } catch (error) {
-      console.error("Error updating load:", error);
+      // console.error("Error updating load:", error);
     }
   };
 

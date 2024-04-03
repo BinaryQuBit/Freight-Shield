@@ -8,7 +8,7 @@ export default function logout (navigate, setColorMode){
       navigate("/login");
     })
     .catch((error) => {
-      console.error("Logout failed:", error);
+      // console.error("Logout failed:", error);
     });
 };
 
