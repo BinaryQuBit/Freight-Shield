@@ -129,12 +129,12 @@ export default function AddAdmin({ isOpen, onClose }) {
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        console.error("Error: ", error.response.data.message);
+        // console.error("Error: ", error.response.data.message);
         if (error.response.data.message.includes("already exists")) {
           setEmailError("An account with this email already exists");
         }
       } else {
-        console.error("Error submitting form:", error);
+        // console.error("Error submitting form:", error);
       }
     }
   };

@@ -19,7 +19,7 @@ const transporter = nodemailer.createTransport({
 
 // Send Email
 export const sendEmail = async (to, subject, htmlContent) => {
-  console.log(`Sending email to ${to} with subject "${subject}"`);
+  // console.log(`Sending email to ${to} with subject "${subject}"`);
   const mailOptions = {
     from: "Freight Shield",
     to: to,
@@ -28,8 +28,8 @@ export const sendEmail = async (to, subject, htmlContent) => {
   };
   try {
     const info = await transporter.sendMail(mailOptions);
-    console.log("Email sent: " + info.response);
+    // console.log("Email sent: " + info.response);
   } catch (error) {
-    console.error("Error sending email:", error);
+    // console.error("Error sending email:", error);
   }
 };

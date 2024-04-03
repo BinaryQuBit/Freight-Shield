@@ -41,11 +41,12 @@ import CustomInput from "../../components/utils/forms/customInput.js";
 
 // Start of the Build
 export default function ShipperDashboard() {
-  Protector("/api/shipperDashboard");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode } = useColorMode();
   const { data: userInfo } = useData();
   const status = userInfo.status;
+  Protector("/api/shipperdashboard");
+
 
 
   // Hooks

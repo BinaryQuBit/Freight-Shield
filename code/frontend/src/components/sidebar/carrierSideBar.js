@@ -36,7 +36,7 @@ export default function CarrierSideBar({ activePage, Status }) {
         navigate("/login");
       })
       .catch((error) => {
-        console.error("Logout failed:", error);
+        // console.error("Logout failed:", error);
       });
   };
 

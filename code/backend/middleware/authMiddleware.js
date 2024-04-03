@@ -173,7 +173,7 @@ export const deleteNotificationsAdmin = async (req, res) => {
 
     res.status(200).json({ success: true, message: "Notifications deleted successfully" });
   } catch (error) {
-    console.error("Error deleting notifications:", error);
+    // console.error("Error deleting notifications:", error);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
@@ -193,7 +193,7 @@ export const deleteNotificationsShipper = async (req, res) => {
 
       res.status(200).json({ success: true, message: "Notifications deleted successfully" });
   } catch (error) {
-      console.error("Error deleting notifications for shipper:", error);
+      // console.error("Error deleting notifications for shipper:", error);
       res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
@@ -214,7 +214,7 @@ export const deleteNotificationsCarrier = async (req, res) => {
 
     res.status(200).json({ success: true, message: "Notifications deleted successfully" });
   } catch (error) {
-    console.error("Error deleting notifications:", error);
+    // console.error("Error deleting notifications:", error);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 };

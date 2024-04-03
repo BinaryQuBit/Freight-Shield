@@ -37,7 +37,7 @@ export default function ShipperSideBar({ activePage, Status }) {
         navigate("/login");
       })
       .catch((error) => {
-        console.error("Logout failed:", error);
+        // console.error("Logout failed:", error);
       });
   };
 

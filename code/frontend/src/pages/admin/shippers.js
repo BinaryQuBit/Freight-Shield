@@ -48,7 +48,8 @@ import {
 export default function Shippers() {
   Protector("/api/shippers");
   const { data } = useData();
-  const { firstName, lastName, status, notification } = data.user || {};
+  const { firstName, lastName, status } = data.user || {};
+  const notification = data.notification;
   const shippers = data.shippers || [];
   const moreDetailsDisclosure = useDisclosure();
   const actionModalDisclosure = useDisclosure();
@@ -98,7 +99,7 @@ export default function Shippers() {
   const handleSubmitAction = async (event) => {
     event.preventDefault();
     if (!selectedShipper || !selectedShipper._id) {
-      console.error("No shipper selected");
+      // console.error("No shipper selected");
       return;
     }
 
@@ -121,7 +122,7 @@ export default function Shippers() {
       setSelectedShipper(null);
       window.location.reload();
     } catch (error) {
-      console.error("Error updating shipper status:", error);
+      // console.error("Error updating shipper status:", error);
     }
   };
 

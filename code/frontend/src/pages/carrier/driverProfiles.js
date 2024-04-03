@@ -50,7 +50,8 @@ export default function DriverProfiles() {
 
   // Data Context and Extraction
   const { data } = useData();
-  const { firstName, lastName, canadianCarrierCode, status, notification } = data.user || {};
+  const { firstName, lastName, canadianCarrierCode, status } = data.user || {};
+  const notification = data.notification;
   const driverData = data.driverData || [];
   const [searchTerm, setSearchTerm] = React.useState("");
 

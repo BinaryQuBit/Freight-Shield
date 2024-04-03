@@ -21,7 +21,8 @@ import {
 export default function AdminSettings() {
   Protector("/api/adminsettings");
   const { data } = useData();
-  const { firstName, lastName, notification } = data.user || {};
+  const { firstName, lastName } = data.user || {};
+  const notification = data.notification;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const details = data && data.response ? data.response : "";
   const status = details.status;

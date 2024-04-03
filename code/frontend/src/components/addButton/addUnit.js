@@ -201,7 +201,7 @@ export default function AddUnit({ isOpen, onClose }) {
       }
     }  catch (error) {
       if (error.response && error.response.status === 405) {
-        console.error("Error: ", error.response.data.message);
+        // console.error("Error: ", error.response.data.message);
         if (error.response.data.message.includes("Unit number must be unique within the carrier.")) {
           setUnitNumberError("Unit Number Already Exists");
         }

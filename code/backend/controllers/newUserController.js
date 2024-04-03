@@ -19,7 +19,7 @@ import Driver from "../models/driverModel.js";
 import Logbook from "../models/logbookModel.js";
 import OTP from "../models/forgotPasswordModel.js";
 
-// Const News API
+// API Key for the news
 const apiKey = process.env.REACT_APP_NEWS_API;
 
 ////////////////////////////// Getters //////////////////////////////
@@ -28,6 +28,8 @@ const apiKey = process.env.REACT_APP_NEWS_API;
 // route    GET /logout
 // @access  Public
 export const logoutUser = asyncHandler(async (req, res) => {
+
+  // Cookie destruction
   res.cookie("jwt", "", {
     httpOnly: true,
     expires: new Date(0),
@@ -41,16 +43,29 @@ export const logoutUser = asyncHandler(async (req, res) => {
 // route    POST /login
 // @access  Public
 export const loginUser = asyncHandler(async (req, res) => {
+  // Requesting email and password from the form
   let { email, password } = req.body;
+
+  // change the email to lower case
   email = email.toLowerCase();
+
+  // Check all collections with the email
   const admin = await Admin.findOne({ email });
   const carrier = await Carrier.findOne({ email });
   const shipper = await Shipper.findOne({ email });
   const superUser = await SuperUser.findOne({ email });
   const driver = await Driver.findOne({ email });
+
+  // if its admin and the password does match
   if (admin && (await admin.matchPassword(password))) {
+
+    // Get the status of the admin
     const status = admin.status;
+
+    // Generate token
     generateToken(res, admin._id, "admin", status);
+
+    // response
     return res.status(201).json({
       _id: admin._id,
       email: admin.email,
@@ -58,19 +73,31 @@ export const loginUser = asyncHandler(async (req, res) => {
       status: admin.status,
     });
   }
+
+  // if its driver and password does match
   if (driver && (await driver.matchPassword(password))) {
+
+    // generate token
     generateToken(res, driver._id, "driver");
+
+    // send response in json format
     return res.status(201).json({
       _id: driver._id,
       email: driver.email,
       role: "driver",
     });
   }
+
+  // if its carrier and password does match
   if (carrier && (await carrier.matchPassword(password))) {
+
+    // extract information and pass it to token/cookie
     const areContactDetailsComplete = carrier.areContactDetailsComplete;
     const areBusinessDetailsComplete = carrier.areBusinessDetailsComplete;
     const isFormComplete = carrier.isFormComplete;
     const status = carrier.status;
+
+    // generate token
     generateToken(
       res,
       carrier._id,
@@ -80,6 +107,8 @@ export const loginUser = asyncHandler(async (req, res) => {
       isFormComplete,
       status,
     );
+
+    // response 
     return res.status(201).json({
       _id: carrier._id,
       email: carrier.email,
@@ -90,11 +119,17 @@ export const loginUser = asyncHandler(async (req, res) => {
       status: carrier.status,
     });
   }
+
+  // If it is shipper and password does match
   if (shipper && (await shipper.matchPassword(password))) {
+
+    // extract information and pass it to token/cookie
     const areContactDetailsComplete = shipper.areContactDetailsComplete;
     const areBusinessDetailsComplete = shipper.areBusinessDetailsComplete;
     const isFormComplete = shipper.isFormComplete;
     const status = shipper.status;
+
+    // generate token
     generateToken(
       res,
       shipper._id,
@@ -104,6 +139,8 @@ export const loginUser = asyncHandler(async (req, res) => {
       isFormComplete,
       status,
     );
+
+    // response
     return res.status(201).json({
       _id: shipper._id,
       email: shipper.email,
@@ -366,7 +403,7 @@ export const forgotPassword = asyncHandler(async (req, res) => {
     }
     res.status(200).json({ message: "OTP sent successfully to your email." });
   } catch (error) {
-    console.error("Forgot Password Error:", error);
+    // console.error("Forgot Password Error:", error);
     res
       .status(500)
       .json({ message: "Failed to send OTP.", error: error.message });
@@ -426,7 +463,7 @@ export const news = asyncHandler(async (req, res) => {
     );
     res.json(newsResponse.data);
   } catch (error) {
-    console.error("Error fetching news:", error);
+    // console.error("Error fetching news:", error);
     res.status(500).send("Error fetching news");
   }
 });

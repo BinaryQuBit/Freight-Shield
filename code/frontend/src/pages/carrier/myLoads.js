@@ -40,7 +40,8 @@ export default function Marketplace() {
   // Hooks
   const { colorMode } = useColorMode();
   const { data } = useData();
-  const { firstName, lastName, status, notification } = data.user || {};
+  const { firstName, lastName, status } = data.user || {};
+  const notification = data.notification;
   const myLoads = data.myLoads || [];
   const [filterOption, setFilterOption] = useState("");
   const [searchTerm, setSearchTerm] = useState("");

@@ -32,7 +32,7 @@ export default function ShipperSettings() {
   const { data } = useData();
   const firstName = data && data.user ? data.user.firstName : "";
   const lastName = data && data.user ? data.user.lastName : "";
-  const notification = data && data.user ? data.user.notification : "";
+  const notification = data && data ? data.notification : "";
   const status = data && data.user ? data.user.status : "";
   const details = data && data.response ? data.response : "";
   const { isOpen, onOpen, onClose } = useDisclosure();

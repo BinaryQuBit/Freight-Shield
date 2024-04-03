@@ -91,12 +91,12 @@ export default function OTPModal({
       navigate("/login");
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        console.error("Error: ", error.response.data.message);
+        // console.error("Error: ", error.response.data.message);
         if (error.response.data.message.includes("Invalid OTP")) {
           setOtpError("Invalid Code");
         }
       } else {
-        console.error("Error submitting form:", error);
+        // console.error("Error submitting form:", error);
       }
     }
   };

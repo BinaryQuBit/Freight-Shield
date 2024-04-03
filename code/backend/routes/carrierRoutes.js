@@ -38,7 +38,7 @@ router.get("/marketplace", protect, carrierStatus, carrierOnly, status, getMarke
 router.get("/myloads", protect, carrierStatus, carrierOnly, status, getMyLoads);
 router.get("/driverprofiles", protect, carrierStatus, carrierOnly, status, getDriverProfiles);
 router.get("/unitprofiles", protect, carrierStatus, carrierOnly, status, getUnitProfiles);
-router.get("/carriersettings", protect, carrierOnly, getCarrierSettings);
+router.get("/carriersettings", protect, carrierOnly, status, getCarrierSettings);
 router.get("/carriercontactdetails", protect, carrierOnly, getCarrierContactDetails);
 router.get("/carrierbusinessdetails", protect, carrierOnly, getCarrierBusinessDetails);
 router.get("/carriersubmission", protect, carrierOnly, getCarrierSubmission);

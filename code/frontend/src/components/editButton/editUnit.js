@@ -214,7 +214,7 @@ export default function EditUnit({ isOpen, onClose, unit, unitNum }) {
       }
     } catch (error) {
       if (error.response && error.response.status === 405) {
-        console.error("Error: ", error.response.data.message);
+        // console.error("Error: ", error.response.data.message);
         if (
           error.response.data.message.includes(
             "Unit number must be unique within the carrier."
@@ -223,7 +223,7 @@ export default function EditUnit({ isOpen, onClose, unit, unitNum }) {
           setUnitNumberError("Unit Number Already Exists");
         }
       } else {
-        console.error("Error submitting form:", error);
+        // console.error("Error submitting form:", error);
       }
     }
   };

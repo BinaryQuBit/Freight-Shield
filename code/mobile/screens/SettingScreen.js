@@ -81,7 +81,7 @@ export default function SettingScreen(props) {
         const response = await axios.get(`${ipConfig}/api/driversettings`);
         if (isMounted) {
           setDriverData(response.data.data);
-          console.log("This is a data for driver", driverData);
+          // console.log("This is a data for driver", driverData);
         }
       } catch (error) {
         console.error("Error fetching data:", error);

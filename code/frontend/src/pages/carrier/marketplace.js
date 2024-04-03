@@ -68,7 +68,7 @@ export default function Marketplace() {
       fieldToFilter.includes(searchTerm.toLowerCase()) && matchesTypeLoadFilter
     );
   });
-  console.log("This is Data", data);
+  // console.log("This is Data", data);
 
   return (
     <>
