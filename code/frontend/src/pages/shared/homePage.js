@@ -12,9 +12,7 @@ import {
   Button,
   Link,
   Heading,
-  SimpleGrid,
   Center,
-  HStack,
   VStack,
   useBreakpointValue,
 } from "@chakra-ui/react";
