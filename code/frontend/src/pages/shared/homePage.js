@@ -12,13 +12,14 @@ import {
   Center,
   HStack,
   VStack,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import Logo from "../../components/logo/logo.svg";
 import { useNavigate } from "react-router-dom";
 import backgroundImage from "./background-image.jpg";
 import shipperImage from "./shipper.jpg";
 import carrierImage from "./carrier.jpg";
-import About from "./about.jpg"
+import About from "./about.jpeg";
 
 export default function Homepage() {
   const navigate = useNavigate();
@@ -38,10 +39,15 @@ export default function Homepage() {
     setBackgroundImg(image);
   };
 
+  const direction = useBreakpointValue({
+    base: "column",
+    md: "column",
+    lg: "row",
+  });
+
   return (
     <>
       <Container maxW="container.xl">
-        {/* Top Bar */}
         <Flex
           justify="space-between"
           align="center"
@@ -104,206 +110,221 @@ export default function Homepage() {
           </Box>
         </Flex>
 
-        {/* Main Content */}
-        <HStack>
-          <Flex
-            direction="column"
-            align="center"
-            justify="center"
-            h={{ base: "50vh", md: "70vh" }}
-            w="full"
-            bg="#0866FF"
-            color="white"
-            px="8"
-            mb="8"
-            bgImage={`url(${backgroundImg})`}
-            bgRepeat="no-repeat"
-            bgSize="cover"
-            bgPosition="center"
+        <Flex direction={direction} gap="5" mt="5" align="stretch">
+          <Center
+            flex={1}
+            bg="gray.200"
+            borderRadius="xl"
+            minHeight={{ lg: "30vh" }}
+            p={5}
+            mb={{ lg: 5 }}
           >
-            <Heading
-              as="h1"
-              size="xl"
-              mb="4"
-              bgGradient="linear(to-r, #FFD700, #FFA500, #FF6347)"
-              bgClip="text"
-              textAlign="center"
-            >
-              Your Freight Management Solution
-            </Heading>
-          </Flex>
-
-          {/* Home Section */}
-          {showHomeCards && (
             <Box
-              bg="gray.200"
-              py="12"
-              mb={{ base: 10, md: 10 }}
+              bgImage={`url(${backgroundImg})`}
+              bgPosition="center"
+              bgRepeat="no-repeat"
+              bgSize="cover"
               borderRadius="xl"
-              mt="10"
-              ml="5"
+              minHeight={{ lg: "30vh" }}
             >
-              <Container maxW="container.lg">
-                <Center>
-                  <Heading as="h2" size="lg" mb="6">
-                    Home
-                  </Heading>
-                </Center>
-                <VStack
-                  columns={{ base: 1, md: 2, lg: 3 }}
-                  spacing="6"
-                  alignItems="stretch"
+              <VStack justifyContent="center" height="100vh">
+                <Box
+                  p={5}
+                  bgGradient="linear(to-r, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5))"
+                  borderRadius="xl"
                 >
-                  <PromotionCard
-  title="Shippers"
-  description="Find the perfect transportation solution for your goods. Explore a wide range of shipping options tailored to meet your specific needs and preferences."
-  gradientColors={["#7F7FD5", "#86A8E7", "#91EAE4"]}
-/>
-<PromotionCard
-  title="Carriers"
-  description="Join our network of reliable carriers and expand your business opportunities. Access a diverse range of shipping jobs."
-  gradientColors={["#7F7FD5", "#86A8E7", "#91EAE4"]}
-/>
-<PromotionCard
-  title="Drivers"
-  description="Become a part of our dedicated team of drivers and help deliver goods safely and efficiently. Enjoy flexible working hours and competitive compensation."
-  gradientColors={["#7F7FD5", "#86A8E7", "#91EAE4"]}
-/>
-
-                </VStack>
-              </Container>
-            </Box>
-          )}
-
-          {/* Shippers Section */}
-          {showShipperCards && (
-            <Box
-              bg="gray.200"
-              py="12"
-              mb={{ base: 10, md: 10 }}
-              borderRadius="xl"
-              mt="10"
-              ml="5"
-            >
-              <Container maxW="container.lg">
-                <Center>
-                  <Heading as="h2" size="lg" mb="6">
-                    For Shippers
+                  <Heading
+                    as="h1"
+                    size="xl"
+                    textAlign="center"
+                    bgGradient="linear(to-r, #FFD700, #FFA500, #FF6347)"
+                    bgClip="text"
+                    color="transparent"
+                    fontWeight="bold"
+                  >
+                    Your Freight Management Solution
                   </Heading>
-                </Center>
-                <VStack
-                  columns={{ base: 1, md: 2, lg: 3 }}
-                  spacing="6"
-                  alignItems="stretch"
-                >
-                  <PromotionCard
-                    title="Wide Range of Options"
-                    description="Explore a vast selection of available trucks and carriers on our freight loadboard. With numerous options to choose from, you can find the perfect match for your shipping needs."
-                    gradientColors={["cyan.400", "blue.500"]}
-                  />
-                  <PromotionCard
-                    title="Real-time Updates"
-                    description="Stay informed with real-time updates on your shipments. Our freight loadboard provides live tracking and notifications, allowing you to monitor your cargo's progress every step of the way."
-                    gradientColors={["cyan.400", "blue.500"]}
-                  />
-                  <PromotionCard
-                    title="Cost Estimates"
-                    description="Our platform suggests optimal rates based on factors such as distance and cargo type, providing valuable guidance to help you make informed shipping decisions."
-                    gradientColors={["cyan.400", "blue.500"]}
-                  />
-                </VStack>
-              </Container>
+                </Box>
+              </VStack>
             </Box>
-          )}
+          </Center>
 
-          {/* Carriers Section */}
-          {showCarrierCards && (
-            <Box
-              bg="gray.200"
-              py="12"
-              mb={{ base: 10, md: 10 }}
-              borderRadius="xl"
-              mt="10"
-              ml="5"
-            >
-              <Container maxW="container.lg">
-                <Center>
-                  <Heading as="h2" size="lg" mb="6">
-                    For Carriers
-                  </Heading>
-                </Center>
-                <VStack
-                  columns={{ base: 1, md: 2, lg: 3 }}
-                  spacing="6"
-                  alignItems="stretch"
-                >
-                  <PromotionCard
-                    title="Increased Business Opportunities"
-                    description="Expand your business with our freight loadboard. Access a wide range of shipping opportunities and connect with shippers looking for reliable carriers like you."
-                    gradientColors={["#4CAF50", "#8BC34A"]}
-                  />
-                  <PromotionCard
-                    title="Efficient Route Planning"
-                    description="Optimize your routes and maximize efficiency with our advanced route planning tools. Find the most efficient paths for your deliveries and minimize travel time and fuel costs."
-                    gradientColors={["#4CAF50", "#8BC34A"]}
-                  />
-                  <PromotionCard
-                    title="Instant Booking and Confirmation"
-                    description="Our platform offers a seamless booking experience for carriers, enabling them to swiftly book shipments with just a few clicks and receive instant confirmation."
-                    gradientColors={["#4CAF50", "#8BC34A"]}
-                  />
-                </VStack>
-              </Container>
-            </Box>
-          )}
+          <VStack
+            flex={1}
+            spacing={1}
+            bg="gray.200"
+            borderRadius="xl"
+            minHeight={{ lg: "30vh" }}
+            justifyContent="center"
+            mb={{ base: 5 }}
+          >
+            {showHomeCards && (
+              <Box
+                bg="gray.200"
+                py="12"
+                mb={{ base: 10, md: 10 }}
+                borderRadius="xl"
+                mt="2"
+                ml="5"
+              >
+                <Container maxW="container.lg">
+                  <Center>
+                    <Heading as="h2" size="lg" mb="6">
+                      Home
+                    </Heading>
+                  </Center>
+                  <VStack
+                    columns={{ base: 1, md: 2, lg: 3 }}
+                    spacing="6"
+                    alignItems="stretch"
+                  >
+                    <PromotionCard
+                      title="Shippers"
+                      description="Find the perfect transportation solution for your goods. Explore a wide range of shipping options tailored to meet your specific needs and preferences."
+                      gradientColors={["#7F7FD5", "#86A8E7", "#91EAE4"]}
+                    />
+                    <PromotionCard
+                      title="Carriers"
+                      description="Join our network of reliable carriers and expand your business opportunities. Access a diverse range of shipping jobs."
+                      gradientColors={["#7F7FD5", "#86A8E7", "#91EAE4"]}
+                    />
+                    <PromotionCard
+                      title="Drivers"
+                      description="Become a part of our dedicated team of drivers and help deliver goods safely and efficiently. Enjoy flexible working hours and competitive compensation."
+                      gradientColors={["#7F7FD5", "#86A8E7", "#91EAE4"]}
+                    />
+                  </VStack>
+                </Container>
+              </Box>
+            )}
 
-          {/* About Section */}
-          {showAboutCards && (
-            <Box
-              bg="gray.200"
-              py="12"
-              mb={{ base: 10, md: 10 }}
-              borderRadius="xl"
-              mt="10"
-              ml="5"
-            >
-              <Container maxW="container.lg">
-                <Center>
-                  <Heading as="h2" size="lg" mb="6">
-                    About Us
-                  </Heading>
-                </Center>
-                <VStack
-                  columns={{ base: 1, md: 2, lg: 3 }}
-                  spacing="6"
-                  alignItems="stretch"
-                >
-                  <PromotionCard
-                    title="Our Mission"
-                    description="To revolutionize the freight industry by providing excellent and innovative solutions that prioritize safety, efficiency, and sustainability."
-                    gradientColors={["#38B2AC", "#319795"]}
-                  />
-                  <PromotionCard
-                    title="Our Values"
-                    description="Transparency, reliability, and customer satisfaction are at the core of everything we do. We believe in fostering strong partnerships and delivering exceptional service."
-                    gradientColors={["#38B2AC", "#319795"]}
-                  />
-                  <PromotionCard
-                    title="For inquiries."
-                    description={
-                      <>
-                        Email: freightshield@gmail.com <br />
-                        Customer Service: 1-888-123-4567 <br /><br />
-                          
-                      </>
-                    }
-                    gradientColors={["#38B2AC", "#319795"]}
-                  />
-                </VStack>
-              </Container>
-            </Box>
-          )}
-        </HStack>
+            {showShipperCards && (
+              <Box
+                bg="gray.200"
+                py="12"
+                mb={{ base: 10, md: 10 }}
+                borderRadius="xl"
+                mt="10"
+                ml="5"
+              >
+                <Container maxW="container.lg">
+                  <Center>
+                    <Heading as="h2" size="lg" mb="6">
+                      For Shippers
+                    </Heading>
+                  </Center>
+                  <VStack
+                    columns={{ base: 1, md: 2, lg: 3 }}
+                    spacing="6"
+                    alignItems="stretch"
+                  >
+                    <PromotionCard
+                      title="Wide Range of Options"
+                      description="Explore a vast selection of available trucks and carriers on our freight loadboard. With numerous options to choose from, you can find the perfect match for your shipping needs."
+                      gradientColors={["cyan.400", "blue.500"]}
+                    />
+                    <PromotionCard
+                      title="Real-time Updates"
+                      description="Stay informed with real-time updates on your shipments. Our freight loadboard provides live tracking and notifications, allowing you to monitor your cargo's progress every step of the way."
+                      gradientColors={["cyan.400", "blue.500"]}
+                    />
+                    <PromotionCard
+                      title="Cost Estimates"
+                      description="Our platform suggests optimal rates based on factors such as distance and cargo type, providing valuable guidance to help you make informed shipping decisions."
+                      gradientColors={["cyan.400", "blue.500"]}
+                    />
+                  </VStack>
+                </Container>
+              </Box>
+            )}
+
+            {showCarrierCards && (
+              <Box
+                bg="gray.200"
+                py="12"
+                mb={{ base: 10, md: 10 }}
+                borderRadius="xl"
+                mt="10"
+                ml="5"
+              >
+                <Container maxW="container.lg">
+                  <Center>
+                    <Heading as="h2" size="lg" mb="6">
+                      For Carriers
+                    </Heading>
+                  </Center>
+                  <VStack
+                    columns={{ base: 1, md: 2, lg: 3 }}
+                    spacing="6"
+                    alignItems="stretch"
+                  >
+                    <PromotionCard
+                      title="Increased Business Opportunities"
+                      description="Expand your business with our freight loadboard. Access a wide range of shipping opportunities and connect with shippers looking for reliable carriers like you."
+                      gradientColors={["#4CAF50", "#8BC34A"]}
+                    />
+                    <PromotionCard
+                      title="Efficient Route Planning"
+                      description="Optimize your routes and maximize efficiency with our advanced route planning tools. Find the most efficient paths for your deliveries and minimize travel time and fuel costs."
+                      gradientColors={["#4CAF50", "#8BC34A"]}
+                    />
+                    <PromotionCard
+                      title="Instant Booking and Confirmation"
+                      description="Our platform offers a seamless booking experience for carriers, enabling them to swiftly book shipments with just a few clicks and receive instant confirmation."
+                      gradientColors={["#4CAF50", "#8BC34A"]}
+                    />
+                  </VStack>
+                </Container>
+              </Box>
+            )}
+
+            {showAboutCards && (
+              <Box
+                bg="gray.200"
+                py="12"
+                mb={{ base: 10, md: 10 }}
+                borderRadius="xl"
+                mt="10"
+                ml="5"
+              >
+                <Container maxW="container.lg">
+                  <Center>
+                    <Heading as="h2" size="lg" mb="6">
+                      About Us
+                    </Heading>
+                  </Center>
+                  <VStack
+                    columns={{ base: 1, md: 2, lg: 3 }}
+                    spacing="6"
+                    alignItems="stretch"
+                  >
+                    <PromotionCard
+                      title="Our Mission"
+                      description="To revolutionize the freight industry by providing excellent and innovative solutions that prioritize safety, efficiency, and sustainability."
+                      gradientColors={["#38B2AC", "#319795"]}
+                    />
+                    <PromotionCard
+                      title="Our Values"
+                      description="Transparency, reliability, and customer satisfaction are at the core of everything we do. We believe in fostering strong partnerships and delivering exceptional service."
+                      gradientColors={["#38B2AC", "#319795"]}
+                    />
+                    <PromotionCard
+                      title="For inquiries."
+                      description={
+                        <>
+                          Email: freightshield@gmail.com <br />
+                          Customer Service: 1-888-123-4567 <br />
+                          <br />
+                        </>
+                      }
+                      gradientColors={["#38B2AC", "#319795"]}
+                    />
+                  </VStack>
+                </Container>
+              </Box>
+            )}
+          </VStack>
+        </Flex>
       </Container>
       <Box
         bg="black"
