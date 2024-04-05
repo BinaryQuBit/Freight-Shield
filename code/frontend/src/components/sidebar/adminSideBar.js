@@ -1,41 +1,39 @@
-import React, { useEffect, useState } from "react";
-import { SidebarContext } from "../responsiveness/context.js";
+// React Imports
+import React, { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
+// Chakra UI Imports
 import {
   Flex,
   IconButton,
   Divider,
   useColorMode,
-  Switch, 
+  Switch,
   FormLabel,
   Text,
 } from "@chakra-ui/react";
-import { FiTruck, FiMenu, FiLogOut, FiSettings, FiHome } from "react-icons/fi";
+
+// Icon Imports
+import { FiTruck, FiMenu, FiLogOut, FiSettings } from "react-icons/fi";
 import { FaHardHat, FaUserLock } from "react-icons/fa";
+
+// Custom Imports
 import NavItem from "./navItem.js";
 import Logo from "../logo/logo.js";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useContext } from "react";
+import { SidebarContext } from "../responsiveness/context.js";
+import logout from "../methods/logout.js";
 
+// Start og the Build
 export default function AdminSideBar({ activePage, Status }) {
   const { navSize, setNavSize } = useContext(SidebarContext);
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
   const navigate = useNavigate();
 
-  const logout = () => {
-    axios
-      .get("/logout", { withCredentials: true })
-      .then(() => {
-        navigate("/login");
-      })
-      .catch((error) => {
-        // console.error("Logout failed:", error);
-      });
-  };
-
+  // Hook
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // Resize Listen
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth < 768) {
@@ -51,6 +49,7 @@ export default function AdminSideBar({ activePage, Status }) {
     return () => window.removeEventListener("resize", handleResize);
   }, [setNavSize]);
 
+  // Toggle menu for base screens
   const toggleMenu = () => {
     if (window.innerWidth < 768) {
       setMenuOpen(!menuOpen);
@@ -102,32 +101,34 @@ export default function AdminSideBar({ activePage, Status }) {
           />
           {Status === "Active" ? (
             <>
-          <NavItem
-            navSize={navSize}
-            icon={FaUserLock}
-            title="Administrators"
-            active={activePage === "administrators"}
-            onClick={() => navigate("/administrators")}
-            menuOpen={menuOpen}
-          />
-          <NavItem
-            navSize={navSize}
-            icon={FaHardHat}
-            title="Shippers"
-            active={activePage === "shippers"}
-            onClick={() => navigate("/shippers")}
-            menuOpen={menuOpen}
-          />
-          <NavItem
-            navSize={navSize}
-            icon={FiTruck}
-            title="Carriers"
-            active={activePage === "carriers"}
-            onClick={() => navigate("/carriers")}
-            menuOpen={menuOpen}
-          />
-          </>
-          ): (<Text m={20}></Text>)}
+              <NavItem
+                navSize={navSize}
+                icon={FaUserLock}
+                title="Administrators"
+                active={activePage === "administrators"}
+                onClick={() => navigate("/administrators")}
+                menuOpen={menuOpen}
+              />
+              <NavItem
+                navSize={navSize}
+                icon={FaHardHat}
+                title="Shippers"
+                active={activePage === "shippers"}
+                onClick={() => navigate("/shippers")}
+                menuOpen={menuOpen}
+              />
+              <NavItem
+                navSize={navSize}
+                icon={FiTruck}
+                title="Carriers"
+                active={activePage === "carriers"}
+                onClick={() => navigate("/carriers")}
+                menuOpen={menuOpen}
+              />
+            </>
+          ) : (
+            <Text m={20}></Text>
+          )}
         </Flex>
         <Flex p="5%" flexDir="column" w="100%">
           <Divider />

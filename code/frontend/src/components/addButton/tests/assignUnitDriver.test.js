@@ -1,4 +1,4 @@
-import { render, fireEvent, waitFor } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import AssignUnitDriver from "../AssignUnitDriver";
 
 const renderAssignUnitDriver = (props) => {
@@ -7,15 +7,26 @@ const renderAssignUnitDriver = (props) => {
 
 describe("AssignUnitDriver Component", () => {
   it("renders the component without crashing", () => {
-    renderAssignUnitDriver({ isOpen: true, onClose: () => {}, units: [], driverData: [], selectedLoadId: "" });
+    renderAssignUnitDriver({
+      isOpen: true,
+      onClose: () => {},
+      units: [],
+      driverData: [],
+      selectedLoadId: "",
+    });
   });
 
   it("renders all labels correctly", () => {
-    const { getByText } = renderAssignUnitDriver({ isOpen: true, onClose: () => {}, units: [], driverData: [], selectedLoadId: "" });
+    const { getByText } = renderAssignUnitDriver({
+      isOpen: true,
+      onClose: () => {},
+      units: [],
+      driverData: [],
+      selectedLoadId: "",
+    });
     expect(getByText("Select Unit")).toBeInTheDocument();
     expect(getByText("Select Driver")).toBeInTheDocument();
     expect(getByText("Close")).toBeInTheDocument();
     expect(getByText("Assign")).toBeInTheDocument();
   });
-
 });

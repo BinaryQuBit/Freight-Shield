@@ -1,10 +1,15 @@
-// Carrier Submission Detail
-
+// React Imports
 import React from "react";
 import { useNavigate } from "react-router-dom";
+
+// Icon Imports
 import { FiTruck } from "react-icons/fi";
 import { CiEdit } from "react-icons/ci";
+
+// Axios Import
 import axios from "axios";
+
+// Chakra UI Imports
 import {
   Box,
   Text,
@@ -16,12 +21,15 @@ import {
   useDisclosure,
   Tooltip,
 } from "@chakra-ui/react";
+
+// Custom Imports
 import logout from "../methods/logout";
 import { useData } from "../utils/methods/getters/dataContext.js";
 import CustomLink from "../buttons/customLink.js";
 import CustomButton from "../buttons/customButton";
 import EditCarrierDetails from "../editButton/editCarrierDetails.js";
 
+// Start of the Build
 export default function CarrierSubmissionDetails() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
@@ -41,9 +49,9 @@ export default function CarrierSubmissionDetails() {
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        // console.error("Error: ", error.response.data.message);
+        console.error("Error: ", error.response.data.message);
       } else {
-        // console.error("Error submitting form:", error);
+        console.error("Error submitting form:", error);
       }
     }
   };

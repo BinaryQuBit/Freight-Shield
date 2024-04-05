@@ -1,7 +1,7 @@
-// Add Unit Button
-
 // React Imports
 import React, { useState } from "react";
+
+// Icon Imports
 import { IoMdAddCircle } from "react-icons/io";
 import { IoMdCloseCircle } from "react-icons/io";
 
@@ -24,11 +24,19 @@ import CustomButton from "../buttons/customButton";
 import CustomSelectMultiple from "../buttons/customSelectMultiple";
 import { SelectValidation } from "../utils/validation/selectValidation";
 
-export default function AssignUnitDriver({ isOpen, onClose, units, driverData, selectedLoadId }) {
+// Start of the Build
+export default function AssignUnitDriver({
+  isOpen,
+  onClose,
+  units,
+  driverData,
+  selectedLoadId,
+}) {
   axios.defaults.withCredentials = true;
   const theme = useTheme();
-  const customBlue = theme && theme.colors && theme.colors.customBlue || "#0000FF";
-  
+  const customBlue =
+    (theme && theme.colors && theme.colors.customBlue) || "#0000FF";
+
   // Hooks
   const [unit, setUnit] = useState("");
   const [driver, setDriver] = useState("");
@@ -46,19 +54,22 @@ export default function AssignUnitDriver({ isOpen, onClose, units, driverData, s
     onClose();
   };
 
-    const unitOptions = units.map(unit => ({
+  // Map the label and unit Number
+  const unitOptions = units.map((unit) => ({
     value: unit.unitNumber,
-    children: `Unit ${unit.unitNumber}`
+    children: `Unit ${unit.unitNumber}`,
   }));
 
-  const driverOptions = driverData.map(driver => ({
+  // Map the Driver ID and Driver Name
+  const driverOptions = driverData.map((driver) => ({
     value: driver.driverId,
-    children: `${driver.firstName} ${driver.lastName}`
+    children: `${driver.firstName} ${driver.lastName}`,
   }));
 
   // Add Unit Handle
-  const handleAddUnit = async (event) => {
+  const handleAssignUnit = async (event) => {
     event.preventDefault();
+
     // Reset Error Hooks
     setUnitError("");
     setDriverError("");
@@ -71,6 +82,7 @@ export default function AssignUnitDriver({ isOpen, onClose, units, driverData, s
     setUnitError(unitError);
     setDriverError(driverError);
 
+    // Check Errors
     if (unitError || driverError) {
       return;
     }
@@ -79,44 +91,44 @@ export default function AssignUnitDriver({ isOpen, onClose, units, driverData, s
     const formData = new FormData();
     formData.append("unitNumber", unit);
     formData.append("driverId", driver);
-    formData.append("loadId", selectedLoadId)
+    formData.append("loadId", selectedLoadId);
 
     // Start of PUT Method
     try {
       const response = await axios.put(
-          "/api/updatedriverstatusload",
-          {
-              unitNumber: unit,
-              driverId: driver,
-              loadId: selectedLoadId
+        "/api/updatedriverstatusload",
+        {
+          unitNumber: unit,
+          driverId: driver,
+          loadId: selectedLoadId,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
           },
-          {
-              headers: {
-                  'Content-Type': 'application/json'
-              },
-              withCredentials: true
-          }
+          withCredentials: true,
+        }
       );
       if (response.status === 200) {
-          window.location.reload();
+        window.location.reload();
       }
-  } catch (error) {
+    } catch (error) {
       if (error.response && error.response.status === 405) {
-          // console.error("Error: ", error.response.data.message);
+        console.error("Error: ", error.response.data.message);
       } else {
-          // console.error("Error submitting form:", error);
+        console.error("Error submitting form:", error);
       }
-  }
-  
+    }
   };
   return (
     <Modal isOpen={isOpen} onClose={() => {}} size="3xl" isClosable={false}>
       <ModalOverlay />
       <ModalContent padding={2}>
         <ModalHeader textAlign={"center"}>Assign Unit and Driver</ModalHeader>
-        <form onSubmit={handleAddUnit} noValidate>
+        <form onSubmit={handleAssignUnit} noValidate>
           <ModalBody>
             <Flex>
+              {/* Unit Select */}
               <CustomSelectMultiple
                 id={"unit"}
                 isRequired={true}
@@ -132,6 +144,8 @@ export default function AssignUnitDriver({ isOpen, onClose, units, driverData, s
                 ml={2}
                 mt={2}
               />
+
+              {/* Driver Select */}
               <CustomSelectMultiple
                 id={"driver"}
                 isRequired={true}
@@ -150,6 +164,7 @@ export default function AssignUnitDriver({ isOpen, onClose, units, driverData, s
             </Flex>
 
             <Flex justifyContent="space-between">
+              {/* Close Button */}
               <CustomButton
                 color={customBlue}
                 icon={<IoMdCloseCircle />}
@@ -159,6 +174,8 @@ export default function AssignUnitDriver({ isOpen, onClose, units, driverData, s
                 variant="blueBackwardButton"
                 onClick={handleCloseClick}
               />
+
+              {/* Assign Button */}
               <CustomButton
                 color={customBlue}
                 icon={<IoMdAddCircle />}

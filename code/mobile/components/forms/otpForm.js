@@ -26,7 +26,7 @@ export default function OtpForm({ email }) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimer((prevTime) => prevTime > 0 ? prevTime - 1 : 0);
+      setTimer((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
     }, 1000);
 
     return () => clearInterval(interval);
@@ -35,7 +35,10 @@ export default function OtpForm({ email }) {
   const formatTime = () => {
     const minutes = Math.floor(timer / 60);
     const seconds = timer % 60;
-    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+      2,
+      "0"
+    )}`;
   };
 
   return (
@@ -43,7 +46,9 @@ export default function OtpForm({ email }) {
       <Text style={styles.title}>OTP Verification</Text>
       <Text style={styles.infoText}>An Email with OTP was sent to:</Text>
       <Text style={styles.emailText}>{email}</Text>
-      <Text style={[styles.infoText, { paddingTop: 10 }]}>Please Enter the OTP below:</Text>
+      <Text style={[styles.infoText, { paddingTop: 10 }]}>
+        Please Enter the OTP below:
+      </Text>
       <Text style={styles.timerText}>Time Remaining: {formatTime()}</Text>
       <View style={styles.container}>
         {otp.map((digit, index) => (
@@ -63,11 +68,7 @@ export default function OtpForm({ email }) {
           />
         ))}
       </View>
-      <CustomButton
-        children={"Verify"}
-        // onPress={handleVerify}
-        fs={16}
-      />
+      <CustomButton children={"Verify"} fs={16} />
     </View>
   );
 }
@@ -123,4 +124,3 @@ const styles = StyleSheet.create({
     fontFamily: "Lora-Regular",
   },
 });
-

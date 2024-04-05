@@ -67,7 +67,11 @@ export default function WelcomeScreen() {
         <CustomModal
           modalVisible={registerModalVisible}
           setModalVisible={setRegisterModalVisible}
-          children={<RegisterFormStep1 closeRegister1={() => setRegisterModalVisible(false)} />}
+          children={
+            <RegisterFormStep1
+              closeRegister1={() => setRegisterModalVisible(false)}
+            />
+          }
           animationType={"slide"}
         />
       </View>

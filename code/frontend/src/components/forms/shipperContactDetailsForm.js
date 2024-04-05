@@ -1,9 +1,10 @@
-// Shipper Contact Detail Form 
-
 // React Imports
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+// Icon Import
 import { FiTruck } from "react-icons/fi";
+
 // Axios Import
 import axios from "axios";
 
@@ -91,7 +92,10 @@ export default function ShipperCompanyDetailsForm() {
     let mailingCountryError = "";
 
     if (sameAsMailing === "no") {
-      mailingStreetAddressError = EmptyValidation("Street Address", mailingStreetAddress);
+      mailingStreetAddressError = EmptyValidation(
+        "Street Address",
+        mailingStreetAddress
+      );
       mailingCityError = EmptyValidation("City", mailingCity);
       mailingProvinceError = EmptyValidation("Province", mailingProvince);
       mailingPostalCodeError = PostalCodeValidation(mailingPostalCode);
@@ -163,9 +167,9 @@ export default function ShipperCompanyDetailsForm() {
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        // console.error("Error: ", error.response.data.message);
+        console.error("Error: ", error.response.data.message);
       } else {
-        // console.error("Error submitting form:", error);
+        console.error("Error submitting form:", error);
       }
     }
   };
@@ -464,4 +468,4 @@ export default function ShipperCompanyDetailsForm() {
       </Card>
     </Box>
   );
-} 
+}

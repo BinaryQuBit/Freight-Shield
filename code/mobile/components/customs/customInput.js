@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     borderColor: "#0866FF",
     borderWidth: 1,
     fontFamily: "Lora-Regular",
-    width: '100%',
+    width: "100%",
   },
   error: {
     color: "red",

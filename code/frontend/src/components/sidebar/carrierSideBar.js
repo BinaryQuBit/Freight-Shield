@@ -1,5 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { SidebarContext } from "../responsiveness/context.js";
+// React Imports
+import React, { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
+// Chakra UI Imports
 import {
   Flex,
   IconButton,
@@ -9,39 +12,33 @@ import {
   FormLabel,
   Text,
 } from "@chakra-ui/react";
-import { FiMenu, FiLogOut, FiSettings, FiHome, } from "react-icons/fi";
+
+// Icon Imports
+import { FiMenu, FiLogOut, FiSettings, FiHome } from "react-icons/fi";
 import {
   FaPlaceOfWorship,
   FaTrailer,
   FaUserPlus,
   FaTruck,
 } from "react-icons/fa";
+
+// Custom Imports
 import NavItem from "./navItem.js";
 import Logo from "../logo/logo.js";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useContext } from "react";
+import logout from "../methods/logout.js";
+import { SidebarContext } from "../responsiveness/context.js";
 
+// Start of the Build
 export default function CarrierSideBar({ activePage, Status }) {
   const { navSize, setNavSize } = useContext(SidebarContext);
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
   const navigate = useNavigate();
-  const { setColorMode } = useColorMode();
 
-  const logout = () => {
-    axios
-      .get("/logout", { withCredentials: true })
-      .then(() => {
-        navigate("/login");
-      })
-      .catch((error) => {
-        // console.error("Logout failed:", error);
-      });
-  };
-
+  // Hook
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // Resize Listen
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth < 768) {
@@ -57,6 +54,7 @@ export default function CarrierSideBar({ activePage, Status }) {
     return () => window.removeEventListener("resize", handleResize);
   }, [setNavSize]);
 
+  // Toggle menu for base screens
   const toggleMenu = () => {
     if (window.innerWidth < 768) {
       setMenuOpen(!menuOpen);
@@ -80,9 +78,8 @@ export default function CarrierSideBar({ activePage, Status }) {
         w={menuOpen ? "100%" : navSize === "small" ? "50px" : "200px"}
         transition="width 0.3s ease-in-out"
       >
-
         <Flex flexDir="column" as="nav" align="center" p="5%" flexGrow={1}>
-        <Flex
+          <Flex
             align="center"
             justify="center"
             h={menuOpen ? "50%" : "30%"}
@@ -108,50 +105,51 @@ export default function CarrierSideBar({ activePage, Status }) {
             }}
           />
           {Status === "Active" ? (
-                        <>
-<NavItem
-            navSize={navSize}
-            icon={FiHome}
-            title="Dashboard"
-            active={activePage === "dashboard"}
-            onClick={() => navigate("/carrierDashboard")}
-            menuOpen={menuOpen}
-          />
-         <NavItem
-          navSize={navSize}
-          icon={FaPlaceOfWorship}
-          title="Marketplace"
-          active={activePage === "marketplace"}
-          onClick={() => navigate("/marketplace")}
-          menuOpen={menuOpen}
-        />
-        <NavItem
-          navSize={navSize}
-          icon={FaTrailer}
-          title="My Loads"
-          active={activePage === "myLoads"}
-          onClick={() => navigate("/myloads")}
-          menuOpen={menuOpen}
-        />
-        <NavItem
-          navSize={navSize}
-          icon={FaUserPlus}
-          title="Driver Profiles"
-          active={activePage === "driverProfile"}
-          onClick={() => navigate("/driverprofiles")}
-          menuOpen={menuOpen}
-        />
-        <NavItem
-          navSize={navSize}
-          icon={FaTruck}
-          title="Unit Profiles"
-          active={activePage === "unitProfile"}
-          onClick={() => navigate("/unitprofiles")}
-          menuOpen={menuOpen}
-        />
-                  </>
-          ): (<Text m={20}></Text>)}
-
+            <>
+              <NavItem
+                navSize={navSize}
+                icon={FiHome}
+                title="Dashboard"
+                active={activePage === "dashboard"}
+                onClick={() => navigate("/carrierDashboard")}
+                menuOpen={menuOpen}
+              />
+              <NavItem
+                navSize={navSize}
+                icon={FaPlaceOfWorship}
+                title="Marketplace"
+                active={activePage === "marketplace"}
+                onClick={() => navigate("/marketplace")}
+                menuOpen={menuOpen}
+              />
+              <NavItem
+                navSize={navSize}
+                icon={FaTrailer}
+                title="My Loads"
+                active={activePage === "myLoads"}
+                onClick={() => navigate("/myloads")}
+                menuOpen={menuOpen}
+              />
+              <NavItem
+                navSize={navSize}
+                icon={FaUserPlus}
+                title="Driver Profiles"
+                active={activePage === "driverProfile"}
+                onClick={() => navigate("/driverprofiles")}
+                menuOpen={menuOpen}
+              />
+              <NavItem
+                navSize={navSize}
+                icon={FaTruck}
+                title="Unit Profiles"
+                active={activePage === "unitProfile"}
+                onClick={() => navigate("/unitprofiles")}
+                menuOpen={menuOpen}
+              />
+            </>
+          ) : (
+            <Text m={20}></Text>
+          )}
         </Flex>
         <Flex p="5%" flexDir="column" w="100%">
           <Divider />

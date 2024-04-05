@@ -44,10 +44,9 @@ import EaseOut from "../../components/responsiveness/easeOut.js";
 import Protector from "../../components/utils/methods/getters/protector.js";
 import { useData } from "../../components/utils/methods/getters/dataContext.js";
 import CustomButton from "../../components/buttons/customButton.js";
-
+const backendUrl = process.env.REACT_APP_BACKEND_PORT;
 // Start of the Build
 export default function DriverProfiles() {
-
   // Data Context and Extraction
   const { data } = useData();
   const { firstName, lastName, canadianCarrierCode, status } = data.user || {};
@@ -95,16 +94,15 @@ export default function DriverProfiles() {
     setSearchTerm(e.target.value);
   };
 
-  const backendUrl = process.env.REACT_APP_BACKEND_PORT;
   Protector("/api/driverprofiles", canadianCarrierCode);
 
   // Hooks
   const { colorMode } = useColorMode();
-  // Functions
 
+  // Functions
   const handleDecline = async () => {
     if (!driverToDecline) return;
-  
+
     try {
       const driverStatusResponse = await axios.put(
         `/api/updatedriverstatus/${driverToDecline}`,
@@ -116,12 +114,15 @@ export default function DriverProfiles() {
           withCredentials: true,
         }
       );
-  
+
       if (driverStatusResponse.status === 200) {
         window.location.reload();
       }
     } catch (error) {
-      console.error("Error submitting form:", error.response?.data.message || error.message);
+      console.error(
+        "Error submitting form:",
+        error.response?.data.message || error.message
+      );
     } finally {
       onDeclineModalClose();
       setDeclineReason("");
@@ -159,12 +160,12 @@ export default function DriverProfiles() {
 
   return (
     <>
-      <Sidebar activePage={"driverProfile"} Status = { status }/>
+      <Sidebar activePage={"driverProfile"} Status={status} />
       <EaseOut>
         <UserHeader
           title="Driver Profiles"
           userInfo={{ notification, firstName, lastName }}
-          Status = {status}
+          Status={status}
         />
         <Flex pt="4" direction="column" m={5}>
           <Input
@@ -202,7 +203,6 @@ export default function DriverProfiles() {
                         handleDecline={handleDecline}
                         handleAccept={handleAccept}
                         handleDeclineClick={handleDeclineClick}
-                        backendUrl={backendUrl}
                       />
                     ))}
                   </Accordion>
@@ -250,7 +250,7 @@ export default function DriverProfiles() {
               <Textarea
                 value={declineReason}
                 onChange={(e) => setDeclineReason(e.target.value)}
-                placeholder="Specify a reason" 
+                placeholder="Specify a reason"
               />
             </FormControl>
           </ModalBody>
@@ -271,7 +271,6 @@ function DriverProfileItem({
   driver,
   colorMode,
   handleAccept,
-  backendUrl,
   handleDeclineClick,
 }) {
   return (
@@ -310,21 +309,21 @@ function DriverProfileItem({
           </Box>
           <VStack align="start" spacing={2}>
             <Link
-              href={`${backendUrl}${driver.driverAbstract}`}
+              href={`http://${backendUrl}${driver.driverAbstract}`}
               isExternal
               color="blue.500"
             >
               View Driver Abstract
             </Link>
             <Link
-              href={`${backendUrl}${driver.driverLicenceFront}`}
+              href={`http://${backendUrl}${driver.driverLicenceFront}`}
               isExternal
               color="blue.500"
             >
               View Driver Licence (Front)
             </Link>
             <Link
-              href={`${backendUrl}${driver.driverLicenceBack}`}
+              href={`http://${backendUrl}${driver.driverLicenceBack}`}
               isExternal
               color="blue.500"
             >

@@ -1,10 +1,16 @@
+// React Imports
 import React from "react";
 import { useNavigate } from "react-router-dom";
+
+// Chakra UI Imports
 import { Container, Flex, Box, Image, Text } from "@chakra-ui/react";
+
+// Custom Imports
 import Logo from "../components/logo/logo.svg";
 import LoginForm from "../components/forms/loginForm";
 import CustomLink from "../components/buttons/customLink";
 
+// Start of the Build
 export default function Login() {
   const navigate = useNavigate();
   return (

@@ -1,4 +1,4 @@
-// Importing Mongoose
+// Mongoose Import
 import mongoose from "mongoose";
 
 // Defination and Declaration of OTP Schema

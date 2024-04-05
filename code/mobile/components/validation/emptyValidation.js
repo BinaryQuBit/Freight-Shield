@@ -1,8 +1,9 @@
+// Start of Empty Validation
 export const EmptyValidation = (name, value) => {
-    const trimmedValue = value.trim();
+  const trimmedValue = value.trim();
 
-    if (!trimmedValue) {
-        return `${name} is required`;
-    }
-    return "";
+  if (!trimmedValue) {
+    return `${name} is required`;
+  }
+  return "";
 };

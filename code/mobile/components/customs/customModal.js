@@ -28,10 +28,10 @@ export default function CustomModal({
       <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
         <View style={styles.centeredView}>
           <TouchableWithoutFeedback onPress={() => {}}>
-          <View style={[styles.modalView, { paddingVertical: paddingVertical }]}>
-              <ScrollView>
-                {children}
-              </ScrollView>
+            <View
+              style={[styles.modalView, { paddingVertical: paddingVertical }]}
+            >
+              <ScrollView>{children}</ScrollView>
             </View>
           </TouchableWithoutFeedback>
         </View>
@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     elevation: 3,
     padding: 20,
-    maxHeight: '80%',
+    maxHeight: "80%",
   },
 });
-

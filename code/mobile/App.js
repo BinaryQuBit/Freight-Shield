@@ -71,7 +71,7 @@ export default function App() {
           <Stack.Screen
             name="PreInspectionScreen"
             component={PreInspectionScreen}
-            // options={{ headerShown: false }}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="WorkingHoursScreen"
@@ -81,7 +81,6 @@ export default function App() {
           <Stack.Screen
             name="EditLogBookScreen"
             component={EditLogBookScreen}
-            // options={{ headerShown: false }}
           />
         </Stack.Navigator>
       </SafeAreaView>

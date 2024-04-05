@@ -34,7 +34,6 @@ export default function ForgotPasswordForm() {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   // Functions
-
   const handleSendOTP = async (event) => {
     event.preventDefault();
 
@@ -46,7 +45,10 @@ export default function ForgotPasswordForm() {
     // Validation Checks
     const emailError = EmailValidation(email);
     const passwordError = PasswordValidation(password);
-    const confirmPasswordError = ConfirmPasswordValidation(password, confirmPassword);
+    const confirmPasswordError = ConfirmPasswordValidation(
+      password,
+      confirmPassword
+    );
 
     // Set Error
     setEmailError(emailError);
@@ -115,7 +117,12 @@ export default function ForgotPasswordForm() {
         errorMessage={confirmPasswordError}
         secureTextEntry={true}
       />
-      <CustomButton onPress={() => setOtpModalVisible(true)} children={"Send OTP"} pH={30} fs={16}/>
+      <CustomButton
+        onPress={() => setOtpModalVisible(true)}
+        children={"Send OTP"}
+        pH={30}
+        fs={16}
+      />
       <CustomModal
         modalVisible={otpModalVisible}
         setModalVisible={setOtpModalVisible}

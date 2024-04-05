@@ -1,10 +1,16 @@
+// React Import
 import React from "react";
 import { useNavigate } from "react-router-dom";
+
+// Chakra UI Import
 import { Container, Flex, Box, Image, Text } from "@chakra-ui/react";
+
+// Custom Imports
 import Logo from "../components/logo/logo.svg";
 import ForgetPasswordForm from "../components/forms/forgotPasswordForm";
 import CustomLink from "../components/buttons/customLink";
 
+// Start of the Build
 export default function ForgetPassword() {
   const navigate = useNavigate();
   return (

@@ -1,7 +1,7 @@
-// Edit Shipper Details
-
 // React Imports
 import React, { useState, useEffect } from "react";
+
+// Icon Imports
 import { FaRegSave } from "react-icons/fa";
 import { IoMdCloseCircle } from "react-icons/io";
 
@@ -76,7 +76,6 @@ export default function EditShipperDetails({ isOpen, onClose, data }) {
   const [proofInsuranceError, setProofInsuranceError] = useState("");
   const [websiteError, setWebsiteError] = useState("");
 
-  // Render Saved Data
   // Render Saved Data
   useEffect(() => {
     if (data) {
@@ -253,9 +252,9 @@ export default function EditShipperDetails({ isOpen, onClose, data }) {
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        // console.error("Error: ", error.response.data.message);
+        console.error("Error: ", error.response.data.message);
       } else {
-        // console.error("Error submitting form:", error);
+        console.error("Error submitting form:", error);
       }
     }
   };

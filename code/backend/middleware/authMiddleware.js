@@ -8,20 +8,24 @@ import asyncHandler from "express-async-handler";
 import Admin from "../models/adminModel.js";
 import Carrier from "../models/carrierModel.js";
 import Shipper from "../models/shipperModel.js";
-import SuperUser from "../models/superUser.js";
 import Driver from "../models/driverModel.js";
 
-// Protect Middleware
 export const protect = asyncHandler(async (req, res, next) => {
+  // request the token
   let token = req.cookies.jwt;
+
+  // if there is no token send status 401
   if (!token) {
     res.status(401);
     throw new Error("Not authorized, no token");
   }
   try {
+    // decode the token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     let user;
     let firstName, lastName;
+
+    // based on the role in token do switch
     switch (decoded.role) {
       case "admin":
         user = await Admin.findById(decoded.userId).select("-password");
@@ -31,9 +35,6 @@ export const protect = asyncHandler(async (req, res, next) => {
         break;
       case "shipper":
         user = await Shipper.findById(decoded.userId).select("-password");
-        break;
-      case "superUser":
-        user = await SuperUser.findById(decoded.userId).select("-password");
         break;
       case "driver":
         user = await Driver.findById(decoded.userId).select("-password");
@@ -45,6 +46,7 @@ export const protect = asyncHandler(async (req, res, next) => {
       throw new Error("User not found");
     }
 
+    // Get the following information
     firstName = user.firstName;
     lastName = user.lastName;
 
@@ -87,6 +89,7 @@ export const adminOnly = (req, res, next) => {
   throw new Error("Access denied");
 };
 
+// Status Middleware for admin
 export const adminStatus = (req, res, next) => {
   if (req.status == "Active") {
     return next();
@@ -104,6 +107,7 @@ export const carrierOnly = (req, res, next) => {
   throw new Error("Access denied");
 };
 
+// Status middleware for Carrier
 export const carrierStatus = (req, res, next) => {
   if (req.status == "Active") {
     return next();
@@ -121,6 +125,7 @@ export const shipperOnly = (req, res, next) => {
   throw new Error("Access denied");
 };
 
+// Status Middleware for Shipper
 export const shipperStatus = (req, res, next) => {
   if (req.status == "Active") {
     return next();
@@ -129,7 +134,7 @@ export const shipperStatus = (req, res, next) => {
   throw new Error("Status Inactive");
 };
 
-// Status Approval Middleware
+// Status Approval Middleware for the Initial documents
 export const status = (req, res, next) => {
   if (
     req.areContactDetailsComplete === true &&
@@ -143,20 +148,22 @@ export const status = (req, res, next) => {
   }
 };
 
+// Delete Notification Middleware based on the role
 export const deleteNotificationsBasedOnRole = (req, res, next) => {
-  if ( req.role === 'admin') {
-      deleteNotificationsAdmin(req, res, next);
-  } else if (req.role === 'shipper') {
-      deleteNotificationsShipper(req, res, next);
-    } else if (req.role === 'carrier') {
-      deleteNotificationsCarrier(req, res, next);
+  if (req.role === "admin") {
+    deleteNotificationsAdmin(req, res, next);
+  } else if (req.role === "shipper") {
+    deleteNotificationsShipper(req, res, next);
+  } else if (req.role === "carrier") {
+    deleteNotificationsCarrier(req, res, next);
   } else {
-      const error = new Error('Unauthorized or invalid role');
-      error.status = 401;
-      next(error);
+    const error = new Error("Unauthorized or invalid role");
+    error.status = 401;
+    next(error);
   }
-}
+};
 
+// Delete Notification for Admin
 export const deleteNotificationsAdmin = async (req, res) => {
   try {
     const adminId = req.user._id;
@@ -171,33 +178,41 @@ export const deleteNotificationsAdmin = async (req, res) => {
       return res.status(404).json({ success: false, error: "Admin not found" });
     }
 
-    res.status(200).json({ success: true, message: "Notifications deleted successfully" });
+    res
+      .status(200)
+      .json({ success: true, message: "Notifications deleted successfully" });
   } catch (error) {
-    // console.error("Error deleting notifications:", error);
+    console.error("Error deleting notifications:", error);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
 
+// Delete Notification for Shipper
 export const deleteNotificationsShipper = async (req, res) => {
   try {
-      const shipperId = req.user._id;
-      const updatedShipper = await Shipper.findByIdAndUpdate(
-          shipperId,
-          { $set: { notification: [] } },
-          { new: true }
-      );
+    const shipperId = req.user._id;
+    const updatedShipper = await Shipper.findByIdAndUpdate(
+      shipperId,
+      { $set: { notification: [] } },
+      { new: true }
+    );
 
-      if (!updatedShipper) {
-          return res.status(404).json({ success: false, error: "Shipper not found" });
-      }
+    if (!updatedShipper) {
+      return res
+        .status(404)
+        .json({ success: false, error: "Shipper not found" });
+    }
 
-      res.status(200).json({ success: true, message: "Notifications deleted successfully" });
+    res
+      .status(200)
+      .json({ success: true, message: "Notifications deleted successfully" });
   } catch (error) {
-      // console.error("Error deleting notifications for shipper:", error);
-      res.status(500).json({ success: false, error: "Internal server error" });
+    console.error("Error deleting notifications for shipper:", error);
+    res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
 
+// Delete Notification for Carrier
 export const deleteNotificationsCarrier = async (req, res) => {
   try {
     const carrierId = req.user._id;
@@ -209,13 +224,16 @@ export const deleteNotificationsCarrier = async (req, res) => {
     );
 
     if (!updatedCarrier) {
-      return res.status(404).json({ success: false, error: "Carrier not found" });
+      return res
+        .status(404)
+        .json({ success: false, error: "Carrier not found" });
     }
 
-    res.status(200).json({ success: true, message: "Notifications deleted successfully" });
+    res
+      .status(200)
+      .json({ success: true, message: "Notifications deleted successfully" });
   } catch (error) {
-    // console.error("Error deleting notifications:", error);
+    console.error("Error deleting notifications:", error);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
-

@@ -1,8 +1,8 @@
-// Post Load Form
-
 // React Imports
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+// Icon Imports
 import { FiTruck } from "react-icons/fi";
 import { GrPowerReset } from "react-icons/gr";
 
@@ -48,6 +48,8 @@ export default function PostLoad() {
   const customBlue = theme.colors.customBlue;
   const today = new Date().toISOString().split("T")[0];
   const { data } = useData();
+
+  // Data Extraction
   const firstName = data && data.user ? data.user.firstName : "";
   const lastName = data && data.user ? data.user.lastName : "";
   const notification = data && data ? data.notification : "";
@@ -173,7 +175,7 @@ export default function PostLoad() {
 
     // Start of POST Method
     try {
-      const response = await axios.post("/api/postload", formData);
+     await axios.post("/api/postload", formData);
       navigate("/activeloads");
     } catch (error) {
       console.error("Error posting load:", error);

@@ -1,4 +1,7 @@
+// React Imports
 import React, { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 import {
   View,
   Text,
@@ -10,27 +13,67 @@ import {
   Alert,
   TextInput,
   Image,
+  Modal,
 } from "react-native";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
+// Axios Import
 import axios from "axios";
+
+// Icon Imports
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faSignOutAlt,
   faHeadset,
-  faTruck,
   faEdit,
   faSave,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { useNavigation } from "@react-navigation/native";
+
+// Custom Import
 import { useTheme } from "../components/themeContext.js";
-import { useIsFocused } from "@react-navigation/native";
 import CustomUpload from "../components/customs/customUpload.js";
 
-export default function SettingScreen(props) {
+// Function to split the value and make it readable
+const humanize = (str) => {
+  return (
+    str
+      .replace(/([A-Z])/g, " $1")
+      .replace(/_/g, " ")
+      .replace(/^./, function (str) {
+        return str.toUpperCase();
+      })
+  );
+};
+
+// Start of the Build
+export default function SettingScreen() {
   const { isDarkMode, toggleTheme } = useTheme();
   const ipConfig = process.env.REACT_IP_CONFIG;
   const navigation = useNavigation();
   const isFocused = useIsFocused();
+  
+  // Hooks
+  const [modalVisible, setModalVisible] = useState(false);
+  const [currentImage, setCurrentImage] = useState(null);
+
+  // Open Modal Function
+  const openModal = (imgUri) => {
+    setCurrentImage(imgUri);
+    setModalVisible(true);
+  };
+
+  // Format Label
+  const formatLabel = (key) => {
+    const words = key.match(/[A-Z]?[a-z]+/g) || [];
+
+    return words.map(capitalize).join(" ");
+  };
+
+  // Captilize
+  const capitalize = (s) => {
+    if (typeof s !== "string") return "";
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  };
 
   // Hooks
   const [driverData, setDriverData] = useState({
@@ -54,6 +97,7 @@ export default function SettingScreen(props) {
     driverAbstract: false,
   });
 
+  // Logout
   const logout = () => {
     axios
       .get(`${ipConfig}/logout`, { withCredentials: true })
@@ -65,6 +109,7 @@ export default function SettingScreen(props) {
       });
   };
 
+  // Toggle Edit
   const toggleEdit = (field) => {
     setEditableFields((currentFields) => ({
       ...currentFields,
@@ -76,12 +121,12 @@ export default function SettingScreen(props) {
     if (!isFocused) return;
     let isMounted = true;
 
+    // Fetch Data
     const fetchData = async () => {
       try {
         const response = await axios.get(`${ipConfig}/api/driversettings`);
         if (isMounted) {
           setDriverData(response.data.data);
-          // console.log("This is a data for driver", driverData);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -96,14 +141,14 @@ export default function SettingScreen(props) {
     };
   }, [isFocused]);
 
+  // Handle Support
   const handleSupport = async (type) => {
     let phoneNumber = "";
     if (type === "Customer") {
       phoneNumber = "4037026157";
-    } else if (type === "Carrier") {
-      phoneNumber = "3065813000";
     }
 
+    // URL/Link
     const url = `tel:${phoneNumber}`;
     const supported = await Linking.canOpenURL(url);
     if (supported) {
@@ -111,22 +156,81 @@ export default function SettingScreen(props) {
     }
   };
 
-  const handleEdit = () => {
-    Alert.alert("Edit", `Edit`);
-  };
-
+  // Handle Change for Data
   const handleChange = (field, value) => {
     setDriverData((currentData) => ({
       ...currentData,
       [field]: value,
     }));
   };
+
+  // Handle File Selected
   const handleFileSelected = (field, file) => {
-    
     setDriverData((currentData) => ({
       ...currentData,
-      [field]: file.uri, 
+      [field]: file,
     }));
+  };
+
+  // Handle Save
+  const saveDriverData = async () => {
+    const formData = new FormData();
+    Object.keys(driverData).forEach((key) => {
+      if (
+        !["driverLicenceFront", "driverLicenceBack", "driverAbstract"].includes(
+          key
+        )
+      ) {
+        formData.append(key, driverData[key]);
+      }
+    });
+
+    const fileKeys = [
+      "driverLicenceFront",
+      "driverLicenceBack",
+      "driverAbstract",
+    ];
+    fileKeys.forEach((key) => {
+      if (
+        driverData[key] &&
+        driverData[key].assets &&
+        driverData[key].assets.length > 0
+      ) {
+        const file = driverData[key].assets[0];
+        formData.append(key, {
+          uri: file.uri,
+          type: file.mimeType,
+          name: file.name,
+        });
+      }
+    });
+
+    try {
+       await axios.put(
+        `${ipConfig}/api/updateDriverData`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
+      Alert.alert("Success", "Data updated successfully.");
+      setEditableFields({
+        firstName: false,
+        lastName: false,
+        email: false,
+        phoneNumber: false,
+        canadianCarrierCode: false,
+        driverLicenceFront: false,
+        driverLicenceBack: false,
+        driverAbstract: false,
+      });
+    } catch (error) {
+      console.error("Error saving data:", error);
+      Alert.alert("Error", "Failed to save data");
+    }
   };
 
   return (
@@ -182,84 +286,100 @@ export default function SettingScreen(props) {
                 "driverLicenceBack",
                 "driverAbstract",
               ].includes(key) ? (
-                <View style={styles.uploadContainer}>
-                  {editableFields[key] ? (
-                    <View
+                <>
+                  <View style={styles.uploadContainer}>
+                    <Text
                       style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        width: "100%",
+                        color: isDarkMode ? "#FFF" : "#333",
+                        fontFamily: "Lora-Regular",
+                        textAlign: "center",
                       }}
                     >
-                      <View style={{ flex: 4, marginRight: 8 }}>
-                        <CustomUpload
-                          label={`Upload New File`}
-                          required={true}
-                          onFileSelected={(file) =>
-                            handleFileSelected(key, file)
-                          }
-                        />
-                      </View>
-
+                      {humanize(key)}
+                    </Text>
+                    {editableFields[key] ? (
                       <View
                         style={{
                           flexDirection: "row",
-                          flex: 1,
-                          justifyContent: "flex-end",
+                          alignItems: "center",
+                          width: "100%",
                         }}
                       >
+                        <View
+                          style={{ flex: 4, marginRight: 8, marginTop: 20 }}
+                        >
+                          <CustomUpload
+                            label={humanize(key)}
+                            required={true}
+                            onFileSelected={(file) =>
+                              handleFileSelected(key, file)
+                            }
+                          />
+                        </View>
+
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            flex: 1,
+                            justifyContent: "flex-end",
+                          }}
+                        >
+                          <TouchableOpacity
+                            onPress={() => toggleEdit(key)}
+                            style={styles.editButton}
+                          >
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            onPress={() => toggleEdit(key)}
+                            style={[styles.editButton, { marginLeft: 4 }]}
+                          >
+                            <FontAwesomeIcon
+                              icon={faXmark}
+                              size={25}
+                              style={{ color: isDarkMode ? "#FFF" : "#0866FF" }}
+                            />
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    ) : (
+                      <View
+                        style={{ flexDirection: "row", alignItems: "center" }}
+                      >
+                        <TouchableOpacity
+                          onPress={() =>
+                            openModal(`${ipConfig}/${driverData[key]}`)
+                          }
+                        >
+                          <Image
+                            source={{ uri: `${ipConfig}/${driverData[key]}` }}
+                            style={styles.imageStyle}
+                          />
+                        </TouchableOpacity>
+
                         <TouchableOpacity
                           onPress={() => toggleEdit(key)}
                           style={styles.editButton}
                         >
                           <FontAwesomeIcon
-                            icon={faSave}
+                            icon={faEdit}
                             size={20}
                             style={{ color: isDarkMode ? "#FFF" : "#0866FF" }}
                           />
                         </TouchableOpacity>
-                        <TouchableOpacity
-                          onPress={() => toggleEdit(key)}
-                          style={[styles.editButton, { marginLeft: 4 }]}
-                        >
-                          <FontAwesomeIcon
-                            icon={faXmark}
-                            size={25}
-                            style={{ color: isDarkMode ? "#FFF" : "#0866FF" }}
-                          />
-                        </TouchableOpacity>
                       </View>
-                    </View>
-                  ) : (
-                    <View
-                      style={{ flexDirection: "row", alignItems: "center" }}
-                    >
-                      <Image
-                        source={{ uri: `${ipConfig}/${driverData[key]}` }}
-                        style={styles.imageStyle}
-                      />
-                      <TouchableOpacity
-                        onPress={() => toggleEdit(key)}
-                        style={styles.editButton}
-                      >
-                        <FontAwesomeIcon
-                          icon={faEdit}
-                          size={20}
-                          style={{ color: isDarkMode ? "#FFF" : "#0866FF" }}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  )}
-                </View>
+                    )}
+                  </View>
+                </>
               ) : (
                 <>
                   <Text
                     style={{
                       color: isDarkMode ? "#FFF" : "#333",
                       marginRight: 5,
+                      fontFamily: "Lora-Regular",
                     }}
                   >
-                    {`${key.charAt(0).toUpperCase() + key.slice(1)}:`}
+                    {`${formatLabel(key)}:`}
                   </Text>
                   <TextInput
                     style={[
@@ -293,6 +413,13 @@ export default function SettingScreen(props) {
         <View style={styles.bottomButtons}>
           <TouchableOpacity
             style={[styles.button, { backgroundColor: "#0866FF" }]}
+            onPress={saveDriverData}
+          >
+            <FontAwesomeIcon icon={faSave} size={20} style={styles.icon} />
+            <Text style={styles.buttonText}>Save Changes</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: "#0866FF" }]}
             onPress={logout}
           >
             <FontAwesomeIcon
@@ -312,10 +439,32 @@ export default function SettingScreen(props) {
           </TouchableOpacity>
         </View>
       </ScrollView>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <Image
+            source={{ uri: currentImage }}
+            style={styles.zoomedImageStyle}
+          />
+          <TouchableOpacity
+            style={styles.buttonClose}
+            onPress={() => setModalVisible(!modalVisible)}
+          >
+            <Text style={styles.textStyle}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 }
 
+// Styles
 const styles = StyleSheet.create({
   flexContainer: {
     flex: 1,
@@ -357,8 +506,9 @@ const styles = StyleSheet.create({
   },
   infoTitle: {
     fontSize: 20,
-    fontWeight: "bold",
     marginBottom: 20,
+    fontFamily: "Lora-SemiBold",
+    textAlign: "center",
   },
   infoText: {
     fontSize: 16,
@@ -413,22 +563,37 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
   },
   uploadContainer: {
     width: "100%",
-    minHeight: 150,
-    padding: 10,
-    justifyContent: "center",
     alignItems: "center",
-
     borderColor: "#ccc",
     borderRadius: 5,
-    marginBottom: 20,
   },
   editableInput: {
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 5,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
+  },
+  zoomedImageStyle: {
+    width: "100%",
+    height: "80%",
+    resizeMode: "contain",
+  },
+  buttonClose: {
+    position: "absolute",
+    top: 50,
+    right: 20,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });

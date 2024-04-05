@@ -73,6 +73,3 @@ export const getOtpEmailTemplate = (otp, logoURL) => {
   </html>
   `;
 };
-
-
-  

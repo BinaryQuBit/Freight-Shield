@@ -1,8 +1,8 @@
-// Forgot Password Form
-
 // React Imports
 import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+// Icon Import
 import { RiLockPasswordFill } from "react-icons/ri";
 
 // Axios Import
@@ -80,10 +80,12 @@ export default function ForgotPasswordForm() {
     setPasswordError(passwordError);
     setConfirmPasswordError(confirmPasswordError);
 
+    // Check Errors
     if (emailError || passwordError || confirmPasswordError) {
       return;
     }
 
+    // Start of POST Method
     try {
       const response = await axios.post("/forgotpassword", { email });
 
@@ -92,12 +94,12 @@ export default function ForgotPasswordForm() {
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        // console.error("Error: ", error.response.data.message);
+        console.error("Error: ", error.response.data.message);
         if (error.response.data.message.includes("does not exist")) {
           setEmailError("Account does not exist");
         }
       } else {
-        // console.error("Error submitting form:", error);
+        console.error("Error submitting form:", error);
       }
     }
   };

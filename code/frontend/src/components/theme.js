@@ -1,37 +1,48 @@
-// Theme for the whole project
-
+// Chakra UI Imports
 import { extendTheme } from "@chakra-ui/react";
-import { darken } from '@chakra-ui/theme-tools';
+import { darken } from "@chakra-ui/theme-tools";
+
+// Font Imports
 import "@fontsource/lora/400.css";
 import "@fontsource/lora/700.css";
 
+// Label scaling to move up
 const activeLabelStyles = {
   transform: "scale(0.85) translateY(-35px)",
 };
 
+// Start of the theme
 const customTheme = extendTheme({
   styles: {
     global: {
       "@keyframes fadeIn": {
-        from: { opacity: 0, transform: 'translateY(-20px)', visibility: 'hidden' },
-        to: { opacity: 1, transform: 'translateY(0)', visibility: 'visible' },
-      },      
+        from: {
+          opacity: 0,
+          transform: "translateY(-20px)",
+          visibility: "hidden",
+        },
+        to: { opacity: 1, transform: "translateY(0)", visibility: "visible" },
+      },
       "@keyframes fadeOut": {
-        from: { opacity: 1, transform: 'translateY(0)', visibility: 'visible' },
-        to: { opacity: 0, transform: 'translateY(-20px)', visibility: 'hidden' },
+        from: { opacity: 1, transform: "translateY(0)", visibility: "visible" },
+        to: {
+          opacity: 0,
+          transform: "translateY(-20px)",
+          visibility: "hidden",
+        },
       },
 
-      '.pac-container': {
-        zIndex: '9999 !important',
-        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+      ".pac-container": {
+        zIndex: "9999 !important",
+        boxShadow:
+          "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
       },
-      
 
-      '.fade-in': {
-        animation: 'fadeIn 0.5s ease-out forwards',
+      ".fade-in": {
+        animation: "fadeIn 0.5s ease-out forwards",
       },
-      '.fade-out': {
-        animation: 'fadeOut 0.5s ease-out forwards',
+      ".fade-out": {
+        animation: "fadeOut 0.5s ease-out forwards",
       },
     },
   },
@@ -41,8 +52,8 @@ const customTheme = extendTheme({
         outline: {
           field: {
             _invalid: {
-              borderColor: 'none',
-              boxShadow: 'none',
+              borderColor: "none",
+              boxShadow: "none",
             },
           },
         },
@@ -52,7 +63,7 @@ const customTheme = extendTheme({
       variants: {
         blueForwardButton: (props) => {
           const backgroundColor = props.colorvariant || "#0866FF";
-          
+
           return {
             backgroundColor: backgroundColor,
             color: "white",
@@ -143,9 +154,10 @@ const customTheme = extendTheme({
                 ...activeLabelStyles,
               },
             },
-            "input:not(:placeholder-shown) ~ label, .chakra-select__wrapper:not(:placeholder-shown) ~ label, textarea:not(:placeholder-shown) ~ label": {
-              ...activeLabelStyles,
-            },
+            "input:not(:placeholder-shown) ~ label, .chakra-select__wrapper:not(:placeholder-shown) ~ label, textarea:not(:placeholder-shown) ~ label":
+              {
+                ...activeLabelStyles,
+              },
             label: {
               top: 0,
               left: 0,
@@ -174,4 +186,3 @@ const customTheme = extendTheme({
 });
 
 export default customTheme;
-

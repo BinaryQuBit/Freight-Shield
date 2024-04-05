@@ -1,6 +1,7 @@
-// Custom Input
-
+// React Import
 import React from "react";
+
+// Chakra UI Imports
 import {
   FormControl,
   FormLabel,
@@ -11,9 +12,11 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+// Icon Imports
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
-const CustomInput = ({
+// Start of the Build
+export default function CustomInput({
   id,
   label,
   value,
@@ -31,7 +34,7 @@ const CustomInput = ({
   min,
   customComponent: CustomComponent,
   ...customComponentProps
-}) => {
+}) {
   return (
     <FormControl
       variant="floating"
@@ -49,7 +52,7 @@ const CustomInput = ({
             type={type}
             value={value}
             onChange={onChange}
-            placeholder= ""
+            placeholder=""
             rounded="none"
             {...customComponentProps}
           />
@@ -81,12 +84,11 @@ const CustomInput = ({
             />
           </InputRightElement>
         )}
-        <FormLabel htmlFor={id} className="form-label">{label}</FormLabel>
+        <FormLabel htmlFor={id} className="form-label">
+          {label}
+        </FormLabel>
       </InputGroup>
       {isError && <FormErrorMessage ml={4}>{errorMessage}</FormErrorMessage>}
     </FormControl>
   );
-};
-
-
-export default CustomInput;
+}

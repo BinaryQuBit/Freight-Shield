@@ -3,7 +3,7 @@ import React from "react";
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 
 // Start of the Build
-export default function CustomLink({onPress, children}) {
+export default function CustomLink({ onPress, children }) {
   return (
     <TouchableOpacity onPress={onPress}>
       <Text style={styles.forgotPasswordText}>{children}</Text>

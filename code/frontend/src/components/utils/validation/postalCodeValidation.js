@@ -1,5 +1,4 @@
-// Postal Code Validation
-
+// Start of Postal Code Validation
 export const PostalCodeValidation = (postalCode) => {
   const trimmedPostalCode = postalCode.trim();
 

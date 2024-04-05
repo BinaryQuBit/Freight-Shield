@@ -85,8 +85,7 @@ export default function RegisterFormStep2({ closeModal }) {
     const form = new FormData();
     form.append("phoneNumber", phoneNumber);
     form.append("canadianCarrierCode", canadianCarrierCode);
-    if(driverLicenceFront)
-    {
+    if (driverLicenceFront) {
       const file = driverLicenceFront.assets[0];
       form.append("driverLicenceFront", {
         uri: file.uri,
@@ -94,8 +93,7 @@ export default function RegisterFormStep2({ closeModal }) {
         name: file.name,
       });
     }
-    if(driverLicenceBack)
-    {
+    if (driverLicenceBack) {
       const file = driverLicenceBack.assets[0];
       form.append("driverLicenceBack", {
         uri: file.uri,
@@ -103,8 +101,7 @@ export default function RegisterFormStep2({ closeModal }) {
         name: file.name,
       });
     }
-    if(driverAbstract)
-    {
+    if (driverAbstract) {
       const file = driverAbstract.assets[0];
       form.append("driverAbstract", {
         uri: file.uri,
@@ -115,11 +112,15 @@ export default function RegisterFormStep2({ closeModal }) {
 
     // Start of POST Method
     try {
-      const registerResponse = await axios.put(`${ipConfig}/api/register`, form, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const registerResponse = await axios.put(
+        `${ipConfig}/api/register`,
+        form,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       if (registerResponse.status === 201) {
         closeModal();
         navigation.navigate("WelcomeScreen");
@@ -185,14 +186,12 @@ export default function RegisterFormStep2({ closeModal }) {
           setDriverAbstractError("");
         }}
       />
-      <CustomButton onPress={handleRegisterStep2} children={"Submit"} pH={30} fs={16} />
-      {/* <CustomButton
-        onPress={() => {
-          navigation.navigate("NavBar");
-        }}
-        children={"Next"}
+      <CustomButton
+        onPress={handleRegisterStep2}
+        children={"Submit"}
         pH={30}
-      /> */} 
+        fs={16}
+      />
     </>
   );
 }

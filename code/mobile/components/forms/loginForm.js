@@ -12,7 +12,7 @@ import { PasswordValidation } from "../validation/passwordValidation";
 import CustomInput from "../customs/customInput";
 import CustomButton from "../customs/customButton";
 import CustomLink from "../customs/customLink";
-import CustomModal from "../customs/customModal"
+import CustomModal from "../customs/customModal";
 import ForgotPasswordForm from "./forgotPasswordForm";
 
 // Start of the Build
@@ -24,7 +24,8 @@ export default function LoginForm() {
   // Hooks
   const [email, setEmail] = useState("driver@driver.com");
   const [password, setPassword] = useState("12345678");
-  const [forgotPasswordModalVisible, setForgotPasswordModalVisible] = useState(false);
+  const [forgotPasswordModalVisible, setForgotPasswordModalVisible] =
+    useState(false);
 
   // Error Hooks
   const [emailError, setEmailError] = useState("");
@@ -76,7 +77,7 @@ export default function LoginForm() {
         value={email}
         onChangeText={(newEmail) => {
           setEmail(newEmail);
-          setEmailError('');
+          setEmailError("");
         }}
         keyboardType="email-address"
         autoCapitalize="none"
@@ -88,7 +89,7 @@ export default function LoginForm() {
         value={password}
         onChangeText={(newPassword) => {
           setPassword(newPassword);
-          setPasswordError('');
+          setPasswordError("");
         }}
         autoCapitalize="none"
         errorMessage={passwordError}
@@ -99,12 +100,12 @@ export default function LoginForm() {
         onPress={() => setForgotPasswordModalVisible(true)}
         children="Forgot Password?"
       />
-        <CustomModal
-          modalVisible={forgotPasswordModalVisible}
-          setModalVisible={setForgotPasswordModalVisible}
-          children={<ForgotPasswordForm />}
-          animationType={"fade"}
-        />
+      <CustomModal
+        modalVisible={forgotPasswordModalVisible}
+        setModalVisible={setForgotPasswordModalVisible}
+        children={<ForgotPasswordForm />}
+        animationType={"fade"}
+      />
     </>
   );
 }

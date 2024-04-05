@@ -1,9 +1,11 @@
-import React, { createContext, useContext, useState } from 'react';
+// React Imports
+import React, { createContext, useContext, useState } from "react";
 
 const DataContext = createContext();
 
 export const useData = () => useContext(DataContext);
 
+// Start of the Build
 export const DataProvider = ({ children }) => {
   const [data, setData] = useState({});
 

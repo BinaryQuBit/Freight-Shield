@@ -1,4 +1,7 @@
+// React Imports
 import React, { useState, useEffect } from "react";
+
+// Icon Imports
 import { FaRegSave } from "react-icons/fa";
 import { IoMdCloseCircle } from "react-icons/io";
 
@@ -75,10 +78,12 @@ export default function EditAdminDetails({ isOpen, onClose, data }) {
     setPhoneNumberError(phoneNumberError);
     setEmailError(emailError);
 
+    // Error Checks
     if (firstNameError || lastNameError || phoneNumberError || emailError) {
       return;
     }
 
+    // Object Creation of the Data
     try {
       const adminData = {
         firstName,
@@ -87,16 +92,18 @@ export default function EditAdminDetails({ isOpen, onClose, data }) {
         email,
       };
 
+      // Start of PUT Method
       const response = await axios.put("/api/editadmin", adminData);
 
+      // Window Reload
       if (response.status === 200) {
         window.location.reload();
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        // console.error("Error: ", error.response.data.message);
+        console.error("Error: ", error.response.data.message);
       } else {
-        // console.error("Error submitting form:", error);
+        console.error("Error submitting form:", error);
       }
     }
   };
@@ -108,6 +115,7 @@ export default function EditAdminDetails({ isOpen, onClose, data }) {
         <ModalBody>
           <form onSubmit={handleSave} noValidate>
             <Flex>
+              {/* First Name Input */}
               <CustomInput
                 id={"firstName"}
                 label={"First Name"}
@@ -123,6 +131,7 @@ export default function EditAdminDetails({ isOpen, onClose, data }) {
                 mr={2}
               />
 
+              {/* Last Name Input */}
               <CustomInput
                 id={"lastName"}
                 label={"Last Name"}
@@ -139,6 +148,7 @@ export default function EditAdminDetails({ isOpen, onClose, data }) {
               />
             </Flex>
             <Flex>
+              {/* Phone Number Input */}
               <CustomInput
                 id={"phoneNumber"}
                 label={"Phone Number"}
@@ -154,6 +164,7 @@ export default function EditAdminDetails({ isOpen, onClose, data }) {
                 mt={8}
               />
 
+              {/* Email Input */}
               <CustomInput
                 id={"email"}
                 label={"Email"}
@@ -171,6 +182,7 @@ export default function EditAdminDetails({ isOpen, onClose, data }) {
             </Flex>
 
             <Flex justifyContent={"space-between"} mt={"7"}>
+              {/* Close Button */}
               <CustomButton
                 backgroundColor="#0866FF"
                 icon={<IoMdCloseCircle />}
@@ -180,6 +192,8 @@ export default function EditAdminDetails({ isOpen, onClose, data }) {
                 variant="blueBackwardButton"
                 onClick={handleCloseClick}
               />
+
+              {/* Save Button */}
               <CustomButton
                 backgroundColor="#0866FF"
                 icon={<FaRegSave />}

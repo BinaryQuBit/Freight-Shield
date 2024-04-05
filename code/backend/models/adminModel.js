@@ -4,11 +4,10 @@ import mongoose from "mongoose";
 // Custom Imports
 import { hashPassword, comparePassword } from "../utils/hashPassword.js";
 
-const notificationSchema = new mongoose.Schema(
-  {
-    description: { type: String },
-  }
-)
+// Schema for description
+const notificationSchema = new mongoose.Schema({
+  description: { type: String },
+});
 
 // Admin Schema Declaration and Defination
 const adminSchema = mongoose.Schema(
@@ -33,17 +32,17 @@ const adminSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      default: "Inactive"
+      default: "Inactive",
     },
     adminStatus: {
       type: String,
-      default: "Admin"
+      default: "Admin",
     },
     statusReasonChange: {
       type: String,
-      default: "Account under Review"
+      default: "Account under Review",
     },
-    notification : [notificationSchema]
+    notification: [notificationSchema],
   },
   {
     timestamps: true,

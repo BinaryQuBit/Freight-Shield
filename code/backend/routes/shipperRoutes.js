@@ -3,12 +3,11 @@ import express from "express";
 
 // Middleware Imports
 import upload from "../middleware/upload.js";
-// import {deleteFile} from "../middleware/delete.js";
+
 import {
   protect,
   shipperOnly,
   status,
-  deleteNotificationsBasedOnRole,
   shipperStatus,
 } from "../middleware/authMiddleware.js";
 
@@ -30,7 +29,6 @@ import {
   updateShipperStatus,
   deleteLoad,
   postShipperEvents,
-  // deleteNotifications,
 } from "../controllers/shipperController.js";
 
 // CONST to use Router
@@ -59,6 +57,5 @@ router.put("/shipperstatus", protect, shipperOnly, updateShipperStatus);
 
 /////////////////////////////////////////////////////// DELETERS ///////////////////////////////////////////////////////
 router.delete("/activeloads/:id/uploads/:filename", protect, shipperOnly, deleteLoad);
-router.delete("/notifications/delete", protect, deleteNotificationsBasedOnRole);
 
 export default router;

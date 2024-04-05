@@ -1,8 +1,5 @@
-// Edit Button
-
 // React Imports
 import React, { useState, useEffect } from "react";
-import { useTheme } from "@chakra-ui/react";
 
 // Icon Import
 import { FiTruck } from "react-icons/fi";
@@ -27,7 +24,7 @@ import {
   SimpleGrid,
   Radio,
   Textarea,
-  Select,
+  useTheme
 } from "@chakra-ui/react";
 
 // Custom Imports
@@ -44,7 +41,7 @@ import CustomSelectMultiple from "../buttons/customSelectMultiple"
 export default function PostedLoadEdit({ isOpen, onClose, load }) {
   axios.defaults.withCredentials = true;
   const theme = useTheme();
-  const customBlue = theme && theme.colors && theme.colors.customBlue || "#0000FF";
+  const customBlue = theme && theme.colors && theme.colors.customBlue;
 
   const today = new Date().toISOString().split("T")[0];
   const backendUrl = process.env.REACT_APP_BACKEND_PORT;
@@ -112,6 +109,7 @@ export default function PostedLoadEdit({ isOpen, onClose, load }) {
     onClose();
   };
 
+  // Render Data
   useEffect(() => {
     setPickUpLocation(load.pickUpLocation);
     setPickUpDate(load.pickUpDate);
@@ -215,8 +213,7 @@ export default function PostedLoadEdit({ isOpen, onClose, load }) {
 
     // Start of the PUT Method
     try {
-      // console.log("this is file", additionalDocument);
-      const response = await axios.put(`/api/postload/${load._id}`, formData, {
+        await axios.put(`/api/postload/${load._id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -224,7 +221,7 @@ export default function PostedLoadEdit({ isOpen, onClose, load }) {
 
       handleCloseClick();
     } catch (error) {
-      // console.error("Error updating load:", error);
+      console.error("Error updating load:", error);
     }
   };
 

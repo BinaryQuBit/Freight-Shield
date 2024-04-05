@@ -1,5 +1,7 @@
-// Privacy Policy
+// Icon Import
+import { IoMdCloseCircle } from "react-icons/io";
 
+// Chakra UI Imports
 import {
   Modal,
   ModalOverlay,
@@ -15,10 +17,11 @@ import {
   Flex,
 } from "@chakra-ui/react";
 
+// Custom Imports
 import Logo from "../logo/logo.svg";
 import CustomButton from "../buttons/customButton";
-import { IoMdCloseCircle } from "react-icons/io";
 
+// Start of the Build
 export default function Privacy({ isPrivacyOpen, onClosePrivacy }) {
   return (
     <Modal size="3xl" isOpen={isPrivacyOpen} onClose={onClosePrivacy}>

@@ -14,9 +14,9 @@ import DriverRoutes from "./routes/driverRoutes.js";
 import NewUserRoutes from "./routes/newUserRoutes.js";
 import ShipperRoutes from "./routes/shipperRoutes.js";
 import cors from "cors";
-import Carrier from './models/carrierModel.js';
-import Shipper from "./models/shipperModel.js"
-import Admin from "./models/adminModel.js"
+import Carrier from "./models/carrierModel.js";
+import Shipper from "./models/shipperModel.js";
+import Admin from "./models/adminModel.js";
 
 dotenv.config();
 
@@ -40,7 +40,6 @@ app.use("/api", CarrierRoutes);
 app.use("/api", DriverRoutes);
 app.use("/api", ShipperRoutes);
 
-
 const frontendPath = path.join(__dirname, "public");
 app.use(express.static(frontendPath));
 
@@ -51,23 +50,35 @@ app.get("*", (req, res) => {
 app.use(notFound);
 app.use(errorHandler);
 
+
+/////////////////////////////////////// Set Up to Listen to Databse ///////////////////////////////////////
 connectDB()
   .then(({ nativeClient }) => {
     const server = http.createServer(app);
     const wss = new WebSocketServer({ server });
     const db = nativeClient.db(process.env.DB_NAME);
-    const collectionsToWatch = ["marketplaces", "carriers", "drivers", "admins", "shippers" ];
+    const collectionsToWatch = [
+      "marketplaces",
+      "carriers",
+      "drivers",
+      "admins",
+      "shippers",
+      "logbooks",
+    ];
 
     collectionsToWatch.forEach((colName) => {
       const collection = db.collection(colName);
       const changeStream = collection.watch();
-    
+
       changeStream.on("change", async (change) => {
         console.log(`Database change detected in ${colName}:`, change);
 
+        // Getting Shipper email
         if (colName === "shippers" && change.operationType === "update") {
           try {
-            const ShipperInfo = await collection.findOne({ _id: change.documentKey._id });
+            const ShipperInfo = await collection.findOne({
+              _id: change.documentKey._id,
+            });
             const ShipperEmail = ShipperInfo.email;
             change.shipperEmail = ShipperEmail;
           } catch (err) {
@@ -75,9 +86,12 @@ connectDB()
           }
         }
 
+        // Getting Carrier Email
         if (colName === "carriers" && change.operationType === "update") {
           try {
-            const CarrierInfo = await collection.findOne({ _id: change.documentKey._id });
+            const CarrierInfo = await collection.findOne({
+              _id: change.documentKey._id,
+            });
             const CarrierEmail = CarrierInfo.email;
             change.carrierEmail = CarrierEmail;
           } catch (err) {
@@ -87,27 +101,29 @@ connectDB()
 
         if (colName === "admins" && change.operationType === "update") {
           try {
-            const AdminInfo = await collection.findOne({ _id: change.documentKey._id });
+            const AdminInfo = await collection.findOne({
+              _id: change.documentKey._id,
+            });
             const AdminEmail = AdminInfo.email;
             change.adminEmail = AdminEmail;
           } catch (err) {
             console.error(`Error fetching Admin Email ${colName}:`, err);
           }
         }
-    
+
         wss.clients.forEach((client) => {
           if (client.readyState === client.OPEN) {
             client.send(JSON.stringify({ collection: colName, change }));
           }
         });
-    
+
         // Admin Notification on Shippers
         if (colName === "shippers" && change.operationType === "insert") {
           const { email } = change.fullDocument;
-    
+
           if (email) {
             const description = `New Shipper: ${email}`;
-    
+
             try {
               const admins = await Admin.find({});
               const notificationPromises = admins.map(async (admin) => {
@@ -119,29 +135,18 @@ connectDB()
               });
               await Promise.all(notificationPromises);
             } catch (err) {
-              // console.error("Error updating admin notifications", err);
+              console.error("Error updating admin notifications", err);
             }
           }
         }
 
-    
-
-
-
-
-
-
-
-    // Admin Notification on Carriers
-        // If the change is in the carriers collection and involves an update
+        // Admin Notification on Carriers
         if (colName === "carriers" && change.operationType === "insert") {
           const { email } = change.fullDocument;
-    
-          // Check if isFormComplete was updated and construct notification description
+
           if (email) {
             const description = `New Carrier: ${email}`;
-    
-            // Push the notification to all admin documents
+
             try {
               const admins = await Admin.find({});
               const notificationPromises = admins.map(async (admin) => {
@@ -153,115 +158,90 @@ connectDB()
               });
               await Promise.all(notificationPromises);
             } catch (err) {
-              // console.error("Error updating admin notifications", err);
+              console.error("Error updating admin notifications", err);
             }
           }
         }
 
-
-
-
-
-        // if (change.operationType === "update" && change.documentKey && change.documentKey._id) {
-        //   const documentId = change.documentKey._id;
-        //   try {
-        //     const document = await collection.findOne({ _id: documentId });
-    
-        //     if (document && document.shipperEmail && document.status && document.pickUpCity && document.dropOffCity) {
-        //       const description = `Status Update: ${document.status} (${document.pickUpCity} - ${document.dropOffCity})`;
-        //       await Shipper.findOneAndUpdate(
-        //         { email: document.shipperEmail },
-        //         { $push: { notification: { description } } },
-        //         { new: true }
-        //       );
-    
-        //       console.log(`Notification added for shipper with email: ${document.shipperEmail}`);
-        //     }
-        //   } catch (err) {
-        //     console.error("Error processing update for shippers", err);
-        //   }
-        // }
-
         // Shipper Notification on change status marketplace
-        if (change.operationType === "update" && change.documentKey && change.documentKey._id) {
+        if (
+          change.operationType === "update" &&
+          change.documentKey &&
+          change.documentKey._id
+        ) {
           const documentId = change.documentKey._id;
           try {
-              if (change.updateDescription && change.updateDescription.updatedFields) {
-                  // Log the fields that were updated to verify the behavior
-                  // console.log('Updated fields:', change.updateDescription.updatedFields);
-      
-                  if (change.updateDescription.updatedFields.hasOwnProperty('status')) {
-                      const document = await collection.findOne({ _id: documentId });
-      
-                      if (document && document.shipperEmail && document.status && document.pickUpCity && document.dropOffCity) {
-                          const description = `Status Update: ${document.status} (${document.pickUpCity} - ${document.dropOffCity})`;
-                          await Shipper.findOneAndUpdate(
-                              { email: document.shipperEmail },
-                              { $push: { notification: { description } } },
-                              { new: true }
-                          );
-      
-                          // console.log(`Notification added for shipper with email: ${document.shipperEmail}`);
-                      }
-                  } else {
-                      // console.log('No status change detected, no notification added for shipper.');
-                  }
+            if (
+              change.updateDescription &&
+              change.updateDescription.updatedFields
+            ) {
+              if (
+                change.updateDescription.updatedFields.hasOwnProperty("status")
+              ) {
+                const document = await collection.findOne({ _id: documentId });
+
+                if (
+                  document &&
+                  document.shipperEmail &&
+                  document.status &&
+                  document.pickUpCity &&
+                  document.dropOffCity
+                ) {
+                  const description = `Status Update: ${document.status} (${document.pickUpCity} - ${document.dropOffCity})`;
+                  await Shipper.findOneAndUpdate(
+                    { email: document.shipperEmail },
+                    { $push: { notification: { description } } },
+                    { new: true }
+                  );
+                }
+              } else {
               }
+            }
           } catch (err) {
-              // console.error("Error processing update for shippers", err);
+            console.error("Error processing update for shippers", err);
           }
-      }
-      
-      
+        }
 
+        // Carrier notification on marketplace status
+        if (
+          change.operationType === "update" &&
+          change.documentKey &&
+          change.documentKey._id
+        ) {
+          const documentId = change.documentKey._id;
+          try {
+            if (
+              change.updateDescription &&
+              change.updateDescription.updatedFields
+            ) {
+              if (
+                change.updateDescription.updatedFields.hasOwnProperty("status")
+              ) {
+                const document = await collection.findOne({ _id: documentId });
 
-
-
-// Carrier notification on marketplace status
-if (change.operationType === "update" && change.documentKey && change.documentKey._id) {
-  const documentId = change.documentKey._id;
-  try {
-      if (change.updateDescription && change.updateDescription.updatedFields) {
-          // Log the fields that were updated to verify the behavior
-          // console.log('Updated fields:', change.updateDescription.updatedFields);
-
-          if (change.updateDescription.updatedFields.hasOwnProperty('status')) {
-              const document = await collection.findOne({ _id: documentId });
-
-              if (document && document.carrierEmail && document.status && document.pickUpCity && document.dropOffCity) {
+                if (
+                  document &&
+                  document.carrierEmail &&
+                  document.status &&
+                  document.pickUpCity &&
+                  document.dropOffCity
+                ) {
                   const description = `Status Update: ${document.status} (${document.pickUpCity} - ${document.dropOffCity})`;
                   await Carrier.findOneAndUpdate(
-                      { email: document.carrierEmail },
-                      { $push: { notification: { description } } },
-                      { new: true }
+                    { email: document.carrierEmail },
+                    { $push: { notification: { description } } },
+                    { new: true }
                   );
-
-                  // console.log(`Notification added for carrier with email: ${document.shipperEmail}`);
+                }
+              } else {
               }
-          } else {
-              // console.log('No status change detected, no notification added for carrier.');
+            }
+          } catch (err) {
+            console.error("Error processing update for shippers", err);
           }
-      }
-  } catch (err) {
-      // console.error("Error processing update for shippers", err);
-  }
-}
-
-
-
-
-
-
-
-
+        }
       });
     });
-
-
-
-
-
-
 
     // WebSocket server event handling
     wss.on("connection", (ws) => {
@@ -274,7 +254,7 @@ if (change.operationType === "update" && change.documentKey && change.documentKe
       });
     });
 
-    // Serve the frontend application
+    // Serve the frontend application (GET) root pages
     const frontendPath = path.join(__dirname, "public");
     app.use(express.static(frontendPath));
     app.get("*", (req, res) => {

@@ -1,8 +1,20 @@
+// React Imports
 import React, { useState, useEffect } from "react";
-import { FormControl, Box, Input, FormErrorMessage, useColorMode } from "@chakra-ui/react";
+
+// Chakra UI Imports
+import {
+  FormControl,
+  Box,
+  Input,
+  FormErrorMessage,
+  useColorMode,
+} from "@chakra-ui/react";
+
+// Icon Imports
 import { FiUpload, FiXCircle } from "react-icons/fi";
 
-const CustomUpload = ({
+// Start of the Build
+export default function CustomUpload({
   id,
   label,
   required,
@@ -15,7 +27,7 @@ const CustomUpload = ({
   fileUrl,
   mr,
   ml,
-}) => {
+}) {
   const [file, setFile] = useState("");
   const [fileBlobUrl, setFileBlobUrl] = useState("");
   const { colorMode } = useColorMode();
@@ -65,7 +77,10 @@ const CustomUpload = ({
               href={fileBlobUrl}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ marginRight: "auto", color: colorMode === "dark" ? "white" : "blue" }} // Adjusting color based on color mode
+              style={{
+                marginRight: "auto",
+                color: colorMode === "dark" ? "white" : "blue",
+              }} // Adjusting color based on color mode
             >
               View {label}
             </a>
@@ -82,7 +97,12 @@ const CustomUpload = ({
               Upload {label}
               {required && <span style={{ color: "red" }}>*</span>}
             </label>
-            <FiUpload style={{ marginRight: "8px", color: colorMode === "dark" ? "white" : "blue" }} />
+            <FiUpload
+              style={{
+                marginRight: "8px",
+                color: colorMode === "dark" ? "white" : "blue",
+              }}
+            />
             <Input
               type="file"
               accept={accept}
@@ -99,10 +119,9 @@ const CustomUpload = ({
           </>
         )}
       </Box>
-      {isError && <FormErrorMessage ml={ml || 0 + 4}>{errorMessage}</FormErrorMessage>}
+      {isError && (
+        <FormErrorMessage ml={ml || 0 + 4}>{errorMessage}</FormErrorMessage>
+      )}
     </FormControl>
   );
-};
-
-export default CustomUpload;
-
+}

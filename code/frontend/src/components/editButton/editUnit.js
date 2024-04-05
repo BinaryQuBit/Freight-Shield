@@ -1,7 +1,7 @@
-
-
 // React Imports
 import React, { useState, useEffect } from "react";
+
+// Icon Imports
 import { IoMdAddCircle } from "react-icons/io";
 import { IoMdCloseCircle } from "react-icons/io";
 
@@ -32,6 +32,7 @@ import CustomSelect from "../utils/forms/customSelect";
 import CustomUpload from "../buttons/customUpload";
 import { DocumentValidation } from "../utils/validation/documentValidation";
 
+// Start of the Build
 export default function EditUnit({ isOpen, onClose, unit, unitNum }) {
   axios.defaults.withCredentials = true;
   const theme = useTheme();
@@ -52,6 +53,7 @@ export default function EditUnit({ isOpen, onClose, unit, unitNum }) {
   const [unitInsurance, setUnitInsurance] = useState("");
   const [unitSafety, setUnitSafety] = useState("");
 
+  // Render Data
   useEffect(() => {
     if (unit) {
       setUnitNumber(unit.unitNumber || "");
@@ -197,24 +199,28 @@ export default function EditUnit({ isOpen, onClose, unit, unitNum }) {
     formData.append("unitVIN", unitVIN);
     formData.append("unitLicencePlate", unitLicencePlate);
     formData.append("unitStatus", unitStatus);
-      formData.append("unitRegistration", unitRegistration);
-      formData.append("unitInsurance", unitInsurance);
-      formData.append("unitSafety", unitSafety);
+    formData.append("unitRegistration", unitRegistration);
+    formData.append("unitInsurance", unitInsurance);
+    formData.append("unitSafety", unitSafety);
 
     // Start of PUT Method
     try {
-      const addUnitResponse = await axios.put(`/api/updateunit/${unitNum}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          withCredentials: true,
-        },
-      });
+      const addUnitResponse = await axios.put(
+        `/api/updateunit/${unitNum}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            withCredentials: true,
+          },
+        }
+      );
       if (addUnitResponse.status === 200) {
         window.location.reload();
       }
     } catch (error) {
       if (error.response && error.response.status === 405) {
-        // console.error("Error: ", error.response.data.message);
+        console.error("Error: ", error.response.data.message);
         if (
           error.response.data.message.includes(
             "Unit number must be unique within the carrier."
@@ -223,7 +229,7 @@ export default function EditUnit({ isOpen, onClose, unit, unitNum }) {
           setUnitNumberError("Unit Number Already Exists");
         }
       } else {
-        // console.error("Error submitting form:", error);
+        console.error("Error submitting form:", error);
       }
     }
   };

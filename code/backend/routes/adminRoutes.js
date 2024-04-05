@@ -25,7 +25,7 @@ router.get("/shippers", protect, adminStatus, adminOnly, shippers);
 router.get("/carriers", protect, adminStatus, adminOnly, carriers);
 router.get("/adminsettings", protect, adminOnly, adminsettings);
 
-/////////////////////////////////////////////////////// PUTERS ///////////////////////////////////////////////////////
+/////////////////////////////////////////////////////// PUTTERS ///////////////////////////////////////////////////////
 router.put("/carriers/:carrierId", protect, adminStatus, adminOnly, updateCarrierStatus);
 router.put("/shippers/:shipperId", protect, adminStatus, adminOnly, updateShipperStatus);
 router.put("/administrators/:adminId", protect, adminStatus, adminOnly, updateAdminStatus);

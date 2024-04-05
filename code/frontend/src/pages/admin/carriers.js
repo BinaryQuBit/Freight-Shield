@@ -1,19 +1,12 @@
+// React Imports
 import React, { useState } from "react";
-import AdminSidebar from "../../components/sidebar/adminSideBar.js";
-import Protector from "../../components/utils/methods/getters/protector.js";
-import EaseOut from "../../components/responsiveness/easeOut.js";
-import UserHeader from "../../components/header/userHeader.js";
-import { useData } from "../../components/utils/methods/getters/dataContext.js";
-import CustomSelectMultiple from "../../components/buttons/customSelectMultiple.js";
-import CustomLink from "../../components/buttons/customLink.js";
-import MoreDetails from "../../components/viewButton/moreDetailsCarriers.js";
-import CustomInput from "../../components/utils/forms/customInput.js";
-import CustomButton from "../../components/buttons/customButton.js";
+
+// Icon Imports
 import { IoMdCloseCircle } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
-import { EmptyValidation } from "../../components/utils/validation/emptyValidation.js";
-import axios from "axios";
+
+// Chakra UI Imports
 import {
   Table,
   Thead,
@@ -45,14 +38,37 @@ import {
   Input,
 } from "@chakra-ui/react";
 
+// Axios Import
+import axios from "axios";
+
+// Custom Imports
+import AdminSidebar from "../../components/sidebar/adminSideBar.js";
+import Protector from "../../components/utils/methods/getters/protector.js";
+import EaseOut from "../../components/responsiveness/easeOut.js";
+import UserHeader from "../../components/header/userHeader.js";
+import { useData } from "../../components/utils/methods/getters/dataContext.js";
+import CustomSelectMultiple from "../../components/buttons/customSelectMultiple.js";
+import CustomLink from "../../components/buttons/customLink.js";
+import MoreDetails from "../../components/viewButton/moreDetailsCarriers.js";
+import CustomInput from "../../components/utils/forms/customInput.js";
+import CustomButton from "../../components/buttons/customButton.js";
+import { EmptyValidation } from "../../components/utils/validation/emptyValidation.js";
+
+// Start of the Build
 export default function Carriers() {
   Protector("/api/carriers");
+
+  // Data Extraction
   const { data } = useData();
   const { firstName, lastName, status } = data.user || {};
   const notification = data.notification;
   const carriers = data.carriers || [];
+
+  // Modal
   const moreDetailsDisclosure = useDisclosure();
   const actionModalDisclosure = useDisclosure();
+
+  // Break Point
   const isLargeScreen = useBreakpointValue({
     base: false,
     md: false,
@@ -60,6 +76,7 @@ export default function Carriers() {
     xl: true,
   });
 
+  // Hooks
   const [selectedCarrier, setSelectedCarrier] = useState(null);
   const [selectedAction, setSelectedAction] = useState(null);
   const [actionReason, setActionReason] = useState("");
@@ -67,17 +84,20 @@ export default function Carriers() {
   const [searchQuery, setSearchQuery] = useState("");
   const [actionReasonError, setActionReasonError] = useState("");
 
+  // Constants
   const action = [
     { value: "Active", children: "Activate" },
     { value: "Inactive", children: "Deactivate" },
     { value: "Delete", children: "Delete" },
   ];
 
+  // Handle More Details
   const handleMoreDetailsClick = (carrier) => {
     setSelectedCarrier(carrier);
     moreDetailsDisclosure.onOpen();
   };
 
+  // Handle Action
   const handleActionChange = (action, carrier) => {
     if (action === "" || action === "Select Action") {
       return;
@@ -87,6 +107,7 @@ export default function Carriers() {
     actionModalDisclosure.onOpen();
   };
 
+  // Close Modal Handle
   const closeModal = () => {
     moreDetailsDisclosure.onClose();
     actionModalDisclosure.onClose();
@@ -96,25 +117,37 @@ export default function Carriers() {
     setActionReasonError("");
   };
 
+  // Handle Submitting of the Action
   const handleSubmitAction = async (event) => {
     event.preventDefault();
+
+    // If No Value, throw error
     if (!selectedCarrier || !selectedCarrier._id) {
-      // console.error("No carrier selected");
+      console.error("No carrier selected");
       return;
     }
 
+    // Set the error to null
     setActionReasonError("");
+
+    // Validation Check
     const actionReasonError = EmptyValidation("Reason", actionReason);
+
+    // Setting Error
     setActionReasonError(actionReasonError);
+
+    // If there is error, return
     if (actionReasonError) {
       return;
     }
 
+    // Cunstructing the data to be sent
     const payload = {
       status: selectedAction,
       statusReasonChange: actionReason,
     };
 
+    // Sart of PUT Method
     try {
       await axios.put(`/api/carriers/${selectedCarrier._id}`, payload);
       setActionReason("");
@@ -122,10 +155,11 @@ export default function Carriers() {
       setSelectedCarrier(null);
       window.location.reload();
     } catch (error) {
-      // console.error("Error updating carrier status:", error);
+      console.error("Error updating carrier status:", error);
     }
   };
 
+  // Switch case for different Badge
   function getStatusColor(status) {
     switch (status.toLowerCase()) {
       case "inactive":
@@ -137,6 +171,7 @@ export default function Carriers() {
     }
   }
 
+  // Filter
   const filteredCarriers = carriers.filter((carrier) => {
     const searchLower = searchQuery.toLowerCase();
     switch (selectedSearchOption) {
@@ -162,9 +197,13 @@ export default function Carriers() {
 
   return (
     <>
-      <AdminSidebar activePage={"carriers"} Status = { status }/>
+      <AdminSidebar activePage={"carriers"} Status={status} />
       <EaseOut>
-        <UserHeader title="Carriers" userInfo={{ firstName, lastName, notification }} Status={status} />
+        <UserHeader
+          title="Carriers"
+          userInfo={{ firstName, lastName, notification }}
+          Status={status}
+        />
         <Card
           flex={1}
           p={{ base: "1", md: "2" }}

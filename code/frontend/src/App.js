@@ -1,4 +1,7 @@
+// React Imports
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+// Custom Imports
 import { SidebarProvider } from "./components/responsiveness/context.js";
 import { DataProvider } from "./components/utils/methods/getters/dataContext.js";
 
@@ -28,6 +31,7 @@ import ShipperSubmission from "./pages/registration/shipper/shipperSubmission.js
 import ShipperDashboard from "./pages/shipper/shipperDashBoard.js";
 import CarrierDashboard from "./pages/carrier/carrierDashboard.js";
 
+// Start of the APP
 export default function App() {
   return (
     <SidebarProvider>

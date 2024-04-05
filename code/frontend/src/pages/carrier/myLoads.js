@@ -1,5 +1,3 @@
-// Marketplace
-
 // React Imports
 import React, { useState } from "react";
 
@@ -28,9 +26,6 @@ import EaseOut from "../../components/responsiveness/easeOut.js";
 import { useData } from "../../components/utils/methods/getters/dataContext.js";
 import Protector from "../../components/utils/methods/getters/protector.js";
 import EmbeddedMap from "../../components/google/embeddedMap.js";
-import CustomButton from "../../components/buttons/customButton.js";
-import { FaUserPlus } from "react-icons/fa";
-import Assign from "../../components/addButton/assignUnitDriver.js";
 
 // Start of Build
 export default function Marketplace() {
@@ -45,15 +40,6 @@ export default function Marketplace() {
   const myLoads = data.myLoads || [];
   const [filterOption, setFilterOption] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
-  const openAssignModal = (loadId) => {
-    setSelectedLoadId(loadId);
-    setIsAssignModalOpen(true);
-  };
-  const closeAssignModal = () => setIsAssignModalOpen(false);
-  const units = data.units || [];
-  const driverData = data.driverData || [];
-  const [selectedLoadId, setSelectedLoadId] = useState(null);
   const [loadTypeFilter, setLoadTypeFilter] = useState("");
 
   const filteredLoads = myLoads.filter((load) => {
@@ -71,13 +57,6 @@ export default function Marketplace() {
 
   return (
     <>
-      <Assign
-        isOpen={isAssignModalOpen}
-        onClose={closeAssignModal}
-        units={units}
-        driverData={driverData}
-        selectedLoadId={selectedLoadId}
-      />
       <CarrierSideBar activePage={"myLoads"} Status = { status }/>
       <EaseOut>
         <UserHeader title="My Loads" userInfo={{ firstName, lastName, notification }} Status={status}/>
@@ -94,6 +73,7 @@ export default function Marketplace() {
               <option value="shipperCompanyName">Company Name</option>
               <option value="typeLoad">Type of Load</option>
               <option value="unitRequested">Unit Requested</option>
+              <option value="status">Status</option>
             </Select>
             {filterOption === "typeLoad" && (
               <Select
@@ -132,9 +112,9 @@ export default function Marketplace() {
                           </Badge>
                           <Text fontSize="lg">
                             {load.pickUpCity} to {load.dropOffCity}
-                            <Text as="span" p={1} fontSize="15" float="right">
-                              $ {load.price}
-                            </Text>
+                            <Badge as="span" p={2} colorScheme="blue"  float="right">
+                              {load.status}
+                            </Badge>
                           </Text>
                         </Box>
                         <AccordionIcon />
@@ -143,7 +123,7 @@ export default function Marketplace() {
                     <AccordionPanel pb={4}>
                       <Flex
                         direction={{ base: "column", md: "column", lg: "row" }}
-                        align="center"
+                        align={{ lg: "center" }}
                       >
                         <Box flex="1" pr={{ lg: 4 }}>
                           <Text fontSize="md" mb="2">
@@ -175,6 +155,9 @@ export default function Marketplace() {
                           </Text>
                           <Text fontSize="md" mb="2">
                             <strong>Size of Load:</strong> {load.sizeLoad}
+                          </Text>
+                          <Text fontSize="md" mb="2">
+                            <strong>Price $</strong> {load.price}
                           </Text>
                           <Text fontSize="md" mb="2">
                             <strong>Additional Information:</strong>{" "}
@@ -247,15 +230,6 @@ export default function Marketplace() {
                             </Text>
                           </Box>
                         )}
-                        <CustomButton
-                          backgroundColor="#0866FF" 
-                          icon={<FaUserPlus />}
-                          mt={{ base: 4, lg: 0 }}
-                          w="120px"
-                          children="Re-Assign"
-                          variant="blueForwardButton"
-                          onClick={() => openAssignModal(load._id)}
-                        />
                       </Flex>
                     </AccordionPanel>
                   </AccordionItem>

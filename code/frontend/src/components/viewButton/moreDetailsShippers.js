@@ -1,5 +1,7 @@
-// React Imports 
+// React Imports
 import React from "react";
+
+// Icon Import
 import { IoMdCloseCircle } from "react-icons/io";
 
 // Chakra UI Imports
@@ -19,17 +21,25 @@ import {
 import CustomButton from "../buttons/customButton";
 import CustomLink from "../buttons/customLink";
 
+// Start of the Build
 export default function MoreDetails({ isOpen, onClose, shipper }) {
   const theme = useTheme();
-  const customBlue = theme && theme.colors && theme.colors.customBlue || "#0000FF";
+  const customBlue =
+    (theme && theme.colors && theme.colors.customBlue) || "#0000FF";
   const backendUrl = process.env.REACT_APP_BACKEND_PORT;
 
+  // Function
   const handleCloseClick = () => {
     onClose();
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size={{base: "md", md: "lg", lg: "3xl", xl: "3xl"}} isClosable={true}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      size={{ base: "md", md: "lg", lg: "3xl", xl: "3xl" }}
+      isClosable={true}
+    >
       <ModalOverlay />
       <ModalContent padding={2}>
         <ModalHeader textAlign={"center"}>Details</ModalHeader>
@@ -74,7 +84,11 @@ export default function MoreDetails({ isOpen, onClose, shipper }) {
           </Text>
 
           <Box border={"1px"} borderColor={"blue.200"} p={5} m={1}>
-            <Flex justifyContent={"space-between"} align={"center"} direction={{ base: "column", md: "row" }}>
+            <Flex
+              justifyContent={"space-between"}
+              align={"center"}
+              direction={{ base: "column", md: "row" }}
+            >
               <Box>
                 <Text>
                   <strong>Business Name:</strong> {shipper.businessName}

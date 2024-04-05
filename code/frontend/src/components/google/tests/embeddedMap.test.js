@@ -1,8 +1,8 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import EmbeddedMap from '../EmbeddedMap';
+import React from "react";
+import { render } from "@testing-library/react";
+import EmbeddedMap from "../EmbeddedMap";
 
-describe('EmbeddedMap Component', () => {
+describe("EmbeddedMap Component", () => {
   const mockProps = {
     pickUpLAT: 37.7749,
     pickUpLNG: -122.4194,
@@ -12,7 +12,7 @@ describe('EmbeddedMap Component', () => {
     driverLNG: -104.9903,
   };
 
-  it('renders without crashing', () => {
+  it("renders without crashing", () => {
     render(
       <EmbeddedMap
         pickUpLAT={mockProps.pickUpLAT}

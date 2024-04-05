@@ -1,6 +1,10 @@
+// React Import
 import React from "react";
+
+// Chakra UI Import
 import { Button, Box, Text } from "@chakra-ui/react";
 
+// Start of the Build
 export default function BlueButton({
   mt,
   w,
@@ -30,10 +34,7 @@ export default function BlueButton({
         mb={mb}
       >
         <Text className="icon-wrapper">{icon}</Text>
-        <Text
-          fontSize = {fontSize}
-          className="content-wrapper"
-        >
+        <Text fontSize={fontSize} className="content-wrapper">
           {children}
         </Text>
       </Button>

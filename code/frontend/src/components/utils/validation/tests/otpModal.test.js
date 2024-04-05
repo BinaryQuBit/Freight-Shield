@@ -1,21 +1,21 @@
-import React from 'react';
-import { render, fireEvent, screen, act } from '@testing-library/react';
-import OTPModal from '../OTPModal';
-import axios from 'axios'; 
+import React from "react";
+import { render, fireEvent, screen, act } from "@testing-library/react";
+import OTPModal from "../otpModal";
+import axios from "axios";
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
   useNavigate: () => jest.fn(),
 }));
 
-describe('OTPModal', () => {
+describe("OTPModal", () => {
   const onCloseOTPMock = jest.fn();
   const onModalCloseMock = jest.fn();
-  const email = 'rsa1492uregina.ca';
-  const password = '123456789';
-  const confirmPassword = '123456789';
+  const email = "rsa1492uregina.ca";
+  const password = "123456789";
+  const confirmPassword = "123456789";
 
-  test('renders OTP modal with correct elements', () => {
+  test("renders OTP modal with correct elements", () => {
     render(
       <OTPModal
         isOTPOpen={true}
@@ -27,10 +27,10 @@ describe('OTPModal', () => {
       />
     );
 
-    expect(screen.getByText('OTP Verification')).toBeInTheDocument();
+    expect(screen.getByText("OTP Verification")).toBeInTheDocument();
   });
 
-  test('calls onCloseOTP and onModalClose when modal is closed', async () => {
+  test("calls onCloseOTP and onModalClose when modal is closed", async () => {
     render(
       <OTPModal
         isOTPOpen={true}
@@ -43,16 +43,16 @@ describe('OTPModal', () => {
     );
 
     await act(async () => {
-      fireEvent.click(screen.getByLabelText('Close'));
+      fireEvent.click(screen.getByLabelText("Close"));
     });
 
     expect(onCloseOTPMock).toHaveBeenCalled();
     expect(onModalCloseMock).toHaveBeenCalled();
   });
 
-  test('enters OTP and verifies successfully', async () => {
-    const mockPost = jest.spyOn(axios, 'post').mockResolvedValueOnce({});
-  
+  test("enters OTP and verifies successfully", async () => {
+    const mockPost = jest.spyOn(axios, "post").mockResolvedValueOnce({});
+
     render(
       <OTPModal
         isOTPOpen={true}
@@ -63,25 +63,23 @@ describe('OTPModal', () => {
         onModalClose={onModalCloseMock}
       />
     );
-  
-    const otpInputs = screen.getAllByRole('textbox');
+
+    const otpInputs = screen.getAllByRole("textbox");
     otpInputs.forEach((input, index) => {
-      fireEvent.change(input, { target: { value: index + 1 } }); // this will set otp to 123456
+      fireEvent.change(input, { target: { value: index + 1 } });
     });
 
     await act(async () => {
-      fireEvent.click(screen.getByText('Verify'));
+      fireEvent.click(screen.getByText("Verify"));
     });
-  
-    expect(mockPost).toHaveBeenCalledWith('/verifyOTP', {
+
+    expect(mockPost).toHaveBeenCalledWith("/verifyOTP", {
       email,
       password,
       confirmPassword,
-      otpNumber: '123456',
+      otpNumber: "123456",
     });
 
     expect(onCloseOTPMock).toHaveBeenCalled();
   });
-
-
 });
