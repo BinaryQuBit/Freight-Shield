@@ -1,16 +1,15 @@
+// React Import
 import React from "react";
-import AdminSidebar from "../../components/sidebar/adminSideBar.js";
-import Protector from "../../components/utils/methods/getters/protector.js";
-import EaseOut from "../../components/responsiveness/easeOut.js";
-import UserHeader from "../../components/header/userHeader.js";
-import { useData } from "../../components/utils/methods/getters/dataContext.js";
-import EditAdminDetails from "../../components/editButton/editAdminDetails.js";
+
+// Icon Import
 import { CiEdit } from "react-icons/ci";
+
+// Chakra UI Import
 import {
   Card,
   VStack,
   Flex,
-  Heading, 
+  Heading,
   Tooltip,
   useDisclosure,
   Divider,
@@ -18,14 +17,27 @@ import {
   Box,
 } from "@chakra-ui/react";
 
+// Custom Imports
+import AdminSidebar from "../../components/sidebar/adminSideBar.js";
+import Protector from "../../components/utils/methods/getters/protector.js";
+import EaseOut from "../../components/responsiveness/easeOut.js";
+import UserHeader from "../../components/header/userHeader.js";
+import { useData } from "../../components/utils/methods/getters/dataContext.js";
+import EditAdminDetails from "../../components/editButton/editAdminDetails.js";
+
+// Start of the Build
 export default function AdminSettings() {
   Protector("/api/adminsettings");
+
+  // Extraction of the Data
   const { data } = useData();
   const { firstName, lastName } = data.user || {};
   const notification = data.notification;
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const details = data && data.response ? data.response : "";
   const status = details.status;
+
+  // Modal
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>

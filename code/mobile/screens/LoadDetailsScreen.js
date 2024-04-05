@@ -1,3 +1,5 @@
+// React Imports
+import React from "react";
 import {
   View,
   Text,
@@ -5,7 +7,9 @@ import {
   TouchableOpacity,
   Linking,
 } from "react-native";
-import React from "react";
+import { ScrollView } from "react-native-gesture-handler";
+
+// Icons Import
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faBuilding,
@@ -17,11 +21,12 @@ import {
   faUser,
   faTruckLoading,
 } from "@fortawesome/free-solid-svg-icons";
-import { ScrollView } from "react-native-gesture-handler";
 
+// Function for load details
 export default function LoadDetailsScreen({ route }) {
   const { load } = route.params;
 
+  // Handle phone number
   const handlePhone = async () => {
     const phoneNumber = load.shipperPhoneNumber;
     const url = `tel:${phoneNumber}`;
@@ -31,6 +36,7 @@ export default function LoadDetailsScreen({ route }) {
     }
   };
 
+  // Handle email
   const handleEmail = async () => {
     const email = load.shipperEmail;
     const url = `mailto:${email}`;
@@ -113,6 +119,7 @@ export default function LoadDetailsScreen({ route }) {
   );
 }
 
+// Styles Sheet
 const styles = StyleSheet.create({
   container: {
     padding: 10,

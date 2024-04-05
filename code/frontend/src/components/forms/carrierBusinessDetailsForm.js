@@ -1,8 +1,8 @@
-// Carrier Business Detail Form
-
 // React Imports
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+// Icon Import
 import { FiTruck } from "react-icons/fi";
 
 // Axios Import
@@ -143,9 +143,9 @@ export default function CarrierCompanyDetailsForm() {
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        // console.error("Error: ", error.response.data.message);
+        console.error("Error: ", error.response.data.message);
       } else {
-        // console.error("Error submitting form:", error);
+        console.error("Error submitting form:", error);
       }
     }
   };

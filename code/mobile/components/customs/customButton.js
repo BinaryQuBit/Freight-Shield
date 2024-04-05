@@ -14,7 +14,9 @@ export default function CustomButton({ children, onPress, mt, br, pH, fs }) {
 
   return (
     <TouchableOpacity style={buttonStyle} marginTop={mt}>
-      <Text style={styles.buttonText} fontSize={fs} onPress={onPress}>{children}</Text>
+      <Text style={styles.buttonText} fontSize={fs} onPress={onPress}>
+        {children}
+      </Text>
     </TouchableOpacity>
   );
 }
@@ -24,11 +26,10 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#0866FF",
     paddingVertical: 12,
-    // elevation: 3,
   },
   buttonText: {
     color: "#FFFFFF",
     fontFamily: "Lora-SemiBold",
-    textAlign: "center"
+    textAlign: "center",
   },
 });

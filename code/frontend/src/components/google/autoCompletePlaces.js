@@ -1,12 +1,21 @@
-// Auto Complete Places
+// React Imports
+import React, { useEffect } from "react";
+import { useLoadScript } from "@react-google-maps/api";
 
-import React, { useEffect } from 'react';
-import { Input } from '@chakra-ui/react';
-import { useLoadScript } from '@react-google-maps/api';
+// Chakra UI Import
+import { Input } from "@chakra-ui/react";
 
-const libraries = ['places'];
+const libraries = ["places"];
 
-const GooglePlacesAutocomplete = ({ type, name, placeholder, value, onChange, borderColor, id }) => {
+const GooglePlacesAutocomplete = ({
+  type,
+  name,
+  placeholder,
+  value,
+  onChange,
+  borderColor,
+  id,
+}) => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_API_KEY,
     libraries,
@@ -16,35 +25,35 @@ const GooglePlacesAutocomplete = ({ type, name, placeholder, value, onChange, bo
     if (isLoaded) {
       const initializeAutocomplete = (autocompleteId) => {
         if (!window.google) {
-          // console.error('Google Maps JavaScript API not loaded');
+          console.error("Google Maps JavaScript API not loaded");
           return;
         }
 
         const autocomplete = new window.google.maps.places.Autocomplete(
           document.getElementById(autocompleteId),
-          { types: ['address'], componentRestrictions: { country: ['CA'] } }
+          { types: ["address"], componentRestrictions: { country: ["CA"] } }
         );
 
-        autocomplete.addListener('place_changed', () => {
+        autocomplete.addListener("place_changed", () => {
           const place = autocomplete.getPlace();
           if (!place.geometry) {
             return;
           }
 
-          let city = '';
+          let city = "";
           for (const component of place.address_components) {
-            if (component.types.includes('locality')) {
+            if (component.types.includes("locality")) {
               city = component.long_name;
               break;
             }
           }
 
-          onChange({ 
-            address: place.formatted_address, 
-            city, 
+          onChange({
+            address: place.formatted_address,
+            city,
             lat: place.geometry.location.lat(),
             lng: place.geometry.location.lng(),
-            id: autocompleteId 
+            id: autocompleteId,
           });
         });
       };
@@ -68,4 +77,3 @@ const GooglePlacesAutocomplete = ({ type, name, placeholder, value, onChange, bo
 };
 
 export default GooglePlacesAutocomplete;
-

@@ -14,8 +14,13 @@ import * as DocumentPicker from "expo-document-picker";
 // Icon Import
 import { Entypo } from "@expo/vector-icons";
 
-// 
-export default function CustomUpload({ label, required, onFileSelected, errorMessage }) {
+// Start of the Build
+export default function CustomUpload({
+  label,
+  required,
+  onFileSelected,
+  errorMessage,
+}) {
   const [file, setFile] = useState(null);
   const [isFocused, setIsFocused] = useState(false);
   const labelPosition = useState(new Animated.Value(0))[0];

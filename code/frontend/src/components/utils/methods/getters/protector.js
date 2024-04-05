@@ -1,20 +1,29 @@
+// React Imports
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+// Axios Import
 import axios from "axios";
+
+// Custom Import
 import { useData } from "./dataContext.js";
 
-const Protector = (path) => {
+// Start of the Build
+export default function Protector(path) {
   const { setData } = useData();
   const navigate = useNavigate();
+
+  // Hook
   const [email, setEmail] = useState(null);
+
   useEffect(() => {
     axios
       .get(path, { withCredentials: true })
       .then((response) => {
         setData(response.data);
         setEmail(response.data.email);
-        console.log(`${path} Page Fetched Successfully`);
-        console.log("Response Data", response.data);
+
+        // Restriction if the forms are not complete
         if (
           (path === "/api/shippercontactdetails" &&
             response.data.areContactDetailsComplete) ||
@@ -32,6 +41,8 @@ const Protector = (path) => {
       })
       .catch((error) => {
         console.error(`Error Fetching ${path} Page: `, error);
+
+        // Restriction if status is Pending or Deactive for Carrier, Shipper, Admin
         if (
           error.response &&
           (error.response.status === 401 || error.response.status === 403)
@@ -45,6 +56,8 @@ const Protector = (path) => {
           navigate("/shippersettings");
         }
       });
+
+    // Active Load Listner and constructing mock data
     if (path === "/api/activeloads") {
       const wsSocket = process.env.REACT_APP_WS_SOCKET;
       const ws = new WebSocket(wsSocket);
@@ -90,6 +103,41 @@ const Protector = (path) => {
               }
               return { ...prevData, loads: updatedLoads };
             });
+
+            // Listening to shipper and mocking notification
+          } else if (message.change && message.change.ns.coll === "shippers") {
+            const { change } = message;
+            if (change.shipperEmail && change.shipperEmail === email) {
+              setData((prevData) => {
+                let updatedNotifications = Array.isArray(prevData.notification)
+                  ? [...prevData.notification]
+                  : [];
+                switch (change.operationType) {
+                  case "update":
+                    const updates = change.updateDescription.updatedFields;
+                    if ("notification" in updates) {
+                      updatedNotifications = updates.notification;
+                    } else {
+                      for (const key in updates) {
+                        if (key.startsWith("notification.")) {
+                          const index = parseInt(key.split(".")[1], 10);
+                          while (updatedNotifications.length <= index) {
+                            updatedNotifications.push(null);
+                          }
+                          updatedNotifications[index] = {
+                            ...(updatedNotifications[index] || {}),
+                            ...updates[key],
+                          };
+                        }
+                      }
+                    }
+                    break;
+                  default:
+                    break;
+                }
+                return { ...prevData, notification: updatedNotifications };
+              });
+            }
           }
         } catch (error) {
           console.error("Error parsing WebSocket message:", error);
@@ -99,6 +147,8 @@ const Protector = (path) => {
         ws.close();
       };
     }
+
+    // Listening to marketplace and mocking data
     if (path === "/api/marketplace") {
       const wsSocket = process.env.REACT_APP_WS_SOCKET;
       const ws = new WebSocket(wsSocket);
@@ -141,40 +191,15 @@ const Protector = (path) => {
               }
               return { ...prevData, loads: updatedLoads };
             });
-          }
-        } catch (error) {
-          console.error("Error parsing WebSocket message:", error);
-        }
-      };
-      return () => {
-        ws.close();
-      };
-    }
-    if (
-      path === "/api/shipperdashboard" ||
-      path === "/api/postload" ||
-      path === "/api/history" ||
-      path === "/api/shippersettings" ||
-      path === "/api/activeloads"
-    ) {
-      const wsSocket = process.env.REACT_APP_WS_SOCKET;
-      const ws = new WebSocket(wsSocket);
-      ws.onerror = (error) => console.error("WebSocket error:", error);
-      ws.onmessage = (event) => {
-        try {
-          const message = JSON.parse(event.data);
-          console.log("This is message", message);
-          if (message.change && message.change.ns.coll === "shippers") {
+
+            // listening to carrier and mocking notification
+          } else if (message.change && message.change.ns.coll === "carriers") {
             const { change } = message;
-            console.log("This is change", change);
-            console.log("This is email from backend", change.shipperEmail);
-            console.log("This is email from front end", email);
-            if (change.shipperEmail && change.shipperEmail === email) {
+            if (change.carrierEmail && change.carrierEmail === email) {
               setData((prevData) => {
                 let updatedNotifications = Array.isArray(prevData.notification)
                   ? [...prevData.notification]
                   : [];
-                console.log("This is prev noti", updatedNotifications);
                 switch (change.operationType) {
                   case "update":
                     const updates = change.updateDescription.updatedFields;
@@ -194,7 +219,6 @@ const Protector = (path) => {
                         }
                       }
                     }
-                    console.log("Updated notifications:", updatedNotifications);
                     break;
                   default:
                     break;
@@ -211,6 +235,64 @@ const Protector = (path) => {
         ws.close();
       };
     }
+
+    // listening to shipper and mocking notification for all these pages
+    if (
+      path === "/api/shipperdashboard" ||
+      path === "/api/postload" ||
+      path === "/api/history" ||
+      path === "/api/shippersettings"
+    ) {
+      const wsSocket = process.env.REACT_APP_WS_SOCKET;
+      const ws = new WebSocket(wsSocket);
+      ws.onerror = (error) => console.error("WebSocket error:", error);
+      ws.onmessage = (event) => {
+        try {
+          const message = JSON.parse(event.data);
+          if (message.change && message.change.ns.coll === "shippers") {
+            const { change } = message;
+            if (change.shipperEmail && change.shipperEmail === email) {
+              setData((prevData) => {
+                let updatedNotifications = Array.isArray(prevData.notification)
+                  ? [...prevData.notification]
+                  : [];
+                switch (change.operationType) {
+                  case "update":
+                    const updates = change.updateDescription.updatedFields;
+                    if ("notification" in updates) {
+                      updatedNotifications = updates.notification;
+                    } else {
+                      for (const key in updates) {
+                        if (key.startsWith("notification.")) {
+                          const index = parseInt(key.split(".")[1], 10);
+                          while (updatedNotifications.length <= index) {
+                            updatedNotifications.push(null);
+                          }
+                          updatedNotifications[index] = {
+                            ...(updatedNotifications[index] || {}),
+                            ...updates[key],
+                          };
+                        }
+                      }
+                    }
+                    break;
+                  default:
+                    break;
+                }
+                return { ...prevData, notification: updatedNotifications };
+              });
+            }
+          }
+        } catch (error) {
+          console.error("Error parsing WebSocket message:", error);
+        }
+      };
+      return () => {
+        ws.close();
+      };
+    }
+
+    // listening to carrier and mocking notification for all these pages
     if (
       path === "/api/carrierdashboard" ||
       path === "/api/myloads" ||
@@ -224,18 +306,13 @@ const Protector = (path) => {
       ws.onmessage = (event) => {
         try {
           const message = JSON.parse(event.data);
-          console.log("This is message", message);
           if (message.change && message.change.ns.coll === "carriers") {
             const { change } = message;
-            console.log("This is change", change);
-            console.log("This is email from backend", change.carrierEmail);
-            console.log("This is email from front end", email);
             if (change.carrierEmail && change.carrierEmail === email) {
               setData((prevData) => {
                 let updatedNotifications = Array.isArray(prevData.notification)
                   ? [...prevData.notification]
                   : [];
-                console.log("This is prev noti", updatedNotifications);
                 switch (change.operationType) {
                   case "update":
                     const updates = change.updateDescription.updatedFields;
@@ -255,7 +332,6 @@ const Protector = (path) => {
                         }
                       }
                     }
-                    console.log("Updated notifications:", updatedNotifications);
                     break;
                   default:
                     break;
@@ -272,6 +348,7 @@ const Protector = (path) => {
         ws.close();
       };
     }
+    // listening to admin and mocking notification for all these pages
     if (
       path === "/api/administrators" ||
       path === "/api/shippers" ||
@@ -284,18 +361,13 @@ const Protector = (path) => {
       ws.onmessage = (event) => {
         try {
           const message = JSON.parse(event.data);
-          console.log("This is message", message);
           if (message.change && message.change.ns.coll === "admins") {
             const { change } = message;
-            console.log("This is change", change);
-            console.log("This is email from backend", change.adminEmail);
-            console.log("This is email from front end", email);
             if (change.adminEmail && change.adminEmail === email) {
               setData((prevData) => {
                 let updatedNotifications = Array.isArray(prevData.notification)
                   ? [...prevData.notification]
                   : [];
-                console.log("This is prev noti", updatedNotifications);
                 switch (change.operationType) {
                   case "update":
                     const updates = change.updateDescription.updatedFields;
@@ -315,7 +387,6 @@ const Protector = (path) => {
                         }
                       }
                     }
-                    console.log("Updated notifications:", updatedNotifications);
                     break;
                   default:
                     break;
@@ -334,5 +405,4 @@ const Protector = (path) => {
     }
   }, [navigate, path, email, setData]);
   return null;
-};
-export default Protector;
+}

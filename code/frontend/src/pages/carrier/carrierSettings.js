@@ -4,7 +4,7 @@ import React from "react";
 // Icon Imports
 import { CiEdit } from "react-icons/ci";
 
-// Chakra UI Imports 
+// Chakra UI Imports
 import {
   Card,
   VStack,
@@ -17,7 +17,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 
-// Custom Imports 
+// Custom Imports
 import Sidebar from "../../components/sidebar/carrierSideBar.js";
 import Protector from "../../components/utils/methods/getters/protector.js";
 import EaseOut from "../../components/responsiveness/easeOut.js";
@@ -40,7 +40,7 @@ export default function ShipperSettings() {
 
   return (
     <>
-      <Sidebar activePage="carrierSettings" Status = { status }/>
+      <Sidebar activePage="carrierSettings" Status={status} />
       <EaseOut>
         <UserHeader
           title="Carrier Settings"
@@ -48,7 +48,7 @@ export default function ShipperSettings() {
           Status={status}
         />
         <Box w="100%" p={5}>
-        <Card p={5} rounded="none" mb={5}>
+          <Card p={5} rounded="none" mb={5}>
             <Text>
               <strong>Status:</strong> {status}
             </Text>
@@ -63,21 +63,24 @@ export default function ShipperSettings() {
                   Company Details
                 </Heading>
                 {status === "Active" ? (
-                <Tooltip label="Edit Details" aria-label="Edit Details Tooltip">
-                  <span>
-                    <CiEdit
-                      onClick={onOpen}
-                      style={{
-                        cursor: "pointer",
-                        fontSize: "24px",
-                        color: "0866FF",
-                      }}
-                    />
-                  </span>
-                </Tooltip>
-                                ) : (
-                                  <></>
-                                )}
+                  <Tooltip
+                    label="Edit Details"
+                    aria-label="Edit Details Tooltip"
+                  >
+                    <span>
+                      <CiEdit
+                        onClick={onOpen}
+                        style={{
+                          cursor: "pointer",
+                          fontSize: "24px",
+                          color: "0866FF",
+                        }}
+                      />
+                    </span>
+                  </Tooltip>
+                ) : (
+                  <></>
+                )}
               </Flex>
               <Divider />
               <Text>
@@ -116,18 +119,19 @@ export default function ShipperSettings() {
               </Text>
               {details.doingBusinessAs && (
                 <Text>
-                  <strong>Doing Business As:</strong>{" "}
-                  {details.doingBusinessAs}
+                  <strong>Doing Business As:</strong> {details.doingBusinessAs}
                 </Text>
               )}
               <Text>
                 <strong>Business Number:</strong> {details.businessNumber}
               </Text>
               <Text>
-                <strong>Canadian Carrier Code:</strong> {details.canadianCarrierCode}
+                <strong>Canadian Carrier Code:</strong>{" "}
+                {details.canadianCarrierCode}
               </Text>
               <Text>
-                <strong>National Safety Code:</strong> {details.nationalSafetyCode}
+                <strong>National Safety Code:</strong>{" "}
+                {details.nationalSafetyCode}
               </Text>
               <Text>
                 <strong>WCB Number:</strong> {details.wcb}

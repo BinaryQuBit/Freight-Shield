@@ -1,8 +1,8 @@
-// Register Form
-
 // React Imports
 import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+// Icon Import
 import { MdSwitchAccount } from "react-icons/md";
 import { FiTruck } from "react-icons/fi";
 
@@ -10,7 +10,11 @@ import { FiTruck } from "react-icons/fi";
 import axios from "axios";
 
 // Chakra UI Imports
-import { Box, Flex, Card, Text,
+import {
+  Box,
+  Flex,
+  Card,
+  Text,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -18,7 +22,7 @@ import { Box, Flex, Card, Text,
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  } from "@chakra-ui/react";
+} from "@chakra-ui/react";
 
 // Custom Imports
 import CustomButton from "../buttons/customButton";
@@ -60,14 +64,14 @@ export default function RegisterForm() {
   const [isPrivacyOpen, setPrivacyOpen] = useState(false);
   const onCloseSuccess = () => setSuccessOpen(false);
 
-
   // Functions
   const onOpenTerms = () => setTermsOpen(true);
   const onCloseTerms = () => setTermsOpen(false);
   const onOpenPrivacy = () => setPrivacyOpen(true);
   const onClosePrivacy = () => setPrivacyOpen(false);
   const toggleShowPassword = () => setShowPassword(!showPassword);
-  const toggleShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
+  const toggleShowConfirmPassword = () =>
+    setShowConfirmPassword(!showConfirmPassword);
 
   // Handle Registration
   const handleRegistration = async (event) => {
@@ -111,12 +115,12 @@ export default function RegisterForm() {
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        // console.error("Error: ", error.response.data.message);
+        console.error("Error: ", error.response.data.message);
         if (error.response.data.message.includes("already exists")) {
-          setEmailError("An account with this email already exists")
+          setEmailError("An account with this email already exists");
         }
       } else {
-      // console.error("Error submitting form:", error);
+        console.error("Error submitting form:", error);
       }
     }
   };
@@ -238,29 +242,33 @@ export default function RegisterForm() {
         </Card>
       </Box>
       <Modal isOpen={isSuccessOpen} onClose={onCloseSuccess}>
-  <ModalOverlay />
-  <ModalContent>
-    <ModalHeader textAlign={"center"}>Registration Successful</ModalHeader>
-    <ModalCloseButton />
-    <ModalBody>
-  <Flex direction="column" align="center" justify="center">
-    <Text mt={4} textAlign={"center"}>Your account has been successfully created!</Text>
-  </Flex>
-</ModalBody>
-    <ModalFooter>
-      <CustomButton
-       variant={"blueForwardButton"}
-       w={"100px"}
-       children={"Login"}
-       icon={<FiTruck />}
-       onClick={() => {
-        onCloseSuccess();
-        navigate("/login");
-       }}
-      />
-    </ModalFooter>
-  </ModalContent>
-</Modal>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader textAlign={"center"}>
+            Registration Successful
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Flex direction="column" align="center" justify="center">
+              <Text mt={4} textAlign={"center"}>
+                Your account has been successfully created!
+              </Text>
+            </Flex>
+          </ModalBody>
+          <ModalFooter>
+            <CustomButton
+              variant={"blueForwardButton"}
+              w={"100px"}
+              children={"Login"}
+              icon={<FiTruck />}
+              onClick={() => {
+                onCloseSuccess();
+                navigate("/login");
+              }}
+            />
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <Terms isTermsOpen={isTermsOpen} onCloseTerms={onCloseTerms} />
       <Privacy isPrivacyOpen={isPrivacyOpen} onClosePrivacy={onClosePrivacy} />
     </>

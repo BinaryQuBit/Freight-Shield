@@ -1,10 +1,15 @@
-// Shipper Submission Details
-
+// React Imports
 import React from "react";
 import { useNavigate } from "react-router-dom";
+
+// Icon Import
 import { FiTruck } from "react-icons/fi";
 import { CiEdit } from "react-icons/ci";
+
+// Axios Import
 import axios from "axios";
+
+// Chakra UI Imports
 import {
   Box,
   Text,
@@ -16,18 +21,22 @@ import {
   useDisclosure,
   Tooltip,
 } from "@chakra-ui/react";
+
+// Custom Imports
 import logout from "../methods/logout";
 import { useData } from "../utils/methods/getters/dataContext.js";
 import CustomLink from "../buttons/customLink.js";
 import CustomButton from "../buttons/customButton";
 import EditShipperDetails from "../editButton/editShipperDetails.js";
 
+// Start of the Build
 export default function ShipperSubmissionDetails() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const { data } = useData();
-  const backendUrl = process.env.REACT_APP_BACKEND_PORT
+  const backendUrl = process.env.REACT_APP_BACKEND_PORT;
 
+  // Handle Submit
   const handleSubmit = async (event) => {
     event.preventDefault();
     // Start of PUT Method
@@ -41,9 +50,9 @@ export default function ShipperSubmissionDetails() {
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        // console.error("Error: ", error.response.data.message);
+        console.error("Error: ", error.response.data.message);
       } else {
-        // console.error("Error submitting form:", error);
+        console.error("Error submitting form:", error);
       }
     }
   };

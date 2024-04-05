@@ -11,6 +11,16 @@ const startEndTimeSchema = new mongoose.Schema({
   },
 });
 
+// Inspection Schema
+const inspectionSchema = new mongoose.Schema({
+  checkedItems: {
+    type: Array,
+  },
+  defectDetails: {
+    type: String,
+  },
+});
+
 // Declaration and Defination of Driver Status Schema
 const driverStatusSchema = new mongoose.Schema({
   OFF: [startEndTimeSchema],
@@ -30,6 +40,12 @@ const logEntrySchema = new mongoose.Schema({
   status: {
     type: driverStatusSchema,
   },
+  drivingStatus: {
+    type: String,
+    default: "",
+  },
+  Pre: [inspectionSchema],
+  Post: [inspectionSchema],
 });
 
 // Defination and Declaration of the Logbook Schema

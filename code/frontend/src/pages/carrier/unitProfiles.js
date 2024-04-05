@@ -1,4 +1,12 @@
+// React Imports
 import React, { useState } from "react";
+
+// Icon Imports
+import { IoMdAddCircle } from "react-icons/io";
+import { RxCrossCircled } from "react-icons/rx";
+import { MdOutlineEdit } from "react-icons/md";
+
+// Chakra UI Imports
 import {
   Card,
   Accordion,
@@ -16,11 +24,12 @@ import {
   Flex,
   Stack,
 } from "@chakra-ui/react";
-import axios from "axios"
+
+// Axios Import
+import axios from "axios";
+
+// Custom Imports
 import CustomButton from "../../components/buttons/customButton.js";
-import { IoMdAddCircle } from "react-icons/io";
-import { RxCrossCircled } from "react-icons/rx";
-import { MdOutlineEdit } from "react-icons/md";
 import AddUnit from "../../components/addButton/addUnit.js";
 import CarrierSideBar from "../../components/sidebar/carrierSideBar.js";
 import EaseOut from "../../components/responsiveness/easeOut.js";
@@ -33,33 +42,43 @@ import EditUnit from "../../components/editButton/editUnit.js";
 export default function UnitProfile() {
   Protector("/api/unitprofiles");
   const { colorMode } = useColorMode();
+
+  // Data Extraction
   const { data } = useData();
   const { units } = data;
   const { firstName, lastName, status } = data.user || {};
   const backendPort = process.env.REACT_APP_BACKEND_PORT;
   const notification = data.notification;
 
-  const sortedUnits = (units || []).filter(unit => unit && unit.unitNumber !== undefined).sort((a, b) => {
-    const unitANumber = a.unitNumber.toString();
-    const unitBNumber = b.unitNumber.toString();
-    return unitANumber.localeCompare(unitBNumber, undefined, { numeric: true });
-  });
-  
+  // Sort
+  const sortedUnits = (units || [])
+    .filter((unit) => unit && unit.unitNumber !== undefined)
+    .sort((a, b) => {
+      const unitANumber = a.unitNumber.toString();
+      const unitBNumber = b.unitNumber.toString();
+      return unitANumber.localeCompare(unitBNumber, undefined, {
+        numeric: true,
+      });
+    });
 
+  // Hooks
   const [isAddUnitModalOpen, setIsAddUnitModalOpen] = useState(false);
-  const openAddUnitModal = () => setIsAddUnitModalOpen(true);
-  const closeAddUnitModal = () => setIsAddUnitModalOpen(false);
   const [searchField, setSearchField] = useState("unitNumber");
   const [searchQuery, setSearchQuery] = useState("");
   const [isEditUnitModalOpen, setIsEditUnitModalOpen] = useState(false);
   const [currentUnit, setCurrentUnit] = useState(null);
 
+  // Filter
   const filteredUnits = sortedUnits.filter((unit) => {
     const fieldValue = unit[searchField]
       ? unit[searchField].toString().toLowerCase()
       : "";
     return fieldValue.includes(searchQuery.toLowerCase());
   });
+
+  // Functions
+  const openAddUnitModal = () => setIsAddUnitModalOpen(true);
+  const closeAddUnitModal = () => setIsAddUnitModalOpen(false);
 
   const openEditUnitModal = (unit) => {
     setCurrentUnit(unit);
@@ -71,22 +90,26 @@ export default function UnitProfile() {
     setCurrentUnit(null);
   };
 
+  // Delete
   const deleteUnit = async (unitNumber) => {
     try {
       await axios.delete(`/api/units/${unitNumber}`);
       window.location.reload();
     } catch (error) {
-      console.error('Error deleting unit:', error);
+      console.error("Error deleting unit:", error);
     }
   };
-
 
   return (
     <>
       <AddUnit isOpen={isAddUnitModalOpen} onClose={closeAddUnitModal} />
-      <CarrierSideBar activePage="unitProfile" Status = { status }/>
+      <CarrierSideBar activePage="unitProfile" Status={status} />
       <EaseOut>
-        <UserHeader title="Unit Profiles" userInfo={{ firstName, lastName, notification }} Status={status} />
+        <UserHeader
+          title="Unit Profiles"
+          userInfo={{ firstName, lastName, notification }}
+          Status={status}
+        />
         <CustomButton
           backgroundColor="#0866FF"
           w="90px"
@@ -195,27 +218,27 @@ export default function UnitProfile() {
                         </Box>
                       </Flex>
                       {unit.unitStatus !== "In Use" && (
-                      <Flex justify={"space-between"}>
-                        <CustomButton
-                          backgroundColor="#0866FF"
-                          w="90px"
-                          children="Delete"
-                          variant="blueBackwardButton"
-                          icon={<RxCrossCircled />}
-                          m={"5"}
-                          onClick={() => deleteUnit(unit.unitNumber)}
-                        />
-                        <CustomButton
-                          backgroundColor="#0866FF"
-                          w="90px"
-                          children="Edit"
-                          variant="blueForwardButton"
-                          icon={<MdOutlineEdit />}
-                          m={"5"}
-                          onClick={() => openEditUnitModal(unit)}
-                        />
-                      </Flex>
-                       )}
+                        <Flex justify={"space-between"}>
+                          <CustomButton
+                            backgroundColor="#0866FF"
+                            w="90px"
+                            children="Delete"
+                            variant="blueBackwardButton"
+                            icon={<RxCrossCircled />}
+                            m={"5"}
+                            onClick={() => deleteUnit(unit.unitNumber)}
+                          />
+                          <CustomButton
+                            backgroundColor="#0866FF"
+                            w="90px"
+                            children="Edit"
+                            variant="blueForwardButton"
+                            icon={<MdOutlineEdit />}
+                            m={"5"}
+                            onClick={() => openEditUnitModal(unit)}
+                          />
+                        </Flex>
+                      )}
                     </AccordionPanel>
                   </AccordionItem>
                 ))}
@@ -228,11 +251,11 @@ export default function UnitProfile() {
         )}
       </EaseOut>
       <EditUnit
-          isOpen={isEditUnitModalOpen}
-          onClose={closeEditUnitModal}
-          unit={currentUnit}
-          unitNum={currentUnit?.unitNumber} 
-        />
+        isOpen={isEditUnitModalOpen}
+        onClose={closeEditUnitModal}
+        unit={currentUnit}
+        unitNum={currentUnit?.unitNumber}
+      />
     </>
   );
 }

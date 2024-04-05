@@ -1,18 +1,12 @@
-import React, { useState } from "react"; 
-import AdminSidebar from "../../components/sidebar/adminSideBar.js";
-import Protector from "../../components/utils/methods/getters/protector.js";
-import EaseOut from "../../components/responsiveness/easeOut.js";
-import UserHeader from "../../components/header/userHeader.js";
-import { useData } from "../../components/utils/methods/getters/dataContext.js";
-import CustomSelectMultiple from "../../components/buttons/customSelectMultiple.js";
-import CustomInput from "../../components/utils/forms/customInput.js";
-import CustomButton from "../../components/buttons/customButton.js";
+// React Imports
+import React, { useState } from "react";
+
+// Icon Imports
 import { IoMdCloseCircle, IoMdAddCircle } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
-import { EmptyValidation } from "../../components/utils/validation/emptyValidation.js";
-import AddAdmin from "../../components/addButton/addAdmin.js";
-import axios from "axios";
+
+// Chakra UI Imports
 import {
   Table,
   Thead,
@@ -44,18 +38,37 @@ import {
   Input,
 } from "@chakra-ui/react";
 
+// Axios Import
+import axios from "axios";
+
+// Custom Imports
+import AdminSidebar from "../../components/sidebar/adminSideBar.js";
+import Protector from "../../components/utils/methods/getters/protector.js";
+import EaseOut from "../../components/responsiveness/easeOut.js";
+import UserHeader from "../../components/header/userHeader.js";
+import { useData } from "../../components/utils/methods/getters/dataContext.js";
+import CustomSelectMultiple from "../../components/buttons/customSelectMultiple.js";
+import CustomInput from "../../components/utils/forms/customInput.js";
+import CustomButton from "../../components/buttons/customButton.js";
+import { EmptyValidation } from "../../components/utils/validation/emptyValidation.js";
+import AddAdmin from "../../components/addButton/addAdmin.js";
+
+// Start of the Build
 export default function Administrators() {
   Protector("/api/administrators");
+
+  // Data Extraction
   const { data } = useData();
   const { firstName, lastName, status } = data.user || {};
   const notification = data.notification;
   const administrators = data.administrators || [];
   const { adminStatus } = data.status || {};
+
+  // Modal
   const moreDetailsDisclosure = useDisclosure();
   const actionModalDisclosure = useDisclosure();
-  const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
-  const openAddAdminModal = () => setIsAddAdminModalOpen(true);
-  const closeAddAdminModal = () => setIsAddAdminModalOpen(false);
+
+  // Break Points
   const isLargeScreen = useBreakpointValue({
     base: false,
     md: false,
@@ -63,19 +76,38 @@ export default function Administrators() {
     xl: true,
   });
 
+  // Hooks
   const [selectedAdministrator, setSelectedAdministrator] = useState(null);
   const [selectedAction, setSelectedAction] = useState(null);
   const [actionReason, setActionReason] = useState("");
   const [selectedSearchOption, setSelectedSearchOption] = useState("email");
   const [searchQuery, setSearchQuery] = useState("");
   const [actionReasonError, setActionReasonError] = useState("");
+  const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
 
+  // Constants
   const action = [
     { value: "Active", children: "Activate" },
     { value: "Inactive", children: "Deactivate" },
     { value: "Delete", children: "Delete" },
   ];
 
+  // Functions
+  const openAddAdminModal = () => setIsAddAdminModalOpen(true);
+  const closeAddAdminModal = () => setIsAddAdminModalOpen(false);
+
+  function getStatusColor(status) {
+    switch (status.toLowerCase()) {
+      case "inactive":
+        return "red";
+      case "active":
+        return "green";
+      default:
+        return "gray";
+    }
+  }
+
+  // Handle Change
   const handleActionChange = (action, administrator) => {
     if (action === "" || action === "Select Action") {
       return;
@@ -94,25 +126,34 @@ export default function Administrators() {
     setActionReasonError("");
   };
 
+  // Handle Submission
   const handleSubmitAction = async (event) => {
     event.preventDefault();
+    // Error Check
     if (!selectedAdministrator || !selectedAdministrator._id) {
-      // console.error("No administrator selected");
+      console.error("No administrator selected");
       return;
     }
 
+    // Setting Error
     setActionReasonError("");
+
+    // Validation Check
     const actionReasonError = EmptyValidation("Reason", actionReason);
     setActionReasonError(actionReasonError);
+
+    // Error Check
     if (actionReasonError) {
       return;
     }
 
+    // Construction of the Data to be sent
     const payload = {
       status: selectedAction,
       statusReasonChange: actionReason,
     };
 
+    // Start of the PUT Request
     try {
       await axios.put(
         `/api/administrators/${selectedAdministrator._id}`,
@@ -123,20 +164,9 @@ export default function Administrators() {
       setSelectedAdministrator(null);
       window.location.reload();
     } catch (error) {
-      // console.error("Error updating administrator status:", error);
+      console.error("Error updating administrator status:", error);
     }
   };
-
-  function getStatusColor(status) {
-    switch (status.toLowerCase()) {
-      case "inactive":
-        return "red";
-      case "active":
-        return "green";
-      default:
-        return "gray";
-    }
-  }
 
   const filteredAdministrators = administrators.filter((administrator) => {
     const searchLower = searchQuery.toLowerCase();
@@ -162,10 +192,14 @@ export default function Administrators() {
   return (
     <>
       <AddAdmin isOpen={isAddAdminModalOpen} onClose={closeAddAdminModal} />
-      <AdminSidebar activePage={"administrators"} Status = { status } />
+      <AdminSidebar activePage={"administrators"} Status={status} />
       <EaseOut>
-        <UserHeader title="Administrators" userInfo={{ firstName, lastName, notification }} Status={status} />
-        {adminStatus == "Super User" ? (
+        <UserHeader
+          title="Administrators"
+          userInfo={{ firstName, lastName, notification }}
+          Status={status}
+        />
+        {adminStatus === "Super User" ? (
           <CustomButton
             backgroundColor="#0866FF"
             w="90px"

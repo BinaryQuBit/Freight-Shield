@@ -1,12 +1,20 @@
+// React Imports
 import React, { useState } from "react";
 import { View, Text, StyleSheet, ScrollView, Alert } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
+// Picker Import
 import { Picker } from "@react-native-picker/picker";
+
+// Axios Import
+import axios from "axios";
+
+// Custom Imports
 import CustomButton from "../components/customs/customButton";
 import LogBookStructure from "../components/logBook/logBookStructure";
 import CustomInput from "../components/customs/customInput";
-import axios from "axios";
-import { useNavigation } from "@react-navigation/native";
 
+// Start of the Build
 export default function EditLogBookScreen({ route }) {
   const navigation = useNavigation();
   const log = route.params;

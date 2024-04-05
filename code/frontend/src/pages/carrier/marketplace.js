@@ -1,5 +1,3 @@
-// Marketplace
-
 // React Imports
 import React, { useState } from "react";
 
@@ -40,7 +38,8 @@ export default function Marketplace() {
   // Hooks
   const { colorMode } = useColorMode();
   const { data } = useData();
-  const { firstName, lastName, status, notification } = data.user || {};
+  const { firstName, lastName, status } = data.user || {};
+  const notification = data.notification;
   const [filterOption, setFilterOption] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const loads = data.loads || [];
@@ -68,7 +67,6 @@ export default function Marketplace() {
       fieldToFilter.includes(searchTerm.toLowerCase()) && matchesTypeLoadFilter
     );
   });
-  // console.log("This is Data", data);
 
   return (
     <>
@@ -77,11 +75,15 @@ export default function Marketplace() {
         onClose={closeAssignModal}
         units={units}
         driverData={driverData}
-        selectedLoadId={selectedLoadId} 
+        selectedLoadId={selectedLoadId}
       />
-      <CarrierSideBar activePage={"marketplace"} Status = { status } />
+      <CarrierSideBar activePage={"marketplace"} Status={status} />
       <EaseOut>
-        <UserHeader title="Marketplace" userInfo={{ firstName, lastName, notification }} Status={status}/>
+        <UserHeader
+          title="Marketplace"
+          userInfo={{ firstName, lastName, notification }}
+          Status={status}
+        />
         <Flex pt="10" direction="column" alignItems="center" padding="10">
           <Stack spacing={4} direction="row" mb="4">
             <Select

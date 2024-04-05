@@ -1,19 +1,12 @@
+// React Imports
 import React, { useState } from "react";
-import AdminSidebar from "../../components/sidebar/adminSideBar.js";
-import Protector from "../../components/utils/methods/getters/protector.js";
-import EaseOut from "../../components/responsiveness/easeOut.js";
-import UserHeader from "../../components/header/userHeader.js";
-import { useData } from "../../components/utils/methods/getters/dataContext.js";
-import CustomSelectMultiple from "../../components/buttons/customSelectMultiple.js";
-import CustomLink from "../../components/buttons/customLink.js";
-import MoreDetails from "../../components/viewButton/moreDetailsShippers.js";
-import CustomInput from "../../components/utils/forms/customInput.js";
-import CustomButton from "../../components/buttons/customButton.js";
+
+// Icon Imports
 import { IoMdCloseCircle } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
-import { EmptyValidation } from "../../components/utils/validation/emptyValidation.js";
-import axios from "axios";
+
+// Chakra UI Imports
 import {
   Table,
   Thead,
@@ -45,14 +38,37 @@ import {
   Input,
 } from "@chakra-ui/react";
 
+// Axios Import
+import axios from "axios";
+
+// Custom Imports
+import AdminSidebar from "../../components/sidebar/adminSideBar.js";
+import Protector from "../../components/utils/methods/getters/protector.js";
+import EaseOut from "../../components/responsiveness/easeOut.js";
+import UserHeader from "../../components/header/userHeader.js";
+import { useData } from "../../components/utils/methods/getters/dataContext.js";
+import CustomSelectMultiple from "../../components/buttons/customSelectMultiple.js";
+import CustomLink from "../../components/buttons/customLink.js";
+import MoreDetails from "../../components/viewButton/moreDetailsShippers.js";
+import CustomInput from "../../components/utils/forms/customInput.js";
+import CustomButton from "../../components/buttons/customButton.js";
+import { EmptyValidation } from "../../components/utils/validation/emptyValidation.js";
+
+// Start of the Build
 export default function Shippers() {
   Protector("/api/shippers");
+
+  // Extract Data
   const { data } = useData();
   const { firstName, lastName, status } = data.user || {};
   const notification = data.notification;
   const shippers = data.shippers || [];
+
+  // Modal
   const moreDetailsDisclosure = useDisclosure();
   const actionModalDisclosure = useDisclosure();
+
+  // Breakpoint
   const isLargeScreen = useBreakpointValue({
     base: false,
     md: false,
@@ -60,6 +76,7 @@ export default function Shippers() {
     xl: true,
   });
 
+  // Hooks
   const [selectedShipper, setSelectedShipper] = useState(null);
   const [selectedAction, setSelectedAction] = useState(null);
   const [actionReason, setActionReason] = useState("");
@@ -67,17 +84,20 @@ export default function Shippers() {
   const [searchQuery, setSearchQuery] = useState("");
   const [actionReasonError, setActionReasonError] = useState("");
 
+  // Constant
   const action = [
     { value: "Active", children: "Activate" },
     { value: "Inactive", children: "Deactivate" },
     { value: "Delete", children: "Delete" },
   ];
 
+  // Handle Modal open
   const handleMoreDetailsClick = (shipper) => {
     setSelectedShipper(shipper);
     moreDetailsDisclosure.onOpen();
   };
 
+  // Handle Action Change
   const handleActionChange = (action, shipper) => {
     if (action === "" || action === "Select Action") {
       return;
@@ -87,6 +107,7 @@ export default function Shippers() {
     actionModalDisclosure.onOpen();
   };
 
+  // Handle close modal
   const closeModal = () => {
     moreDetailsDisclosure.onClose();
     actionModalDisclosure.onClose();
@@ -96,25 +117,36 @@ export default function Shippers() {
     setActionReasonError("");
   };
 
+  // Handle submit of action
   const handleSubmitAction = async (event) => {
     event.preventDefault();
+
+    // If there is no information, return
     if (!selectedShipper || !selectedShipper._id) {
-      // console.error("No shipper selected");
       return;
     }
 
+    // set error to null
     setActionReasonError("");
+
+    // Check Validation
     const actionReasonError = EmptyValidation("Reason", actionReason);
+
+    // If there is error, set error
     setActionReasonError(actionReasonError);
+
+    // if there is error, return
     if (actionReasonError) {
       return;
     }
 
+    // construction of data to be submitted
     const payload = {
       status: selectedAction,
       statusReasonChange: actionReason,
     };
 
+    // Start of the PUT Method
     try {
       await axios.put(`/api/shippers/${selectedShipper._id}`, payload);
       setActionReason("");
@@ -122,10 +154,11 @@ export default function Shippers() {
       setSelectedShipper(null);
       window.location.reload();
     } catch (error) {
-      // console.error("Error updating shipper status:", error);
+      console.error("Error updating shipper status:", error);
     }
   };
 
+  // Function to change color of the Badge depended on the status
   function getStatusColor(status) {
     switch (status.toLowerCase()) {
       case "inactive":
@@ -137,6 +170,7 @@ export default function Shippers() {
     }
   }
 
+  // filter
   const filteredShippers = shippers.filter((shipper) => {
     const searchLower = searchQuery.toLowerCase();
     switch (selectedSearchOption) {
@@ -162,9 +196,13 @@ export default function Shippers() {
 
   return (
     <>
-      <AdminSidebar activePage={"shippers"} Status = { status }/>
+      <AdminSidebar activePage={"shippers"} Status={status} />
       <EaseOut>
-        <UserHeader title="Shippers" userInfo={{ firstName, lastName, notification }} Status={status}/>
+        <UserHeader
+          title="Shippers"
+          userInfo={{ firstName, lastName, notification }}
+          Status={status}
+        />
         <Card
           flex={1}
           p={{ base: "1", md: "2" }}

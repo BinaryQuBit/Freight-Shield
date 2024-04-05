@@ -1,5 +1,7 @@
-// Terms and Conditions
+// Icon Import
+import { IoMdCloseCircle } from "react-icons/io";
 
+// Chakra UI Imports
 import {
   Modal,
   ModalOverlay,
@@ -15,10 +17,11 @@ import {
   Flex,
 } from "@chakra-ui/react";
 
+// Custom Imports
 import Logo from "../logo/logo.svg";
-import CustomButton from "../buttons/customButton"
-import { IoMdCloseCircle } from "react-icons/io";
+import CustomButton from "../buttons/customButton";
 
+// Start of the Build
 export default function Terms({ isTermsOpen, onCloseTerms }) {
   return (
     <Modal size="3xl" isOpen={isTermsOpen} onClose={onCloseTerms}>
@@ -159,8 +162,8 @@ export default function Terms({ isTermsOpen, onCloseTerms }) {
               Indemnity
             </Text>
             <ListItem>
-              Shippers indemnify Freight Shield against liabilities from platform
-              misuse.
+              Shippers indemnify Freight Shield against liabilities from
+              platform misuse.
             </ListItem>
 
             <Text fontWeight="bold" textAlign="center">
@@ -180,14 +183,13 @@ export default function Terms({ isTermsOpen, onCloseTerms }) {
           </UnorderedList>
         </ModalBody>
         <ModalFooter>
-        <CustomButton
+          <CustomButton
             variant={"blueForwardButton"}
             w={"90px"}
             onClick={onCloseTerms}
             children={"Close"}
             icon={<IoMdCloseCircle />}
           />
-          
         </ModalFooter>
       </ModalContent>
     </Modal>

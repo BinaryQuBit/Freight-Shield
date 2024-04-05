@@ -9,7 +9,7 @@ import Logo from "../components/logo.js";
 export default function LoadingScreen() {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
-// Functions
+  // Functions
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,

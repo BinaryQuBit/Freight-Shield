@@ -1,10 +1,7 @@
+// React Imports
 import React, { useState, useEffect } from "react";
 
-const DistanceCalculator = ({
-  origin,
-  destination,
-  unitRequested,
-}) => {
+const DistanceCalculator = ({ origin, destination, unitRequested }) => {
   const [distance, setDistance] = useState("");
   const [price, setPrice] = useState(null);
 
@@ -13,8 +10,15 @@ const DistanceCalculator = ({
       const service = new window.google.maps.DistanceMatrixService();
       service.getDistanceMatrix(
         {
-          origins: [{ lat: parseFloat(origin.lat), lng: parseFloat(origin.lng) }],
-          destinations: [{ lat: parseFloat(destination.lat), lng: parseFloat(destination.lng) }],
+          origins: [
+            { lat: parseFloat(origin.lat), lng: parseFloat(origin.lng) },
+          ],
+          destinations: [
+            {
+              lat: parseFloat(destination.lat),
+              lng: parseFloat(destination.lng),
+            },
+          ],
           travelMode: "DRIVING",
         },
         (response, status) => {
@@ -30,27 +34,28 @@ const DistanceCalculator = ({
     }
   };
 
+  // Rate Const
   const rateCalculator = (distanceInMiles) => {
     const rates = {
       "Dry Van": 1.99,
       "Flat Bed": 2.26,
-      "Reefer": 2.30,
+      "Reefer": 2.3,
       "Low Boy": 6.75,
       "Step Deck": 3.25,
-      "Tank": 3.50,
-      "Conestega": 3.50,
-      "Double Drop": 4.00,
+      "Tank": 3.5,
+      "Conestega": 3.5,
+      "Double Drop": 4.0,
       "Car Carriers": 12.5,
       "Side kit": 3.25,
-      "Dump": 3.00,
-      "Live Floor": 3.50,
-      "End Dump": 3.50,
-      "Side Dump": 3.50,
-      "OverLoad": 4.00,
-      "Rocky Mountain": 3.50,
-      "Twinpike": 3.50,
-      "LHV": 3.50,
-      "Super B": 3.50,
+      "Dump": 3.0,
+      "Live Floor": 3.5,
+      "End Dump": 3.5,
+      "Side Dump": 3.5,
+      "OverLoad": 4.0,
+      "Rocky Mountain": 3.5,
+      "Twinpike": 3.5,
+      "LHV": 3.5,
+      "Super B": 3.5,
     };
 
     const ratePerMile = rates[unitRequested] || 0;
@@ -72,7 +77,9 @@ const DistanceCalculator = ({
       )}
       {price && (
         <div style={{ display: "flex", marginRight: "20px" }}>
-          <p style={{ fontWeight: "bold", marginRight: "5px" }}>Estimated Price:</p>
+          <p style={{ fontWeight: "bold", marginRight: "5px" }}>
+            Estimated Price:
+          </p>
           <p>{price}</p>
         </div>
       )}

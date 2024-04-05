@@ -8,7 +8,7 @@ import { hashPassword, comparePassword } from "../utils/hashPassword.js";
 const eventSchema = new mongoose.Schema(
   {
     title: {
-      type: String, 
+      type: String,
       required: true,
     },
     description: {
@@ -27,11 +27,10 @@ const eventSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const notificationSchema = new mongoose.Schema(
-  {
-    description: { type: String },
-  }
-)
+// Notification Schema
+const notificationSchema = new mongoose.Schema({
+  description: { type: String },
+});
 
 // Declaration and Defination of Shipper Schema
 const shipperSchema = mongoose.Schema(
@@ -146,7 +145,7 @@ const shipperSchema = mongoose.Schema(
       default: "Your account is under review",
     },
     events: [eventSchema],
-    notification : [notificationSchema],
+    notification: [notificationSchema],
   },
   {
     timestamps: true,

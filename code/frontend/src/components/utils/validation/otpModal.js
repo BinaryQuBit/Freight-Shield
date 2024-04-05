@@ -1,7 +1,11 @@
-// OTP Validation with Modal
-
+// React Imports
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
+// Icon Import
+import { FaCheck } from "react-icons/fa";
+
+// Chakra UI Imports
 import {
   Modal,
   ModalOverlay,
@@ -15,11 +19,15 @@ import {
   Input,
   Text,
 } from "@chakra-ui/react";
+
+// Axios Import
 import axios from "axios";
+
+// Custom Imports
 import Logo from "../../logo/logo.svg";
 import CustomButton from "../../buttons/customButton";
-import { FaCheck } from "react-icons/fa";
 
+// Start of the Build
 export default function OTPModal({
   isOTPOpen,
   onCloseOTP,
@@ -29,11 +37,13 @@ export default function OTPModal({
   onModalClose,
 }) {
   const navigate = useNavigate();
+
+  // Hooks
   const [otp, setOtp] = useState(Array(6).fill(""));
   const [timer, setTimer] = useState(599);
+  const [otpError, setOtpError] = useState("");
 
-  const [otpError, setOtpError] = useState("")
-
+  // Timer
   useEffect(() => {
     let interval;
     if (isOTPOpen && timer > 0) {
@@ -46,6 +56,7 @@ export default function OTPModal({
     return () => clearInterval(interval);
   }, [isOTPOpen, timer, onCloseOTP]);
 
+  // Handling Change
   const handleOtpChange = (element, index) => {
     const value = element.value;
     const newOtp = [...otp];
@@ -61,12 +72,14 @@ export default function OTPModal({
     }
   };
 
+  // Reset on close
   const resetClose = () => {
     onCloseOTP();
     onModalClose();
     setTimer(599);
   };
 
+  // Handling Backspace on the input
   const handleBackspace = (e, index) => {
     if (e.key === "Backspace") {
       if (e.target.value === "" && index > 0) {
@@ -78,10 +91,12 @@ export default function OTPModal({
     }
   };
 
+  // Verify OTP
   const verifyOtp = async () => {
     const otpNumber = otp.join("");
+    // Start of the Post Method
     try {
-      const response = await axios.post("/verifyOTP", {
+      await axios.post("/verifyOTP", {
         email,
         password,
         confirmPassword,
@@ -91,16 +106,17 @@ export default function OTPModal({
       navigate("/login");
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        // console.error("Error: ", error.response.data.message);
+        console.error("Error: ", error.response.data.message);
         if (error.response.data.message.includes("Invalid OTP")) {
           setOtpError("Invalid Code");
         }
       } else {
-        // console.error("Error submitting form:", error);
+        console.error("Error submitting form:", error);
       }
     }
   };
 
+  // Timer
   const formatTimer = () => {
     const minutes = Math.floor(timer / 60);
     const seconds = timer % 60;
@@ -138,7 +154,11 @@ export default function OTPModal({
           <Flex justifyContent="center" mb="4">
             <Text fontSize="lg">OTP expires in {formatTimer()}</Text>
           </Flex>
-          {otpError && <Text color="red.500" textAlign="center" mb="4">{otpError}</Text>}
+          {otpError && (
+            <Text color="red.500" textAlign="center" mb="4">
+              {otpError}
+            </Text>
+          )}
         </ModalBody>
         <ModalFooter>
           <CustomButton

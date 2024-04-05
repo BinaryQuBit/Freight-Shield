@@ -1,4 +1,7 @@
+// React Imports
 import React, { useState } from "react";
+
+// Icon Imports
 import { IoMdAddCircle } from "react-icons/io";
 import { IoMdCloseCircle } from "react-icons/io";
 
@@ -27,15 +30,11 @@ import {
 } from "../utils/validation/passwordValidation";
 import { PhoneNumberValidation } from "../utils/validation/phoneNumberValidation";
 
+// Start of the Build
 export default function AddAdmin({ isOpen, onClose }) {
   axios.defaults.withCredentials = true;
   const theme = useTheme();
   const customBlue = theme.colors.customBlue;
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const toggleShowPassword = () => setShowPassword(!showPassword);
-  const toggleShowConfirmPassword = () =>
-    setShowConfirmPassword(!showConfirmPassword);
 
   // Hooks
   const [email, setEmail] = useState("");
@@ -44,6 +43,8 @@ export default function AddAdmin({ isOpen, onClose }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Error Hooks
   const [emailError, setEmailError] = useState("");
@@ -70,7 +71,12 @@ export default function AddAdmin({ isOpen, onClose }) {
     onClose();
   };
 
-  // Add Unit Handle
+  const toggleShowPassword = () => setShowPassword(!showPassword);
+
+  const toggleShowConfirmPassword = () =>
+    setShowConfirmPassword(!showConfirmPassword);
+
+  // Add Admin Handle
   const handleAddAdmin = async (event) => {
     event.preventDefault();
 
@@ -129,12 +135,12 @@ export default function AddAdmin({ isOpen, onClose }) {
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        // console.error("Error: ", error.response.data.message);
+        console.error("Error: ", error.response.data.message);
         if (error.response.data.message.includes("already exists")) {
           setEmailError("An account with this email already exists");
         }
       } else {
-        // console.error("Error submitting form:", error);
+        console.error("Error submitting form:", error);
       }
     }
   };
@@ -146,6 +152,7 @@ export default function AddAdmin({ isOpen, onClose }) {
         <form onSubmit={handleAddAdmin} noValidate>
           <ModalBody>
             <Flex>
+              {/* Email Input */}
               <CustomInput
                 id={"email"}
                 label={"Email"}
@@ -161,6 +168,8 @@ export default function AddAdmin({ isOpen, onClose }) {
                 mr={2}
                 mt={2}
               />
+
+              {/* Phone Number Input */}
               <CustomInput
                 id={"phoneNumber"}
                 label={"Phone Number"}
@@ -179,6 +188,7 @@ export default function AddAdmin({ isOpen, onClose }) {
             </Flex>
 
             <Flex>
+              {/* First Name Input */}
               <CustomInput
                 id={"firstName"}
                 label={"First Name"}
@@ -194,6 +204,8 @@ export default function AddAdmin({ isOpen, onClose }) {
                 mr={2}
                 mt={8}
               />
+
+              {/* Last Name Input */}
               <CustomInput
                 id={"lastName"}
                 label={"Last Name"}
@@ -211,6 +223,7 @@ export default function AddAdmin({ isOpen, onClose }) {
               />
             </Flex>
             <Flex>
+              {/* Password Input */}
               <CustomInput
                 id={"password"}
                 label={"Password"}
@@ -228,6 +241,8 @@ export default function AddAdmin({ isOpen, onClose }) {
                 mr={2}
                 mt={8}
               />
+
+              {/* Confirm Password Input */}
               <CustomInput
                 id={"confirmPassword"}
                 label={"Confirm Password"}
@@ -248,6 +263,7 @@ export default function AddAdmin({ isOpen, onClose }) {
             </Flex>
 
             <Flex justifyContent="space-between">
+              {/* Close Button */}
               <CustomButton
                 color={customBlue}
                 icon={<IoMdCloseCircle />}
@@ -257,6 +273,8 @@ export default function AddAdmin({ isOpen, onClose }) {
                 variant="blueBackwardButton"
                 onClick={handleCloseClick}
               />
+
+              {/* Add Button */}
               <CustomButton
                 color={customBlue}
                 icon={<IoMdAddCircle />}

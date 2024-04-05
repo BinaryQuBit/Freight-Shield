@@ -1,8 +1,8 @@
-import { render, screen } from '@testing-library/react';
-import CustomUpload from '../CustomUpload'; 
+import { render, screen } from "@testing-library/react";
+import CustomUpload from "../customUpload";
 
-test('renders upload file text', () => {
-  render(<CustomUpload />); 
+test("renders upload file text", () => {
+  render(<CustomUpload />);
   const uploadTextElement = screen.getByText(/Upload/i);
   expect(uploadTextElement).toBeInTheDocument();
 });

@@ -1,86 +1,76 @@
-import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import { VictoryPie } from 'victory-native';
-import { ScrollView } from 'react-native-gesture-handler';
+// React Imports
+import React from "react";
+import { View, StyleSheet, Text, ScrollView } from "react-native";
+import { useRoute } from "@react-navigation/native";
 
-export default function LoadWorking() {
-  const data = [
-    { x: "OFF", y: 720 },
-    { x: "SB", y: 360 },
-    { x: "D", y: 360 },
-    { x: "ON", y: 480 },
-  ];
+// Pi Chart Import
+import { VictoryPie } from "victory-native";
+
+// Custom Import
+import { useTheme } from "../components/themeContext.js";
+
+// Start of the Build
+export default function WorkingHoursScreen() {
+  const { isDarkMode } = useTheme();
+  const route = useRoute();
+  const weekHours = route.params.weekHours;
+  const styles = getDynamicStyles(isDarkMode);
+
+  // Data
+  const data = weekHours
+    ? Object.keys(weekHours).map((status) => ({
+        x: status,
+        y: weekHours[status],
+      }))
+    : [];
 
   return (
-    <ScrollView contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}>
-      <Text style={styles.title}>Working Hours</Text>
-      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+    <ScrollView
+      contentContainerStyle={styles.scrollViewContainer}
+      style={styles.scrollView}
+    >
+      <View style={styles.container}>
+        <Text style={styles.title}>Weekly Working Hours</Text>
         <VictoryPie
           data={data}
-          colorScale={["tomato", "orange", "gold", "cyan", "navy" ]}
-          radius={({ datum }) => (datum.y > 90 ? 160 : 160)}
+          colorScale={["tomato", "orange", "gold", "cyan", "navy"]}
+          radius={({ datum }) => (datum.y > 0 ? 160 : 160)}
           innerRadius={50}
-          labelRadius={({ innerRadius }) => (innerRadius + 5)}
-          style={{ labels: { fontSize: 20, fill: "white" } }}
+          labelRadius={({ innerRadius }) => innerRadius + 40}
+          style={{ labels: { fontSize: 12, fill: "white" } }}
+          labels={({ datum }) =>
+            datum.y > 0 ? `${datum.x}: ${datum.y} hrs` : ""
+          }
+          padding={{ top: 50, bottom: 50, left: 50, right: 50 }}
         />
       </View>
     </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
-
-  title: {
-    fontSize: 26,
-    fontFamily: "Lora-SemiBold",
-    color: "#0866FF",
-    marginBottom: 20,
-  },
-});
-
-// import React, { useState, useEffect } from 'react';
-// import { View } from 'react-native';
-// import { VictoryPie } from 'victory-native';
-// import { ScrollView } from 'react-native-gesture-handler';
-// import axios from 'axios';
-
-// export default function LoadWorking() {
-//   const [data, setData] = useState([]);
-//   const backend = process.env.REACT_IP_CONFIG
-
-//   useEffect(() => {
-//     fetchData();
-//   }, []);
-
-//   const fetchData = async () => {
-//     try {
-//       const response = await axios.get(`${backend}/api/workinghrs`);
-//       const logbookData = response.data;
-  
-//       // Process the data to calculate the differences between end and start values
-//       const processedData = logbookData.map(entry => {
-//         // Initialize an empty array to store processed data for each entry
-//         const processedEntryData = [];
-  
-//         // Iterate over the status entries in the entry.status object
-//         for (const status in entry.status) {
-//           // Iterate over each start-end pair in the status array
-//           for (const { start, end } of entry.status[status]) {
-//             // Calculate the difference between end and start and add it to the processed data array
-//             processedEntryData.push({ x: status, y: parseInt(end) - parseInt(start) });
-//           }
-//         }
-  
-//         return processedEntryData;
-//       });
-  
-//       // Flatten the processed data array
-//       const flattenedData = processedData.flat();
-  
-//       // Set the flattened data in the state
-//       setData(flattenedData);
-//     } catch (error) {
-//       console.error('Error fetching data:', error);
-//     }
-//   };
-  
+// Style sheet dark mode
+const getDynamicStyles = (isDarkMode) =>
+  StyleSheet.create({
+    scrollView: {
+      flex: 1,
+      backgroundColor: isDarkMode ? "#222" : "#FFF",
+    },
+    scrollViewContainer: {
+      flexGrow: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 20,
+    },
+    container: {
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: isDarkMode ? "#222" : "#FFF",
+      flex: 1,
+    },
+    title: {
+      fontSize: 26,
+      fontFamily: "Lora-SemiBold",
+      marginBottom: 20,
+      color: isDarkMode ? "white" : "#0866FF",
+    },
+  });

@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import { hashPassword, comparePassword } from "../utils/hashPassword.js";
 
 // Event Schema Declaration and Defination
-const eventSchema = new mongoose.Schema( 
+const eventSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -46,14 +46,13 @@ const unitSchema = new mongoose.Schema(
     unitInsurance: { type: String },
     unitSafety: { type: String },
   },
-  { _id: false, timestamps: true }
+  { timestamps: true }
 );
 
-const notificationSchema = new mongoose.Schema(
-  {
-    description: { type: String },
-  }
-)
+// Notification Schema
+const notificationSchema = new mongoose.Schema({
+  description: { type: String },
+});
 
 // Carrier Schema Defination and Declaration
 const carrierSchema = new mongoose.Schema(
@@ -185,7 +184,7 @@ const carrierSchema = new mongoose.Schema(
     },
     units: [unitSchema],
     events: [eventSchema],
-    notification : [notificationSchema]
+    notification: [notificationSchema],
   },
   {
     timestamps: true,
@@ -218,8 +217,9 @@ carrierSchema.methods.addUnit = async function (unitData) {
   await this.save();
 };
 
+// Unique update of the Unit Number
 carrierSchema.methods.updateUnit = async function (unitNum, updatedUnitData) {
-  const unitIndex = this.units.findIndex(unit => unit.unitNumber === unitNum);
+  const unitIndex = this.units.findIndex((unit) => unit.unitNumber === unitNum);
   if (unitIndex === -1) {
     const error = new Error("Unit not found.");
     error.statusCode = 405;
@@ -227,7 +227,10 @@ carrierSchema.methods.updateUnit = async function (unitNum, updatedUnitData) {
   }
 
   if (updatedUnitData.unitNumber) {
-    const isUnique = !this.units.some((unit, index) => index !== unitIndex && unit.unitNumber === updatedUnitData.unitNumber);
+    const isUnique = !this.units.some(
+      (unit, index) =>
+        index !== unitIndex && unit.unitNumber === updatedUnitData.unitNumber
+    );
     if (!isUnique) {
       const error = new Error("Unit number must be unique within the carrier.");
       error.statusCode = 405;

@@ -1,8 +1,8 @@
-// Login Form 
-
 // React Imports
 import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+// Icon Import
 import { FiTruck } from "react-icons/fi";
 
 // Axios Import
@@ -71,71 +71,46 @@ export default function LoginForm() {
       const businessDetails = loginResponse.data.areBusinessDetailsComplete;
       const submissionComplete = loginResponse.data.isFormComplete;
       const status = loginResponse.data.status;
-      // console.log("This is satus", status);
 
-      if (role === "carrier")
-      {
-        if(contactDetails == false)
-        {
+      if (role === "carrier") {
+        if (contactDetails === false) {
           navigate("/carriercontactdetails");
-        }
-        else if (businessDetails == false)
-        {
+        } else if (businessDetails === false) {
           navigate("/carrierbusinessdetails");
-        }
-        else if (submissionComplete == false)
-        {
+        } else if (submissionComplete === false) {
           navigate("/carriersubmission");
-        }
-        else if (status === "Inactive" || status === "Pending")
-        {
-          navigate("/carriersettings")
-        }
-        else
-        {
+        } else if (status === "Inactive" || status === "Pending") {
+          navigate("/carriersettings");
+        } else {
           navigate("/carrierdashboard");
         }
-      }
-      else if (role === "shipper") {
-        if(contactDetails == false)
-        {
+      } else if (role === "shipper") {
+        if (contactDetails === false) {
           navigate("/shippercontactdetails");
-        }
-        else if (businessDetails == false)
-        {
+        } else if (businessDetails === false) {
           navigate("/shipperbusinessdetails");
-        }
-        else if (submissionComplete == false)
-        {
+        } else if (submissionComplete === false) {
           navigate("/shippersubmission");
-        }
-        else if (status === "Inactive" || status === "Pending")
-        {
-          navigate("/shippersettings")
-        }
-        else
-        {
+        } else if (status === "Inactive" || status === "Pending") {
+          navigate("/shippersettings");
+        } else {
           navigate("/shipperdashboard");
         }
-      }
-      else if (role === "admin") {
-        if (status === "Inactive")
-        {
-          navigate("/adminsettings")
-        }
-        else
-        {
+      } else if (role === "admin") {
+        if (status === "Inactive") {
+          navigate("/adminsettings");
+        } else {
           navigate("/administrators");
         }
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        // console.error("Error: ", error.response.data.message);
+        console.error("Error: ", error.response.data.message);
         if (error.response.data.message.includes("Invalid")) {
           setPasswordError("Invalid Email or Password");
         }
       } else {
-        // console.error("Error submitting form:", error);
+        console.error("Error submitting form:", error);
       }
     }
   };

@@ -1,5 +1,4 @@
-// Password Validation
-
+// Start of Password Validation
 export const PasswordValidation = (password) => {
   if (!password) {
     return "Password is required";
@@ -10,6 +9,7 @@ export const PasswordValidation = (password) => {
   return "";
 };
 
+// Start of Confirm Password Validation
 export const ConfirmPasswordValidation = (password, confirmPassword) => {
   if (password !== confirmPassword) {
     return "Passwords do not match";

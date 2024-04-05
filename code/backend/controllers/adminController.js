@@ -7,7 +7,7 @@ import Shipper from "../models/shipperModel.js";
 import Driver from "../models/driverModel.js";
 import Admin from "../models/adminModel.js";
 
-////////////////////////////// Getters //////////////////////////////
+////////////////////////////// GETTERS //////////////////////////////
 
 // @desc    Getting Administrators
 // route    GET /api/administrators
@@ -143,7 +143,7 @@ export const carriers = asyncHandler(async (req, res) => {
           updatedAt: 0,
         }
       );
-      // Mapping Drivers
+      // Mapping Drivers and converting to JS objects
       const driverObjects = drivers.map((driver) => driver.toObject());
       return {
         ...carrier.toObject(),
@@ -191,7 +191,7 @@ export const adminsettings = asyncHandler(async (req, res) => {
   res.status(200).json({ user, response, notification, email: user.email });
 });
 
-////////////////////////////// Putters //////////////////////////////
+////////////////////////////// PUTTERS //////////////////////////////
 
 // @desc    Changing Status of carrier
 // route    PUT /api/carriers/:carrierId

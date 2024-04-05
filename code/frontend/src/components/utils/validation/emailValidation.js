@@ -1,15 +1,14 @@
-// Email Validation
+// Start of Email Validation
 
 export const EmailValidation = (email) => {
   const trimmedEmail = email.trim();
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!trimmedEmail) {
-      return "Email is required";
+    return "Email is required";
   }
   if (!emailPattern.test(trimmedEmail)) {
-      return "Email is invalid";
+    return "Email is invalid";
   }
   return "";
 };
-

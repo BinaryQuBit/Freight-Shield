@@ -1,5 +1,4 @@
-// Phone Number Validation
-
+// Start of Phone Number Validation
 export const PhoneNumberValidation = (phone) => {
   const trimmedPhone = phone.trim();
 

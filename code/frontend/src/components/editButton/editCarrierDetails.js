@@ -1,7 +1,7 @@
-// Edit Carrier Details
-
 // React Imports
 import React, { useState, useEffect } from "react";
+
+// Icon Imports
 import { FaRegSave } from "react-icons/fa";
 import { IoMdCloseCircle } from "react-icons/io";
 
@@ -31,7 +31,7 @@ import { DocumentValidation } from "../utils/validation/documentValidation.js";
 // Start of the Build
 export default function EditCarrierDetails({ isOpen, onClose, data }) {
   axios.defaults.withCredentials = true;
-  const backendUrl = process.env.REACT_APP_BACKEND_PORT; 
+  const backendUrl = process.env.REACT_APP_BACKEND_PORT;
 
   // Hooks
   const [streetAddress, setStreetAddress] = useState("");
@@ -87,30 +87,30 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
   // Render Saved Data
   useEffect(() => {
     if (data) {
-    setFirstName(data.firstName || "");
-    setLastName(data.lastName || "");
-    setCompanyPhoneNumber(data.companyPhoneNumber || "");
-    setStreetAddress(data.streetAddress || "");
-    setApptNumber(data.apptNumber || "");
-    setCity(data.city || "");
-    setProvince(data.province || "");
-    setPostalCode(data.postalCode || "");
-    setCountry(data.country || "");
-    setMailingStreetAddress(data.mailingStreetAddress || "");
-    setMailingApptNumber(data.mailingApptNumber || "");
-    setMailingCity(data.mailingCity || "");
-    setMailingProvince(data.mailingProvince || "");
-    setMailingPostalCode(data.mailingPostalCode || "");
-    setMailingCountry(data.mailingCountry || "");
-    setBusinessName(data.businessName || "");
-    setDoingBusinessAs(data.doingBusinessAs || "");
-    setBusinessNumber(data.businessNumber || "");
-    setCarrierProfile(data.carrierProfile || "");
-    setSafetyFitnessCertificate(data.safetyFitnessCertificate || "");
-    setCanadianCarrierCode(data.canadianCarrierCode || "");
-    setNationalSafetyCode(data.nationalSafetyCode || "");
-    setWcb(data.wcb || "");
-    setWebsite(data.website || "");
+      setFirstName(data.firstName || "");
+      setLastName(data.lastName || "");
+      setCompanyPhoneNumber(data.companyPhoneNumber || "");
+      setStreetAddress(data.streetAddress || "");
+      setApptNumber(data.apptNumber || "");
+      setCity(data.city || "");
+      setProvince(data.province || "");
+      setPostalCode(data.postalCode || "");
+      setCountry(data.country || "");
+      setMailingStreetAddress(data.mailingStreetAddress || "");
+      setMailingApptNumber(data.mailingApptNumber || "");
+      setMailingCity(data.mailingCity || "");
+      setMailingProvince(data.mailingProvince || "");
+      setMailingPostalCode(data.mailingPostalCode || "");
+      setMailingCountry(data.mailingCountry || "");
+      setBusinessName(data.businessName || "");
+      setDoingBusinessAs(data.doingBusinessAs || "");
+      setBusinessNumber(data.businessNumber || "");
+      setCarrierProfile(data.carrierProfile || "");
+      setSafetyFitnessCertificate(data.safetyFitnessCertificate || "");
+      setCanadianCarrierCode(data.canadianCarrierCode || "");
+      setNationalSafetyCode(data.nationalSafetyCode || "");
+      setWcb(data.wcb || "");
+      setWebsite(data.website || "");
     }
   }, [data]);
 
@@ -287,9 +287,9 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        // console.error("Error: ", error.response.data.message);
+        console.error("Error: ", error.response.data.message);
       } else {
-        // console.error("Error submitting form:", error);
+        console.error("Error submitting form:", error);
       }
     }
   };
@@ -301,6 +301,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
         <ModalBody>
           <form onSubmit={handleSave} noValidate>
             <Flex>
+              {/* First Name Input */}
               <CustomInput
                 id={"firstName"}
                 label={"First Name"}
@@ -316,6 +317,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
                 mr={2}
               />
 
+              {/* Last Name Input */}
               <CustomInput
                 id={"lastName"}
                 label={"Last Name"}
@@ -332,6 +334,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
               />
             </Flex>
 
+            {/* Phone Number Input */}
             <CustomInput
               id={"companyPhoneNumber"}
               label={"Phone Number"}
@@ -347,6 +350,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
               mt={8}
             />
 
+            {/* Street Address Input */}
             <CustomInput
               id={"streetAddress"}
               label={"Street Address"}
@@ -362,6 +366,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
               mt={8}
             />
 
+            {/* Apartment Input */}
             <CustomInput
               id={"apptNumber"}
               label={"Apartment Number"}
@@ -374,6 +379,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
             />
 
             <Flex>
+              {/* City Input */}
               <CustomInput
                 id={"city"}
                 label={"City"}
@@ -390,6 +396,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
                 mr={2}
               />
 
+              {/* Province Input */}
               <CustomInput
                 id={"province"}
                 label={"Province"}
@@ -408,6 +415,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
             </Flex>
 
             <Flex>
+              {/* Postal Code Input */}
               <CustomInput
                 id={"postalCode"}
                 label={"Postal Code"}
@@ -424,6 +432,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
                 mr={2}
               />
 
+              {/* Country Input */}
               <CustomInput
                 id={"country"}
                 label={"Country"}
@@ -440,6 +449,8 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
                 ml={2}
               />
             </Flex>
+
+            {/* Mailing Street Address Input */}
             <CustomInput
               id={"mailingStreetAddress"}
               label={"Street Address"}
@@ -455,6 +466,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
               mt={8}
             />
 
+            {/* Mailing Apartment Number Input */}
             <CustomInput
               id={"mailingApptNumber"}
               label={"Apartment Number"}
@@ -467,6 +479,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
             />
 
             <Flex>
+              {/* Mailing City Input */}
               <CustomInput
                 id={"mailingCity"}
                 label={"City"}
@@ -482,7 +495,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
                 mt={8}
                 mr={2}
               />
-
+              {/* Mailing Province Input */}
               <CustomInput
                 id={"mailingProvince"}
                 label={"Province"}
@@ -500,6 +513,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
               />
             </Flex>
 
+            {/* Mailing Postal Code Input */}
             <Flex>
               <CustomInput
                 id={"mailingPostalCode"}
@@ -517,6 +531,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
                 mr={2}
               />
 
+              {/* Mailing Country Input */}
               <CustomInput
                 id={"mailingCountry"}
                 label={"Country"}
@@ -533,6 +548,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
                 ml={2}
               />
             </Flex>
+            {/* Business Name Input */}
             <CustomInput
               id={"businessName"}
               label={"Business Name"}
@@ -547,7 +563,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
               type={"text"}
               mt={"8"}
             />
-
+            {/* Doing Business As Input */}
             <CustomInput
               id={"doingBusinessAs"}
               label={"Doing Business As"}
@@ -559,6 +575,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
               mt={8}
             />
 
+            {/* Business Number Input */}
             <CustomInput
               id={"businessNumber"}
               label={"Business Number"}
@@ -574,6 +591,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
               mt={8}
             />
 
+            {/* Canadian Carrier Code Input */}
             <CustomInput
               id={"canadianCarrierCode"}
               label={"Canadian Carrier Code"}
@@ -589,6 +607,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
               mt={8}
             />
 
+            {/* National Safety Code Input */}
             <CustomInput
               id={"nationalSafetyCode"}
               label={"National Safety Code"}
@@ -604,6 +623,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
               mt={8}
             />
 
+            {/* WCB Number Input */}
             <CustomInput
               id={"wcb"}
               label={"WCB Number"}
@@ -618,34 +638,37 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
               type={"text"}
               mt={8}
             />
+            {/* Carrier Profile Upload */}
             {data && data.carrierProfile && (
-            <CustomUpload
-              id="carrierProfile"
-              label="Carrier Profile"
-              required={true}
-              isError={!!carrierProfileError}
-              errorMessage={carrierProfileError}
-              mt={8}
-              setError={setCarrierProfileError}
-              setFileState={setCarrierProfile}
-              fileUrl={`http://${backendUrl}${data.carrierProfile}`} 
-            />
+              <CustomUpload
+                id="carrierProfile"
+                label="Carrier Profile"
+                required={true}
+                isError={!!carrierProfileError}
+                errorMessage={carrierProfileError}
+                mt={8}
+                setError={setCarrierProfileError}
+                setFileState={setCarrierProfile}
+                fileUrl={`http://${backendUrl}${data.carrierProfile}`}
+              />
             )}
 
-{data && data.safetyFitnessCertificate && (
-            <CustomUpload
-              id="safetyFitnessCertificate"
-              label="Safety Fitness Certificate"
-              required={true}
-              isError={!!safetyFitnessCertificateError}
-              errorMessage={safetyFitnessCertificateError}
-              mt={8}
-              setError={setSafetyFitnessCertificateError}
-              setFileState={setSafetyFitnessCertificate}
-              fileUrl={`http://${backendUrl}${data.safetyFitnessCertificate}`}
-            />
+            {/* Safety Fitness Certificate Upload*/}
+            {data && data.safetyFitnessCertificate && (
+              <CustomUpload
+                id="safetyFitnessCertificate"
+                label="Safety Fitness Certificate"
+                required={true}
+                isError={!!safetyFitnessCertificateError}
+                errorMessage={safetyFitnessCertificateError}
+                mt={8}
+                setError={setSafetyFitnessCertificateError}
+                setFileState={setSafetyFitnessCertificate}
+                fileUrl={`http://${backendUrl}${data.safetyFitnessCertificate}`}
+              />
             )}
 
+            {/* Website Input */}
             <CustomInput
               id={"website"}
               label={"Website"}
@@ -660,6 +683,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
             />
 
             <Flex justifyContent={"space-between"} mt={"7"}>
+              {/* Close Button */}
               <CustomButton
                 backgroundColor="#0866FF"
                 icon={<IoMdCloseCircle />}
@@ -669,6 +693,7 @@ export default function EditCarrierDetails({ isOpen, onClose, data }) {
                 variant="blueBackwardButton"
                 onClick={handleCloseClick}
               />
+              {/* Save Button */}
               <CustomButton
                 backgroundColor="#0866FF"
                 icon={<FaRegSave />}

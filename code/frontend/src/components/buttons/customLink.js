@@ -1,8 +1,10 @@
-// Custom Link
-
+// React Import
 import React from "react";
+
+// Chakra UI Import
 import { Button } from "@chakra-ui/react";
 
+// Start of the Build
 export default function CustomLink({
   onClick,
   children,

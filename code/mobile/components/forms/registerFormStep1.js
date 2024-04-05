@@ -18,7 +18,7 @@ import CustomModal from "../customs/customModal";
 import RegisterFormStep2 from "./registerFormStep2";
 
 // Start of the Build
-export default function RegisterFormStep1({closeRegister1}) {
+export default function RegisterFormStep1({ closeRegister1 }) {
   const ipConfig = process.env.REACT_IP_CONFIG;
   axios.defaults.withCredentials = true;
 
@@ -28,7 +28,8 @@ export default function RegisterFormStep1({closeRegister1}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [registerFormStep2ModalVisible, setRegisterFormStep2ModalVisible] = useState("");
+  const [registerFormStep2ModalVisible, setRegisterFormStep2ModalVisible] =
+    useState("");
 
   // Error Hooks
   const [firstNameError, setFirstNameError] = useState("");
@@ -88,7 +89,6 @@ export default function RegisterFormStep1({closeRegister1}) {
 
       if (registerResponse.status === 201) {
         setRegisterFormStep2ModalVisible(true);
-        // closeRegister1();
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
@@ -167,14 +167,25 @@ export default function RegisterFormStep1({closeRegister1}) {
         errorMessage={confirmPasswordError}
         secureTextEntry={true}
       />
-      <CustomButton onPress={handleRegisterStep1} children={"Next"} pH={30} fs={16} />
-      {/* <CustomButton onPress={() => setRegisterFormStep2ModalVisible(true)} children={"Next"} pH={30} /> */}
+      <CustomButton
+        onPress={handleRegisterStep1}
+        children={"Next"}
+        pH={30}
+        fs={16}
+      />
       <CustomModal
-          modalVisible={registerFormStep2ModalVisible}
-          setModalVisible={setRegisterFormStep2ModalVisible}
-          children={<RegisterFormStep2 closeModal={() => { setRegisterFormStep2ModalVisible(false); closeRegister1(); }} />}
-          animationType={"fade"}
-        />
+        modalVisible={registerFormStep2ModalVisible}
+        setModalVisible={setRegisterFormStep2ModalVisible}
+        children={
+          <RegisterFormStep2
+            closeModal={() => {
+              setRegisterFormStep2ModalVisible(false);
+              closeRegister1();
+            }}
+          />
+        }
+        animationType={"fade"}
+      />
     </>
   );
 }

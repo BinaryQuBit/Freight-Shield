@@ -1,5 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { SidebarContext } from "../responsiveness/context.js";
+// React Imports
+import React, { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
+// Chakra UI Imports
 import {
   Flex,
   IconButton,
@@ -9,6 +12,8 @@ import {
   FormLabel,
   Text,
 } from "@chakra-ui/react";
+
+// Icon Imports
 import {
   FiMenu,
   FiSettings,
@@ -18,31 +23,25 @@ import {
   FiHome,
 } from "react-icons/fi";
 import { GrInProgress } from "react-icons/gr";
+
+// Custom Imports
 import NavItem from "./navItem.js";
 import Logo from "../logo/logo.js";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useContext } from "react";
+import { SidebarContext } from "../responsiveness/context.js";
+import logout from "../methods/logout.js";
 
+// Start of the Build
 export default function ShipperSideBar({ activePage, Status }) {
   const { navSize, setNavSize } = useContext(SidebarContext);
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
   const navigate = useNavigate();
   const { setColorMode } = useColorMode();
-  const logout = () => {
-    axios
-      .get("/logout", { withCredentials: true })
-      .then(() => {
-        navigate("/login");
-      })
-      .catch((error) => {
-        // console.error("Logout failed:", error);
-      });
-  };
 
+  // Hook
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // Resize Listen
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth < 768) {
@@ -58,6 +57,7 @@ export default function ShipperSideBar({ activePage, Status }) {
     return () => window.removeEventListener("resize", handleResize);
   }, [setNavSize]);
 
+  // Toggle menu for base screens
   const toggleMenu = () => {
     if (window.innerWidth < 768) {
       setMenuOpen(!menuOpen);
@@ -109,40 +109,42 @@ export default function ShipperSideBar({ activePage, Status }) {
           />
           {Status === "Active" ? (
             <>
-          <NavItem
-            navSize={navSize}
-            icon={FiHome}
-            title="Dashboard"
-            active={activePage === "dashboard"}
-            onClick={() => navigate("/shipperDashboard")}
-            menuOpen={menuOpen}
-          />
-          <NavItem
-            navSize={navSize}
-            icon={GrInProgress}
-            title="Active Loads"
-            active={activePage === "activeLoads"}
-            onClick={() => navigate("/activeloads")}
-            menuOpen={menuOpen}
-          />
-          <NavItem
-            navSize={navSize}
-            icon={FiTruck}
-            title="Post a Load"
-            active={activePage === "postLoad"}
-            onClick={() => navigate("/postload")}
-            menuOpen={menuOpen}
-          />
-          <NavItem
-            navSize={navSize}
-            icon={FiBook}
-            title="History"
-            active={activePage === "history"}
-            onClick={() => navigate("/history")}
-            menuOpen={menuOpen}
-          />
-          </>
-          ): (<Text m={20}></Text>)}
+              <NavItem
+                navSize={navSize}
+                icon={FiHome}
+                title="Dashboard"
+                active={activePage === "dashboard"}
+                onClick={() => navigate("/shipperDashboard")}
+                menuOpen={menuOpen}
+              />
+              <NavItem
+                navSize={navSize}
+                icon={GrInProgress}
+                title="Active Loads"
+                active={activePage === "activeLoads"}
+                onClick={() => navigate("/activeloads")}
+                menuOpen={menuOpen}
+              />
+              <NavItem
+                navSize={navSize}
+                icon={FiTruck}
+                title="Post a Load"
+                active={activePage === "postLoad"}
+                onClick={() => navigate("/postload")}
+                menuOpen={menuOpen}
+              />
+              <NavItem
+                navSize={navSize}
+                icon={FiBook}
+                title="History"
+                active={activePage === "history"}
+                onClick={() => navigate("/history")}
+                menuOpen={menuOpen}
+              />
+            </>
+          ) : (
+            <Text m={20}></Text>
+          )}
         </Flex>
         <Flex p="5%" flexDir="column" w="100%">
           <Divider />
@@ -174,7 +176,7 @@ export default function ShipperSideBar({ activePage, Status }) {
               title="Settings"
               active={activePage === "shipperSettings"}
               onClick={() => navigate("/shipperSettings")}
-              menuOpen={menuOpen} 
+              menuOpen={menuOpen}
             />
             <NavItem
               navSize={navSize}
@@ -188,4 +190,4 @@ export default function ShipperSideBar({ activePage, Status }) {
       </Flex>
     </div>
   );
-} 
+}

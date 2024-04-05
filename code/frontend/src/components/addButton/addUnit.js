@@ -1,7 +1,7 @@
-// Add Unit Button 
-
 // React Imports
 import React, { useState } from "react";
+
+// Icon Imports
 import { IoMdAddCircle } from "react-icons/io";
 import { IoMdCloseCircle } from "react-icons/io";
 
@@ -9,8 +9,8 @@ import { IoMdCloseCircle } from "react-icons/io";
 import axios from "axios";
 
 // Chakra UI Imports
-import { useTheme } from "@chakra-ui/react";
 import {
+  useTheme,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -32,10 +32,12 @@ import CustomSelect from "../utils/forms/customSelect";
 import CustomUpload from "../buttons/customUpload";
 import { DocumentValidation } from "../utils/validation/documentValidation";
 
+// Start of the Build
 export default function AddUnit({ isOpen, onClose }) {
   axios.defaults.withCredentials = true;
   const theme = useTheme();
-  const customBlue = theme && theme.colors && theme.colors.customBlue || "#0000FF";
+  const customBlue =
+    (theme && theme.colors && theme.colors.customBlue) || "#0000FF";
 
   // Hooks
   const [unitNumber, setUnitNumber] = useState("");
@@ -119,7 +121,8 @@ export default function AddUnit({ isOpen, onClose }) {
     const unitModelError = EmptyValidation("Model", unitModel);
     const unitYearError = YearValidation(unitYear);
     const unitVINError = VinValidation(unitVIN);
-    const unitLicencePlateError = EmptyValidation("Licence Plate",
+    const unitLicencePlateError = EmptyValidation(
+      "Licence Plate",
       unitLicencePlate
     );
     const unitStatusError = EmptyValidation("Status", unitStatus);
@@ -131,7 +134,7 @@ export default function AddUnit({ isOpen, onClose }) {
     const unitSafetyError = DocumentValidation("Safety", unitSafety);
     let trailerTypeError = "";
     if (unitType === "Trailer") {
-        trailerTypeError = EmptyValidation("Trailer Type", trailerType);
+      trailerTypeError = EmptyValidation("Trailer Type", trailerType);
     }
 
     // Set Errors
@@ -171,7 +174,7 @@ export default function AddUnit({ isOpen, onClose }) {
     formData.append("unitType", unitType);
     if (unitType === "Trailer") {
       formData.append("trailerType", trailerType);
-  }
+    }
     formData.append("unitMake", unitMake);
     formData.append("unitModel", unitModel);
     formData.append("unitYear", unitYear);
@@ -188,6 +191,7 @@ export default function AddUnit({ isOpen, onClose }) {
     if (unitSafety) {
       formData.append("unitSafety", unitSafety);
     }
+
     // Start of POST Method
     try {
       const addUnitResponse = await axios.post("/api/postunit", formData, {
@@ -199,10 +203,14 @@ export default function AddUnit({ isOpen, onClose }) {
       if (addUnitResponse.status === 200) {
         window.location.reload();
       }
-    }  catch (error) {
+    } catch (error) {
       if (error.response && error.response.status === 405) {
-        // console.error("Error: ", error.response.data.message);
-        if (error.response.data.message.includes("Unit number must be unique within the carrier.")) {
+        console.error("Error: ", error.response.data.message);
+        if (
+          error.response.data.message.includes(
+            "Unit number must be unique within the carrier."
+          )
+        ) {
           setUnitNumberError("Unit Number Already Exists");
         }
       } else {
@@ -218,6 +226,7 @@ export default function AddUnit({ isOpen, onClose }) {
         <form onSubmit={handleAddUnit} noValidate>
           <ModalBody>
             <Flex>
+              {/* Unit Number Input*/}
               <CustomInput
                 id={"unitNumber"}
                 label={"Unit Number"}
@@ -233,6 +242,8 @@ export default function AddUnit({ isOpen, onClose }) {
                 mr={2}
                 mt={2}
               />
+
+              {/* Unit Type Select*/}
               <CustomSelect
                 id={"unitType"}
                 isRequired={true}
@@ -324,6 +335,7 @@ export default function AddUnit({ isOpen, onClose }) {
               </div>
             )}
             <Flex>
+              {/* Unit Make Input*/}
               <CustomInput
                 id={"unitMake"}
                 label={"Unit Make"}
@@ -339,6 +351,8 @@ export default function AddUnit({ isOpen, onClose }) {
                 mr={2}
                 mt={8}
               />
+
+              {/* Unit Model Input*/}
               <CustomInput
                 id={"unitModel"}
                 label={"Unit Model"}
@@ -356,6 +370,7 @@ export default function AddUnit({ isOpen, onClose }) {
               />
             </Flex>
             <Flex>
+              {/* Unit Year Input*/}
               <CustomInput
                 id={"unitYear"}
                 label={"Unit Year"}
@@ -371,6 +386,8 @@ export default function AddUnit({ isOpen, onClose }) {
                 mr={2}
                 mt={8}
               />
+
+              {/* Unit VIN Input*/}
               <CustomInput
                 id={"unitVIN"}
                 label={"Unit VIN"}
@@ -388,6 +405,7 @@ export default function AddUnit({ isOpen, onClose }) {
               />
             </Flex>
             <Flex>
+              {/* Unit Licence Plate Input*/}
               <CustomInput
                 id={"unitLicencePlate"}
                 label={"Licence Plate"}
@@ -403,6 +421,8 @@ export default function AddUnit({ isOpen, onClose }) {
                 mr={2}
                 mt={8}
               />
+
+              {/* Unit Status Select */}
               <CustomSelect
                 id={"unitStatus"}
                 isRequired={true}
@@ -423,6 +443,7 @@ export default function AddUnit({ isOpen, onClose }) {
               />
             </Flex>
             <Flex>
+              {/* Unit Registeration Upload*/}
               <CustomUpload
                 id="unitRegistration"
                 label="Unit Registration"
@@ -434,6 +455,8 @@ export default function AddUnit({ isOpen, onClose }) {
                 setError={setUnitRegistrationError}
                 setFileState={setUnitRegistration}
               />
+
+              {/* Unit Insurance Upload */}
               <CustomUpload
                 id="unitInsurance"
                 label="Unit Insurance"
@@ -446,17 +469,20 @@ export default function AddUnit({ isOpen, onClose }) {
                 setFileState={setUnitInsurance}
               />
             </Flex>
+
+            {/* Unit Safety Upload */}
             <CustomUpload
-                id="unitSafety"
-                label="Unit Safety"
-                required={true}
-                isError={!!unitSafetyError}
-                errorMessage={unitSafetyError}
-                mt={8}
-                setError={setUnitSafetyError}
-                setFileState={setUnitSafety}
-              />
+              id="unitSafety"
+              label="Unit Safety"
+              required={true}
+              isError={!!unitSafetyError}
+              errorMessage={unitSafetyError}
+              mt={8}
+              setError={setUnitSafetyError}
+              setFileState={setUnitSafety}
+            />
             <Flex justifyContent="space-between">
+              {/* Close Button */}
               <CustomButton
                 color={customBlue}
                 icon={<IoMdCloseCircle />}
@@ -466,6 +492,8 @@ export default function AddUnit({ isOpen, onClose }) {
                 variant="blueBackwardButton"
                 onClick={handleCloseClick}
               />
+
+              {/* Add Button */}
               <CustomButton
                 color={customBlue}
                 icon={<IoMdAddCircle />}

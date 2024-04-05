@@ -1,29 +1,33 @@
-// Custom Select 
+// React Import
+import React from "react";
 
-import React from 'react';
-import {
-  FormControl,
-  Select,
-  FormErrorMessage,
-} from '@chakra-ui/react';
+// Chakra UI Imports
+import { FormControl, Select, FormErrorMessage } from "@chakra-ui/react";
 
-const CustomSelect = ({
-    mt,
-    id,
-    isRequired,
-    isError,
-    placeholder,
-    value,
-    onChange,
-    value1,
-    children1,
-    value2,
-    children2,
-    errorMessage,
-    ml,
-}) => {
+// Start of the Build
+export default function CustomSelect({
+  mt,
+  id,
+  isRequired,
+  isError,
+  placeholder,
+  value,
+  onChange,
+  value1,
+  children1,
+  value2,
+  children2,
+  errorMessage,
+  ml,
+}) {
   return (
-    <FormControl mt={mt} id={id} isRequired={isRequired} isInvalid={isError} ml={ml}>
+    <FormControl
+      mt={mt}
+      id={id}
+      isRequired={isRequired}
+      isInvalid={isError}
+      ml={ml}
+    >
       <Select
         placeholder={placeholder}
         value={value}
@@ -38,6 +42,4 @@ const CustomSelect = ({
       {isError && <FormErrorMessage ml={4}>{errorMessage}</FormErrorMessage>}
     </FormControl>
   );
-};
-
-export default CustomSelect;
+}

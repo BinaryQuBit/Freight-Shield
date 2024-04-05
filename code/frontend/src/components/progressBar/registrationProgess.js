@@ -1,5 +1,7 @@
-// Progress Bar
+// React Import
 import React from "react";
+
+// Chakra UI Imports
 import {
   Step,
   StepIndicator,
@@ -9,6 +11,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 
+// Const Variable
 const StepNumber = ({ number }) => <div>{number}</div>;
 
 const steps = [
@@ -17,6 +20,7 @@ const steps = [
   { title: "Submission" },
 ];
 
+// Start of the Build
 export const RegistrationProgress = ({ currentStep }) => {
   return (
     <Box width={{ base: "95%", md: "80%", lg: "60%" }} mx="auto">
@@ -36,5 +40,3 @@ export const RegistrationProgress = ({ currentStep }) => {
     </Box>
   );
 };
-
-

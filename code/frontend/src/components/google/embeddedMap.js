@@ -1,5 +1,3 @@
-// Embedded Maps
-
 /* global google */
 import React, { useState, useEffect } from "react";
 import {
@@ -9,14 +7,15 @@ import {
   useLoadScript,
 } from "@react-google-maps/api";
 
-// Reuse the same libraries array if needed
 const libraries = ["places"];
 
+// Container Style
 const containerStyle = {
   width: "100%",
   height: "400px",
 };
 
+// Map Styles
 const mapStyles = [
   {
     featureType: "administrative",
@@ -68,6 +67,8 @@ function EmbeddedMap({
   driverLAT,
   driverLNG,
 }) {
+
+  // Load API
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_API_KEY,
     libraries,
@@ -79,6 +80,7 @@ function EmbeddedMap({
     lng: driverLNG,
   });
 
+  // Keep in Effect
   useEffect(() => {
     if (isLoaded && !loadError && typeof google !== "undefined") {
       const fetchDirections = () => {
@@ -93,7 +95,7 @@ function EmbeddedMap({
             if (status === google.maps.DirectionsStatus.OK) {
               setDirections(result);
             } else {
-              // console.error(`Error fetching directions: ${status}`);
+              console.error(`Error fetching directions: ${status}`);
             }
           }
         );
@@ -111,6 +113,7 @@ function EmbeddedMap({
     lng: (pickUpLNG + dropOffLNG) / 2,
   };
 
+  // Map Options
   const mapOptions = {
     zoomControl: true,
     scrollwheel: true,

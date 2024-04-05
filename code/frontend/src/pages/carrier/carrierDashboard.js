@@ -45,7 +45,7 @@ export default function ShipperDashboard() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode } = useColorMode();
   const { data: userInfo } = useData();
-  const status = userInfo.status
+  const status = userInfo.status;
 
   // Hooks
   const [latestNews, setLatestNews] = useState([]);
@@ -61,7 +61,7 @@ export default function ShipperDashboard() {
         const response = await axios.get("/news");
         setLatestNews(response.data.articles.slice(0, 3));
       } catch (error) {
-        // console.error("Error fetching latest news:", error);
+        console.error("Error fetching latest news:", error);
       }
     };
 
@@ -76,7 +76,7 @@ export default function ShipperDashboard() {
           setEvents(userInfo.events);
         }
       } catch (error) {
-        // console.error("Error fetching Events:", error);
+        console.error("Error fetching Events:", error);
       }
     };
 
@@ -121,7 +121,7 @@ export default function ShipperDashboard() {
       setNewEventDescription("");
       window.location.reload();
     } catch (error) {
-      // console.error("There was an error adding the event:", error);
+      console.error("There was an error adding the event:", error);
     }
   };
 
@@ -144,7 +144,7 @@ export default function ShipperDashboard() {
         `}
       </style>
 
-      <CarrierSideBar activePage="dashboard" Status = { status }/>
+      <CarrierSideBar activePage="dashboard" Status={status} />
       <Easeout>
         <UserHeader title="Dash Board" userInfo={userInfo} Status={status} />
         <Grid

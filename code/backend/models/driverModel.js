@@ -49,8 +49,12 @@ const driverSchema = mongoose.Schema(
     },
     declineReason: {
       type: String,
-      default: "None", 
-    }
+      default: "None",
+    },
+    unitID: {
+      type: String,
+      default: "",
+    },
   },
   {
     timestamps: true,

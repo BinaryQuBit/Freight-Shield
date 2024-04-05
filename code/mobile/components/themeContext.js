@@ -1,17 +1,15 @@
+// React Imports
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Create a context
+// Creating Theme
 const ThemeContext = createContext();
 
-// Use this hook to access theme in any component
 export const useTheme = () => useContext(ThemeContext);
 
-// Theme provider component
 export const ThemeProvider = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // Load theme preference from AsyncStorage
     useEffect(() => {
         const loadThemePreference = async () => {
           try {
@@ -25,7 +23,6 @@ export const ThemeProvider = ({ children }) => {
         loadThemePreference();
       }, []);
 
-  // Toggle theme mode and save preference to AsyncStorage
   const toggleTheme = async () => {
     try {
       const newValue = !isDarkMode;
@@ -36,6 +33,7 @@ export const ThemeProvider = ({ children }) => {
     }
   };
 
+  // Start of the Build
   return (
     <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
       {children}

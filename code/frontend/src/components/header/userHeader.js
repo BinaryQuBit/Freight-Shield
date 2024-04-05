@@ -1,4 +1,7 @@
+// React Imports
 import React, { useState, useEffect } from "react";
+
+// Chakra UI Imports
 import {
   Flex,
   Text,
@@ -10,19 +13,30 @@ import {
   ModalHeader,
   ModalBody,
   ModalCloseButton,
+  Box,
+  ModalFooter,
+  Button,
 } from "@chakra-ui/react";
+
+// Icon Import
 import { MdNotifications } from "react-icons/md";
+
+// Axios Import
 import axios from "axios";
 
-function UserHeader({ title, userInfo, Status }) {
+// Start of the Build
+export default function UserHeader({ title, userInfo, Status }) {
+  // Theme
   const { colorMode } = useColorMode();
   const bgColor = colorMode === "dark" ? "#343541" : "#E4E9F7";
   const textColor = colorMode === "dark" ? "white" : "#0866FF";
   const iconColor = colorMode === "dark" ? "white" : "#0866FF";
 
+  // Screen Breakpoints
   const [isSmallScreen] = useMediaQuery("(max-width: 768px)");
   const [isMediumScreen] = useMediaQuery("(max-width: 992px)");
 
+  // Initials
   const firstNameInitial = userInfo.firstName
     ? userInfo.firstName.charAt(0)
     : "";
@@ -30,33 +44,37 @@ function UserHeader({ title, userInfo, Status }) {
 
   const initials = firstNameInitial + lastNameInitial;
 
+  // Hooks
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
 
+  // Notifications in effect
   useEffect(() => {
     if (userInfo.notification) {
       setNotificationCount(userInfo.notification.length);
     }
   }, [userInfo.notification]);
 
+  // Functions
   const openModal = () => {
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setNotificationCount(0); // Reset notification count on modal close
   };
 
+  // Delete Notification Handle
   const deleteNotifications = () => {
-    if(notificationCount)
-    axios
-      .delete("/api/notifications/delete")
-      .then((response) => {
-        // console.log(response.data);
-        setNotificationCount(0); // Reset notification count on successful deletion
-      })
-      .catch((error) => console.error("Error deleting notifications:", error));
+    if (notificationCount)
+      axios
+        .delete("/api/notifications/delete")
+        .then(() => {
+          setNotificationCount(0);
+        })
+        .catch((error) =>
+          console.error("Error deleting notifications:", error)
+        );
   };
 
   return (
@@ -157,24 +175,61 @@ function UserHeader({ title, userInfo, Status }) {
         </Flex>
       )}
 
+      {/* Notification Modal */}
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Notifications</ModalHeader>
-          <ModalCloseButton onClick={deleteNotifications} />
-          <ModalBody>
+          <ModalHeader
+            fontSize="2xl"
+            fontWeight="bold"
+            bg="#0866FF"
+            color="white"
+            textAlign={"center"}
+          >
+            Notifications
+          </ModalHeader>
+          <ModalCloseButton color="white" />
+          <ModalBody p={5}>
             {userInfo?.notification?.length > 0 ? (
               userInfo.notification.map((note, index) => (
-                <Text key={index}>{note.description}</Text>
+                <Box
+                  key={index}
+                  p={3}
+                  my={2}
+                  bg="gray.100"
+                  borderRadius="md"
+                  borderWidth="1px"
+                  borderColor="gray.200"
+                  boxShadow="sm"
+                >
+                  <Text fontSize="md" color="gray.600">
+                    {note.description}
+                  </Text>
+                </Box>
               ))
             ) : (
-              <Text>No New Notification</Text>
+              <Text fontSize="lg" textAlign="center" color="gray.500">
+                No New Notifications
+              </Text>
             )}
           </ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={() => {
+                deleteNotifications();
+                closeModal();
+              }}
+            >
+              Clear All
+            </Button>
+            <Button variant="ghost" onClick={closeModal}>
+              Close
+            </Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </Flex>
   );
 }
-
-export default UserHeader;

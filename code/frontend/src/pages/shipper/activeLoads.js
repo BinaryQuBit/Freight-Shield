@@ -1,7 +1,7 @@
-// Active Loads
-
 // React Imports
 import React, { useState, useEffect } from "react";
+
+// Icon Import
 import { MdEditSquare, MdDelete } from "react-icons/md";
 
 // Axios Import
@@ -39,14 +39,15 @@ import CustomLink from "../../components/buttons/customLink.js";
 // Start of the Build
 export default function ActiveLoads() {
   axios.defaults.withCredentials = true;
+  Protector("/api/activeloads", email);
   const backend = process.env.REACT_APP_BACKEND_PORT;
   const theme = useTheme();
   const customBlue = theme.colors.customBlue;
-  const { data: { loads, firstName, lastName, email, status, notification } } = useData();
-  // console.log("This is load", loads);
-  // console.log("This is No", notification);
 
-  Protector("/api/activeloads", email);
+  // Data Extraction
+  const {
+    data: { loads, firstName, lastName, email, status, notification },
+  } = useData();
 
   // Hooks
   const [fromSearchTerm, setFromSearchTerm] = useState("");
@@ -121,9 +122,13 @@ export default function ActiveLoads() {
 
   return (
     <>
-      <ShipperSideBar activePage="activeLoads" Status = { status }/>
+      <ShipperSideBar activePage="activeLoads" Status={status} />
       <Easeout>
-        <UserHeader title="Active Loads" userInfo={{ firstName, lastName, notification }} Status={status} />
+        <UserHeader
+          title="Active Loads"
+          userInfo={{ firstName, lastName, notification }}
+          Status={status}
+        />
         <Flex pt="10" direction="column" alignItems="center" padding="10">
           <Stack spacing={4} direction="row" mb="4">
             <Input
@@ -158,7 +163,7 @@ export default function ActiveLoads() {
                         _expanded={{ bg: "gray.100", color: "black" }}
                       >
                         <Box flex="1" textAlign="center">
-                        <Text fontSize={{ base: "sm", md: "lg" }}>
+                          <Text fontSize={{ base: "sm", md: "lg" }}>
                             <strong>From:</strong> {load.pickUpCity}
                             <Box as="span" ml="4" mr="4"></Box>
                             <strong>To:</strong> {load.dropOffCity}
@@ -243,7 +248,12 @@ export default function ActiveLoads() {
                             pickUpLNG={parseFloat(load.pickUpLNG)}
                             dropOffLAT={parseFloat(load.dropOffLAT)}
                             dropOffLNG={parseFloat(load.dropOffLNG)}
-                            {...(load.status.toLowerCase() === "in transit" ? { driverLAT: parseFloat(load.driverLAT), driverLNG: parseFloat(load.driverLNG) } : {})}
+                            {...(load.status.toLowerCase() === "in transit"
+                              ? {
+                                  driverLAT: parseFloat(load.driverLAT),
+                                  driverLNG: parseFloat(load.driverLNG),
+                                }
+                              : {})}
                           />
                         </Box>
                       </Flex>
@@ -283,7 +293,7 @@ export default function ActiveLoads() {
                         )}
                         {(load.status.toLowerCase() === "in transit" ||
                           load.status.toLowerCase() === "delayed") && (
-                          <Box flex={"1"} textAlign={"center"} >
+                          <Box flex={"1"} textAlign={"center"}>
                             <Text
                               pt={"10"}
                               pb={"5"}

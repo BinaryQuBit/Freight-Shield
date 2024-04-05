@@ -1,6 +1,14 @@
 // React Imports
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, Alert, TouchableOpacity } from "react-native";
+import {
+  Modal,
+  StyleSheet,
+  View,
+  ScrollView,
+  Text,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 
 // Axios Import
@@ -22,6 +30,8 @@ import {
 import CustomButton from "../components/customs/customButton";
 import SendingLocation from "../components/sendingLocation";
 import { useTheme } from "../components/themeContext.js";
+import { Picker } from "@react-native-picker/picker";
+import moment from "moment-timezone";
 
 // Screens Imports
 import PreInspectionScreen from "./PreInspectionScreen";
@@ -33,6 +43,10 @@ export default function HomeScreen() {
   const navigation = useNavigation();
   const { isDarkMode } = useTheme();
 
+  const currentTimeInMinutes =
+    moment().tz("America/Regina").hours() * 60 +
+    moment().tz("America/Regina").minutes();
+
   // Hooks
   const [firstName, setFirstName] = useState("");
   const [status, setStatus] = useState("");
@@ -40,6 +54,32 @@ export default function HomeScreen() {
   const [load, setLoad] = useState("");
   const [driverLoadStatus, setDriverLoadStatus] = useState("");
   const [declineReason, setDeclineReason] = useState("");
+  const [todayDrivingHRS, setTodayDrivingHrs] = useState("");
+  const [weekDrivingHRS, setWeekDrivingHrs] = useState("");
+  const [weekHRS, setWeekHRS] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("OFF");
+
+  const postData = async () => {
+    const dataToPost = {
+      currentTime: currentTimeInMinutes,
+      status: selectedOption,
+    };
+
+    try {
+      const postResponse = await axios.put(
+        `${ipConfig}/api/posttime`,
+        dataToPost
+      );
+      console.log("Data posted successfully:", postResponse.data);
+    } catch (postError) {
+      console.error("Failed to post data:", postError);
+    }
+  };
+
+  const toggleModal = () => {
+    setIsModalVisible(!isModalVisible);
+  };
 
   const styles = getDynamicStyles(isDarkMode);
   // Mounting
@@ -51,15 +91,23 @@ export default function HomeScreen() {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${ipConfig}/api/gethomescreen`);
+
         if (isMounted) {
           setFirstName(response.data.info.firstName);
-          setCurrentLoad(response.data.info.currentLoad);
+          if (response.data.info.load) {
+            setCurrentLoad(response.data.info.currentLoad);
+          } else {
+            setCurrentLoad(null);
+          }
           setStatus(response.data.info.driverStatus);
           setDriverLoadStatus(response.data.info.driverLoadStatus);
           setDeclineReason(response.data.info.declineReason);
-          if (!response.data.info.load[0]) {
+          setTodayDrivingHrs(response.data.info.todayHours.D);
+          setWeekDrivingHrs(response.data.info.weekHours.D);
+          setWeekHRS(response.data.info.weekHours);
+          if (!response.data.info.load) {
           } else {
-            setLoad(response.data.info.load[0]);
+            setLoad(response.data.info.load);
           }
         }
       } catch (error) {
@@ -75,44 +123,68 @@ export default function HomeScreen() {
     };
   }, [isFocused]);
 
-  // This needs to go
-  const current = {
-    workingDayHours: "8 hours",
-    workingWeekHours: "40 hours",
-  };
-
-  
   const onCurrentLoadPress = () => {};
 
   const acceptLoad = async () => {
+    if (!load) {
+      return;
+    }
     try {
       const backend = process.env.REACT_IP_CONFIG;
-      const response = await axios.put(`${backend}/api/acceptload`, {});
+      await axios.put(`${backend}/api/acceptload`, {});
       Alert.alert("Load has been Accepted");
-      navigation.navigate(PreInspectionScreen);
-      // navigation.reset({
-      //   index: 0,
-      //   routes: [{ name: 'PreInspectionScreen' }],
-      // });
     } catch (error) {
       console.error("Error accepting load:", error);
       Alert.alert("Error", "Failed to accept load");
     }
   };
 
+  const confirmDelivery = () => {
+    Alert.alert(
+      "Confirm Delivery",
+      "Are you sure you delivered this load?",
+      [
+        {
+          text: "No",
+          onPress: () => console.log("Delivery not confirmed"),
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: () => deliverLoad(),
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const deliverLoad = async () => {
+    if (!load) {
+      Alert.alert("No load selected", "Please select a load first.");
+      return;
+    }
+    try {
+      const backend = process.env.REACT_IP_CONFIG;
+      await axios.put(`${backend}/api/deliverload`, {});
+    } catch (error) {
+      console.error("Error delivering load:", error);
+      Alert.alert("Error", "Failed to deliver load");
+    }
+  };
 
   const getStatusColor = (status) => {
     switch (status) {
       case "Pending":
-        return "#FFA500"; 
+        return "#FFA500";
       case "Approved":
-        return "#42B72A"; 
+        return "#42B72A";
       case "Declined":
-        return "#FF0000"; 
+        return "#FF0000";
       default:
-        return "#000"; // Default color
+        return "#000";
     }
   };
+
   // Dynamic Styles
   const statusStyle = {
     textAlign: "center",
@@ -124,211 +196,271 @@ export default function HomeScreen() {
     alignSelf: "flex-end",
     color: getStatusColor(status),
   };
+  const handleSubmit = () => {
+    Alert.alert("Status has been changed");
+    postData();
+    setIsModalVisible(false);
+  };
 
-  
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Welcome {firstName}</Text>
-
-      <View style={styles.sectionContainer}>
-        <View style={styles.currentLoadContainer}>
-          <View style={styles.headerStyle}>
-            <Text style={styles.subtitle}>Driver Status</Text>
-            <FontAwesomeIcon icon={faCircle} size={20} style={statusIcon} />
-          </View>
-          <View>
-            <Text style={statusStyle}>{status}</Text>
-            {status === "Declined" && (
-              <View style={styles.declineReasonContainer}>
-                <FontAwesomeIcon
-                  icon={faExclamationCircle}
-                  size={16}
-                  style={styles.declineReasonIcon}
-                />
-                <Text style={styles.declineReasonText}>
-                  Reason: {declineReason}
-                </Text>
-              </View>
-            )}
+    <ScrollView style={styles.scrollStyle}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Welcome {firstName}</Text>
+        <View style={styles.sectionContainer}>
+          <View style={styles.currentLoadContainer}>
+            <View style={styles.headerStyle}>
+              <Text style={styles.subtitle}>Driver Status</Text>
+              <FontAwesomeIcon icon={faCircle} size={20} style={statusIcon} />
+            </View>
+            <View>
+              <Text style={statusStyle}>{status}</Text>
+              {status === "Declined" && (
+                <View style={styles.declineReasonContainer}>
+                  <FontAwesomeIcon
+                    icon={faExclamationCircle}
+                    size={16}
+                    style={styles.declineReasonIcon}
+                  />
+                  <Text style={styles.declineReasonText}>
+                    Reason: {declineReason}
+                  </Text>
+                </View>
+              )}
+            </View>
           </View>
         </View>
-      </View>
 
-      <View style={styles.sectionContainer}>
-        <TouchableOpacity
-          style={styles.currentLoadContainer}
-          onPress={() => {
-            navigation.navigate("WorkingHoursScreen", { load: load });
-          }}
-          activeOpacity={0.7}
-        >
-          <View style={styles.headerStyle}>
-            <Text style={styles.subtitle}>Working Hours</Text>
-            <FontAwesomeIcon
-              icon={faInfoCircle}
-              size={20}
-              style={styles.infoIcon}
-            />
-          </View>
-          <View style={styles.loadDetailRow}>
-            <FontAwesomeIcon icon={faClock} size={20} style={styles.icon} />
-            <Text style={styles.locationText}>
-              Day: {current.workingDayHours}
-            </Text>
-          </View>
-          <View style={styles.loadDetailRow}>
-            <FontAwesomeIcon icon={faClock} size={20} style={styles.icon} />
-            <Text style={styles.locationText}>
-              Week: {current.workingWeekHours}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity
-        style={styles.preInspectionButton}
-        onPress={() => {
-          navigation.navigate(PreInspectionScreen);
-        }}
-        activeOpacity={0.7}
-      >
-        <Text style={styles.PreInspectionButtonText}>Start Pre-Inspection</Text>
-      </TouchableOpacity>
-
-      {status === "Approved" &&
-      currentLoad &&
-      driverLoadStatus === "Assigned" ? (
-        <>
-          <View style={styles.sectionContainer}>
-            <TouchableOpacity
-              style={styles.currentLoadContainer}
-              onPress={() =>
-                navigation.navigate("LoadDetailsScreen", { load: load })
-              }
-              activeOpacity={0.7}
-            >
-              <View style={styles.headerStyle}>
-                <Text style={styles.subtitle}>New Load</Text>
-                <FontAwesomeIcon
-                  icon={faInfoCircle}
-                  size={20}
-                  style={styles.infoIcon}
-                />
-              </View>
-              <View style={styles.loadDetailRow}>
-                <FontAwesomeIcon icon={faUser} size={20} style={styles.icon} />
-                <Text style={styles.locationText}>
-                  Shipper: {load.shipperCompanyName}
-                </Text>
-              </View>
-              <View style={styles.loadDetailRow}>
-                <FontAwesomeIcon
-                  icon={faMapMarkedAlt}
-                  size={20}
-                  style={styles.icon}
-                />
-                <Text style={styles.locationText}>
-                  Pickup: {load.pickUpCity}
-                </Text>
-              </View>
-              <View style={styles.loadDetailRow}>
-                <FontAwesomeIcon
-                  icon={faTruckLoading}
-                  size={20}
-                  style={styles.icon}
-                />
-                <Text style={styles.locationText}>
-                  Drop: {load.dropOffCity}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.acceptButtonContainer}>
-            <TouchableOpacity
-              style={styles.acceptButton}
-              onPress={acceptLoad}
-              activeOpacity={0.7}
-            >
-              <Text style={styles.PreInspectionButtonText}>
-                Start Pre-Inspection
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </>
-      ) : status === "Approved" &&
-        !currentLoad &&
-        driverLoadStatus === "Available" ? (
-        <>
-          <View
+        <View style={styles.sectionContainer}>
+          <TouchableOpacity
             style={styles.currentLoadContainer}
-            onPress={onCurrentLoadPress}
+            onPress={() => {
+              navigation.navigate("WorkingHoursScreen", { weekHours: weekHRS });
+            }}
             activeOpacity={0.7}
           >
             <View style={styles.headerStyle}>
-              <Text style={styles.subtitle}>Load</Text>
+              <Text style={styles.subtitle}>Driving Hours</Text>
+              <FontAwesomeIcon
+                icon={faInfoCircle}
+                size={20}
+                style={styles.infoIcon}
+              />
             </View>
-            <View>
-              <Text style={styles.noLoad}>There is no Load yet</Text>
+            <View style={styles.loadDetailRow}>
+              <FontAwesomeIcon icon={faClock} size={20} style={styles.icon} />
+              <Text style={styles.locationText}>Day: {todayDrivingHRS}</Text>
             </View>
-          </View>
-        </>
-      ) : status === "Approved" &&
-        driverLoadStatus === "Accepted" &&
-        currentLoad ? (
-        <>
-          <View style={styles.sectionContainer}>
-            <TouchableOpacity
-              style={styles.currentLoadContainer}
-              onPress={() =>
-                navigation.navigate("LoadDetailsScreen", { load: load })
-              }
+            <View style={styles.loadDetailRow}>
+              <FontAwesomeIcon icon={faClock} size={20} style={styles.icon} />
+              <Text style={styles.locationText}>Week: {weekDrivingHRS}</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        {status === "Approved" &&
+        currentLoad &&
+        driverLoadStatus === "Assigned" ? (
+          <>
+            <View style={styles.sectionContainer}>
+              <TouchableOpacity
+                style={styles.currentLoadContainer}
+                onPress={() =>
+                  navigation.navigate("LoadDetailsScreen", { load: load })
+                }
+                activeOpacity={0.7}
+              >
+                <View style={styles.headerStyle}>
+                  <Text style={styles.subtitle}>New Load</Text>
+                  <FontAwesomeIcon
+                    icon={faInfoCircle}
+                    size={20}
+                    style={styles.infoIcon}
+                  />
+                </View>
+                <View style={styles.loadDetailRow}>
+                  <FontAwesomeIcon
+                    icon={faUser}
+                    size={20}
+                    style={styles.icon}
+                  />
+                  <Text style={styles.locationText}>
+                    Shipper: {load.shipperCompanyName}
+                  </Text>
+                </View>
+                <View style={styles.loadDetailRow}>
+                  <FontAwesomeIcon
+                    icon={faMapMarkedAlt}
+                    size={20}
+                    style={styles.icon}
+                  />
+                  <Text style={styles.locationText}>
+                    Pickup: {load.pickUpCity}
+                  </Text>
+                </View>
+                <View style={styles.loadDetailRow}>
+                  <FontAwesomeIcon
+                    icon={faTruckLoading}
+                    size={20}
+                    style={styles.icon}
+                  />
+                  <Text style={styles.locationText}>
+                    Drop: {load.dropOffCity}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.acceptButtonContainer}>
+              <TouchableOpacity
+                style={styles.acceptButton}
+                onPress={acceptLoad}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.PreInspectionButtonText}>Accept Load</Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        ) : status === "Approved" &&
+          !currentLoad &&
+          driverLoadStatus === "Available" ? (
+          <>
+            <View
+              style={styles.currentContainer}
+              onPress={onCurrentLoadPress}
               activeOpacity={0.7}
             >
               <View style={styles.headerStyle}>
-                <Text style={styles.subtitle}>Current Load</Text>
-                <FontAwesomeIcon
-                  icon={faInfoCircle}
-                  size={20}
-                  style={styles.infoIcon}
-                />
+                <Text style={styles.subtitle}>Load</Text>
               </View>
-              <View style={styles.loadDetailRow}>
-                <FontAwesomeIcon icon={faUser} size={20} style={styles.icon} />
-                <Text style={styles.locationText}>
-                  Shipper: {load.shipperCompanyName}
-                </Text>
+              <View>
+                <Text style={styles.noLoad}>There is no Load yet</Text>
               </View>
-              <View style={styles.loadDetailRow}>
-                <FontAwesomeIcon
-                  icon={faMapMarkedAlt}
-                  size={20}
-                  style={styles.icon}
-                />
-                <Text style={styles.locationText}>
-                  Pickup: {load.pickUpCity}
-                </Text>
-              </View>
-              <View style={styles.loadDetailRow}>
-                <FontAwesomeIcon
-                  icon={faTruckLoading}
-                  size={20}
-                  style={styles.icon}
-                />
-                <Text style={styles.locationText}>
-                  Drop: {load.dropOffCity}
-                </Text>
-              </View>
+            </View>
+          </>
+        ) : status === "Approved" &&
+          driverLoadStatus === "Accepted" &&
+          currentLoad ? (
+          <>
+            <View style={styles.sectionContainer}>
+              <TouchableOpacity
+                style={styles.currentLoadContainer}
+                onPress={() =>
+                  navigation.navigate("LoadDetailsScreen", { load: load })
+                }
+                activeOpacity={0.7}
+              >
+                <View style={styles.headerStyle}>
+                  <Text style={styles.subtitle}>Current Load</Text>
+                  <FontAwesomeIcon
+                    icon={faInfoCircle}
+                    size={20}
+                    style={styles.infoIcon}
+                  />
+                </View>
+                <View style={styles.loadDetailRow}>
+                  <FontAwesomeIcon
+                    icon={faUser}
+                    size={20}
+                    style={styles.icon}
+                  />
+                  <Text style={styles.locationText}>
+                    Shipper: {load.shipperCompanyName}
+                  </Text>
+                </View>
+                <View style={styles.loadDetailRow}>
+                  <FontAwesomeIcon
+                    icon={faMapMarkedAlt}
+                    size={20}
+                    style={styles.icon}
+                  />
+                  <Text style={styles.locationText}>
+                    Pickup: {load.pickUpCity}
+                  </Text>
+                </View>
+                <View style={styles.loadDetailRow}>
+                  <FontAwesomeIcon
+                    icon={faTruckLoading}
+                    size={20}
+                    style={styles.icon}
+                  />
+                  <Text style={styles.locationText}>
+                    Drop: {load.dropOffCity}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity
+              style={styles.acceptButton}
+              onPress={confirmDelivery}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.PreInspectionButtonText}>Deliver Load</Text>
             </TouchableOpacity>
+          </>
+        ) : (
+          <></>
+        )}
+        <View style={styles.buttonsContainer}>
+          <TouchableOpacity
+            style={[styles.preInspectionButton, styles.leftButton]}
+            onPress={() => {
+              toggleModal();
+            }}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.PreInspectionButtonText}>Change Status</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.preInspectionButton, styles.rightButton]}
+            onPress={() => {
+              navigation.navigate(PreInspectionScreen);
+            }}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.PreInspectionButtonText}>Start Inspection</Text>
+          </TouchableOpacity>
+        </View>
+
+        {load && <SendingLocation load_id={load._id} />}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={isModalVisible}
+          onRequestClose={() => setIsModalVisible(false)}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Change Status</Text>
+              <Picker
+                selectedValue={selectedOption}
+                onValueChange={(itemValue) => setSelectedOption(itemValue)}
+                style={{ width: 200, height: 160 }}
+              >
+                <Picker.Item label="Off Duty" value="OFF" />
+                <Picker.Item label="Sleeper Berth" value="SB" />
+                <Picker.Item label="Driving" value="D" />
+                <Picker.Item label="On Duty" value="ON" />
+              </Picker>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonClose]}
+                onPress={handleSubmit}
+              >
+                <Text style={styles.textStyle}>Submit</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <SendingLocation load_id={load._id} />
-        </>
-      ) : (
-        <></>
-      )}
-    </View>
+        </Modal>
+      </View>
+    </ScrollView>
   );
 }
+
+// Styles
 const getDynamicStyles = (isDarkMode) =>
   StyleSheet.create({
+    scrollStyle: {
+      backgroundColor: isDarkMode ? "#222" : "#FFF",
+      paddingBottom: 20,
+    },
     container: {
       alignItems: "center",
       backgroundColor: isDarkMode ? "#222" : "#FFF",
@@ -362,6 +494,12 @@ const getDynamicStyles = (isDarkMode) =>
       padding: 20,
       borderRadius: 10,
       elevation: isDarkMode ? 0 : 4,
+    },
+    currentContainer: {
+      backgroundColor: isDarkMode ? "#333" : "#E8EAF6",
+      padding: 20,
+      borderRadius: 10,
+      elevation: isDarkMode ? 0 : 4,
       width: "90%",
     },
     infoIcon: {
@@ -390,7 +528,7 @@ const getDynamicStyles = (isDarkMode) =>
     acceptButtonContainer: {
       width: "100%",
       alignItems: "center",
-      marginTop: 20,
+      marginTop: 10,
     },
     acceptButton: {
       backgroundColor: "#42B72A",
@@ -399,28 +537,14 @@ const getDynamicStyles = (isDarkMode) =>
       elevation: isDarkMode ? 0 : 4,
       width: "90%",
     },
-    PreInspectionButtonText: {
-      color: "white",
-      fontWeight: "bold",
-      textAlign: "center",
-      fontSize: 18,
-    },
-    preInspectionButton: {
-      backgroundColor: "#0866FF",
-      padding: 10,
-      borderRadius: 10,
-      elevation: isDarkMode ? 0 : 4,
-      width: "90%",
-      marginBottom: 20,
-    },
     declineStyle: {
       color: "red",
       fontFamily: "Lora-Regular",
     },
     declineReasonContainer: {
-      marginTop: 20, 
-      padding: 10, 
-      backgroundColor: isDarkMode ? "#442222" : "#FFE8E8", 
+      marginTop: 20,
+      padding: 10,
+      backgroundColor: isDarkMode ? "#442222" : "#FFE8E8",
       borderRadius: 5,
     },
     declineReasonText: {
@@ -431,6 +555,93 @@ const getDynamicStyles = (isDarkMode) =>
     },
     declineReasonIcon: {
       color: isDarkMode ? "#FFCCCC" : "#D22B2B",
-      marginRight: 5,
+    },
+    leftButton: {
+      marginRight: 10, // add space between buttons
+    },
+    rightButton: {
+      marginLeft: 10, // add space between buttons
+    },
+    buttonsContainer: {
+      flexDirection: "row", // positions children in a horizontal row
+      justifyContent: "space-evenly", // or 'space-between' to add space between buttons
+    },
+    PreInspectionButtonText: {
+      color: "white",
+      textAlign: "center",
+      fontSize: 16,
+      fontFamily: "Lora-Bold",
+    },
+    preInspectionButton: {
+      backgroundColor: "#0866FF",
+      padding: 15,
+      borderRadius: 10,
+      elevation: isDarkMode ? 0 : 4,
+      marginBottom: 20,
+      marginTop: 20,
+    },
+    centeredView: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 22,
+    },
+    modalView: {
+      margin: 20,
+      backgroundColor: "white",
+      borderRadius: 20,
+      padding: 35,
+      alignItems: "center",
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+    },
+    button: {
+      borderRadius: 20,
+      padding: 10,
+      elevation: 2,
+    },
+    buttonClose: {
+      backgroundColor: "#2196F3",
+    },
+    textStyle: {
+      color: "white",
+      fontWeight: "bold",
+      textAlign: "center",
+    },
+    modalText: {
+      marginBottom: 15,
+      textAlign: "center",
+    },
+    pickerStyle: {
+      width: 200,
+      height: 50,
+      color: "#000",
+    },
+    centeredView: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "rgba(0,0,0,0.5)", // Semi-transparent background
+    },
+    modalView: {
+      margin: 20,
+      backgroundColor: "white",
+      borderRadius: 20,
+      padding: 35,
+      alignItems: "center",
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
     },
   });

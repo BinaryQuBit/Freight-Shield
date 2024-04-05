@@ -1,10 +1,14 @@
-// Ease out for the navbar
-
+// React Imports
 import React, { useContext } from "react";
-import { Flex, Text } from '@chakra-ui/react';
+
+// Chakra UI Imports
+import { Flex } from "@chakra-ui/react";
+
+// Custom Import
 import { SidebarContext } from "./context.js";
 
-const EaseOut = ({ children }) => {
+// Start of the Build
+export default function EaseOut({ children }) {
   const { navSize } = useContext(SidebarContext);
 
   return (
@@ -16,9 +20,5 @@ const EaseOut = ({ children }) => {
     >
       {children}
     </Flex>
-  )
+  );
 }
-
-export default EaseOut;
-
-

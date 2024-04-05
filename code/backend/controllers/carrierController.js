@@ -9,7 +9,7 @@ import Driver from "../models/driverModel.js";
 // Delete Middleware Import
 import { deleteFiles } from "../middleware/delete.js";
 
-////////////////////////////// Getters //////////////////////////////
+////////////////////////////// GETTERS //////////////////////////////
 
 // @desc    Getting Dashboard
 // route    GET /api/carrierdashboard
@@ -69,8 +69,10 @@ export const getMarketplace = asyncHandler(async (req, res) => {
       firstName: req.user.firstName,
       lastName: req.user.lastName,
       status: req.user.status,
-      notification: carrier.notification,
     };
+
+    const notification = carrier.notification;
+    const email = user.email;
 
     // If there is Carrier, map the units profiles
     if (carrier) {
@@ -114,6 +116,8 @@ export const getMarketplace = asyncHandler(async (req, res) => {
       units,
       driverData,
       user,
+      notification,
+      email,
     };
 
     // If Response is ok, send the data in json format
@@ -500,7 +504,7 @@ export const getUnitDriver = asyncHandler(async (req, res) => {
   }
 });
 
-////////////////////////////// Posters //////////////////////////////
+////////////////////////////// POSTERS //////////////////////////////
 
 // @desc    Adding Unit Profiles
 // route    POST /api/postunit
@@ -615,7 +619,7 @@ export const postCarrierEvents = async (req, res) => {
   }
 };
 
-////////////////////////////// Putters //////////////////////////////
+////////////////////////////// PUTTERS //////////////////////////////
 
 // @desc    Assigning Unit
 // route    PUT /api/marketplace/:id
@@ -1077,6 +1081,7 @@ export const updateDriverStatusLoad = asyncHandler(async (req, res) => {
 
     // Find the required unit
     const unitProfile = carrier.units.find((u) => u.unitNumber === unitNumber);
+    const unitID = unitProfile._id;
 
     // If there is no unit, send the error message
     if (!unitProfile) {
@@ -1120,6 +1125,7 @@ export const updateDriverStatusLoad = asyncHandler(async (req, res) => {
     // construct the driver information
     driver.driverLoadStatus = "Assigned";
     driver.currentLoad = loadId;
+    driver.unitID = unitID;
 
     // save the driver information
     await driver.save();
@@ -1172,7 +1178,7 @@ export const updateUnit = asyncHandler(async (req, res) => {
   }
 });
 
-////////////////////////////// Deleters //////////////////////////////
+////////////////////////////// DELETERS //////////////////////////////
 // @desc    Delete Units
 // route    DELETE /api/units/:unitNumber
 // @access  Private
@@ -1203,7 +1209,7 @@ export const deleteUnit = asyncHandler(async (req, res) => {
     throw new Error("Unit not found");
   }
 
-  // splice the unit index
+  // splice the units from unitIndex to next index
   carrier.units.splice(unitIndex, 1);
 
   // save the unit

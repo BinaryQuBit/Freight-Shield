@@ -1,8 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { View, Text } from "react-native";
+// Import React
+import { useEffect } from "react";
+
+// Import Expo Location
 import * as Location from "expo-location";
+
+// Import Axios
 import axios from "axios";
 
+// Start of the Build
 export default function SendingLocation({ load_id }) {
   const ipConfig = process.env.REACT_IP_CONFIG;
 
@@ -13,16 +18,21 @@ export default function SendingLocation({ load_id }) {
     }
 
     let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
+    if (status !== "granted") {
       console.error("Permission to access location was denied");
       return;
     }
 
     try {
-      let { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
-      
-      
-      await axios.put(`${ipConfig}/api/sendinglocation`, { load_id, latitude, longitude });
+      let {
+        coords: { latitude, longitude },
+      } = await Location.getCurrentPositionAsync({});
+
+      await axios.put(`${ipConfig}/api/sendinglocation`, {
+        load_id,
+        latitude,
+        longitude,
+      });
     } catch (error) {
       console.error("Error during location fetch or send:", error);
     }
@@ -35,5 +45,3 @@ export default function SendingLocation({ load_id }) {
 
   return null;
 }
-
-

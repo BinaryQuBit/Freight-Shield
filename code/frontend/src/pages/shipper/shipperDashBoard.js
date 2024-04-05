@@ -47,8 +47,6 @@ export default function ShipperDashboard() {
   const status = userInfo.status;
   Protector("/api/shipperdashboard");
 
-
-
   // Hooks
   const [latestNews, setLatestNews] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -144,11 +142,11 @@ export default function ShipperDashboard() {
               color: ${colorMode === "dark" ? "white" : "white"};
             }
         `}
-      </style> 
+      </style>
 
-      <ShipperSideBar activePage="dashboard" Status = { status }/>
+      <ShipperSideBar activePage="dashboard" Status={status} />
       <Easeout>
-        <UserHeader title="Dash Board" userInfo={userInfo} Status = {status}/>
+        <UserHeader title="Dash Board" userInfo={userInfo} Status={status} />
         <Grid
           templateColumns={{ base: "1fr", md: "1fr", lg: "1fr 1fr" }}
           gap={4}
