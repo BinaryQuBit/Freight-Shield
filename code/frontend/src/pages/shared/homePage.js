@@ -60,28 +60,28 @@ export default function Homepage() {
           <Flex mt={{ base: 4, md: 0 }}>
             <Link
               mr={{ base: 4, md: 4 }}
-              color={activeTab === "Home" ? "blue.500" : "black"}
+              color={activeTab === "Home" ? "#0866FF" : "black"}
               onClick={() => handleTabClick("Home", backgroundImage)}
             >
               Home
             </Link>
             <Link
               mr={{ base: 4, md: 4 }}
-              color={activeTab === "Shippers" ? "blue.500" : "black"}
+              color={activeTab === "Shippers" ? "#0866FF" : "black"}
               onClick={() => handleTabClick("Shippers", shipperImage)}
             >
               Shippers
             </Link>
             <Link
               mr={{ base: 4, md: 4 }}
-              color={activeTab === "Carriers" ? "blue.500" : "black"}
+              color={activeTab === "Carriers" ? "#0866FF" : "black"}
               onClick={() => handleTabClick("Carriers", carrierImage)}
             >
               Carriers
             </Link>
             <Link
               mr={{ base: 4, md: 4 }}
-              color={activeTab === "About Us" ? "blue.500" : "black"}
+              color={activeTab === "About Us" ? "#0866FF" : "black"}
               onClick={() => handleTabClick("About Us", About)}
             >
               About Us
