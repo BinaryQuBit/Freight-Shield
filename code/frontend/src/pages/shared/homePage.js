@@ -1,4 +1,8 @@
+// React Imports
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+// Chakra Imports
 import {
   Container,
   Flex,
@@ -14,14 +18,17 @@ import {
   VStack,
   useBreakpointValue,
 } from "@chakra-ui/react";
+
+// Custom Imports
 import Logo from "../../components/logo/logo.svg";
-import { useNavigate } from "react-router-dom";
 import backgroundImage from "./background-image.jpg";
 import shipperImage from "./shipper.jpg";
 import carrierImage from "./carrier.jpg";
 import About from "./about.jpeg";
 
+// Start of the Build
 export default function Homepage() {
+  // Hooks
   const navigate = useNavigate();
   const [showHomeCards, setShowHomeCards] = useState(true);
   const [showShipperCards, setShowShipperCards] = useState(false);
@@ -30,6 +37,7 @@ export default function Homepage() {
   const [backgroundImg, setBackgroundImg] = useState(backgroundImage);
   const [activeTab, setActiveTab] = useState("Home");
 
+  // Function
   const handleTabClick = (tabName, image) => {
     setActiveTab(tabName);
     setShowHomeCards(tabName === "Home");
@@ -39,6 +47,7 @@ export default function Homepage() {
     setBackgroundImg(image);
   };
 
+  // Direction function for Flex
   const direction = useBreakpointValue({
     base: "column",
     md: "column",
@@ -345,6 +354,7 @@ export default function Homepage() {
   );
 }
 
+// Function
 function PromotionCard({ title, description, gradientColors }) {
   return (
     <Box
