@@ -48,7 +48,7 @@ const humanize = (str) => {
 // Start of the Build
 export default function SettingScreen() {
   const { isDarkMode, toggleTheme } = useTheme();
-  const ipConfig = process.env.REACT_IP_CONFIG;
+  const ipConfig = "https://freightshield.ca";
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   

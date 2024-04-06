@@ -21,7 +21,7 @@ import axios from "axios";
 // Start of the Build
 export default function PreInspectionScreen() {
   const { isDarkMode } = useTheme();
-  const ipConfig = process.env.REACT_IP_CONFIG;
+  const ipConfig = "https://freightshield.ca";
   const navigation = useNavigation();
   const styles = getDynamicStyles(isDarkMode);
 

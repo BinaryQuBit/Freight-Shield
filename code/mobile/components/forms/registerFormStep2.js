@@ -16,7 +16,7 @@ import CustomUpload from "../customs/customUpload";
 
 // Start of the Build
 export default function RegisterFormStep2({ closeModal }) {
-  const ipConfig = process.env.REACT_IP_CONFIG;
+  const ipConfig = "https://freightshield.ca";
   axios.defaults.withCredentials = true;
   const navigation = useNavigation();
 

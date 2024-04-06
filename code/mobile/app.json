@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo/paddedOriginalLogo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.binaryqubuit.FreightShield"
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "a8eb3508-b980-4615-8381-a4b741eae45a"
+      }
+    }
   }
 }
