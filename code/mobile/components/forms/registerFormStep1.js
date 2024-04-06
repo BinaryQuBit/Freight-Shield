@@ -19,7 +19,7 @@ import RegisterFormStep2 from "./registerFormStep2";
 
 // Start of the Build
 export default function RegisterFormStep1({ closeRegister1 }) {
-  const ipConfig = process.env.REACT_IP_CONFIG;
+  const ipConfig = "https://freightshield.ca";
   axios.defaults.withCredentials = true;
 
   // Hooks

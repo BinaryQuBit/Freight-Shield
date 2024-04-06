@@ -38,7 +38,7 @@ import PreInspectionScreen from "./PreInspectionScreen";
 
 // Start of the Build
 export default function HomeScreen() {
-  const ipConfig = process.env.REACT_IP_CONFIG;
+  const ipConfig = "https://freightshield.ca";
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const { isDarkMode } = useTheme();
@@ -130,7 +130,7 @@ export default function HomeScreen() {
       return;
     }
     try {
-      const backend = process.env.REACT_IP_CONFIG;
+      const backend = "https://freightshield.ca";
       await axios.put(`${backend}/api/acceptload`, {});
       Alert.alert("Load has been Accepted");
     } catch (error) {
@@ -164,7 +164,7 @@ export default function HomeScreen() {
       return;
     }
     try {
-      const backend = process.env.REACT_IP_CONFIG;
+      const backend = "https://freightshield.ca";
       await axios.put(`${backend}/api/deliverload`, {});
     } catch (error) {
       console.error("Error delivering load:", error);
@@ -247,9 +247,9 @@ export default function HomeScreen() {
               />
             </View>
             <View style={styles.loadDetailRow}>
-              <FontAwesomeIcon icon={faClock} size={20} style={styles.icon} />
-              <Text style={styles.locationText}>Day: {todayDrivingHRS}</Text>
-            </View>
+  <FontAwesomeIcon icon={faClock} size={20} style={styles.icon} />
+  <Text style={styles.locationText}>Day: {Math.round(todayDrivingHRS)}</Text>
+</View>
             <View style={styles.loadDetailRow}>
               <FontAwesomeIcon icon={faClock} size={20} style={styles.icon} />
               <Text style={styles.locationText}>Week: {weekDrivingHRS}</Text>

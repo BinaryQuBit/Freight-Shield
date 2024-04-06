@@ -18,7 +18,7 @@ import CustomInput from "../components/customs/customInput";
 export default function EditLogBookScreen({ route }) {
   const navigation = useNavigation();
   const log = route.params;
-  const ipConfig = process.env.REACT_IP_CONFIG;
+  const ipConfig = "https://freightshield.ca";
   const [entries, setEntries] = useState([
     { status: "OFF", startTime: "", endTime: "", key: Math.random() },
   ]);

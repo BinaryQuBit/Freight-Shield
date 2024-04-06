@@ -9,7 +9,7 @@ import axios from "axios";
 
 // Start of the Build
 export default function SendingLocation({ load_id }) {
-  const ipConfig = process.env.REACT_IP_CONFIG;
+  const ipConfig = "https://freightshield.ca";
 
   const fetchAndSendLocation = async () => {
     if (!load_id) {

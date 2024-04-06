@@ -75,7 +75,33 @@
 
 - <a href = "https://youtu.be/QjNZk3Wbh70">Freight Shield Vlog 3</a>
 
+- <a href = "">Project Demo</a>
+
+- <a href = "">Commercial Video</a>
+
 <br>
+
+<div><u>
+
+## Deliveries
+
+</u></div>
+
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/Business%20Case.pdf">Business Case</a>
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/Project%20Requirements%20Document.pdf">Problem & Requirements Prerequisites</a>
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/UML%20Diagrams/SequenceDiagram.jpeg">Sequence Diagram</a>
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/UML%20Diagrams/UseCaseDiagram.jpeg">Use Case Diagram</a>
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/Lofi/lofi1.pdf">Lofi Prototype</a>
+- <a href = "https://www.figma.com/file/7Ps3kzHNE3LfqD3CmYPruq/Freight-Sheild?type=design&node-id=0%3A1&mode=dev&t=ufgMc4obzL9F5OmQ-1">Hifi Prototype</a>
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/RABC%20chart.pdf">R/ABAC</a>
+- <a href = "https://github.com/users/BinaryQuBit/projects/1">Project Roadmaps</a>
+- <a href = "">Code Testing Report</a>
+- <a href = "">User Testing Report</a>
+- <a href = "">Code quality review report</a>   
+- <a href = "">Project Poster</a>
+- <a href = "">Commercial Knowledge Base</a>
+- <a href = "">Final Presentation</a>
+- <a href = "">Project Experience Report</a>
 
 <div><u>
 

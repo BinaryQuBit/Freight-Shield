@@ -17,7 +17,7 @@ import ForgotPasswordForm from "./forgotPasswordForm";
 
 // Start of the Build
 export default function LoginForm() {
-  const ipConfig = process.env.REACT_IP_CONFIG;
+  const ipConfig = "https://freightshield.ca";
   axios.defaults.withCredentials = true;
   const navigation = useNavigation();
 

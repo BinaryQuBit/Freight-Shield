@@ -362,6 +362,7 @@ export const registerUser = asyncHandler(async (req, res) => {
 
   // if role is driver, create driver in the model Driver
   if (role == "driver") {
+    console.log("I am hit")
     const driver = await Driver.create({
       firstName,
       lastName,

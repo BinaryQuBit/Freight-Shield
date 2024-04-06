@@ -29,6 +29,7 @@ export default function AdminSideBar({ activePage, Status }) {
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === "dark";
   const navigate = useNavigate();
+  const { setColorMode } = useColorMode();
 
   // Hook
   const [menuOpen, setMenuOpen] = useState(false);
@@ -167,7 +168,7 @@ export default function AdminSideBar({ activePage, Status }) {
               navSize={navSize}
               icon={FiLogOut}
               title="Sign Out"
-              onClick={logout}
+              onClick={() => logout(navigate, setColorMode)}
               menuOpen={menuOpen}
             />
           </Flex>

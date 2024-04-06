@@ -8,7 +8,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faChevronDown,
   faChevronUp,
-  faCircleExclamation,
 } from "@fortawesome/free-solid-svg-icons";
 
 // Axios Import
@@ -34,7 +33,7 @@ const generatePastDates = (days) => {
 
 // Start of the Build
 export default function PastDaysLogBooks() {
-  const ipConfig = process.env.REACT_IP_CONFIG;
+  const ipConfig = "https://freightshield.ca"
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const { isDarkMode } = useTheme();
@@ -108,14 +107,6 @@ export default function PastDaysLogBooks() {
                 {moment(date).tz("America/Regina").format("dddd")})
               </Text>
               <View style={style.iconsContainer}>
-                {!approvedLogbooks.includes(formatDate(date)) && (
-                  <FontAwesomeIcon
-                    icon={faCircleExclamation}
-                    size={16}
-                    color="red"
-                    style={{ marginRight: 10 }}
-                  />
-                )}
                 <FontAwesomeIcon
                   icon={expandedDay === index ? faChevronUp : faChevronDown}
                   size={16}
