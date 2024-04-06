@@ -87,21 +87,59 @@
 
 </u></div>
 
+### Initial Documents
+
 - <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/Business%20Case.pdf">Business Case</a>
+
 - <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/Project%20Requirements%20Document.pdf">Problem & Requirements Prerequisites</a>
+
+- <a href = "https://github.com/users/BinaryQuBit/projects/1">Kanban</a>
+
+### Architecture
+
 - <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/UML%20Diagrams/SequenceDiagram.jpeg">Sequence Diagram</a>
+
 - <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/UML%20Diagrams/UseCaseDiagram.jpeg">Use Case Diagram</a>
-- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/Lofi/lofi1.pdf">Lofi Prototype</a>
-- <a href = "https://www.figma.com/file/7Ps3kzHNE3LfqD3CmYPruq/Freight-Sheild?type=design&node-id=0%3A1&mode=dev&t=ufgMc4obzL9F5OmQ-1">Hifi Prototype</a>
+
 - <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/RABC%20chart.pdf">R/ABAC</a>
-- <a href = "https://github.com/users/BinaryQuBit/projects/1">Project Roadmaps</a>
-- <a href = "">Code Testing Report</a>
+
+### Prototypes
+
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/Lofi/lofi1.pdf">Lofi Prototype 1</a>
+
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/Lofi/lofi2.pdf">Lofi Prototype 2</a>
+
+- <a href = "https://www.figma.com/file/7Ps3kzHNE3LfqD3CmYPruq/Freight-Sheild?type=design&node-id=0%3A1&mode=dev&t=ufgMc4obzL9F5OmQ-1">Hifi Prototype</a>
+
+### User Feedback on Prototypes
+
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/Questionaire/Fleet%20Driver%20Hi-Fi.pdf">User Feedback Hifi 1</a>
+
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/Questionaire/Fleet%20Driver.pdf">User Feedback Hifi 2</a>
+
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/Questionaire/Owner%20Operator.pdf">User Feedback Hifi 3</a>
+
+### Testing Reports
+
+- <a href = "">Component Testing Report</a>
+
+- <a href = "">System Testing Report</a>
+
 - <a href = "">User Testing Report</a>
-- <a href = "">Code quality review report</a>   
-- <a href = "">Project Poster</a>
+
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/Code%20Quality%20Report.pdf">Code Quality Review Report</a>
+
+### Knowledge base for Users
+
 - <a href = "">Commercial Knowledge Base</a>
+
+### Project Final Delivery
+
+- <a href = "">Project Poster</a>
+
 - <a href = "">Final Presentation</a>
-- <a href = "">Project Experience Report</a>
+
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/Freight%20Shield%20Project%20Experience%20Report%20.pdf">Project Experience Report</a>
 
 <div><u>
 
