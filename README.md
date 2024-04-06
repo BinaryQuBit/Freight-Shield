@@ -75,9 +75,9 @@
 
 - <a href = "https://youtu.be/QjNZk3Wbh70">Freight Shield Vlog 3</a>
 
-- <a href = "">Project Demo</a>
+- <a href = "https://www.youtube.com/watch?v=7KE01fVizMQ">Project Demo</a>
 
-- <a href = "">Commercial Video</a>
+- <a href = "https://youtu.be/e3jD-M8fdDo">Commercial Video</a>
 
 <br>
 
@@ -121,23 +121,23 @@
 
 ### Testing Reports
 
-- <a href = "">Component Testing Report</a>
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/Component%20Testing.pdf">Component Testing Report</a>
 
-- <a href = "">System Testing Report</a>
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/System%20Testing.pdf">System Testing Report</a>
 
-- <a href = "">User Testing Report</a>
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/User%20Testing%20Plan.pdf">User Testing Report</a>
 
 - <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/Code%20Quality%20Report.pdf">Code Quality Review Report</a>
 
 ### Knowledge base for Users
 
-- <a href = "">Commercial Knowledge Base</a>
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/User%20Guide.pdf">Commercial Knowledge Base</a>
 
 ### Project Final Delivery
 
-- <a href = "">Project Poster</a>
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/Poster.pdf">Project Poster</a>
 
-- <a href = "">Final Presentation</a>
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/Project%20Day%20Presentation.pdf">Final Presentation</a>
 
 - <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/Freight%20Shield%20Project%20Experience%20Report%20.pdf">Project Experience Report</a>
 
