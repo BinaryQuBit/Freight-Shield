@@ -101,7 +101,7 @@
 - <a href = "">Project Poster</a>
 - <a href = "">Commercial Knowledge Base</a>
 - <a href = "">Final Presentation</a>
-- <a href = "">Project Experience Report</a>
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/Freight%20Shield%20Project%20Experience%20Report%20.pdf">Project Experience Report</a>
 
 <div><u>
 
