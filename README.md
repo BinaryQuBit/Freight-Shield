@@ -127,7 +127,7 @@
 
 - <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/System%20Testing.pdf">System Testing Report</a>
 
-- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/User%20Testing%20Plan.pdf">User Testing Report</a>
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/User%20Testing.pdf">User Testing Report</a>
 
 - <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/Code%20Quality%20Report.pdf">Code Quality Review Report</a>
 
