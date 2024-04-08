@@ -4,6 +4,8 @@
 
 ## Check out the whole process <a href = "https://binaryqubit.github.io/Freight-Shield/">:point_right:here:point_left:</a>
 
+## Check out the Final Product <a href = "https://freightshield.ca/">:point_right:here:point_left:</a>
+
 </div>
 
 <div><u>
