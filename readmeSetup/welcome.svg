@@ -1,0 +1,114 @@
+<svg fill="none" width="600" height="300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="borderGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#9e3ffd">
+        <animate attributeName="stop-color" values="#9e3ffd;#c764fc;#e09bf9;#9950e2;#8c65b3;#9e3ffd" dur="5s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" stop-color="#9950e2">
+        <animate attributeName="stop-color" values="#9950e2;#a66ef9;#c784fb;#8c65b3;#657aa3;#9950e2" dur="5s" repeatCount="indefinite"/>
+      </stop>
+    </radialGradient>
+  </defs>
+  <foreignObject width="100%" height="100%">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <style>
+        * {
+          margin: 0;
+        }
+
+        h1 {
+          font-size: 3.5rem;
+          font-weight: 800;
+          font-family: "Open Sans", sans-serif;
+          text-align: center;
+          text-transform: uppercase;
+        }
+
+        h1 span {
+          overflow: hidden;
+          display: block;
+        }
+
+        h1 span em {
+          display: block;
+        }
+
+        h1 span:nth-child(1) {
+          color: #9e3ffd;
+          margin-bottom: 3px;
+          animation: intro 1.5s cubic-bezier(0.5, 0, 0.25, 1.3) -1s 1;
+        }
+
+        h1 span:nth-child(1) em {
+          margin-top: 100px;
+          line-height: 0.5rem;
+          margin-bottom: -10px;
+        }
+
+        h1 span:nth-child(2) {
+          color: #9950e2;
+          margin-bottom: 3px;
+          animation: intro 1.5s cubic-bezier(0.5, 0, 0.25, 1.2) -0.9s 1;
+        }
+
+        h1 span:nth-child(2) em {
+          margin-top: -6px;
+          line-height: 1rem;
+        }
+
+        h1 span:nth-child(3) {
+          color: #8c65b3;
+          animation: intro 1.5s cubic-bezier(0.5, 0, 0.25, 1.1) -0.8s 1;
+        }
+
+        h1 span:nth-child(3) em {
+          margin-top: -36px;
+          line-height: 3rem;
+        }
+
+        @keyframes intro {
+          0%, 75% { transform: translateX(-100vw); }
+          100% { transform: translateX(0); }
+        }
+
+        .items {
+          margin-top: 24px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+        }
+
+        ul {
+          font-size: 14px;
+          line-height: 26px;
+          color: #9e3ffd;
+          font-weight: 700;
+          font-family: "Open Sans", sans-serif;
+        }
+
+        ul li {
+          display: flex;
+          letter-spacing: 0.125vw;
+        }
+      </style>
+      <h1>
+        <span><em>freight shield</em></span>
+        <span><em>freight shield</em></span>
+        <span><em>freight shield</em></span>
+      </h1>
+      <section class='items'>
+        <ul>
+          <li>A trucking industry software that handles the</li>
+        </ul>
+        <ul>
+          <li>communication between Shippers, Carriers and Drivers</li>
+        </ul>
+        <ul>
+          <li>while keeping safety in mind</li>
+        </ul>
+      </section>
+    </div>
+  </foreignObject>
+  <rect x="0" y="0" width="100%" height="100%" fill="none" stroke="url(#borderGradient)" stroke-width="10" />
+</svg>
