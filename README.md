@@ -93,11 +93,13 @@ In the freight and logistics industry, shippers are entities that need to send g
 <div align="center">
     <a href="https://www.youtube.com/watch?v=7KE01fVizMQ"><img src="./readmeSetup/videoGIFS/projectDemo.gif" width="32%"></a>
     <a href="https://www.youtube.com/watch?v=e3jD-M8fdDo"><img src="./readmeSetup/videoGIFS/commercialVideo.gif" width="32%"></a>
+    <a href="https://www.youtube.com/watch?v=F6_yRrmaX0M"><img src="./readmeSetup/videoGIFS/presentationvideo.gif" width="32%"></a>
 </div>
 
 <div align="center">
     <a href="https://www.youtube.com/watch?v=7KE01fVizMQ"><img src="./readmeSetup//videoTitles/projectDemo.svg" width="32%"></a>
     <a href="https://www.youtube.com/watch?v=e3jD-M8fdDo"><img src="./readmeSetup/videoTitles/commercialVideo.svg" width="32%"></a>
+    <a href="https://www.youtube.com/watch?v=F6_yRrmaX0M"><img src="./readmeSetup/videoTitles/presentationVideo.svg" width="32%"></a>
 </div>
 
 <br>
@@ -122,7 +124,7 @@ In the freight and logistics industry, shippers are entities that need to send g
 
 - <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/UML%20Diagrams/UseCaseDiagram.jpeg">Use Case Diagram</a>
 
-- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/RABC%20chart.pdf">R/ABAC</a>
+- <a href = "https://github.com/BinaryQuBit/Freight-Shield/blob/main/Documents/RABC%20chart.pdf">RBAC</a>
 
 ### Prototypes
 
