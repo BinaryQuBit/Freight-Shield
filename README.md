@@ -74,44 +74,39 @@ In the freight and logistics industry, shippers are entities that need to send g
     <a href="#"><img src="./readmeSetup/vBlogs.svg" style="width: 100%"></a>
 </div>
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/rCSL3k4vUi0?si=kXPheTCRdz_meEkK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<br>
 
+<div align="center">
+    <a href="https://www.youtube.com/watch?v=rCSL3k4vUi0"><img src="./readmeSetup/videoGIFS/Vblog1.gif" width="32%"></a>
+    <a href="https://www.youtube.com/watch?v=nKSjt_0bmjk"><img src="./readmeSetup/videoGIFS/Vblog2.gif" width="32%"></a>
+    <a href="https://www.youtube.com/watch?v=QjNZk3Wbh70"><img src="./readmeSetup/videoGIFS/Vblog3.gif" width="32%"></a>
+</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## V-Logs
-
-</u></div>
-
-- <a href = "https://www.youtube.com/watch?v=rCSL3k4vUi0">Freight Shield Vlog 1</a>
-
-- <a href = "https://www.youtube.com/watch?v=nKSjt_0bmjk">Freight Shield Vlog 2</a>
-
-- <a href = "https://youtu.be/QjNZk3Wbh70">Freight Shield Vlog 3</a>
-
-- <a href = "https://www.youtube.com/watch?v=7KE01fVizMQ">Project Demo</a>
-
-- <a href = "https://youtu.be/e3jD-M8fdDo">Commercial Video</a>
+<div align="center">
+    <a href="https://www.youtube.com/watch?v=rCSL3k4vUi0"><img src="./readmeSetup//videoTitles/vBlog1.svg" width="32%"></a>
+    <a href="https://www.youtube.com/watch?v=nKSjt_0bmjk"><img src="./readmeSetup/videoTitles/vBlog2.svg" width="32%"></a>
+    <a href="https://www.youtube.com/watch?v=nKSjt_0bmjk"><img src="./readmeSetup/videoTitles/vBlog3.svg" width="32%"></a>
+</div>
 
 <br>
 
-<div><u>
+<div align="center">
+    <a href="https://www.youtube.com/watch?v=7KE01fVizMQ"><img src="./readmeSetup/videoGIFS/projectDemo.gif" width="32%"></a>
+    <a href="https://www.youtube.com/watch?v=e3jD-M8fdDo"><img src="./readmeSetup/videoGIFS/commercialVideo.gif" width="32%"></a>
+</div>
 
-## Deliveries
+<div align="center">
+    <a href="https://www.youtube.com/watch?v=7KE01fVizMQ"><img src="./readmeSetup//videoTitles/projectDemo.svg" width="32%"></a>
+    <a href="https://www.youtube.com/watch?v=e3jD-M8fdDo"><img src="./readmeSetup/videoTitles/commercialVideo.svg" width="32%"></a>
+</div>
 
-</u></div>
+<br>
+
+<br>
+
+<div style="width: 100%;">
+    <a href="#"><img src="./readmeSetup/resources.svg" style="width: 100%"></a>
+</div>
 
 ### Initial Documents
 
