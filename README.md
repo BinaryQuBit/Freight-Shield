@@ -1,34 +1,36 @@
-<div align="center">
-
-# Freight-Shield
-
-## Check out the whole process <a href = "https://binaryqubit.github.io/Freight-Shield/">:point_right:here:point_left:</a>
-
-## Check out the Final Product <a href = "https://freightshield.ca/">:point_right:here:point_left:</a>
-
+<div style="width: 100%;">
+    <a href="#"><img src="./readmeSetup//welcome.svg" style="width: 100%"></a>
 </div>
 
-<div><u>
+<br>
+<br>
 
-## Definitions
-
-</u></div>
-
-<div>
-
-### In the freight and logistics industry, shippers are entities that need to send goods, and carriers are entities that own vehicles and transport goods. A load board is a marketplace where shippers post their loads, and carriers find and choose loads to transport. A logbook, in a transportation context, traditionally refers to a record of a driver's working hours, vehicle status, and other operational data, now mostly maintained electronically.
-
+<div style="width: 100%;">
+    <a href="#"><img src="./readmeSetup/freightShield.svg" style="width: 100%"></a>
 </div>
 
 <br>
 
-<div><u>
+In the freight and logistics industry, shippers are entities that need to send goods, and carriers are entities that own vehicles and transport goods. A load board is a marketplace where shippers post their loads, and carriers find and choose loads to transport. A logbook, in a transportation context, traditionally refers to a record of a driver's working hours, vehicle status, and other operational data, now mostly maintained electronically.
 
-## Objectives
+<br>
 
-</u></div>
+<div style="width: 100%;">
+    <a href="#"><img src="./readmeSetup/demo.svg" style="width: 100%"></a>
+</div>
 
-<div>
+<br>
+
+<div align="center" style="width: 100%;">
+    <a href="https://freightshield.csproject.org"><img src="./readmeSetup/demo.gif" style="width: 100%">Final Product</a>
+</div>
+
+<br>
+<br>
+
+<div style="width: 100%;">
+    <a href="#"><img src="./readmeSetup/objectives.svg" style="width: 100%"></a>
+</div>
 
 ### Integrating Load Board and Logbook will result in:
 ### 1. Efficiency:
@@ -47,15 +49,14 @@
 - Both shippers and carriers gain access to more comprehensive and real-time data, enabling better, informed decisions.
 - It optimizes routes and schedules, which can lead to fuel savings and reduced operational costs. 
 
+<br>
+<br>
+
+<div style="width: 100%;">
+    <a href="#"><img src="./readmeSetup/contributors.svg" style="width: 100%"></a>
 </div>
 
 <br>
-
-<div><u>
-
-## Contributors
-
-</u></div>
 
 - <a href = "https://github.com/BinaryQuBit">Amandip Padda</a>
 
@@ -65,7 +66,30 @@
 
 - <a href = "https://github.com/M-Alharbi">Mohammed Alharbi</a>
 
-<div><u>
+<br>
+
+<br>
+
+<div style="width: 100%;">
+    <a href="#"><img src="./readmeSetup/vBlogs.svg" style="width: 100%"></a>
+</div>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rCSL3k4vUi0?si=kXPheTCRdz_meEkK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## V-Logs
 
