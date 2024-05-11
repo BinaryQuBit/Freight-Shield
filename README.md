@@ -85,7 +85,7 @@ In the freight and logistics industry, shippers are entities that need to send g
 <div align="center">
     <a href="https://www.youtube.com/watch?v=rCSL3k4vUi0"><img src="./readmeSetup//videoTitles/vBlog1.svg" width="32%"></a>
     <a href="https://www.youtube.com/watch?v=nKSjt_0bmjk"><img src="./readmeSetup/videoTitles/vBlog2.svg" width="32%"></a>
-    <a href="https://www.youtube.com/watch?v=nKSjt_0bmjk"><img src="./readmeSetup/videoTitles/vBlog3.svg" width="32%"></a>
+    <a href="https://www.youtube.com/watch?v=QjNZk3Wbh70"><img src="./readmeSetup/videoTitles/vBlog3.svg" width="32%"></a>
 </div>
 
 <br>
