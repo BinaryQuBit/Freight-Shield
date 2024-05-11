@@ -71,6 +71,68 @@ In the freight and logistics industry, shippers are entities that need to send g
 <br>
 
 <div style="width: 100%;">
+    <a href="#"><img src="./readmeSetup/techStack.svg" style="width: 100%"></a>
+</div>
+
+<h3 align = "center">Languages</h3>
+<p align="center">
+    <img src="https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E" alt="JavaScript">
+    <img src="https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5">
+    <img src="https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3">
+    <img src="https://img.shields.io/badge/shell_script-%23121011.svg?style=for-the-badge&logo=gnu-bash&logoColor=white" alt="Shell Script">
+</p>
+
+<h2></h2>
+
+<h3 align="center">Development Tools & Environments</h3>
+<p align="center">
+    <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+    <img src="https://img.shields.io/badge/-RaspberryPi-C51A4A?style=for-the-badge&logo=Raspberry-Pi" alt="Raspberry Pi">
+</p>
+
+<h2></h2>
+
+<h3 align="center">Web Development Frameworks & Libraries</h3>
+<p align="center">
+    <img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" alt="React">
+    <img src="https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" alt="React Native">
+    <img src="https://img.shields.io/badge/-React%20Query-FF4154?style=for-the-badge&logo=react%20query&logoColor=white" alt="React Query">
+    <img src="https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white" alt="React Router">
+    <img src="https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB" alt="Express.js">
+    <img src="https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens" alt="JWT">
+    <img src="https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white" alt="NPM">
+    <img src="https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white" alt="NodeJS">
+    <img src="https://img.shields.io/badge/NODEMON-%23323330.svg?style=for-the-badge&logo=nodemon&logoColor=%BBDEAD" alt="Nodemon">
+    <img src="https://img.shields.io/badge/Chakra%20UI-%23319795.svg?style=for-the-badge&logo=chakraui&logoColor=white" alt="Chakra UI">
+</p>
+
+<h2></h2>
+
+<h3 align="center">Databases</h3>
+<p align="center">
+  <img src="https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB">
+</p>
+
+<h2></h2>
+
+<h3 align="center">Web Servers</h3>
+<p align="center"">
+  <img src="https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white" alt="Nginx">
+  <img src="https://img.shields.io/badge/Casa%20OS-%234285F4.svg?style=for-the-badge&logoColor=white" alt="Casa OS">
+</p>
+
+<h2></h2>
+
+<h3 align="center">3D Modeling and Animation Softwares</h3>
+<p align="center">
+  <img src="https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white" alt="Figma">
+</p>
+
+<br>
+
+<br>
+
+<div style="width: 100%;">
     <a href="#"><img src="./readmeSetup/vBlogs.svg" style="width: 100%"></a>
 </div>
 
@@ -101,6 +163,35 @@ In the freight and logistics industry, shippers are entities that need to send g
     <a href="https://www.youtube.com/watch?v=e3jD-M8fdDo"><img src="./readmeSetup/videoTitles/commercialVideo.svg" width="32%"></a>
     <a href="https://www.youtube.com/watch?v=F6_yRrmaX0M"><img src="./readmeSetup/videoTitles/presentationVideo.svg" width="32%"></a>
 </div>
+
+<br>
+
+<br>
+
+<div style="width: 100%;">
+    <a href="#"><img src="./readmeSetup/result.svg" style="width: 100%"></a>
+</div>
+
+<br>
+
+- Acceptance and Management of Loads
+- Creation and Maintenance of Digital Logbooks
+- Efficent Load Posting and Management
+- Enhanced Tracking and Reporting
+
+<br>
+
+<br>
+
+<div style="width: 100%;">
+    <a href="#"><img src="./readmeSetup/nextSteps.svg" style="width: 100%"></a>
+</div>
+
+<br>
+
+- Feature to block specific user
+- Experience Rating
+- Billing Service
 
 <br>
 
